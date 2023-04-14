@@ -1,19 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, SafeAreaView } from "react-native";
+import { View, SafeAreaView } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 
-import Gym from "./pages/Gym";
-import Workout from "./components/workout/Workout";
+import Nav from "./components/nav/Nav";
+
+import { COLORS } from "./constants/theme";
 
 function App() {
   return (
-    <SafeAreaView style={{ backgroundColor: "#111" }}>
-      {/* <Gym /> */}
-      <Workout />
+    <NavigationContainer>
+      <Nav />
       <StatusBar style="light" />
-    </SafeAreaView>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default App;

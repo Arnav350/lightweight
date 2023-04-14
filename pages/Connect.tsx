@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   FlatList,
   Image,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -96,7 +97,7 @@ function Connect() {
   ]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.containerTop}>
         <View style={styles.containerSearch}>
           <Icon name="magnify" size={32} color="#444" />
@@ -155,7 +156,7 @@ function Connect() {
           style={styles.containerContacts}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

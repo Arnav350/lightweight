@@ -26,12 +26,18 @@ interface IFonts {
     | "700"
     | "800"
     | "900";
-}
-
-interface ISpaces {
-  small: number;
-  medium: number;
-  large: number;
+  xbold:
+    | "normal"
+    | "bold"
+    | "100"
+    | "200"
+    | "300"
+    | "400"
+    | "500"
+    | "600"
+    | "700"
+    | "800"
+    | "900";
 }
 
 const COLORS: IColors = {
@@ -42,8 +48,8 @@ const COLORS: IColors = {
   placeholder: "#444",
 
   background: "#000",
-  header: "#111",
-  box: "#161616",
+  header: "#161616",
+  box: "#1d1d1d",
 };
 
 const FONTS: IFonts = {
@@ -53,12 +59,7 @@ const FONTS: IFonts = {
   xlarge: 24,
   xxlarge: 32,
   bold: "500",
+  xbold: "600",
 };
 
-const SPACES: ISpaces = {
-  small: 4,
-  medium: 8,
-  large: 16,
-};
-
-export { COLORS, FONTS, SPACES };
+export { COLORS, FONTS };

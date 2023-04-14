@@ -1,17 +1,10 @@
 import { useState } from "react";
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Set from "./Set";
 
-import { COLORS, FONTS, SPACES } from "../../constants/theme";
+import { COLORS, FONTS } from "../../constants/theme";
 
 interface IProps {
   name: string;
@@ -26,7 +19,7 @@ interface ISet {
 
 type ISets = ISet[];
 
-function Exercise() {
+function Exercise(props: IProps) {
   const [prevSets, setPrevSets] = useState<ISets>([
     { label: "W", weight: 200, reps: 10, notes: "notes" },
     { weight: 300, reps: 8 },
@@ -41,7 +34,9 @@ function Exercise() {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.topText}>Hello</Text>
+        <Text style={styles.topText} numberOfLines={1}>
+          {props.name}
+        </Text>
         <Icon
           name="dots-horizontal"
           size={FONTS.xlarge}
@@ -56,17 +51,20 @@ function Exercise() {
       </View>
       <View style={styles.setsContainer}>
         {prevSets.map((prevSet: ISet, i: number) => (
-          <Set key={i} />
+          <Set key={i} id={i} prevSet={prevSet} />
         ))}
       </View>
-      <Text style={styles.exerciseButton}>+ Add Set</Text>
+      <TouchableOpacity style={styles.exerciseButton}>
+        <Text style={styles.exerciseText}>+ Add Set</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // padding: 12 8,
+    margin: 4,
+    padding: 12,
     backgroundColor: COLORS.box,
     borderRadius: 16,
   },
@@ -77,27 +75,40 @@ const styles = StyleSheet.create({
     color: COLORS.textOne,
   },
   topText: {
+    maxWidth: "80%",
     color: COLORS.textOne,
     fontSize: FONTS.large,
+    fontWeight: FONTS.bold,
   },
   exerciseSubtitles: {
     display: "flex",
     flexDirection: "row",
     gap: 8,
-    // padding: 4 8,
+    paddingTop: 4,
+    paddingRight: 8,
+    paddingBottom: 4,
+    paddingLeft: 8,
   },
   exerciseSubtitle: {
     color: COLORS.textOne,
   },
   setsContainer: {
-    // padding: 4 8,
+    paddingTop: 4,
+    paddingRight: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    borderBottomWidth: 2,
+    borderBottomColor: COLORS.textTwo,
   },
   exerciseButton: {
-    marginTop: 4,
-    // padding: 4 8,
-    borderTopWidth: 2,
-    borderTopColor: COLORS.textTwo,
+    paddingTop: 8,
+    paddingRight: 8,
+    paddingLeft: 8,
+  },
+  exerciseText: {
     color: COLORS.textOne,
+    textAlign: "center",
+    fontWeight: FONTS.bold,
   },
 });
 

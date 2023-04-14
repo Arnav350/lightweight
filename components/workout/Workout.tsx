@@ -12,38 +12,43 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Exercise from "./Exercise";
 
-import { COLORS, FONTS, SPACES } from "../../constants/theme";
+import { COLORS, FONTS } from "../../constants/theme";
 
 function Workout() {
   const [workoutName, setWorkoutName] = useState<string>("Workout Name");
   const [exercises, setExercises] = useState<string[]>([
     "Bench Press",
-    "Smith Machine Elevated Front Squat",
+    "Smith Machine 45 Pound Plate Elevated Front Squat",
     "Bicep Curl",
   ]);
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headerIcons}>
-          <Icon
-            name="chevron-left"
-            size={FONTS.xxlarge}
-            color={COLORS.primary}
-          />
-          <Icon name="alarm" size={FONTS.xxlarge} color={COLORS.primary} />
+          <TouchableOpacity>
+            <Icon
+              name="chevron-left"
+              size={FONTS.xxlarge}
+              color={COLORS.primary}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Icon name="alarm" size={FONTS.xxlarge} color={COLORS.primary} />
+          </TouchableOpacity>
         </View>
         <TextInput
           value={workoutName}
           placeholder="Workout Name"
           placeholderTextColor={COLORS.placeholder}
+          keyboardAppearance="dark"
           style={styles.header}
           onChangeText={setWorkoutName}
         />
         <Button title="Finish" color={COLORS.primary} onPress={() => {}} />
       </View>
       <ScrollView style={styles.workoutContainer}>
-        {exercises.map((__, i: number) => (
-          <Exercise key={i} />
+        {exercises.map((exercise: string, i: number) => (
+          <Exercise key={i} name={exercise} />
         ))}
         <TouchableOpacity style={styles.workoutButton} onPress={() => {}}>
           <Text style={styles.workoutText}>Add Exercise</Text>
@@ -60,51 +65,49 @@ const styles = StyleSheet.create({
     // left: 0,
     // right: 0,
     // bottom: 0,
+    backgroundColor: COLORS.background,
   },
   headerContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: SPACES.large,
+    padding: 16,
     backgroundColor: COLORS.header,
   },
   header: {
-    flex: 1,
-    padding: SPACES.medium,
+    padding: 8,
     backgroundColor: "transparent",
-    borderRadius: SPACES.medium,
+    borderRadius: 8,
     color: COLORS.textOne,
     textAlign: "center",
     fontSize: FONTS.xlarge,
+    fontWeight: FONTS.bold,
   },
   headerIcons: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    gap: SPACES.medium,
+    gap: 4,
     width: 64,
   },
-  headerButton: {
-    backgroundColor: COLORS.primary,
-    // padding: 4 10,
-    borderRadius: SPACES.medium,
-    color: COLORS.textOne,
-    fontSize: FONTS.normal,
-  },
   workoutContainer: {
-    gap: SPACES.large,
-    padding: SPACES.large,
+    padding: 8,
   },
   workoutButton: {
-    // margin: 8 0,
-    padding: SPACES.medium,
+    marginTop: 8,
+    marginRight: 4,
+    marginBottom: 8,
+    marginLeft: 4,
+    padding: 8,
     backgroundColor: COLORS.primary,
-    borderRadius: SPACES.medium,
+    borderRadius: 8,
   },
   workoutText: {
     color: COLORS.textOne,
+    textAlign: "center",
     fontSize: FONTS.normal,
+    fontWeight: FONTS.xbold,
   },
 });
 

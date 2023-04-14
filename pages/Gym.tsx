@@ -1,17 +1,28 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Log from "../components/gym/Log";
 
-import { COLORS, FONTS, SPACES } from "../constants/theme";
+import { COLORS, FONTS } from "../constants/theme";
 
 function Gym() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Icon name="chart-line" size={FONTS.xxlarge} color={COLORS.primary} />
+        <TouchableOpacity>
+          <Icon name="chart-line" size={FONTS.xxlarge} color={COLORS.primary} />
+        </TouchableOpacity>
         <Text style={styles.header}>Workout</Text>
-        <Icon name="plus" size={FONTS.xxlarge} color={COLORS.primary} />
+        <TouchableOpacity>
+          <Icon name="plus" size={FONTS.xxlarge} color={COLORS.primary} />
+        </TouchableOpacity>
       </View>
       <ScrollView style={styles.gymContainer}>
         <View style={styles.gymButtons}>
@@ -51,7 +62,7 @@ function Gym() {
           <Log />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -65,33 +76,34 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: SPACES.large,
+    padding: 16,
     backgroundColor: COLORS.header,
   },
   header: {
-    // padding: 8 0,
+    paddingTop: 8,
+    paddingBottom: 8,
     fontSize: FONTS.xlarge,
     fontWeight: FONTS.bold,
     color: COLORS.textOne,
   },
   gymContainer: {},
   gymButtons: {
-    padding: SPACES.large,
+    padding: 16,
   },
   gymEmpty: {
     display: "flex",
     flexDirection: "row",
-    padding: SPACES.large,
+    padding: 16,
     backgroundColor: COLORS.box,
   },
   gymRoutines: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: SPACES.medium,
+    marginTop: 8,
   },
   gymRoutine: {
-    padding: SPACES.large,
+    padding: 16,
     backgroundColor: COLORS.box,
   },
   gymSubtitles: {
@@ -100,7 +112,8 @@ const styles = StyleSheet.create({
     fontWeight: FONTS.bold,
   },
   logContainer: {
-    // padding: 0 16,
+    paddingRight: 16,
+    paddingLeft: 16,
   },
 });
 
