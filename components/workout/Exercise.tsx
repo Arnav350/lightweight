@@ -6,12 +6,8 @@ import Set from "./Set";
 
 import { COLORS, FONTS } from "../../constants/theme";
 
-interface IProps {
-  name: string;
-}
-
 interface ISet {
-  label?: "W" | "D";
+  type: number | "W" | "D";
   weight: number;
   reps: number;
   notes?: string;
@@ -19,23 +15,29 @@ interface ISet {
 
 type ISets = ISet[];
 
-function Exercise(props: IProps) {
-  const [prevSets, setPrevSets] = useState<ISets>([
-    { label: "W", weight: 200, reps: 10, notes: "notes" },
-    { weight: 300, reps: 8 },
-    { label: "D", weight: 400, reps: 6 },
-  ]);
+interface IExercise {
+  name: string;
+  sets: ISets;
+}
 
+type IExercises = IExercise[];
+
+interface IProps {
+  exercise: IExercises;
+  i: number;
+}
+
+function Exercise(props: IProps) {
   const [sets, setSets] = useState<ISets>([
-    { label: "W", weight: 200, reps: 10, notes: "notes" },
-    { weight: 300, reps: 8 },
-    { label: "D", weight: 400, reps: 6 },
+    { type: "W", weight: 200, reps: 10, notes: "notes" },
+    { type: 1, weight: 300, reps: 8 },
+    { type: "D", weight: 400, reps: 6 },
   ]);
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.topText} numberOfLines={1}>
-          {props.name}
+          {props.exercise[props.i].name}
         </Text>
         <Icon
           name="dots-horizontal"
@@ -50,7 +52,7 @@ function Exercise(props: IProps) {
         <Text style={styles.exerciseSubtitle}>Notes</Text>
       </View>
       <View style={styles.setsContainer}>
-        {prevSets.map((prevSet: ISet, i: number) => (
+        {sets.map((prevSet: ISet, i: number) => (
           <Set key={i} id={i} prevSet={prevSet} />
         ))}
       </View>

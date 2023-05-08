@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginLeft: 8,
     padding: 8,
-    backgroundColor: "#161616",
+    backgroundColor: COLORS.box,
     borderRadius: 16,
   },
   dateContainer: {

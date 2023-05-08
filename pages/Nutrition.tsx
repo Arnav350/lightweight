@@ -1,10 +1,50 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS, FONTS } from "../constants/theme";
 
 function Nutrition() {
-  return <SafeAreaView></SafeAreaView>;
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity>
+          <Icon name="chart-line" size={FONTS.xxlarge} color={COLORS.primary} />
+        </TouchableOpacity>
+        <Text style={styles.header}>Nutrition</Text>
+        <TouchableOpacity>
+          <Icon name="plus" size={FONTS.xxlarge} color={COLORS.primary} />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+    backgroundColor: COLORS.background,
+  },
+  headerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: COLORS.header,
+  },
+  header: {
+    paddingTop: 8,
+    paddingBottom: 8,
+    fontSize: FONTS.xlarge,
+    fontWeight: FONTS.bold,
+    color: COLORS.textOne,
+  },
+});
 
 export default Nutrition;

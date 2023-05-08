@@ -8,19 +8,72 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Exercise from "./Exercise";
 
 import { COLORS, FONTS } from "../../constants/theme";
 
+interface ISet {
+  type: number | "W" | "D";
+  weight: number;
+  reps: number;
+  notes?: string;
+}
+
+type ISets = ISet[];
+
+interface IExercise {
+  name: string;
+  sets: ISets;
+}
+
+type IExercises = IExercise[];
+
+interface IWorkout {
+  date: {
+    month: string;
+    day: string;
+  };
+  name: string;
+  time: string;
+  weight: number;
+  exercises: IExercises;
+}
+
+type IWorkouts = IWorkout[];
+
 function Workout() {
-  const [workoutName, setWorkoutName] = useState<string>("Workout Name");
-  const [exercises, setExercises] = useState<string[]>([
-    "Bench Press",
-    "Smith Machine 45 Pound Plate Elevated Front Squat",
-    "Bicep Curl",
+  const [workout, setWorkout] = useState<IWorkout | {}>({});
+  const [exercises, setExercises] = useState<IExercises>([
+    {
+      name: "Bench Press",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8 },
+        { type: "D", weight: 400, reps: 6 },
+      ],
+    },
+    {
+      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8 },
+        { type: "D", weight: 400, reps: 6 },
+      ],
+    },
+    {
+      name: "Bicep Curl",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8 },
+        { type: "D", weight: 400, reps: 6 },
+      ],
+    },
   ]);
+
+  const [workoutName, setWorkoutName] = useState<string>("Workout Name");
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -43,12 +96,13 @@ function Workout() {
           keyboardAppearance="dark"
           style={styles.header}
           onChangeText={setWorkoutName}
+          onBlur={() => setWorkout({ ...workout, name: workoutName })}
         />
         <Button title="Finish" color={COLORS.primary} onPress={() => {}} />
       </View>
       <ScrollView style={styles.workoutContainer}>
-        {exercises.map((exercise: string, i: number) => (
-          <Exercise key={i} name={exercise} />
+        {exercises.map((__, i: number) => (
+          <Exercise key={i} exercise={exercises} i={i} />
         ))}
         <TouchableOpacity style={styles.workoutButton} onPress={() => {}}>
           <Text style={styles.workoutText}>Add Exercise</Text>
@@ -60,11 +114,6 @@ function Workout() {
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
-    // top: 0,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
     backgroundColor: COLORS.background,
   },
   headerContainer: {
