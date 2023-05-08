@@ -12,9 +12,14 @@ function SignIn() {
   return (
     <View style={styles.container}>
       <View>
-        <Text>SignIn</Text>
+        <Text>Sign In</Text>
         <TextInput
-          placeholder="Username"
+          placeholder="Email"
+          keyboardAppearance="dark"
+          maxLength={20}
+        />
+        <TextInput
+          placeholder="Password"
           keyboardAppearance="dark"
           maxLength={20}
         />
