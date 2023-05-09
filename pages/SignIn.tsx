@@ -23,15 +23,15 @@ function SignIn() {
           keyboardAppearance="dark"
           maxLength={20}
         />
+        <TouchableOpacity>
+          <Text>Sign In</Text>
+        </TouchableOpacity>
         <Text>
           Don't have an account?{" "}
           <TouchableOpacity>
             <Text>Sign Up</Text>
           </TouchableOpacity>
         </Text>
-        <TouchableOpacity>
-          <Text>Sign In</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

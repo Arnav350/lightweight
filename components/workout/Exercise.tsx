@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -23,21 +23,55 @@ interface IExercise {
 type IExercises = IExercise[];
 
 interface IProps {
-  exercise: IExercises;
   i: number;
+  exercises: IExercises;
+  setExercises: React.Dispatch<React.SetStateAction<IExercises>>;
 }
 
 function Exercise(props: IProps) {
-  const [sets, setSets] = useState<ISets>([
-    { type: "W", weight: 200, reps: 10, notes: "notes" },
-    { type: 1, weight: 300, reps: 8 },
-    { type: "D", weight: 400, reps: 6 },
+  const [prevExercise, setPrevExercise] = useState<IExercise>();
+  const [prevExercises, setPrevExercises] = useState<IExercises>([
+    {
+      name: "Bench Press",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8 },
+        { type: "D", weight: 400, reps: 6 },
+      ],
+    },
+    {
+      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8 },
+        { type: "D", weight: 400, reps: 6 },
+      ],
+    },
+    {
+      name: "Bicep Curl",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8 },
+        { type: "D", weight: 400, reps: 6 },
+      ],
+    },
   ]);
+
+  useEffect(() => {
+    prevExercises.every((prevExercise) => {
+      if (prevExercise.name === props.exercises[props.i].name) {
+        setPrevExercise(prevExercise);
+        return false;
+      }
+      return true;
+    });
+  }, [props.exercises]);
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.topText} numberOfLines={1}>
-          {props.exercise[props.i].name}
+          {/* {props.prevExercise.name} */}
         </Text>
         <Icon
           name="dots-horizontal"
@@ -52,9 +86,17 @@ function Exercise(props: IProps) {
         <Text style={styles.exerciseSubtitle}>Notes</Text>
       </View>
       <View style={styles.setsContainer}>
-        {sets.map((prevSet: ISet, i: number) => (
-          <Set key={i} id={i} prevSet={prevSet} />
-        ))}
+        {prevExercise &&
+          prevExercise.sets.map((prevSet: ISet, i: number) => (
+            <Set
+              key={i}
+              prevSet={prevSet}
+              si={i}
+              ei={props.i}
+              exercises={props.exercises}
+              setExercises={props.setExercises}
+            />
+          ))}
       </View>
       <TouchableOpacity style={styles.exerciseButton}>
         <Text style={styles.exerciseText}>+ Add Set</Text>

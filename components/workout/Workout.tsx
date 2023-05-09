@@ -46,34 +46,9 @@ type IWorkouts = IWorkout[];
 
 function Workout() {
   const [workout, setWorkout] = useState<IWorkout | {}>({});
-  const [exercises, setExercises] = useState<IExercises>([
-    {
-      name: "Bench Press",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8 },
-        { type: "D", weight: 400, reps: 6 },
-      ],
-    },
-    {
-      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8 },
-        { type: "D", weight: 400, reps: 6 },
-      ],
-    },
-    {
-      name: "Bicep Curl",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8 },
-        { type: "D", weight: 400, reps: 6 },
-      ],
-    },
-  ]);
-
+  const [exercises, setExercises] = useState<IExercises>([]);
   const [workoutName, setWorkoutName] = useState<string>("Workout Name");
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -102,7 +77,12 @@ function Workout() {
       </View>
       <ScrollView style={styles.workoutContainer}>
         {exercises.map((__, i: number) => (
-          <Exercise key={i} exercise={exercises} i={i} />
+          <Exercise
+            key={i}
+            i={i}
+            exercises={exercises}
+            setExercises={setExercises}
+          />
         ))}
         <TouchableOpacity style={styles.workoutButton} onPress={() => {}}>
           <Text style={styles.workoutText}>Add Exercise</Text>

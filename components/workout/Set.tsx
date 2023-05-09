@@ -4,15 +4,27 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { COLORS, FONTS } from "../../constants/theme";
 
 interface ISet {
-  label?: "W" | "D";
+  type: number | "W" | "D";
   weight: number;
   reps: number;
   notes?: string;
 }
 
+type ISets = ISet[];
+
+interface IExercise {
+  name: string;
+  sets: ISets;
+}
+
+type IExercises = IExercise[];
+
 interface IProps {
-  id: number;
   prevSet: ISet;
+  si: number;
+  ei: number;
+  exercises: IExercises;
+  setExercises: React.Dispatch<React.SetStateAction<IExercises>>;
 }
 
 function Set(props: IProps) {
@@ -22,7 +34,7 @@ function Set(props: IProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.setSet}>{props.id + 1}</Text>
+      <Text style={styles.setSet}>{props.si + 1}</Text>
       <TextInput
         value={weight}
         placeholder={props.prevSet.weight.toString()}
