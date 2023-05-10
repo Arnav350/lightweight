@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Image,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -8,8 +9,9 @@ import {
   View,
 } from "react-native";
 
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -26,7 +28,7 @@ const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}$/;
 
-function SignUp() {
+function SignUp({ navigation }) {
   const [focusedInput, setFocusedInput] = useState<string>("none");
 
   const [username, setUsername] = useState<string>("");
@@ -43,93 +45,86 @@ function SignUp() {
     confirm: "",
   });
 
-  function handleUsernameBlur() {
-    setFocusedInput("none");
-
-    if (username.trim() === "") {
-      setErrors({ ...errors, username: "Username is required" });
-    } else if (username.length < 3) {
-      setErrors({
-        ...errors,
-        username: "Username must be at least 3 characters",
-      });
-    } else if (username.length > 20) {
-      setErrors({
-        ...errors,
-        username: "Username must be at most 20 characters",
-      });
-    } else {
-      setErrors({ ...errors, username: "" });
-    }
-  }
-
-  function handleEmailBlur() {
-    setFocusedInput("none");
-
-    if (email.trim() === "") {
-      setErrors({ ...errors, email: "Email is required" });
-    } else if (!email.match(emailRegex)) {
-      setErrors({ ...errors, email: "Invalid email address" });
-    } else {
-      setErrors({ ...errors, email: "" });
-    }
-  }
-
-  function handlePasswordBlur() {
-    setFocusedInput("none");
-
-    if (password.trim() === "") {
-      setErrors({ ...errors, password: "Password is required" });
-    } else if (password.length < 6) {
-      setErrors({
-        ...errors,
-        password: "Password must be at least 6 characters",
-      });
-    } else if (password.length > 20) {
-      setErrors({
-        ...errors,
-        password: "Password must be at most 20 characters",
-      });
-    } else if (!password.match(passwordRegex)) {
-      setErrors({
-        ...errors,
-        password:
-          "Password must contain a special character and uppercase letter",
-      });
-    } else {
-      setErrors({ ...errors, password: "" });
-    }
-  }
-
-  function handleConfirmBlur() {
-    setFocusedInput("none");
-
-    if (confirm.trim() === "") {
-      setErrors({
-        ...errors,
-        confirm: "Confirm password is required",
-      });
-    } else if (confirm !== password) {
-      setErrors({ ...errors, confirm: "Passwords do not match" });
-    } else {
-      setErrors({ ...errors, confirm: "" });
-    }
-  }
-
-  function handlePress() {
+  useEffect(() => {
     if (
       !(
         errors.username ||
         errors.email ||
         errors.password ||
         errors.confirm ||
-        !username ||
-        !email ||
-        !password ||
-        !confirm
+        !username
       )
     ) {
-      alert("GOOD");
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          setDoc(doc(db, "users", user.user.uid), {
+            uid: user.user.uid,
+            displayName: username,
+            email,
+          });
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+  }, [errors]);
+
+  function handlePress() {
+    if (username.trim() === "") {
+      setErrors((errors) => ({ ...errors, username: "Username is required" }));
+    } else if (username.length < 3) {
+      setErrors((errors) => ({
+        ...errors,
+        username: "Username must be at least 3 characters",
+      }));
+    } else if (username.length > 20) {
+      setErrors((errors) => ({
+        ...errors,
+        username: "Username must be at most 20 characters",
+      }));
+    } else {
+      setErrors((errors) => ({ ...errors, username: "" }));
+    }
+
+    if (email.trim() === "") {
+      setErrors((errors) => ({ ...errors, email: "Email is required" }));
+    } else if (!email.match(emailRegex)) {
+      setErrors((errors) => ({ ...errors, email: "Invalid email address" }));
+    } else {
+      setErrors((errors) => ({ ...errors, email: "" }));
+    }
+
+    if (password.trim() === "") {
+      setErrors((errors) => ({ ...errors, password: "Password is required" }));
+    } else if (password.length < 6) {
+      setErrors((errors) => ({
+        ...errors,
+        password: "Password must be at least 6 characters",
+      }));
+    } else if (password.length > 20) {
+      setErrors((errors) => ({
+        ...errors,
+        password: "Password must be at most 20 characters",
+      }));
+    } else if (!password.match(passwordRegex)) {
+      setErrors((errors) => ({
+        ...errors,
+        password:
+          "Password must contain a special character and uppercase letter",
+      }));
+    } else {
+      setErrors((errors) => ({ ...errors, password: "" }));
+    }
+
+    if (confirm.trim() === "") {
+      setErrors((errors) => ({
+        ...errors,
+        confirm: "Confirm password is required",
+      }));
+    } else if (confirm !== password) {
+      setErrors((errors) => ({ ...errors, confirm: "Passwords do not match" }));
+    } else {
+      setErrors((errors) => ({ ...errors, confirm: "" }));
     }
   }
 
@@ -141,13 +136,14 @@ function SignUp() {
         </View>
         <Text style={styles.secondTopText}>BE.</Text>
       </View>
-      <View>
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <Text style={styles.error}>{errors.username}</Text>
         <TextInput
           value={username}
           placeholder="Username"
-          placeholderTextColor={COLORS.textTwo}
+          placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={
             focusedInput === "username"
@@ -156,13 +152,13 @@ function SignUp() {
           }
           onChangeText={setUsername}
           onFocus={() => setFocusedInput("username")}
-          onBlur={handleUsernameBlur}
+          onBlur={() => setFocusedInput("none")}
         />
         <Text style={styles.error}>{errors.email}</Text>
         <TextInput
           value={email}
           placeholder="Email"
-          placeholderTextColor={COLORS.textTwo}
+          placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={
             focusedInput === "email"
@@ -171,14 +167,14 @@ function SignUp() {
           }
           onChangeText={setEmail}
           onFocus={() => setFocusedInput("email")}
-          onBlur={handleEmailBlur}
+          onBlur={() => setFocusedInput("none")}
         />
         <Text style={styles.error}>{errors.password}</Text>
         <View>
           <TextInput
             value={password}
             placeholder="Password"
-            placeholderTextColor={COLORS.textTwo}
+            placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
             secureTextEntry={showPassword ? false : true}
             style={
@@ -188,16 +184,16 @@ function SignUp() {
             }
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}
-            onBlur={handlePasswordBlur}
+            onBlur={() => setFocusedInput("none")}
           />
           <TouchableOpacity
             style={styles.eyeButton}
             onPress={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
-              <Icon name="eye-off-outline" size={28} color={COLORS.textTwo} />
+              <Icon name="eye-off-outline" size={28} color={COLORS.gray} />
             ) : (
-              <Icon name="eye-outline" size={28} color={COLORS.textTwo} />
+              <Icon name="eye-outline" size={28} color={COLORS.gray} />
             )}
           </TouchableOpacity>
         </View>
@@ -205,7 +201,7 @@ function SignUp() {
         <TextInput
           value={confirm}
           placeholder="Confirm Password"
-          placeholderTextColor={COLORS.textTwo}
+          placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           secureTextEntry={showPassword ? false : true}
           style={
@@ -215,18 +211,18 @@ function SignUp() {
           }
           onChangeText={setConfirm}
           onFocus={() => setFocusedInput("confirm")}
-          onBlur={handleConfirmBlur}
+          onBlur={() => setFocusedInput("none")}
         />
         <TouchableOpacity style={styles.button} onPress={handlePress}>
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
           <Text style={styles.bottomText}>Already have an account? </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
             <Text style={styles.bottomSign}>Sign In</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAvoidingView>
       <View style={styles.bottomTriangle}>
         <View style={styles.layerTriangle}>
           <Text style={styles.firstBottomText}>GREAT.</Text>
@@ -242,7 +238,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.black,
     height: "100%",
   },
   topTriangle: {
@@ -268,47 +264,46 @@ const styles = StyleSheet.create({
   },
   firstTopText: {
     position: "absolute",
-    left: 96,
-    bottom: -60,
-    color: COLORS.background,
-    fontSize: 96,
+    left: 104,
+    bottom: -48,
+    color: COLORS.black,
+    fontSize: 72,
     fontWeight: "800",
     transform: [{ rotate: "30deg" }],
   },
   secondTopText: {
     position: "absolute",
     zIndex: -1,
-    left: 96,
-    bottom: -60,
+    left: 104,
+    bottom: -48,
     color: COLORS.primary,
-    fontSize: 96,
+    fontSize: 72,
     fontWeight: "800",
     transform: [{ rotate: "30deg" }],
   },
   firstBottomText: {
     position: "absolute",
-    top: -60,
-    right: 40,
-    color: COLORS.background,
-    fontSize: 96,
+    top: -32,
+    right: 64,
+    color: COLORS.black,
+    fontSize: 72,
     fontWeight: "800",
     transform: [{ rotate: "30deg" }],
   },
   secondBottomText: {
     position: "absolute",
     zIndex: -1,
-    top: -60,
-    right: 40,
+    top: -32,
+    right: 64,
     color: COLORS.primary,
-    fontSize: 96,
+    fontSize: 72,
     fontWeight: "800",
     transform: [{ rotate: "30deg" }],
   },
-
   logo: {
     marginBottom: -24,
-    height: 256,
-    width: 256,
+    height: 196,
+    width: 196,
   },
   error: {
     maxWidth: 240,
@@ -319,8 +314,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.textTwo,
-    color: COLORS.textOne,
+    borderBottomColor: COLORS.gray,
+    color: COLORS.white,
     fontSize: 18,
   },
   eyeButton: {
@@ -335,7 +330,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   buttonText: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: "600",
     textAlign: "center",
@@ -346,7 +341,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomText: {
-    color: COLORS.textTwo,
+    color: COLORS.gray,
   },
   bottomSign: {
     color: COLORS.primary,

@@ -63,7 +63,7 @@ function Workout() {
         <TextInput
           value={workoutName}
           placeholder="Workout Name"
-          placeholderTextColor={COLORS.placeholder}
+          placeholderTextColor={COLORS.darkGray}
           keyboardAppearance="dark"
           style={styles.header}
           onChangeText={setWorkoutName}
@@ -90,7 +90,7 @@ function Workout() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.black,
   },
   headerContainer: {
     display: "flex",
@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    backgroundColor: COLORS.header,
+    backgroundColor: COLORS.blackTwo,
   },
   header: {
     padding: 8,
     backgroundColor: "transparent",
     borderRadius: 8,
-    color: COLORS.textOne,
+    color: COLORS.white,
     textAlign: "center",
     fontSize: 24,
     fontWeight: "500",
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   workoutText: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
     fontWeight: "600",

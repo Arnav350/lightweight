@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS } from "../../constants/theme";
 
 function Log() {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container}>
       <View style={styles.dateContainer}>
         <Text style={styles.dateMonth}>May</Text>
         <Text style={styles.dateDay}>12</Text>
@@ -30,7 +30,7 @@ function Log() {
           <Text style={styles.logExercise}>2 x Bicep Curls</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginLeft: 8,
     padding: 8,
-    backgroundColor: COLORS.box,
+    backgroundColor: COLORS.blackOne,
     borderRadius: 16,
   },
   dateContainer: {
@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   dateMonth: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 18,
   },
   dateDay: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   logTitle: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: "500",
   },
@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 8,
     paddingBottom: 8,
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 16,
   },
   logExercises: {},
   logExercise: {
-    color: COLORS.textOne,
+    color: COLORS.white,
   },
 });
 

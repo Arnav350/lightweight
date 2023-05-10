@@ -28,7 +28,7 @@ function Nutrition() {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.black,
   },
   headerContainer: {
     display: "flex",
@@ -36,14 +36,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    backgroundColor: COLORS.header,
+    backgroundColor: COLORS.blackTwo,
   },
   header: {
     paddingTop: 8,
     paddingBottom: 8,
     fontSize: 24,
     fontWeight: "500",
-    color: COLORS.textOne,
+    color: COLORS.white,
   },
 });
 

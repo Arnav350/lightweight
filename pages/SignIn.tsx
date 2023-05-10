@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -9,17 +11,13 @@ import {
 } from "react-native";
 
 import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS } from "../constants/theme";
 
-interface IErrors {
-  email: string;
-  password: string;
-}
-
-function SignUp() {
+function SignUp({ navigation }) {
   const [focusedInput, setFocusedInput] = useState<string>("none");
 
   const [email, setEmail] = useState<string>("");
@@ -29,20 +27,30 @@ function SignUp() {
 
   function handlePress() {
     if (!(!email || !password)) {
-      alert("GOOD");
+      signInWithEmailAndPassword(auth, email, password)
+        .then()
+        .catch((error) => {
+          alert(error.message);
+        });
     }
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.topTriangle}>
-        <Text style={styles.topSlogan}>BE.</Text>
+        <View style={styles.layerTriangle}>
+          <Text style={styles.firstTopText}>BE.</Text>
+        </View>
+        <Text style={styles.secondTopText}>BE.</Text>
       </View>
-      <View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <Image source={require("../assets/logo.png")} style={styles.logo} />
         <TextInput
           value={email}
           placeholder="Email"
-          placeholderTextColor={COLORS.textTwo}
+          placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={
             focusedInput === "email"
@@ -57,7 +65,7 @@ function SignUp() {
           <TextInput
             value={password}
             placeholder="Password"
-            placeholderTextColor={COLORS.textTwo}
+            placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
             secureTextEntry={showPassword ? false : true}
             style={
@@ -74,10 +82,13 @@ function SignUp() {
             onPress={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
-              <Icon name="eye-off-outline" size={28} color={COLORS.textTwo} />
+              <Icon name="eye-off-outline" size={28} color={COLORS.gray} />
             ) : (
-              <Icon name="eye-outline" size={28} color={COLORS.textTwo} />
+              <Icon name="eye-outline" size={28} color={COLORS.gray} />
             )}
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.passwordForgot}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
@@ -85,13 +96,16 @@ function SignUp() {
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
           <Text style={styles.bottomText}>Don't have an account? </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
             <Text style={styles.bottomSign}>Sign Up</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAvoidingView>
       <View style={styles.bottomTriangle}>
-        <Text style={styles.bottomSlogan}>GREAT.</Text>
+        <View style={styles.layerTriangle}>
+          <Text style={styles.firstBottomText}>GREAT.</Text>
+        </View>
+        <Text style={styles.secondBottomText}>GREAT.</Text>
       </View>
     </View>
   );
@@ -102,46 +116,72 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.black,
     height: "100%",
   },
   topTriangle: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    borderColor: COLORS.primary,
-    borderBottomColor: "transparent",
-    borderRightColor: "transparent",
-    borderWidth: 120,
-    borderTopWidth: 80,
-    borderBottomWidth: 80,
+    top: -48,
+    left: -72,
+    width: 400,
+    height: 160,
+    transform: [{ rotate: "-30deg" }],
   },
   bottomTriangle: {
     position: "absolute",
-    right: 0,
-    bottom: 0,
-    borderColor: COLORS.primary,
-    borderTopColor: "transparent",
-    borderLeftColor: "transparent",
-    borderWidth: 120,
-    borderTopWidth: 80,
-    borderBottomWidth: 80,
-  },
-  topSlogan: {
-    position: "absolute",
-    top: -16,
-    left: -72,
-    color: COLORS.textOne,
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  bottomSlogan: {
-    position: "absolute",
-    top: -16,
     right: -72,
-    color: COLORS.textOne,
-    fontSize: 64,
-    fontWeight: "bold",
+    bottom: -48,
+    width: 400,
+    height: 160,
+    transform: [{ rotate: "-30deg" }],
+  },
+  layerTriangle: {
+    height: "100%",
+    backgroundColor: COLORS.primary,
+    overflow: "hidden",
+  },
+  firstTopText: {
+    position: "absolute",
+    left: 104,
+    bottom: -48,
+    color: COLORS.black,
+    fontSize: 72,
+    fontWeight: "800",
+    transform: [{ rotate: "30deg" }],
+  },
+  secondTopText: {
+    position: "absolute",
+    zIndex: -1,
+    left: 104,
+    bottom: -48,
+    color: COLORS.primary,
+    fontSize: 72,
+    fontWeight: "800",
+    transform: [{ rotate: "30deg" }],
+  },
+  firstBottomText: {
+    position: "absolute",
+    top: -32,
+    right: 64,
+    color: COLORS.black,
+    fontSize: 72,
+    fontWeight: "800",
+    transform: [{ rotate: "30deg" }],
+  },
+  secondBottomText: {
+    position: "absolute",
+    zIndex: -1,
+    top: -32,
+    right: 64,
+    color: COLORS.primary,
+    fontSize: 72,
+    fontWeight: "800",
+    transform: [{ rotate: "30deg" }],
+  },
+  logo: {
+    height: 196,
+    width: 196,
+    alignSelf: "center",
   },
   error: {
     maxWidth: 240,
@@ -152,8 +192,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.textTwo,
-    color: COLORS.textOne,
+    borderBottomColor: COLORS.gray,
+    color: COLORS.white,
     fontSize: 18,
   },
   passwordContainer: {
@@ -164,6 +204,11 @@ const styles = StyleSheet.create({
     top: 4,
     right: 8,
   },
+  passwordForgot: {
+    color: COLORS.primary,
+    fontWeight: "600",
+    textAlign: "right",
+  },
   button: {
     marginTop: 16,
     marginBottom: 16,
@@ -171,7 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   buttonText: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: "600",
     textAlign: "center",
@@ -181,7 +226,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   bottomText: {
-    color: COLORS.textTwo,
+    color: COLORS.gray,
   },
   bottomSign: {
     color: COLORS.primary,

@@ -38,7 +38,7 @@ function Set(props: IProps) {
       <TextInput
         value={weight}
         placeholder={props.prevSet.weight.toString()}
-        placeholderTextColor={COLORS.placeholder}
+        placeholderTextColor={COLORS.darkGray}
         keyboardType="numeric"
         maxLength={5}
         keyboardAppearance="dark"
@@ -48,7 +48,7 @@ function Set(props: IProps) {
       <TextInput
         value={reps}
         placeholder={props.prevSet.reps.toString()}
-        placeholderTextColor={COLORS.placeholder}
+        placeholderTextColor={COLORS.darkGray}
         keyboardType="numeric"
         maxLength={6}
         keyboardAppearance="dark"
@@ -58,7 +58,7 @@ function Set(props: IProps) {
       <TextInput
         value={notes}
         placeholder={props.prevSet.notes}
-        placeholderTextColor={COLORS.placeholder}
+        placeholderTextColor={COLORS.darkGray}
         numberOfLines={1}
         keyboardAppearance="dark"
         style={styles.setNotes}
@@ -76,25 +76,25 @@ const styles = StyleSheet.create({
   },
   setSet: {
     width: 23,
-    color: COLORS.textOne,
+    color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
   setWeight: {
     width: 52.46,
-    color: COLORS.textOne,
+    color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
   setReps: {
     width: 34.59,
-    color: COLORS.textOne,
+    color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
   setNotes: {
     width: "100%",
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 16,
   },
 });

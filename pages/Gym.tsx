@@ -16,44 +16,46 @@ function Gym() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5}>
           <Icon name="chart-line" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Workout</Text>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5}>
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.gymContainer}>
         <View style={styles.gymButtons}>
-          <Icon.Button
-            name="plus"
-            size={24}
-            color={COLORS.primary}
-            style={styles.gymEmpty}
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.gymRoutine}
             onPress={() => {}}
           >
+            <Icon name="plus" size={24} color={COLORS.primary} />
             <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
-          </Icon.Button>
+          </TouchableOpacity>
+
           <View style={styles.gymRoutines}>
-            <Icon.Button
-              name="clipboard-plus-outline"
-              size={24}
-              color={COLORS.primary}
+            <TouchableOpacity
+              activeOpacity={0.5}
               style={styles.gymRoutine}
               onPress={() => {}}
             >
+              <Icon
+                name="clipboard-plus-outline"
+                size={24}
+                color={COLORS.primary}
+              />
               <Text style={styles.gymSubtitles}>New Routine</Text>
-            </Icon.Button>
-            <Icon.Button
-              name="bookmark-outline"
-              size={24}
-              color={COLORS.primary}
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.5}
               style={styles.gymRoutine}
               onPress={() => {}}
             >
+              <Icon name="bookmark-outline" size={24} color={COLORS.primary} />
               <Text style={styles.gymSubtitles}>Select Routine</Text>
-            </Icon.Button>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.logContainer}>
@@ -69,7 +71,7 @@ function Gym() {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {
     display: "flex",
@@ -77,24 +79,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    backgroundColor: COLORS.header,
+    backgroundColor: COLORS.blackTwo,
   },
   header: {
     paddingTop: 8,
     paddingBottom: 8,
     fontSize: 24,
     fontWeight: "500",
-    color: COLORS.textOne,
+    color: COLORS.white,
   },
-  gymContainer: {},
+  gymContainer: {
+    backgroundColor: COLORS.black,
+  },
   gymButtons: {
     padding: 16,
   },
-  gymEmpty: {
+  gymRoutine: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
     padding: 16,
-    backgroundColor: COLORS.box,
+    backgroundColor: COLORS.blackOne,
+    borderRadius: 8,
   },
   gymRoutines: {
     display: "flex",
@@ -102,16 +109,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 8,
   },
-  gymRoutine: {
-    padding: 16,
-    backgroundColor: COLORS.box,
-  },
   gymSubtitles: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",
   },
   logContainer: {
+    display: "flex",
+    gap: 16,
     paddingRight: 16,
     paddingLeft: 16,
   },

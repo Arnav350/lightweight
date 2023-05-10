@@ -6,12 +6,18 @@ import Nutrition from "../../pages/Nutrition";
 import Connect from "../../pages/Connect";
 import Profile from "../../pages/Profile";
 
+import { COLORS } from "../../constants/theme";
+
 const Tab = createBottomTabNavigator();
 
 function Nav() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarStyle: {
+          backgroundColor: COLORS.blackTwo,
+          borderTopColor: COLORS.blackTwo,
+        },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName:
             | "barbell"
@@ -37,6 +43,8 @@ function Nav() {
           }
           return <Icon name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS.gray,
       })}
     >
       <Tab.Screen

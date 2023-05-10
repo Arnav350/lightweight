@@ -91,7 +91,7 @@ function Connect() {
     <SafeAreaView style={styles.container}>
       <View style={styles.containerTop}>
         <View style={styles.containerSearch}>
-          <Icon name="magnify" size={32} color="#444" />
+          <Icon name="magnify" size={32} color={COLORS.darkGray} />
           <TextInput
             placeholder="Search user"
             placeholderTextColor="#888"
@@ -103,7 +103,7 @@ function Connect() {
         <ScrollView style={styles.containerStories} horizontal>
           <TouchableOpacity style={styles.story}>
             <View>
-              <Icon name="plus" size={48} color="#444" />
+              <Icon name="plus" size={48} color={COLORS.darkGray} />
             </View>
             <Text style={styles.storyText}>Add story</Text>
           </TouchableOpacity>
@@ -153,25 +153,25 @@ function Connect() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.black,
   },
   containerTop: {
     alignItems: "center",
     padding: 16,
     width: "100%",
-    backgroundColor: COLORS.header,
+    backgroundColor: COLORS.blackTwo,
   },
   containerSearch: {
     display: "flex",
     flexDirection: "row",
     width: "80%",
     padding: 8,
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.black,
     borderRadius: 18,
   },
   search: {
     fontSize: 16,
-    color: COLORS.textOne,
+    color: COLORS.white,
   },
   containerStories: {
     display: "flex",
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 32,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.placeholder,
+    borderBottomColor: COLORS.darkGray,
   },
   story: {
     position: "relative",
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     top: 92,
     fontSize: 14,
     textAlign: "center",
-    color: COLORS.textOne,
+    color: COLORS.white,
   },
   containerContacts: {},
   contact: {
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.placeholder,
+    borderBottomColor: COLORS.darkGray,
   },
   contactImage: {
     margin: 8,
@@ -229,15 +229,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   contactName: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 16,
   },
   contactDate: {
-    color: COLORS.textTwo,
+    color: COLORS.gray,
     fontSize: 14,
   },
   contactLast: {
-    color: COLORS.textTwo,
+    color: COLORS.gray,
     fontSize: 14,
   },
 });

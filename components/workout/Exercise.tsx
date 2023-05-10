@@ -73,7 +73,7 @@ function Exercise(props: IProps) {
         <Text style={styles.topText} numberOfLines={1}>
           {/* {props.prevExercise.name} */}
         </Text>
-        <Icon name="dots-horizontal" size={24} color={COLORS.textOne} />
+        <Icon name="dots-horizontal" size={24} color={COLORS.white} />
       </View>
       <View style={styles.exerciseSubtitles}>
         <Text style={styles.exerciseSubtitle}>Set</Text>
@@ -105,18 +105,18 @@ const styles = StyleSheet.create({
   container: {
     margin: 4,
     padding: 12,
-    backgroundColor: COLORS.box,
+    backgroundColor: COLORS.blackOne,
     borderRadius: 16,
   },
   top: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    color: COLORS.textOne,
+    color: COLORS.white,
   },
   topText: {
     maxWidth: "80%",
-    color: COLORS.textOne,
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: "500",
   },
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   exerciseSubtitle: {
-    color: COLORS.textOne,
+    color: COLORS.white,
   },
   setsContainer: {
     paddingTop: 4,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingLeft: 8,
     borderBottomWidth: 2,
-    borderBottomColor: COLORS.textTwo,
+    borderBottomColor: COLORS.gray,
   },
   exerciseButton: {
     paddingTop: 8,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   exerciseText: {
-    color: COLORS.textOne,
+    color: COLORS.white,
     textAlign: "center",
     fontWeight: "500",
   },
