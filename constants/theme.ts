@@ -62,4 +62,4 @@ const FONTS: IFonts = {
   xbold: "600",
 };
 
-export { COLORS, FONTS };
+export { COLORS };

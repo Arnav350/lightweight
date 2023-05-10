@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
-import { COLORS, FONTS } from "../../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 interface ISet {
   type: number | "W" | "D";
@@ -78,24 +78,24 @@ const styles = StyleSheet.create({
     width: 23,
     color: COLORS.textOne,
     textAlign: "center",
-    fontSize: FONTS.normal,
+    fontSize: 16,
   },
   setWeight: {
     width: 52.46,
     color: COLORS.textOne,
     textAlign: "center",
-    fontSize: FONTS.normal,
+    fontSize: 16,
   },
   setReps: {
     width: 34.59,
     color: COLORS.textOne,
     textAlign: "center",
-    fontSize: FONTS.normal,
+    fontSize: 16,
   },
   setNotes: {
     width: "100%",
     color: COLORS.textOne,
-    fontSize: FONTS.normal,
+    fontSize: 16,
   },
 });
 

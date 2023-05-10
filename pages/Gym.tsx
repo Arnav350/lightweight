@@ -10,25 +10,25 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Log from "../components/gym/Log";
 
-import { COLORS, FONTS } from "../constants/theme";
+import { COLORS } from "../constants/theme";
 
 function Gym() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity>
-          <Icon name="chart-line" size={FONTS.xxlarge} color={COLORS.primary} />
+          <Icon name="chart-line" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Workout</Text>
         <TouchableOpacity>
-          <Icon name="plus" size={FONTS.xxlarge} color={COLORS.primary} />
+          <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.gymContainer}>
         <View style={styles.gymButtons}>
           <Icon.Button
             name="plus"
-            size={FONTS.xlarge}
+            size={24}
             color={COLORS.primary}
             style={styles.gymEmpty}
             onPress={() => {}}
@@ -38,7 +38,7 @@ function Gym() {
           <View style={styles.gymRoutines}>
             <Icon.Button
               name="clipboard-plus-outline"
-              size={FONTS.xlarge}
+              size={24}
               color={COLORS.primary}
               style={styles.gymRoutine}
               onPress={() => {}}
@@ -47,7 +47,7 @@ function Gym() {
             </Icon.Button>
             <Icon.Button
               name="bookmark-outline"
-              size={FONTS.xlarge}
+              size={24}
               color={COLORS.primary}
               style={styles.gymRoutine}
               onPress={() => {}}
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: 8,
     paddingBottom: 8,
-    fontSize: FONTS.xlarge,
-    fontWeight: FONTS.bold,
+    fontSize: 24,
+    fontWeight: "500",
     color: COLORS.textOne,
   },
   gymContainer: {},
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
   },
   gymSubtitles: {
     color: COLORS.textOne,
-    fontSize: FONTS.normal,
-    fontWeight: FONTS.bold,
+    fontSize: 16,
+    fontWeight: "500",
   },
   logContainer: {
     paddingRight: 16,

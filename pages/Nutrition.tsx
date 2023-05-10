@@ -7,18 +7,18 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { COLORS, FONTS } from "../constants/theme";
+import { COLORS } from "../constants/theme";
 
 function Nutrition() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity>
-          <Icon name="chart-line" size={FONTS.xxlarge} color={COLORS.primary} />
+          <Icon name="chart-line" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Nutrition</Text>
         <TouchableOpacity>
-          <Icon name="plus" size={FONTS.xxlarge} color={COLORS.primary} />
+          <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: 8,
     paddingBottom: 8,
-    fontSize: FONTS.xlarge,
-    fontWeight: FONTS.bold,
+    fontSize: 24,
+    fontWeight: "500",
     color: COLORS.textOne,
   },
 });

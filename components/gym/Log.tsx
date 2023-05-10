@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { COLORS, FONTS } from "../../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 function Log() {
   return (
@@ -51,20 +51,20 @@ const styles = StyleSheet.create({
   },
   dateMonth: {
     color: COLORS.textOne,
-    fontSize: FONTS.large,
+    fontSize: 18,
   },
   dateDay: {
     color: COLORS.textOne,
-    fontSize: FONTS.xlarge,
-    fontWeight: FONTS.bold,
+    fontSize: 24,
+    fontWeight: "500",
   },
   logContainer: {
     padding: 8,
   },
   logTitle: {
     color: COLORS.textOne,
-    fontSize: FONTS.large,
-    fontWeight: FONTS.bold,
+    fontSize: 18,
+    fontWeight: "500",
   },
   logInfo: {
     display: "flex",
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     color: COLORS.textOne,
-    fontSize: FONTS.normal,
+    fontSize: 16,
   },
   logExercises: {},
   logExercise: {

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { COLORS, FONTS } from "../constants/theme";
+import { COLORS } from "../constants/theme";
 
 interface IStory {
   image: string;

@@ -4,7 +4,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Set from "./Set";
 
-import { COLORS, FONTS } from "../../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 interface ISet {
   type: number | "W" | "D";
@@ -73,11 +73,7 @@ function Exercise(props: IProps) {
         <Text style={styles.topText} numberOfLines={1}>
           {/* {props.prevExercise.name} */}
         </Text>
-        <Icon
-          name="dots-horizontal"
-          size={FONTS.xlarge}
-          color={COLORS.textOne}
-        />
+        <Icon name="dots-horizontal" size={24} color={COLORS.textOne} />
       </View>
       <View style={styles.exerciseSubtitles}>
         <Text style={styles.exerciseSubtitle}>Set</Text>
@@ -121,8 +117,8 @@ const styles = StyleSheet.create({
   topText: {
     maxWidth: "80%",
     color: COLORS.textOne,
-    fontSize: FONTS.large,
-    fontWeight: FONTS.bold,
+    fontSize: 18,
+    fontWeight: "500",
   },
   exerciseSubtitles: {
     display: "flex",
@@ -152,7 +148,7 @@ const styles = StyleSheet.create({
   exerciseText: {
     color: COLORS.textOne,
     textAlign: "center",
-    fontWeight: FONTS.bold,
+    fontWeight: "500",
   },
 });
 

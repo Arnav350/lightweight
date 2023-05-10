@@ -13,7 +13,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Exercise from "./Exercise";
 
-import { COLORS, FONTS } from "../../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 interface ISet {
   type: number | "W" | "D";
@@ -54,14 +54,10 @@ function Workout() {
       <View style={styles.headerContainer}>
         <View style={styles.headerIcons}>
           <TouchableOpacity>
-            <Icon
-              name="chevron-left"
-              size={FONTS.xxlarge}
-              color={COLORS.primary}
-            />
+            <Icon name="chevron-left" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Icon name="alarm" size={FONTS.xxlarge} color={COLORS.primary} />
+            <Icon name="alarm" size={32} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
         <TextInput
@@ -110,8 +106,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: COLORS.textOne,
     textAlign: "center",
-    fontSize: FONTS.xlarge,
-    fontWeight: FONTS.bold,
+    fontSize: 24,
+    fontWeight: "500",
   },
   headerIcons: {
     display: "flex",
@@ -135,8 +131,8 @@ const styles = StyleSheet.create({
   workoutText: {
     color: COLORS.textOne,
     textAlign: "center",
-    fontSize: FONTS.normal,
-    fontWeight: FONTS.xbold,
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 
