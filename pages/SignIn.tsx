@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import type { StackScreenProps } from "@react-navigation/stack";
 
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -17,7 +18,14 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS } from "../constants/theme";
 
-function SignUp({ navigation }) {
+type TRootStackParamList = {
+  Signin: undefined;
+  Signup: undefined;
+};
+
+type TProps = StackScreenProps<TRootStackParamList>;
+
+function SignUp(props: TProps) {
   const [focusedInput, setFocusedInput] = useState<string>("none");
 
   const [email, setEmail] = useState<string>("");
@@ -78,6 +86,7 @@ function SignUp({ navigation }) {
             onBlur={() => setFocusedInput("none")}
           />
           <TouchableOpacity
+            activeOpacity={0.5}
             style={styles.eyeButton}
             onPress={() => setShowPassword(!showPassword)}
           >
@@ -87,16 +96,23 @@ function SignUp({ navigation }) {
               <Icon name="eye-outline" size={28} color={COLORS.gray} />
             )}
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.5}>
             <Text style={styles.passwordForgot}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.button}
+          onPress={handlePress}
+        >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
           <Text style={styles.bottomText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => props.navigation.navigate("Signup")}
+          >
             <Text style={styles.bottomSign}>Sign Up</Text>
           </TouchableOpacity>
         </View>

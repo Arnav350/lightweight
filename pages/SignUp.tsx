@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -16,6 +17,13 @@ import { doc, setDoc } from "firebase/firestore";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS } from "../constants/theme";
+
+type TRootStackParamList = {
+  Signin: undefined;
+  Signup: undefined;
+};
+
+type TProps = StackScreenProps<TRootStackParamList>;
 
 interface IErrors {
   username: string;
@@ -28,7 +36,7 @@ const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}$/;
 
-function SignUp({ navigation }) {
+function SignUp(props: TProps) {
   const [focusedInput, setFocusedInput] = useState<string>("none");
 
   const [username, setUsername] = useState<string>("");
@@ -187,6 +195,7 @@ function SignUp({ navigation }) {
             onBlur={() => setFocusedInput("none")}
           />
           <TouchableOpacity
+            activeOpacity={0.5}
             style={styles.eyeButton}
             onPress={() => setShowPassword(!showPassword)}
           >
@@ -213,12 +222,19 @@ function SignUp({ navigation }) {
           onFocus={() => setFocusedInput("confirm")}
           onBlur={() => setFocusedInput("none")}
         />
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.button}
+          onPress={handlePress}
+        >
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
           <Text style={styles.bottomText}>Already have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => props.navigation.navigate("Signin")}
+          >
             <Text style={styles.bottomSign}>Sign In</Text>
           </TouchableOpacity>
         </View>

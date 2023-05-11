@@ -7,8 +7,14 @@ import Nav from "./components/nav/Nav";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Workout from "./components/workout/Workout";
+import Gym from "./pages/Gym";
 
-const Stack = createStackNavigator();
+type TRootStackParamList = {
+  Signin: undefined;
+  Signup: undefined;
+};
+
+const Stack = createStackNavigator<TRootStackParamList>();
 
 function App() {
   return (

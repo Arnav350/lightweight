@@ -9,7 +9,7 @@ interface IColors {
 }
 
 const COLORS: IColors = {
-  primary: "#f65151",
+  primary: "#d13636",
   white: "#fef4f4",
   gray: "#888",
   darkGray: "#444",
