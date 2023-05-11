@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -137,16 +139,13 @@ function SignUp(props: TProps) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topTriangle}>
-        <View style={styles.layerTriangle}>
-          <Text style={styles.firstTopText}>BE.</Text>
-        </View>
-        <Text style={styles.secondTopText}>BE.</Text>
-      </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.header}>Sign Up</Text>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.formContainer}
       >
+        <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Text style={styles.error}>{errors.username}</Text>
         <TextInput
           value={username}
@@ -229,97 +228,59 @@ function SignUp(props: TProps) {
         >
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.bottomText}>Already have an account? </Text>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => props.navigation.navigate("Signin")}
-          >
-            <Text style={styles.bottomSign}>Sign In</Text>
+        <View style={styles.orContainer}>
+          <Text style={styles.or}>OR</Text>
+        </View>
+        <View style={styles.logosContainer}>
+          <TouchableOpacity activeOpacity={0.5} style={styles.logoContainer}>
+            <Image
+              source={require("../assets/apple.png")}
+              style={styles.apple}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.5} style={styles.logoContainer}>
+            <Image
+              source={require("../assets/google.png")}
+              style={styles.google}
+            />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-      <View style={styles.bottomTriangle}>
-        <View style={styles.layerTriangle}>
-          <Text style={styles.firstBottomText}>GREAT.</Text>
-        </View>
-        <Text style={styles.secondBottomText}>GREAT.</Text>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.bottomText}>Already have an account? </Text>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => props.navigation.navigate("Signin")}
+        >
+          <Text style={styles.bottomSign}>Sign In</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: COLORS.black,
+    justifyContent: "space-between",
+    backgroundColor: COLORS.blackTwo,
     height: "100%",
   },
-  topTriangle: {
-    position: "absolute",
-    top: -48,
-    left: -72,
-    width: 400,
-    height: 160,
-    transform: [{ rotate: "-30deg" }],
+  header: {
+    margin: 32,
+    marginBottom: -32,
+    color: COLORS.white,
+    fontSize: 64,
+    fontWeight: "600",
   },
-  bottomTriangle: {
-    position: "absolute",
-    right: -72,
-    bottom: -48,
-    width: 400,
-    height: 160,
-    transform: [{ rotate: "-30deg" }],
-  },
-  layerTriangle: {
-    height: "100%",
-    backgroundColor: COLORS.primary,
-    overflow: "hidden",
-  },
-  firstTopText: {
-    position: "absolute",
-    left: 104,
-    bottom: -48,
-    color: COLORS.black,
-    fontSize: 72,
-    fontWeight: "800",
-    transform: [{ rotate: "30deg" }],
-  },
-  secondTopText: {
-    position: "absolute",
-    zIndex: -1,
-    left: 104,
-    bottom: -48,
-    color: COLORS.primary,
-    fontSize: 72,
-    fontWeight: "800",
-    transform: [{ rotate: "30deg" }],
-  },
-  firstBottomText: {
-    position: "absolute",
-    top: -32,
-    right: 64,
-    color: COLORS.black,
-    fontSize: 72,
-    fontWeight: "800",
-    transform: [{ rotate: "30deg" }],
-  },
-  secondBottomText: {
-    position: "absolute",
-    zIndex: -1,
-    top: -32,
-    right: 64,
-    color: COLORS.primary,
-    fontSize: 72,
-    fontWeight: "800",
-    transform: [{ rotate: "30deg" }],
+  formContainer: {
+    padding: 32,
   },
   logo: {
     marginBottom: -24,
     height: 196,
     width: 196,
+    alignSelf: "center",
   },
   error: {
     maxWidth: 240,
@@ -334,22 +295,69 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
   },
+  passwordContainer: {
+    position: "relative",
+  },
   eyeButton: {
     position: "absolute",
     top: 4,
     right: 8,
   },
+  passwordForgot: {
+    color: COLORS.primary,
+    fontWeight: "500",
+    textAlign: "right",
+  },
   button: {
     marginTop: 16,
-    marginBottom: 16,
-    padding: 8,
+    marginBottom: 8,
+    padding: 16,
+    borderRadius: 8,
     backgroundColor: COLORS.primary,
   },
   buttonText: {
     color: COLORS.white,
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "500",
     textAlign: "center",
+  },
+  orContainer: {
+    width: 120,
+    marginBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.darkGray,
+    alignSelf: "center",
+  },
+  or: {
+    top: 10,
+    paddingRight: 10,
+    paddingLeft: 10,
+    width: 40,
+    backgroundColor: COLORS.blackTwo,
+    color: COLORS.gray,
+    alignSelf: "center",
+  },
+  logosContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 32,
+  },
+  logoContainer: {
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS.darkGray,
+    borderRadius: 8,
+  },
+  apple: {
+    marginRight: 2,
+    marginLeft: 2,
+    height: 32,
+    width: 27,
+  },
+  google: {
+    height: 32,
+    width: 31,
   },
   bottomContainer: {
     display: "flex",
@@ -361,7 +369,7 @@ const styles = StyleSheet.create({
   },
   bottomSign: {
     color: COLORS.primary,
-    fontWeight: "600",
+    fontWeight: "500",
   },
 });
 
