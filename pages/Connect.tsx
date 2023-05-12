@@ -153,7 +153,7 @@ function Connect() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.black,
+    backgroundColor: COLORS.blackTwo,
   },
   containerTop: {
     alignItems: "center",
@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   containerSearch: {
-    display: "flex",
     flexDirection: "row",
     width: "80%",
     padding: 8,
@@ -174,10 +173,10 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   containerStories: {
-    display: "flex",
     flexDirection: "row",
     paddingTop: 16,
     paddingBottom: 32,
+    backgroundColor: COLORS.black,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.darkGray,
   },
@@ -204,9 +203,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: COLORS.white,
   },
-  containerContacts: {},
+  containerContacts: {
+    backgroundColor: COLORS.black,
+  },
   contact: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     padding: 8,
@@ -224,7 +224,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contactInfo: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
   },

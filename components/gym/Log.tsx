@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
-    marginRight: 8,
-    marginLeft: 8,
     padding: 8,
     backgroundColor: COLORS.blackOne,
     borderRadius: 16,

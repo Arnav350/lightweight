@@ -108,13 +108,13 @@ function SignUp(props: TProps) {
           <Text style={styles.or}>OR</Text>
         </View>
         <View style={styles.logosContainer}>
-          <TouchableOpacity activeOpacity={0.5} style={styles.logoContainer}>
+          <TouchableOpacity style={styles.logoContainer}>
             <Image
               source={require("../assets/apple.png")}
               style={styles.apple}
             />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5} style={styles.logoContainer}>
+          <TouchableOpacity style={styles.logoContainer}>
             <Image
               source={require("../assets/google.png")}
               style={styles.google}
@@ -144,10 +144,9 @@ const styles = StyleSheet.create({
   },
   header: {
     margin: 32,
-    marginBottom: -32,
     color: COLORS.white,
-    fontSize: 64,
-    fontWeight: "600",
+    fontSize: 48,
+    fontWeight: "500",
   },
   formContainer: {
     padding: 32,

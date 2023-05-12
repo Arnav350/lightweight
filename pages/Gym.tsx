@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   gymRoutine: {
-    display: "flex",
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
@@ -104,9 +103,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   gymRoutines: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 8,
     marginTop: 8,
   },
   gymSubtitles: {
@@ -115,7 +114,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   logContainer: {
-    display: "flex",
     gap: 16,
     paddingRight: 16,
     paddingLeft: 16,

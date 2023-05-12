@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { User } from "firebase/auth";
 
@@ -23,5 +23,3 @@ export function AuthProvider({ children }: IProviderChildren) {
     <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>
   );
 }
-
-export const UseAuth = () => useContext<User | null>(AuthContext);
