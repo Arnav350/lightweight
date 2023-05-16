@@ -330,8 +330,7 @@ const styles = StyleSheet.create({
   },
   or: {
     top: 10,
-    paddingRight: 10,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     width: 40,
     backgroundColor: COLORS.blackTwo,
     color: COLORS.gray,
@@ -341,9 +340,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    gap: 32,
   },
   logoContainer: {
+    marginHorizontal: 16,
     padding: 16,
     borderWidth: 1,
     borderColor: COLORS.darkGray,

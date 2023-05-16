@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
-import { User } from "firebase/auth";
+import { User, onAuthStateChanged } from "firebase/auth";
 
 interface IProviderChildren {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export function AuthProvider({ children }: IProviderChildren) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const unsub = auth.onAuthStateChanged((user: User | null) => {
+    const unsub = onAuthStateChanged(auth, (user: User | null) => {
       setCurrentUser(user);
     });
 
