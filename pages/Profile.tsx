@@ -15,8 +15,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { COLORS } from "../constants/theme";
 
 function Profile() {
-  function handlePress() {
-    signOut(auth)
+  async function handlePress() {
+    await signOut(auth)
       .then()
       .catch((error) => alert(error.message));
   }

@@ -17,14 +17,11 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TAuthStackParamList } from "../components/nav/AuthStack";
+
 import { COLORS } from "../constants/theme";
 
-type TRootStackParamList = {
-  Signin: undefined;
-  Signup: undefined;
-};
-
-type TProps = StackScreenProps<TRootStackParamList>;
+type TProps = StackScreenProps<TAuthStackParamList>;
 
 function SignUp(props: TProps) {
   const [focusedInput, setFocusedInput] = useState<string>("none");
@@ -34,9 +31,9 @@ function SignUp(props: TProps) {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  function handlePress() {
+  async function handlePress() {
     if (!(!email || !password)) {
-      signInWithEmailAndPassword(auth, email, password)
+      await signInWithEmailAndPassword(auth, email, password)
         .then()
         .catch((error) => {
           alert(error.message);
@@ -93,7 +90,10 @@ function SignUp(props: TProps) {
               <Icon name="eye-outline" size={28} color={COLORS.gray} />
             )}
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => props.navigation.navigate("Forgot")}
+          >
             <Text style={styles.passwordForgot}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
@@ -139,10 +139,9 @@ function SignUp(props: TProps) {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
+    flex: 1,
     justifyContent: "space-between",
     backgroundColor: COLORS.blackTwo,
-    height: "100%",
   },
   header: {
     margin: 32,
@@ -154,13 +153,12 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   logo: {
-    height: 196,
-    width: 196,
+    height: 192,
+    width: 192,
     alignSelf: "center",
   },
   input: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginVertical: 8,
     padding: 8,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.gray,
@@ -181,8 +179,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   button: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginVertical: 16,
     padding: 16,
     borderRadius: 8,
     backgroundColor: COLORS.primary,

@@ -12,20 +12,20 @@ import {
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { auth, db } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { auth } from "../firebase";
+import {
+  UserCredential,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TAuthStackParamList } from "../components/nav/AuthStack";
+
 import { COLORS } from "../constants/theme";
 
-type TRootStackParamList = {
-  Signin: undefined;
-  Signup: undefined;
-};
-
-type TProps = StackScreenProps<TRootStackParamList>;
+type TProps = StackScreenProps<TAuthStackParamList>;
 
 interface IErrors {
   username: string;
@@ -55,31 +55,38 @@ function SignUp(props: TProps) {
     confirm: "",
   });
 
-  useEffect(() => {
+  async function handlePress() {
     if (
       !(
         errors.username ||
         errors.email ||
         errors.password ||
         errors.confirm ||
-        !username
+        !username ||
+        !email ||
+        !password ||
+        !confirm
       )
     ) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((user) => {
-          setDoc(doc(db, "users", user.user.uid), {
-            uid: user.user.uid,
-            displayName: username,
-            email,
-          });
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
-  }, [errors]);
+      try {
+        const newUser: UserCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
 
-  function handlePress() {
+        await sendEmailVerification(newUser.user);
+
+        props.navigation.navigate("Verification", { newUser });
+      } catch (error) {
+        alert(error);
+      }
+    }
+  }
+
+  function handleUsernameBlur() {
+    setFocusedInput("none");
+
     if (username.trim() === "") {
       setErrors((errors) => ({ ...errors, username: "Username is required" }));
     } else if (username.length < 3) {
@@ -95,6 +102,10 @@ function SignUp(props: TProps) {
     } else {
       setErrors((errors) => ({ ...errors, username: "" }));
     }
+  }
+
+  function handleEmailBlur() {
+    setFocusedInput("none");
 
     if (email.trim() === "") {
       setErrors((errors) => ({ ...errors, email: "Email is required" }));
@@ -103,6 +114,10 @@ function SignUp(props: TProps) {
     } else {
       setErrors((errors) => ({ ...errors, email: "" }));
     }
+  }
+
+  function handlePasswordBlur() {
+    setFocusedInput("none");
 
     if (password.trim() === "") {
       setErrors((errors) => ({ ...errors, password: "Password is required" }));
@@ -125,6 +140,10 @@ function SignUp(props: TProps) {
     } else {
       setErrors((errors) => ({ ...errors, password: "" }));
     }
+  }
+
+  function handleConfirmBlur() {
+    setFocusedInput("none");
 
     if (confirm.trim() === "") {
       setErrors((errors) => ({
@@ -159,7 +178,7 @@ function SignUp(props: TProps) {
           }
           onChangeText={setUsername}
           onFocus={() => setFocusedInput("username")}
-          onBlur={() => setFocusedInput("none")}
+          onBlur={handleUsernameBlur}
         />
         <Text style={styles.error}>{errors.email}</Text>
         <TextInput
@@ -174,7 +193,7 @@ function SignUp(props: TProps) {
           }
           onChangeText={setEmail}
           onFocus={() => setFocusedInput("email")}
-          onBlur={() => setFocusedInput("none")}
+          onBlur={handleEmailBlur}
         />
         <Text style={styles.error}>{errors.password}</Text>
         <View>
@@ -191,7 +210,7 @@ function SignUp(props: TProps) {
             }
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}
-            onBlur={() => setFocusedInput("none")}
+            onBlur={handlePasswordBlur}
           />
           <TouchableOpacity
             activeOpacity={0.5}
@@ -219,7 +238,7 @@ function SignUp(props: TProps) {
           }
           onChangeText={setConfirm}
           onFocus={() => setFocusedInput("confirm")}
-          onBlur={() => setFocusedInput("none")}
+          onBlur={handleConfirmBlur}
         />
         <TouchableOpacity
           activeOpacity={0.5}
@@ -263,10 +282,9 @@ function SignUp(props: TProps) {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
+    flex: 1,
     justifyContent: "space-between",
     backgroundColor: COLORS.blackTwo,
-    height: "100%",
   },
   header: {
     margin: 32,
@@ -280,12 +298,11 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginBottom: -24,
-    height: 196,
-    width: 196,
+    height: 192,
+    width: 192,
     alignSelf: "center",
   },
   error: {
-    maxWidth: 240,
     color: "#ff0000",
     fontSize: 14,
   },
@@ -296,9 +313,6 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.gray,
     color: COLORS.white,
     fontSize: 18,
-  },
-  passwordContainer: {
-    position: "relative",
   },
   eyeButton: {
     position: "absolute",
@@ -339,7 +353,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   logosContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
   },
@@ -351,8 +364,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   apple: {
-    marginRight: 2,
-    marginLeft: 2,
+    marginHorizontal: 2,
     height: 32,
     width: 27,
   },
@@ -361,7 +373,6 @@ const styles = StyleSheet.create({
     width: 31,
   },
   bottomContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
   },
