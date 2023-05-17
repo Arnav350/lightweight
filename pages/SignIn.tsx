@@ -108,12 +108,14 @@ function SignUp(props: TProps) {
           <Text style={styles.or}>OR</Text>
         </View>
         <View style={styles.logosContainer}>
-          <TouchableOpacity style={styles.logoContainer}>
-            <Image
-              source={require("../assets/apple.png")}
-              style={styles.apple}
-            />
-          </TouchableOpacity>
+          {Platform.OS === "ios" && (
+            <TouchableOpacity style={styles.logoContainer}>
+              <Image
+                source={require("../assets/apple.png")}
+                style={styles.apple}
+              />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={styles.logoContainer}>
             <Image
               source={require("../assets/google.png")}

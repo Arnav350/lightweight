@@ -3,6 +3,7 @@ import Icon from "@expo/vector-icons/Ionicons";
 
 import Gym from "../../pages/Gym";
 import Nutrition from "../../pages/Nutrition";
+import Compete from "../../pages/Compete";
 import Connect from "../../pages/Connect";
 import Profile from "../../pages/Profile";
 
@@ -10,7 +11,7 @@ import { COLORS } from "../../constants/theme";
 
 const Tab = createBottomTabNavigator();
 
-function Tabs() {
+function UserStack() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -22,10 +23,10 @@ function Tabs() {
           let iconName:
             | "barbell"
             | "barbell-outline"
-            | "chatbox"
-            | "chatbox-outline"
             | "fast-food"
             | "fast-food-outline"
+            | "trophy"
+            | "trophy-outline"
             | "chatbox"
             | "chatbox-outline"
             | "person-circle"
@@ -36,6 +37,8 @@ function Tabs() {
             iconName = focused ? "barbell" : "barbell-outline";
           } else if (routeName === "Nutrition") {
             iconName = focused ? "fast-food" : "fast-food-outline";
+          } else if (routeName === "Compete") {
+            iconName = focused ? "trophy" : "trophy-outline";
           } else if (routeName === "Connect") {
             iconName = focused ? "chatbox" : "chatbox-outline";
           } else if (routeName === "Profile") {
@@ -58,6 +61,11 @@ function Tabs() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
+        name="Compete"
+        component={Compete}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
         name="Connect"
         component={Connect}
         options={{ headerShown: false }}
@@ -71,4 +79,4 @@ function Tabs() {
   );
 }
 
-export default Tabs;
+export default UserStack;

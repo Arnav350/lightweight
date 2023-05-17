@@ -6,10 +6,10 @@ interface IProviderChildren {
   children: React.ReactNode;
 }
 
-export const AuthContext = createContext<User | null>(null);
+export const AuthContext = createContext<User | null | undefined>(null);
 
 export function AuthProvider({ children }: IProviderChildren) {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null | undefined>();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user: User | null) => {

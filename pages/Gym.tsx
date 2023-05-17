@@ -59,6 +59,9 @@ function Gym() {
           </View>
         </View>
         <View style={styles.logContainer}>
+          <View style={styles.logNew}>
+            <Icon name="plus" size={96} color={COLORS.white} />
+          </View>
           <Log />
           <Log />
           <Log />
@@ -70,7 +73,7 @@ function Gym() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
+    flex: 1,
     backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {
@@ -91,13 +94,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.black,
   },
   gymButtons: {
-    padding: 16,
+    marginTop: 16,
+    marginHorizontal: 12,
   },
   gymRoutine: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    marginHorizontal: 4,
     padding: 16,
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
@@ -105,18 +109,24 @@ const styles = StyleSheet.create({
   gymRoutines: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 8,
     marginTop: 8,
   },
   gymSubtitles: {
+    marginLeft: 8,
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",
   },
   logContainer: {
-    gap: 16,
-    paddingRight: 16,
-    paddingLeft: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  logNew: {
+    alignItems: "center",
+    marginVertical: 4,
+    padding: 8,
+    backgroundColor: COLORS.blackOne,
+    borderRadius: 16,
   },
 });
 

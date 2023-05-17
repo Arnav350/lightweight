@@ -10,7 +10,7 @@ type TStackParamList = {
 
 const Stack = createStackNavigator<TStackParamList>();
 
-function Stacks() {
+function AuthStack() {
   return (
     <Stack.Navigator
       initialRouteName="Signin"
@@ -22,4 +22,4 @@ function Stacks() {
   );
 }
 
-export default Stacks;
+export default AuthStack;

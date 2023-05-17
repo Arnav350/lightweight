@@ -4,15 +4,20 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { AuthContext, AuthProvider } from "./hooks/useAuth";
 
-import Tabs from "./components/nav/Tabs";
-import Stacks from "./components/nav/Stacks";
+import Loading from "./pages/Loading";
+import UserStack from "./components/nav/UserStack";
+import AuthStack from "./components/nav/AuthStack";
 
 function RootNavigator() {
   const currentUser = useContext(AuthContext);
 
+  if (currentUser === undefined) {
+    return <Loading />;
+  }
+
   return (
     <NavigationContainer>
-      {currentUser ? <Tabs /> : <Stacks />}
+      {currentUser ? <UserStack /> : <AuthStack />}
     </NavigationContainer>
   );
 }

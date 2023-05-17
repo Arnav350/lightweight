@@ -12,22 +12,30 @@ function Log() {
       </View>
       <View style={styles.logContainer}>
         <Text style={styles.logTitle}>Workout Name</Text>
-        <View style={styles.logInfo}>
-          <Icon name="clock-outline" style={styles.logStats}>
+        <View style={styles.logStats}>
+          <Icon name="clock" style={styles.logStat}>
             <Text>123425m</Text>
           </Icon>
-          <Icon name="weight" style={styles.logStats}>
+          <Icon name="weight" style={styles.logStat}>
             <Text>126382 lb</Text>
           </Icon>
         </View>
         <View style={styles.logExercises}>
-          <Text style={styles.logExercise}>3 x Chinups</Text>
-          <Text style={styles.logExercise}>
+          <Text style={styles.logExercise} numberOfLines={1}>
+            3 x Chinups
+          </Text>
+          <Text style={styles.logExercise} numberOfLines={1}>
             20 x Incline Dumbbell Upper Chest Press
           </Text>
-          <Text style={styles.logExercise}>4 x Lateral Raises</Text>
-          <Text style={styles.logExercise}>10 x Pushups</Text>
-          <Text style={styles.logExercise}>2 x Bicep Curls</Text>
+          <Text style={styles.logExercise} numberOfLines={1}>
+            4 x Lateral Raises
+          </Text>
+          <Text style={styles.logExercise} numberOfLines={1}>
+            10 x Pushups
+          </Text>
+          <Text style={styles.logExercise} numberOfLines={1}>
+            2 x Bicep Curls
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -36,14 +44,13 @@ function Log() {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     flexDirection: "row",
+    marginVertical: 4,
     padding: 8,
     backgroundColor: COLORS.blackOne,
     borderRadius: 16,
   },
   dateContainer: {
-    display: "flex",
     alignItems: "center",
     padding: 8,
   },
@@ -57,6 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   logContainer: {
+    flexShrink: 1,
     padding: 8,
   },
   logTitle: {
@@ -64,17 +72,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
   },
-  logInfo: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 16,
-  },
   logStats: {
-    display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    paddingTop: 8,
-    paddingBottom: 8,
+  },
+  logStat: {
+    marginRight: 16,
+    marginVertical: 8,
     color: COLORS.white,
     fontSize: 16,
   },
