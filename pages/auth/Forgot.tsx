@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -26,7 +27,10 @@ function Forgot(props: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Forgot Password</Text>
-      <KeyboardAvoidingView style={styles.formContainer}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.formContainer}
+      >
         <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <TextInput
           value={email}
