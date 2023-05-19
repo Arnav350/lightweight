@@ -1,7 +1,7 @@
 export default {
   expo: {
-    name: "legal-call",
-    slug: "legal-call",
+    name: "pumppeak",
+    slug: "pumppeak",
     privacy: "public",
     version: "1.0.0",
     orientation: "portrait",

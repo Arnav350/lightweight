@@ -16,7 +16,7 @@ export function AuthProvider({ children }: IProviderChildren) {
       setCurrentUser(user);
     });
 
-    return unsub;
+    return () => unsub();
   }, []);
 
   return (
