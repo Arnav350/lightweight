@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Image,
   SafeAreaView,
@@ -11,14 +11,24 @@ import { StackScreenProps } from "@react-navigation/stack";
 
 import { sendEmailVerification } from "firebase/auth";
 
-import { TAuthStackParamList } from "../components/nav/AuthStack";
+import { TAuthStackParamList } from "../../stacks/AuthStack";
+import { AuthContext } from "../../hooks/useAuth";
 
-import { COLORS } from "../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
 function Verification(props: TProps) {
+  const currentUser = useContext(AuthContext);
   const { params } = props.route;
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      await currentUser?.reload();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   async function handlePress() {
     if (params) await sendEmailVerification(params?.newUser.user);
@@ -34,7 +44,7 @@ function Verification(props: TProps) {
         </Text>
       </View>
       <View style={styles.mainContainer}>
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <Text style={styles.text}>Didn't get an email?</Text>
         <TouchableOpacity
           activeOpacity={0.5}

@@ -1,10 +1,10 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { UserCredential } from "firebase/auth";
 
-import SignIn from "../../pages/SignIn";
-import Forgot from "../../pages/Forgot";
-import SignUp from "../../pages/SignUp";
-import Verification from "../../pages/Verification";
+import SignIn from "../pages/auth/SignIn";
+import Forgot from "../pages/auth/Forgot";
+import SignUp from "../pages/auth/SignUp";
+import Verification from "../pages/auth/Verification";
 
 export type TAuthStackParamList = {
   Signin: undefined;

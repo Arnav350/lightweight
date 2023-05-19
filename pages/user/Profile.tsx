@@ -8,11 +8,11 @@ import {
 } from "react-native";
 
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { COLORS } from "../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 function Profile() {
   async function handlePress() {

@@ -1,12 +1,12 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
-import { COLORS } from "../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 function Loading() {
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/logo.png")} style={styles.logo} />
+      <Image source={require("../../assets/logo.png")} style={styles.logo} />
     </View>
   );
 }

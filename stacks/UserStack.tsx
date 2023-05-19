@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "@expo/vector-icons/Ionicons";
 
-import Gym from "../../pages/Gym";
-import Nutrition from "../../pages/Nutrition";
-import Compete from "../../pages/Compete";
-import Connect from "../../pages/Connect";
-import Profile from "../../pages/Profile";
+import Gym from "../pages/user/Gym";
+import Nutrition from "../pages/user/Nutrition";
+import Compete from "../pages/user/Compete";
+import Connect from "../pages/user/Connect";
+import Profile from "../pages/user/Profile";
 
-import { COLORS } from "../../constants/theme";
+import { COLORS } from "../constants/theme";
 
 const Tab = createBottomTabNavigator();
 

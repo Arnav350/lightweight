@@ -11,9 +11,9 @@ import {
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { TAuthStackParamList } from "../components/nav/AuthStack";
+import { TAuthStackParamList } from "../../stacks/AuthStack";
 
-import { COLORS } from "../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
@@ -27,7 +27,7 @@ function Forgot(props: TProps) {
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Forgot Password</Text>
       <KeyboardAvoidingView style={styles.formContainer}>
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <TextInput
           value={email}
           placeholder="Enter Email"

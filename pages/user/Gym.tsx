@@ -8,9 +8,9 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import Log from "../components/gym/Log";
+import Log from "../../components/gym/Log";
 
-import { COLORS } from "../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 function Gym() {
   return (
@@ -59,9 +59,6 @@ function Gym() {
           </View>
         </View>
         <View style={styles.logContainer}>
-          <View style={styles.logNew}>
-            <Icon name="plus" size={96} color={COLORS.white} />
-          </View>
           <Log />
           <Log />
           <Log />
@@ -120,13 +117,6 @@ const styles = StyleSheet.create({
   logContainer: {
     paddingVertical: 12,
     paddingHorizontal: 16,
-  },
-  logNew: {
-    alignItems: "center",
-    marginVertical: 4,
-    padding: 8,
-    backgroundColor: COLORS.blackOne,
-    borderRadius: 16,
   },
 });
 

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import {
   UserCredential,
   createUserWithEmailAndPassword,
@@ -21,9 +21,9 @@ import {
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TAuthStackParamList } from "../components/nav/AuthStack";
+import { TAuthStackParamList } from "../../stacks/AuthStack";
 
-import { COLORS } from "../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
@@ -164,7 +164,7 @@ function SignUp(props: TProps) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.formContainer}
       >
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <Text style={styles.error}>{errors.username}</Text>
         <TextInput
           value={username}
@@ -254,14 +254,14 @@ function SignUp(props: TProps) {
           {Platform.OS === "ios" && (
             <TouchableOpacity style={styles.logoContainer}>
               <Image
-                source={require("../assets/apple.png")}
+                source={require("../../assets/apple.png")}
                 style={styles.apple}
               />
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.logoContainer}>
             <Image
-              source={require("../assets/google.png")}
+              source={require("../../assets/google.png")}
               style={styles.google}
             />
           </TouchableOpacity>

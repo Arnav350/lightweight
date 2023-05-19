@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { COLORS } from "../constants/theme";
+import { COLORS } from "../../constants/theme";
 
 function Nutrition() {
   return (
