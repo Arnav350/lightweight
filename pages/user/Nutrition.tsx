@@ -8,25 +8,30 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Macro from "../../components/nutrition/Macro";
 import Meal from "../../components/nutrition/Meal";
 
+import { TNutritionStackParamList } from "../../stacks/UserStack";
+
 import { COLORS } from "../../constants/theme";
 
-function Nutrition() {
+type TProps = StackScreenProps<TNutritionStackParamList>;
+
+function Nutrition(props: TProps) {
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5}>
           <Icon name="chart-line" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Nutrition</Text>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5}>
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
@@ -98,12 +103,18 @@ function Nutrition() {
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
           />
-          <TouchableOpacity style={styles.inputButton}>
+          <TouchableOpacity
+            style={styles.inputButton}
+            activeOpacity={0.5}
+            onPress={() =>
+              props.navigation.navigate("Repast", {
+                mealName: mealName || "Meal Name",
+              })
+            }
+          >
             <Text style={styles.inputText}>Add Meal</Text>
           </TouchableOpacity>
         </View>
-        <Meal />
-        <Meal />
         <Meal />
       </ScrollView>
     </SafeAreaView>
@@ -116,7 +127,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

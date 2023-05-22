@@ -3,13 +3,34 @@ import Icon from "@expo/vector-icons/Ionicons";
 
 import Gym from "../pages/user/Gym";
 import Nutrition from "../pages/user/Nutrition";
+import Repast from "../pages/user/Repast";
 import Compete from "../pages/user/Compete";
 import Connect from "../pages/user/Connect";
 import Profile from "../pages/user/Profile";
 
 import { COLORS } from "../constants/theme";
+import { createStackNavigator } from "@react-navigation/stack";
+
+export type TNutritionStackParamList = {
+  Nutrition: undefined;
+  Repast: { mealName: string };
+};
 
 const Tab = createBottomTabNavigator();
+
+const Stack = createStackNavigator<TNutritionStackParamList>();
+
+function NutritionStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Nutrition"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Nutrition" component={Nutrition} />
+      <Stack.Screen name="Repast" component={Repast} />
+    </Stack.Navigator>
+  );
+}
 
 function UserStack() {
   return (
@@ -35,7 +56,7 @@ function UserStack() {
 
           if (routeName === "Workout") {
             iconName = focused ? "barbell" : "barbell-outline";
-          } else if (routeName === "Nutrition") {
+          } else if (routeName === "NutritionStack") {
             iconName = focused ? "fast-food" : "fast-food-outline";
           } else if (routeName === "Compete") {
             iconName = focused ? "trophy" : "trophy-outline";
@@ -56,8 +77,8 @@ function UserStack() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Nutrition"
-        component={Nutrition}
+        name="NutritionStack"
+        component={NutritionStack}
         options={{ headerShown: false }}
       />
       <Tab.Screen
