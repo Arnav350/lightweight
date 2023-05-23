@@ -1,11 +1,7 @@
-import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
+
+import { TNutritionStackParamList } from "../../stacks/UserStack";
 
 import { COLORS } from "../../constants/theme";
 
@@ -16,48 +12,55 @@ interface IFood {
   amountType: string;
 }
 
-type IFoods = IFood[];
+interface IMeal {
+  name: string;
+  foods: IFood[];
+}
 
-function Meal() {
-  const [foods, setFoods] = useState<IFoods>([
-    {
-      name: "Extra Virgin Olive Oil",
-      calories: 460,
-      amount: 4,
-      amountType: "tbsp",
-    },
-    {
-      name: "Pizza",
-      calories: 600,
-      amount: 2,
-      amountType: "slices",
-    },
-  ]);
+interface IProps {
+  i: number;
+  meal: IMeal;
+  navigate: StackScreenProps<TNutritionStackParamList>;
+}
 
+function Meal({ i, meal, navigate: { navigation } }: IProps) {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <Text style={styles.header}>Meal</Text>
+        <Text style={styles.header} numberOfLines={1}>
+          {meal.name}
+        </Text>
         <Text style={styles.total}>
-          {foods.reduce(
-            (total: number, { calories }) => (total += calories),
-            0
-          )}
+          {!!meal.foods.length &&
+            meal.foods.reduce(
+              (total: number, { calories }) => (total += calories),
+              0
+            )}
         </Text>
       </View>
-      {foods.map((food: IFood, i: number) => (
+      {meal.foods.map((food: IFood, i: number) => (
         <View key={i} style={styles.mealContainer}>
           <View style={styles.leftContainer}>
-            <Text style={styles.name}>{food.name}</Text>
-            <Text style={styles.amount}>
+            <Text numberOfLines={1} style={styles.name}>
+              {food.name}
+            </Text>
+            <Text numberOfLines={1} style={styles.amount}>
               {food.amount} {food.amountType}
             </Text>
           </View>
           <Text style={styles.calories}>{food.calories}</Text>
         </View>
       ))}
-      <TouchableOpacity style={styles.button} activeOpacity={0.5}>
-        <Text style={styles.buttonText}>Add Food</Text>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.5}
+        onPress={() =>
+          navigation.navigate("Repast", {
+            i: i,
+          })
+        }
+      >
+        <Text style={styles.buttonText}>Edit Meal</Text>
       </TouchableOpacity>
     </View>
   );
@@ -74,13 +77,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 8,
+    marginHorizontal: 8,
+    paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.white,
   },
   header: {
     color: COLORS.white,
     fontSize: 18,
+    maxWidth: "80%",
   },
   total: {
     color: COLORS.white,
@@ -92,7 +97,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 8,
   },
-  leftContainer: {},
+  leftContainer: {
+    maxWidth: "80%",
+  },
   name: {
     color: COLORS.white,
     fontSize: 16,

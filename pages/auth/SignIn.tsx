@@ -23,7 +23,7 @@ import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
-function SignUp(props: TProps) {
+function SignUp({ navigation }: TProps) {
   const [focusedInput, setFocusedInput] = useState<string>("none");
 
   const [email, setEmail] = useState<string>("");
@@ -92,7 +92,7 @@ function SignUp(props: TProps) {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => props.navigation.navigate("Forgot")}
+            onPress={() => navigation.navigate("Forgot")}
           >
             <Text style={styles.passwordForgot}>Forgot Password?</Text>
           </TouchableOpacity>
@@ -128,7 +128,7 @@ function SignUp(props: TProps) {
         <Text style={styles.bottomText}>Don't have an account? </Text>
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={() => props.navigation.navigate("Signup")}
+          onPress={() => navigation.navigate("Signup")}
         >
           <Text style={styles.bottomSign}>Sign Up</Text>
         </TouchableOpacity>

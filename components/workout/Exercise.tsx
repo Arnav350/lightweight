@@ -28,7 +28,7 @@ interface IProps {
   setExercises: React.Dispatch<React.SetStateAction<IExercises>>;
 }
 
-function Exercise(props: IProps) {
+function Exercise({ i, exercises, setExercises }: IProps) {
   const [prevExercise, setPrevExercise] = useState<IExercise>();
   const [prevExercises, setPrevExercises] = useState<IExercises>([
     {
@@ -59,19 +59,19 @@ function Exercise(props: IProps) {
 
   useEffect(() => {
     prevExercises.every((prevExercise) => {
-      if (prevExercise.name === props.exercises[props.i].name) {
+      if (prevExercise.name === exercises[i].name) {
         setPrevExercise(prevExercise);
         return false;
       }
       return true;
     });
-  }, [props.exercises]);
+  }, [exercises]);
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.topText} numberOfLines={1}>
-          {/* {props.prevExercise.name} */}
+          {/* {prevExercise.name} */}
         </Text>
         <Icon name="dots-horizontal" size={24} color={COLORS.white} />
       </View>
@@ -83,14 +83,14 @@ function Exercise(props: IProps) {
       </View>
       <View style={styles.setsContainer}>
         {prevExercise &&
-          prevExercise.sets.map((prevSet: ISet, i: number) => (
+          prevExercise.sets.map((prevSet: ISet, j: number) => (
             <Set
-              key={i}
+              key={j}
               prevSet={prevSet}
-              si={i}
-              ei={props.i}
-              exercises={props.exercises}
-              setExercises={props.setExercises}
+              si={j}
+              ei={i}
+              exercises={exercises}
+              setExercises={setExercises}
             />
           ))}
       </View>

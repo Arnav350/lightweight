@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
+  Dimensions,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -11,6 +12,8 @@ import {
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { MealContext } from "../../hooks/useMeal";
+
 import Macro from "../../components/nutrition/Macro";
 import Meal from "../../components/nutrition/Meal";
 
@@ -20,9 +23,34 @@ import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList>;
 
+interface IMeal {
+  name: string;
+  foods: {
+    name: string;
+    calories: number;
+    amount: number;
+    amountType: string;
+  }[];
+}
+
+const windowWidth = Dimensions.get("window").width;
+
 function Nutrition(props: TProps) {
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
+
+  const [slide, setSlide] = useState<number>(0);
+
+  const { meals, setMeals } = useContext(MealContext);
+
+  function handlePress() {
+    setMeals([...meals, { name: mealName || "Meal Name", foods: [] }]);
+    setMealName("");
+
+    props.navigation.navigate("Repast", {
+      i: meals.length,
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,55 +64,87 @@ function Nutrition(props: TProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.nutritionContainer}>
-        <View style={styles.sectionContainer}>
-          <View style={styles.subheaderContainer}>
-            <Text style={styles.subheader}>Macros</Text>
-            <Icon name="plus" size={32} color={COLORS.white} />
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={(event) =>
+            setSlide(event.nativeEvent.contentOffset.x / windowWidth)
+          }
+        >
+          <View style={styles.sectionContainer}>
+            <View style={styles.subheaderContainer}>
+              <Text style={styles.subheader}>Macros</Text>
+              <Icon name="plus" size={32} color={COLORS.white} />
+            </View>
+            <View style={styles.circlesContainer}>
+              <Macro
+                color="#d13636"
+                current={10000}
+                total={30000}
+                unit="cal"
+                label="Calories"
+              />
+              <Macro
+                color="#d13636"
+                current={50}
+                total={60}
+                unit="g"
+                label="Protein"
+              />
+              <Macro
+                color="#d13636"
+                current={50}
+                total={60}
+                unit="g"
+                label="Fat"
+              />
+              <Macro
+                color="#d13636"
+                current={50}
+                total={60}
+                unit="g"
+                label="Carbs"
+              />
+              <Macro
+                color="#d13636"
+                current={50}
+                total={60}
+                unit="oz"
+                label="Water"
+              />
+            </View>
           </View>
-          <View style={styles.circlesContainer}>
-            <Macro
-              color="#d13636"
-              current={10000}
-              total={30000}
-              unit="cal"
-              label="Calories"
-            />
-            <Macro
-              color="#d13636"
-              current={50}
-              total={60}
-              unit="g"
-              label="Protein"
-            />
-            <Macro
-              color="#d13636"
-              current={50}
-              total={60}
-              unit="g"
-              label="Fat"
-            />
-            <Macro
-              color="#d13636"
-              current={50}
-              total={60}
-              unit="g"
-              label="Carbs"
-            />
-            <Macro
-              color="#d13636"
-              current={50}
-              total={60}
-              unit="oz"
-              label="Water"
-            />
+          <View style={styles.sectionContainer}>
+            <View style={styles.subheaderContainer}>
+              <Text style={styles.subheader}>Weight</Text>
+              <Icon name="plus" size={32} color={COLORS.white} />
+            </View>
           </View>
+          <View style={styles.sectionContainer}>
+            <View style={styles.subheaderContainer}>
+              <Text style={styles.subheader}>Steps</Text>
+              <Icon name="plus" size={32} color={COLORS.white} />
+            </View>
+          </View>
+        </ScrollView>
+        <View style={styles.dotsContainer}>
+          <Icon
+            name="circle"
+            size={14}
+            color={slide === 0 ? COLORS.darkGray : COLORS.blackOne}
+          />
+          <Icon
+            name="circle"
+            size={14}
+            color={slide === 1 ? COLORS.darkGray : COLORS.blackOne}
+          />
+          <Icon
+            name="circle"
+            size={14}
+            color={slide === 2 ? COLORS.darkGray : COLORS.blackOne}
+          />
         </View>
-        {/* <View style={styles.sectionContainer}>
-          <View style={styles.subheaderContainer}>
-            <Text style={styles.subheader}>Weight</Text>
-            <Icon name="plus" size={32} color={COLORS.white} />
-          </View>
-        </View> */}
         <View style={styles.subheaderContainer}>
           <Text style={styles.subheader}>Meals</Text>
         </View>
@@ -106,16 +166,14 @@ function Nutrition(props: TProps) {
           <TouchableOpacity
             style={styles.inputButton}
             activeOpacity={0.5}
-            onPress={() =>
-              props.navigation.navigate("Repast", {
-                mealName: mealName || "Meal Name",
-              })
-            }
+            onPress={handlePress}
           >
             <Text style={styles.inputText}>Add Meal</Text>
           </TouchableOpacity>
         </View>
-        <Meal />
+        {meals.map((meal: IMeal, i: number) => (
+          <Meal key={i} i={i} meal={meal} navigate={props} />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -144,6 +202,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.black,
   },
   sectionContainer: {
+    width: windowWidth - 32,
     margin: 16,
     padding: 8,
     backgroundColor: COLORS.blackOne,
@@ -167,6 +226,10 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
+  },
+  dotsContainer: {
+    flexDirection: "row",
+    alignSelf: "center",
   },
   input: {
     margin: 8,

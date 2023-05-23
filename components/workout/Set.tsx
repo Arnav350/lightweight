@@ -27,17 +27,17 @@ interface IProps {
   setExercises: React.Dispatch<React.SetStateAction<IExercises>>;
 }
 
-function Set(props: IProps) {
+function Set({ prevSet, si, ei, exercises, setExercises }: IProps) {
   const [weight, setWeight] = useState<string>("");
   const [reps, setReps] = useState<string>("");
   const [notes, setNotes] = useState<string>("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.setSet}>{props.si + 1}</Text>
+      <Text style={styles.setSet}>{si + 1}</Text>
       <TextInput
         value={weight}
-        placeholder={props.prevSet.weight.toString()}
+        placeholder={prevSet.weight.toString()}
         placeholderTextColor={COLORS.darkGray}
         keyboardType="numeric"
         maxLength={5}
@@ -47,7 +47,7 @@ function Set(props: IProps) {
       />
       <TextInput
         value={reps}
-        placeholder={props.prevSet.reps.toString()}
+        placeholder={prevSet.reps.toString()}
         placeholderTextColor={COLORS.darkGray}
         keyboardType="numeric"
         maxLength={6}
@@ -57,7 +57,7 @@ function Set(props: IProps) {
       />
       <TextInput
         value={notes}
-        placeholder={props.prevSet.notes}
+        placeholder={prevSet.notes}
         placeholderTextColor={COLORS.darkGray}
         numberOfLines={1}
         keyboardAppearance="dark"

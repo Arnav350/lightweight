@@ -1,9 +1,9 @@
-import React, { createContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { User, onAuthStateChanged } from "firebase/auth";
 
 interface IProviderChildren {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const AuthContext = createContext<User | null | undefined>(null);

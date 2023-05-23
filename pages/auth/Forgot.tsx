@@ -18,7 +18,7 @@ import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
-function Forgot(props: TProps) {
+function Forgot({ navigation }: TProps) {
   const [email, setEmail] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
 
@@ -54,10 +54,7 @@ function Forgot(props: TProps) {
           <Text style={styles.text}>Send Email</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={() => props.navigation.goBack()}
-      >
+      <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.goBack()}>
         <Text style={styles.text}>Back to Sign In</Text>
       </TouchableOpacity>
     </SafeAreaView>

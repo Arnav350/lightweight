@@ -18,9 +18,8 @@ import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
-function Verification(props: TProps) {
+function Verification({ navigation, route: { params } }: TProps) {
   const currentUser = useContext(AuthContext);
-  const { params } = props.route;
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -31,7 +30,7 @@ function Verification(props: TProps) {
   }, []);
 
   async function handlePress() {
-    if (params) await sendEmailVerification(params?.newUser.user);
+    if (params?.newUser.user) await sendEmailVerification(params?.newUser.user);
   }
 
   return (
@@ -54,10 +53,7 @@ function Verification(props: TProps) {
           <Text style={styles.buttonText}>Resend Email</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={() => props.navigation.goBack()}
-      >
+      <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.goBack()}>
         <Text style={styles.buttonText}>Back to Sign Up</Text>
       </TouchableOpacity>
     </SafeAreaView>
