@@ -17,7 +17,7 @@ function RootNavigator() {
 
   return (
     <NavigationContainer>
-      {currentUser?.emailVerified ? <UserStack /> : <AuthStack />}
+      {currentUser ? <UserStack /> : <AuthStack />}
     </NavigationContainer>
   );
 }

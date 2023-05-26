@@ -12,18 +12,12 @@ import {
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { auth } from "../../firebase";
-import {
-  UserCredential,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TAuthStackParamList } from "../../stacks/AuthStack";
 
 import { COLORS } from "../../constants/theme";
+import { supabase } from "../../supabase";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
@@ -68,19 +62,18 @@ function SignUp({ navigation }: TProps) {
         !confirm
       )
     ) {
-      try {
-        const newUser: UserCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+      const { error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            username: username,
+          },
+        },
+      });
 
-        await sendEmailVerification(newUser.user);
-
-        navigation.navigate("Verification", { newUser });
-      } catch (error) {
-        alert(error);
-      }
+      if (error) alert(error.message);
+      else navigation.navigate("Verification", { email });
     }
   }
 

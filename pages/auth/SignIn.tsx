@@ -12,14 +12,12 @@ import {
 } from "react-native";
 import type { StackScreenProps } from "@react-navigation/stack";
 
-import { auth } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TAuthStackParamList } from "../../stacks/AuthStack";
 
 import { COLORS } from "../../constants/theme";
+import { supabase } from "../../supabase";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
@@ -33,11 +31,12 @@ function SignUp({ navigation }: TProps) {
 
   async function handlePress() {
     if (!(!email || !password)) {
-      await signInWithEmailAndPassword(auth, email, password)
-        .then()
-        .catch((error) => {
-          alert(error.message);
-        });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) alert(error.message);
     }
   }
 

@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { auth } from "../firebase";
-import { User, onAuthStateChanged } from "firebase/auth";
+import { supabase } from "../supabase";
+import { User } from "@supabase/supabase-js";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -12,11 +12,13 @@ export function AuthProvider({ children }: IProviderChildren) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user: User | null) => {
-      setCurrentUser(user);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setCurrentUser(session?.user || null);
     });
 
-    return () => unsub();
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setCurrentUser(session?.user || null);
+    });
   }, []);
 
   return (

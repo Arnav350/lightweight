@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Alert,
   SafeAreaView,
@@ -10,11 +10,12 @@ import {
   View,
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
+import { useIsFocused } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { MealContext } from "../../hooks/useMeal";
-
 import { TNutritionStackParamList } from "../../stacks/UserStack";
+import Food from "../../components/nutrition/Food";
 import History from "../../components/nutrition/History";
 
 import { COLORS } from "../../constants/theme";
@@ -30,24 +31,32 @@ interface IHistory {
 
 type IHistories = IHistory[];
 
+interface IFood {
+  name: string;
+  calories: number;
+  amount: number;
+  amountType: string;
+}
+
 interface IMeal {
   name: string;
-  foods: {
-    name: string;
-    calories: number;
-    amount: number;
-    amountType: string;
-  }[];
+  foods: IFood[];
 }
 
 function Repast({ navigation, route }: TProps) {
+  const isFocused = useIsFocused();
+
   const { meals, setMeals } = useContext(MealContext);
 
-  const [mealName, setMealName] = useState<string>(
-    route.params && route.params.i < meals.length
-      ? meals[route.params.i].name
-      : ""
-  );
+  useEffect(() => {
+    setMealName(
+      route.params && route.params.i < meals.length
+        ? meals[route.params.i].name
+        : ""
+    );
+  }, [isFocused]);
+
+  const [mealName, setMealName] = useState<string>("");
 
   const [histories, setHistories] = useState<IHistories>([
     {
@@ -64,11 +73,13 @@ function Repast({ navigation, route }: TProps) {
     },
   ]);
 
-  function handleBlur() {
+  async function handleBlur() {
+    setMealName(mealName || "Meal Name");
+
     setMeals(
       meals.map((meal: IMeal, i: number) =>
         !route.params || i == route.params.i
-          ? { ...meal, name: mealName }
+          ? { ...meal, name: mealName || "Meal Name" }
           : meal
       )
     );
@@ -89,7 +100,6 @@ function Repast({ navigation, route }: TProps) {
                 (__, i: number) => !route.params || i !== route.params.i
               )
             );
-
             navigation.goBack();
           },
           style: "destructive",
@@ -114,6 +124,7 @@ function Repast({ navigation, route }: TProps) {
         <View style={styles.inputContainer}>
           <TextInput
             value={mealName}
+            placeholder="Meal Name"
             keyboardAppearance="dark"
             numberOfLines={1}
             style={styles.header}
@@ -148,7 +159,16 @@ function Repast({ navigation, route }: TProps) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.historyContainer}>
+        <View style={styles.foodsContainer}>
+          <Text style={styles.subheader}>Foods</Text>
+          {(route.params && route.params.i < meals.length
+            ? meals[route.params.i].foods
+            : []
+          ).map((food: any, i: number) => (
+            <Food key={i} food={food} />
+          ))}
+        </View>
+        <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>History</Text>
           {histories.map((history: IHistory, i: number) => (
             <History key={i} history={history} />
@@ -211,7 +231,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
   },
-  historyContainer: {
+  foodsContainer: {
     padding: 16,
   },
   subheader: {

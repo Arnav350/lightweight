@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   SafeAreaView,
@@ -13,10 +13,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { MealContext } from "../../hooks/useMeal";
-
 import Macro from "../../components/nutrition/Macro";
 import Meal from "../../components/nutrition/Meal";
-
 import { TNutritionStackParamList } from "../../stacks/UserStack";
 
 import { COLORS } from "../../constants/theme";
@@ -43,7 +41,7 @@ function Nutrition(props: TProps) {
 
   const { meals, setMeals } = useContext(MealContext);
 
-  function handlePress() {
+  async function handlePress() {
     setMeals([...meals, { name: mealName || "Meal Name", foods: [] }]);
     setMealName("");
 

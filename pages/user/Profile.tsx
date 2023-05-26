@@ -6,28 +6,23 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
-
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-
-import { COLORS } from "../../constants/theme";
+import { supabase } from "../../supabase";
 
 function Profile() {
-  async function handlePress() {
-    await signOut(auth)
-      .then()
-      .catch((error) => alert(error.message));
-  }
-
   return (
     <SafeAreaView>
-      <TouchableOpacity onPress={handlePress}>
+      <TouchableOpacity onPress={() => supabase.auth.signOut()}>
         <Text>Sign Out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={async () => await AsyncStorage.clear()}>
+        <Text>Remove Data</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({});
 
 export default Profile;

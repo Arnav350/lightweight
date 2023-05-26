@@ -9,37 +9,20 @@ import {
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { sendEmailVerification } from "firebase/auth";
-
 import { TAuthStackParamList } from "../../stacks/AuthStack";
-import { AuthContext } from "../../hooks/useAuth";
 
 import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
 function Verification({ navigation, route: { params } }: TProps) {
-  const currentUser = useContext(AuthContext);
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      await currentUser?.reload();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  async function handlePress() {
-    if (params?.newUser.user) await sendEmailVerification(params?.newUser.user);
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Verification Link Sent!</Text>
         <Text style={styles.subheader}>
-          We sent a confirmation email to {params?.newUser.user.email}. Check
-          your email for a link to sign in.
+          We sent a confirmation email to {params?.email}. Check your email for
+          a link to sign in.
         </Text>
       </View>
       <View style={styles.mainContainer}>
@@ -48,7 +31,7 @@ function Verification({ navigation, route: { params } }: TProps) {
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.button}
-          onPress={handlePress}
+          onPress={() => {}}
         >
           <Text style={styles.buttonText}>Resend Email</Text>
         </TouchableOpacity>

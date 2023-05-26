@@ -1,10 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { useContext } from "react";
+import { MealContext } from "../../hooks/useMeal";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  history: {
+  food: {
     name: string;
     calories: number;
     amount: number;
@@ -12,26 +14,28 @@ interface IProps {
   };
 }
 
-function History({ history }: IProps) {
+function Food({ food }: IProps) {
+  const { setMeals } = useContext(MealContext);
+
+  function handlePress() {}
+
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
-        <Text style={styles.name} numberOfLines={1}>
-          {history.name}
+        <Text numberOfLines={1} style={styles.name}>
+          {food.name}
         </Text>
         <Text style={styles.info}>
-          {history.calories} cal - {history.amount} {history.amountType}
+          {food.calories} cal - {food.amount} {food.amountType}
         </Text>
       </View>
-      {true ? (
-        <TouchableOpacity activeOpacity={0.5} style={styles.button}>
-          <Icon name="plus" size={24} color={COLORS.white} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity activeOpacity={0.5} style={styles.button}>
-          <Icon name="check" size={24} color={COLORS.white} />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.button}
+        onPress={handlePress}
+      >
+        <Icon name="minus" size={24} color={COLORS.white} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -67,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default History;
+export default Food;

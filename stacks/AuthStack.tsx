@@ -1,8 +1,6 @@
 import { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { UserCredential } from "firebase/auth";
-
 import SignIn from "../pages/auth/SignIn";
 import Forgot from "../pages/auth/Forgot";
 import SignUp from "../pages/auth/SignUp";
@@ -13,7 +11,7 @@ export type TAuthStackParamList = {
   Signin: undefined;
   Forgot: undefined;
   Signup: undefined;
-  Verification: { newUser: UserCredential };
+  Verification: { email: string };
 };
 
 const Stack = createStackNavigator<TAuthStackParamList>();
@@ -23,7 +21,7 @@ function AuthStack() {
 
   return (
     <Stack.Navigator
-      initialRouteName={currentUser?.emailVerified ? `Verification` : `Signin`}
+      initialRouteName="Signin"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Signin" component={SignIn} />

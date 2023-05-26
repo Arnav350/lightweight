@@ -3,8 +3,12 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useContext,
+  useEffect,
   useState,
 } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "./useAuth";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -85,6 +89,20 @@ const init = [
 
 export function MealProvider({ children }: IProviderChildren) {
   const [meals, setMeals] = useState<TMeals>(init);
+
+  const currentUser = useContext(AuthContext);
+
+  useEffect(() => {
+    AsyncStorage.getItem(`@${currentUser?.id}:meals`).then((jsonMeals) => {
+      if (jsonMeals) {
+        setMeals(JSON.parse(jsonMeals));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.setItem(`@${currentUser?.id}:meals`, JSON.stringify(meals));
+  }, [meals]);
 
   return (
     <MealContext.Provider value={{ meals, setMeals }}>
