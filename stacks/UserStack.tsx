@@ -1,22 +1,27 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  StackScreenProps,
+  createStackNavigator,
+} from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/Ionicons";
 
 import { MealProvider } from "../hooks/useMeal";
-
 import Gym from "../pages/user/Gym";
 import Nutrition from "../pages/user/Nutrition";
 import Repast from "../pages/user/Repast";
 import Compete from "../pages/user/Compete";
 import Connect from "../pages/user/Connect";
 import Profile from "../pages/user/Profile";
+import { TWorkoutStackParamList } from "../App";
 
 import { COLORS } from "../constants/theme";
-import { createStackNavigator } from "@react-navigation/stack";
 
 export type TNutritionStackParamList = {
   Nutrition: undefined;
   Repast: { i: number };
 };
+
+type TProps = StackScreenProps<TWorkoutStackParamList>;
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +41,7 @@ function NutritionStack() {
   );
 }
 
-function UserStack() {
+function UserStack(props: TProps) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

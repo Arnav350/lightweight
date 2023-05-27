@@ -8,6 +8,16 @@ import Workout from "./components/workout/Workout";
 import UserStack from "./stacks/UserStack";
 import AuthStack from "./stacks/AuthStack";
 
+import { createStackNavigator } from "@react-navigation/stack";
+
+export type TWorkoutStackParamList = {
+  UserStack: undefined;
+  Workout: undefined;
+  Gym: undefined;
+};
+
+const Stack = createStackNavigator<TWorkoutStackParamList>();
+
 function RootNavigator() {
   const currentUser = useContext(AuthContext);
 
@@ -18,10 +28,13 @@ function RootNavigator() {
   return (
     <NavigationContainer>
       {currentUser ? (
-        <>
-          <UserStack />
-          <Workout />
-        </>
+        <Stack.Navigator
+          initialRouteName="UserStack"
+          screenOptions={{ headerShown: false }}
+        >
+          {/* <Stack.Screen name="UserStack" component={UserStack} /> */}
+          <Stack.Screen name="Workout" component={Workout} />
+        </Stack.Navigator>
       ) : (
         <AuthStack />
       )}

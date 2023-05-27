@@ -1,101 +1,65 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Set from "./Set";
+import { ISet, IExercise, IWorkout, IExerciseFrame } from "./Workout";
 
 import { COLORS } from "../../constants/theme";
 
-interface ISet {
-  type: number | "W" | "D";
-  weight: number;
-  reps: number;
-  notes?: string;
-}
-
-type ISets = ISet[];
-
-interface IExercise {
-  name: string;
-  sets: ISets;
-}
-
-type IExercises = IExercise[];
-
 interface IProps {
   i: number;
-  exercises: IExercises;
-  setExercises: Dispatch<SetStateAction<IExercises>>;
+  exerciseFrame: IExerciseFrame;
+  currentWorkout: IWorkout;
+  setCurrentWorkout: Dispatch<SetStateAction<IWorkout>>;
 }
 
-function Exercise({ i, exercises, setExercises }: IProps) {
-  const [prevExercise, setPrevExercise] = useState<IExercise>();
-  const [prevExercises, setPrevExercises] = useState<IExercises>([
-    {
-      name: "Bench Press",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8 },
-        { type: "D", weight: 400, reps: 6 },
-      ],
-    },
-    {
-      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8 },
-        { type: "D", weight: 400, reps: 6 },
-      ],
-    },
-    {
-      name: "Bicep Curl",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8 },
-        { type: "D", weight: 400, reps: 6 },
-      ],
-    },
-  ]);
+const init: IExercise = {
+  name: "Bench Press",
+  notes: "New PR!",
+  sets: [
+    { type: "W", weight: 200, reps: 10, notes: "notes" },
+    { type: 2, weight: 300, reps: 8, notes: "" },
+    { type: "D", weight: 400, reps: 6, notes: "" },
+  ],
+};
 
-  useEffect(() => {
-    prevExercises.every((prevExercise) => {
-      if (prevExercise.name === exercises[i].name) {
-        setPrevExercise(prevExercise);
-        return false;
-      }
-      return true;
-    });
-  }, [exercises]);
+function Exercise({
+  i,
+  exerciseFrame,
+  currentWorkout,
+  setCurrentWorkout,
+}: IProps) {
+  const [prevExercise, setPrevExercise] = useState<IExercise>(init);
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.topText} numberOfLines={1}>
-          {/* {prevExercise.name} */}
+          {exerciseFrame.name}
         </Text>
         <Icon name="dots-horizontal" size={24} color={COLORS.white} />
       </View>
-      <View style={styles.exerciseSubtitles}>
-        <Text style={styles.exerciseSubtitle}>Set</Text>
-        <Text style={styles.exerciseSubtitle}>Weight</Text>
-        <Text style={styles.exerciseSubtitle}>Reps</Text>
-        <Text style={styles.exerciseSubtitle}>Notes</Text>
+      <View style={styles.subtitlesContainer}>
+        <Text style={styles.subtitle}>Set</Text>
+        <Text style={styles.subtitle}>Weight</Text>
+        <Text style={styles.subtitle}>Reps</Text>
+        <Text style={styles.subtitle}>Notes</Text>
       </View>
       <View style={styles.setsContainer}>
-        {prevExercise &&
-          prevExercise.sets.map((prevSet: ISet, j: number) => (
-            <Set
-              key={j}
-              prevSet={prevSet}
-              si={j}
-              ei={i}
-              exercises={exercises}
-              setExercises={setExercises}
-            />
-          ))}
+        {prevExercise.sets.map((prevSet: ISet, j: number) => (
+          <Set
+            key={j}
+            i={i}
+            j={j}
+            prevSet={prevSet}
+            currentWorkout={currentWorkout}
+            setCurrentWorkout={setCurrentWorkout}
+          />
+        ))}
       </View>
-      <TouchableOpacity style={styles.exerciseButton}>
-        <Text style={styles.exerciseText}>+ Add Set</Text>
+      <TouchableOpacity activeOpacity={0.5} style={styles.addButton}>
+        <Text style={styles.addText}>+ Add Set</Text>
       </TouchableOpacity>
     </View>
   );
@@ -120,7 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
   },
-  exerciseSubtitles: {
+  subtitlesContainer: {
     display: "flex",
     flexDirection: "row",
     gap: 8,
@@ -129,7 +93,7 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingLeft: 8,
   },
-  exerciseSubtitle: {
+  subtitle: {
     color: COLORS.white,
   },
   setsContainer: {
@@ -140,12 +104,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: COLORS.gray,
   },
-  exerciseButton: {
+  addButton: {
     paddingTop: 8,
     paddingRight: 8,
     paddingLeft: 8,
   },
-  exerciseText: {
+  addText: {
     color: COLORS.white,
     textAlign: "center",
     fontWeight: "500",

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Button,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,29 +10,30 @@ import {
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Exercise from "./Exercise";
+import { TWorkoutStackParamList } from "../../App";
 
 import { COLORS } from "../../constants/theme";
 
-interface ISet {
-  type: number | "W" | "D";
+type TProps = StackScreenProps<TWorkoutStackParamList>;
+
+export interface ISet {
+  type: number | "D" | "S" | "W";
   weight: number;
   reps: number;
-  notes?: string;
+  notes: string;
 }
 
-type ISets = ISet[];
-
-interface IExercise {
+export interface IExercise {
   name: string;
-  sets: ISets;
+  notes: string;
+  sets: ISet[];
 }
 
-type IExercises = IExercise[];
-
-interface IWorkout {
+export interface IWorkout {
   date: {
     month: string;
     day: string;
@@ -39,60 +41,120 @@ interface IWorkout {
   name: string;
   time: string;
   weight: number;
-  exercises: IExercises;
+  exercises: IExercise[];
 }
 
-type IWorkouts = IWorkout[];
+export interface IExerciseFrame {
+  name: string;
+  sets: number;
+}
 
-function Workout() {
-  const [workout, setWorkout] = useState<IWorkout | {}>({});
-  const [exercises, setExercises] = useState<IExercises>([]);
-  const [workoutName, setWorkoutName] = useState<string>("Workout Name");
+const init: IWorkout = {
+  date: {
+    month: "Jun",
+    day: "19",
+  },
+  name: "Workout Name",
+  time: "1:45:34",
+  weight: 200,
+  exercises: [
+    {
+      name: "Bench Press",
+      notes: "",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8, notes: "" },
+        { type: "D", weight: 400, reps: 6, notes: "" },
+      ],
+    },
+    {
+      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+      notes: "",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8, notes: "" },
+        { type: "D", weight: 400, reps: 6, notes: "" },
+      ],
+    },
+    {
+      name: "Bicep Curl",
+      notes: "",
+      sets: [
+        { type: "W", weight: 200, reps: 10, notes: "notes" },
+        { type: 1, weight: 300, reps: 8, notes: "" },
+        { type: "D", weight: 400, reps: 6, notes: "" },
+      ],
+    },
+  ],
+};
+
+const init2: IWorkout = {
+  date: { month: "", day: "" },
+  name: "",
+  time: "",
+  weight: 0,
+  exercises: [],
+};
+
+function Workout({ navigation }: TProps) {
+  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(init2);
+  const [exerciseFrames, setExerciseFrames] = useState<IExerciseFrame[]>([
+    { name: "Bench Press", sets: 3 },
+  ]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headerIcons}>
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.5}>
             <Icon name="chevron-left" size={32} color={COLORS.primary} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.5}>
             <Icon name="alarm" size={32} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
-        <TextInput
-          value={workoutName}
-          placeholder="Workout Name"
-          placeholderTextColor={COLORS.darkGray}
-          keyboardAppearance="dark"
-          style={styles.header}
-          onChangeText={setWorkoutName}
-          onBlur={() => setWorkout({ ...workout, name: workoutName })}
-        />
-        <Button title="Finish" color={COLORS.primary} onPress={() => {}} />
+        <View style={styles.inputContainer}>
+          <TextInput
+            value={currentWorkout.name}
+            placeholder="Workout Name"
+            placeholderTextColor={COLORS.darkGray}
+            keyboardAppearance="dark"
+            style={styles.header}
+            onChangeText={(text) =>
+              setCurrentWorkout({ ...currentWorkout, name: text })
+            }
+          />
+        </View>
+        <TouchableOpacity activeOpacity={0.5}>
+          <Text style={styles.finish}>Finish</Text>
+        </TouchableOpacity>
       </View>
       <ScrollView style={styles.workoutContainer}>
-        {exercises.map((__, i: number) => (
+        {exerciseFrames.map((exerciseFrame, i: number) => (
           <Exercise
             key={i}
             i={i}
-            exercises={exercises}
-            setExercises={setExercises}
+            exerciseFrame={exerciseFrame}
+            currentWorkout={currentWorkout}
+            setCurrentWorkout={setCurrentWorkout}
           />
         ))}
-        <TouchableOpacity style={styles.workoutButton} onPress={() => {}}>
-          <Text style={styles.workoutText}>Add Exercise</Text>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.addButton}
+          onPress={() => {}}
+        >
+          <Text style={styles.addText}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    top: 32,
-    // backgroundColor: COLORS.blackTwo,
+    flex: 1,
+    backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {
     display: "flex",
@@ -101,6 +163,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     backgroundColor: COLORS.blackTwo,
+  },
+  headerIcons: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  inputContainer: {
+    paddingHorizontal: 20,
+    maxWidth: "80%",
+    backgroundColor: COLORS.black,
+    borderRadius: 16,
   },
   header: {
     padding: 8,
@@ -111,17 +184,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "500",
   },
-  headerIcons: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 4,
-    width: 64,
+  finish: {
+    margin: 8,
+    color: COLORS.primary,
+    fontSize: 18,
+    fontWeight: "500",
   },
   workoutContainer: {
     padding: 8,
+    backgroundColor: COLORS.black,
   },
-  workoutButton: {
+  addButton: {
     marginTop: 8,
     marginRight: 4,
     marginBottom: 8,
@@ -130,7 +203,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderRadius: 8,
   },
-  workoutText: {
+  addText: {
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,

@@ -11,8 +11,11 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import Log from "../../components/gym/Log";
 
 import { COLORS } from "../../constants/theme";
+import { useNavigation } from "@react-navigation/native";
 
 function Gym() {
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>

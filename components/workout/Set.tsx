@@ -1,40 +1,26 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
+import { ISet, IExercise, IWorkout } from "./Workout";
+
 import { COLORS } from "../../constants/theme";
 
-interface ISet {
-  type: number | "W" | "D";
-  weight: number;
-  reps: number;
-  notes?: string;
-}
-
-type ISets = ISet[];
-
-interface IExercise {
-  name: string;
-  sets: ISets;
-}
-
-type IExercises = IExercise[];
-
 interface IProps {
+  i: number;
+  j: number;
   prevSet: ISet;
-  si: number;
-  ei: number;
-  exercises: IExercises;
-  setExercises: React.Dispatch<React.SetStateAction<IExercises>>;
+  currentWorkout: IWorkout;
+  setCurrentWorkout: React.Dispatch<React.SetStateAction<IWorkout>>;
 }
 
-function Set({ prevSet, si, ei, exercises, setExercises }: IProps) {
+function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
   const [weight, setWeight] = useState<string>("");
   const [reps, setReps] = useState<string>("");
   const [notes, setNotes] = useState<string>("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.setSet}>{si + 1}</Text>
+      <Text style={styles.set}>{j + 1}</Text>
       <TextInput
         value={weight}
         placeholder={prevSet.weight.toString()}
@@ -42,7 +28,7 @@ function Set({ prevSet, si, ei, exercises, setExercises }: IProps) {
         keyboardType="numeric"
         maxLength={5}
         keyboardAppearance="dark"
-        style={styles.setWeight}
+        style={styles.weight}
         onChangeText={setWeight}
       />
       <TextInput
@@ -52,7 +38,7 @@ function Set({ prevSet, si, ei, exercises, setExercises }: IProps) {
         keyboardType="numeric"
         maxLength={6}
         keyboardAppearance="dark"
-        style={styles.setReps}
+        style={styles.reps}
         onChangeText={setReps}
       />
       <TextInput
@@ -61,7 +47,7 @@ function Set({ prevSet, si, ei, exercises, setExercises }: IProps) {
         placeholderTextColor={COLORS.darkGray}
         numberOfLines={1}
         keyboardAppearance="dark"
-        style={styles.setNotes}
+        style={styles.notes}
         onChangeText={setNotes}
       />
     </View>
@@ -74,25 +60,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  setSet: {
+  set: {
     width: 23,
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
-  setWeight: {
+  weight: {
     width: 52.46,
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
-  setReps: {
+  reps: {
     width: 34.59,
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
-  setNotes: {
+  notes: {
     width: "100%",
     color: COLORS.white,
     fontSize: 16,
