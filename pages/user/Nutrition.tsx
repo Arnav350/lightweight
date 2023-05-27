@@ -83,7 +83,6 @@ function Nutrition(props: TProps) {
             <View style={styles.circlesContainer}>
               <View>
                 <Macro
-                  color="#d13636"
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce(
@@ -97,7 +96,6 @@ function Nutrition(props: TProps) {
                   label="Calories"
                 />
                 <Macro
-                  color="#d13636"
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce(
@@ -106,14 +104,13 @@ function Nutrition(props: TProps) {
                       )),
                     0
                   )}
-                  total={100}
+                  total={80}
                   unit="g"
                   label="Fat"
                 />
               </View>
               <View>
                 <Macro
-                  color="#d13636"
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce(
@@ -128,7 +125,6 @@ function Nutrition(props: TProps) {
                 />
 
                 <Macro
-                  color="#d13636"
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce(

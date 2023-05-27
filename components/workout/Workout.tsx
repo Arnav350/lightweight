@@ -90,7 +90,9 @@ function Workout() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.black,
+    position: "absolute",
+    top: 32,
+    // backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {
     display: "flex",

@@ -5,7 +5,6 @@ import Svg, { Circle } from "react-native-svg";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  color: string;
   current: number;
   total: number;
   unit: string;
@@ -17,7 +16,7 @@ const width = (size * 3) / 32;
 const radius = (size - width) / 2;
 const dash = radius * 2 * Math.PI;
 
-function Macro({ color, current, total, unit, label }: IProps) {
+function Macro({ current, total, unit, label }: IProps) {
   return (
     <View style={styles.container}>
       <View style={styles.circleContainer}>
@@ -26,21 +25,21 @@ function Macro({ color, current, total, unit, label }: IProps) {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={COLORS.black}
+            stroke={current / total < 1 ? COLORS.black : COLORS.primary}
             strokeWidth={width}
-            strokeDasharray={dash}
-            strokeDashoffset={dash * 0}
           />
           <Circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={color}
+            stroke={current / total < 1 ? COLORS.primary : COLORS.blackOne}
             strokeWidth={width}
             strokeDasharray={dash}
             strokeDashoffset={
-              dash * (current / total < 1 ? 1 - current / total : 0)
+              dash *
+              (current / total < 1 ? 1 - current / total : total / current)
             }
+            opacity={current / total < 1 ? 1 : 0.5}
           />
         </Svg>
 
