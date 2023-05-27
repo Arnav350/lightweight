@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -25,7 +25,7 @@ type IExercises = IExercise[];
 interface IProps {
   i: number;
   exercises: IExercises;
-  setExercises: React.Dispatch<React.SetStateAction<IExercises>>;
+  setExercises: Dispatch<SetStateAction<IExercises>>;
 }
 
 function Exercise({ i, exercises, setExercises }: IProps) {

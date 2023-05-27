@@ -1,23 +1,26 @@
+import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { useContext } from "react";
-import { MealContext } from "../../hooks/useMeal";
+import { IFood, IMeal } from "../../pages/user/Nutrition";
+
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  food: {
-    name: string;
-    calories: number;
-    amount: number;
-    amountType: string;
-  };
+  food: IFood;
+  currentMeal: IMeal;
+  setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
 }
 
-function Food({ food }: IProps) {
-  const { setMeals } = useContext(MealContext);
-
-  function handlePress() {}
+function Food({ food, currentMeal, setCurrentMeal }: IProps) {
+  function handlePress() {
+    setCurrentMeal({
+      ...currentMeal,
+      foods: currentMeal.foods.filter(
+        (currentFood: IFood) => currentFood.name !== food.name
+      ),
+    });
+  }
 
   return (
     <View style={styles.container}>

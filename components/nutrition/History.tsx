@@ -1,18 +1,22 @@
+import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+
+import { IFood, IMeal } from "../../pages/user/Nutrition";
 
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  history: {
-    name: string;
-    calories: number;
-    amount: number;
-    amountType: string;
-  };
+  history: IFood;
+  currentMeal: IMeal;
+  setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
 }
 
-function History({ history }: IProps) {
+function History({ history, currentMeal, setCurrentMeal }: IProps) {
+  function handlePress() {
+    setCurrentMeal({ ...currentMeal, foods: [...currentMeal.foods, history] });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -23,15 +27,13 @@ function History({ history }: IProps) {
           {history.calories} cal - {history.amount} {history.amountType}
         </Text>
       </View>
-      {true ? (
-        <TouchableOpacity activeOpacity={0.5} style={styles.button}>
-          <Icon name="plus" size={24} color={COLORS.white} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity activeOpacity={0.5} style={styles.button}>
-          <Icon name="check" size={24} color={COLORS.white} />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.button}
+        onPress={handlePress}
+      >
+        <Icon name="plus" size={24} color={COLORS.white} />
+      </TouchableOpacity>
     </View>
   );
 }

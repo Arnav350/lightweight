@@ -2,20 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
 import { TNutritionStackParamList } from "../../stacks/UserStack";
+import { IFood, IMeal } from "../../pages/user/Nutrition";
 
 import { COLORS } from "../../constants/theme";
-
-interface IFood {
-  name: string;
-  calories: number;
-  amount: number;
-  amountType: string;
-}
-
-interface IMeal {
-  name: string;
-  foods: IFood[];
-}
 
 interface IProps {
   i: number;

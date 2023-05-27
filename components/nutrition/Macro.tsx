@@ -17,7 +17,7 @@ const width = (size * 3) / 32;
 const radius = (size - width) / 2;
 const dash = radius * 2 * Math.PI;
 
-function Macro(props: IProps) {
+function Macro({ color, current, total, unit, label }: IProps) {
   return (
     <View style={styles.container}>
       <View style={styles.circleContainer}>
@@ -35,20 +35,22 @@ function Macro(props: IProps) {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={props.color}
+            stroke={color}
             strokeWidth={width}
             strokeDasharray={dash}
-            strokeDashoffset={dash * (1 - props.current / props.total)}
+            strokeDashoffset={
+              dash * (current / total < 1 ? 1 - current / total : 0)
+            }
           />
         </Svg>
 
-        <Text style={styles.current}>{props.current}</Text>
+        <Text style={styles.current}>{current}</Text>
         <Text style={styles.total}>
-          / {props.total}
-          {props.unit}
+          / {total}
+          {unit}
         </Text>
       </View>
-      <Text style={styles.label}>{props.label}</Text>
+      <Text style={styles.label}>{label}</Text>
     </View>
   );
 }

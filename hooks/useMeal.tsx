@@ -8,27 +8,17 @@ import {
   useState,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { AuthContext } from "./useAuth";
+import { IMeal } from "../pages/user/Nutrition";
 
 interface IProviderChildren {
   children: ReactNode;
 }
 
-interface IMeal {
-  name: string;
-  foods: {
-    name: string;
-    calories: number;
-    amount: number;
-    amountType: string;
-  }[];
-}
-
-type TMeals = IMeal[];
-
 interface IMealContext {
-  meals: TMeals;
-  setMeals: Dispatch<SetStateAction<TMeals>>;
+  meals: IMeal[];
+  setMeals: Dispatch<SetStateAction<IMeal[]>>;
 }
 
 export const MealContext = createContext<IMealContext>({} as IMealContext);
@@ -40,12 +30,18 @@ const init = [
       {
         name: "Extra Virgin Olive Oil",
         calories: 460,
+        protein: 20,
+        fat: 20,
+        carbs: 20,
         amount: 4,
         amountType: "tbsp",
       },
       {
         name: "Pizza",
         calories: 600,
+        protein: 20,
+        fat: 20,
+        carbs: 20,
         amount: 2,
         amountType: "slices",
       },
@@ -57,12 +53,18 @@ const init = [
       {
         name: "Eggs",
         calories: 380,
+        protein: 20,
+        fat: 20,
+        carbs: 20,
         amount: 4,
         amountType: "eggs",
       },
       {
         name: "Ryse Chocolate Chip Peanut and Peanut Butter Protein Powder",
         calories: 600,
+        protein: 20,
+        fat: 20,
+        carbs: 20,
         amount: 80,
         amountType: "grams",
       },
@@ -74,12 +76,18 @@ const init = [
       {
         name: "Chicken",
         calories: 360,
+        protein: 20,
+        fat: 20,
+        carbs: 20,
         amount: 60,
         amountType: "grams",
       },
       {
         name: "Mass Gainer",
         calories: 10000,
+        protein: 20,
+        fat: 20,
+        carbs: 20,
         amount: 5000000,
         amountType: "mg",
       },
@@ -88,7 +96,7 @@ const init = [
 ];
 
 export function MealProvider({ children }: IProviderChildren) {
-  const [meals, setMeals] = useState<TMeals>(init);
+  const [meals, setMeals] = useState<IMeal[]>(init);
 
   const currentUser = useContext(AuthContext);
 

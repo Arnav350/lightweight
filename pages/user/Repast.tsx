@@ -17,75 +17,67 @@ import { MealContext } from "../../hooks/useMeal";
 import { TNutritionStackParamList } from "../../stacks/UserStack";
 import Food from "../../components/nutrition/Food";
 import History from "../../components/nutrition/History";
+import { IFood, IMeal } from "./Nutrition";
 
 import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList>;
-
-interface IHistory {
-  name: string;
-  calories: number;
-  amount: number;
-  amountType: string;
-}
-
-type IHistories = IHistory[];
-
-interface IFood {
-  name: string;
-  calories: number;
-  amount: number;
-  amountType: string;
-}
-
-interface IMeal {
-  name: string;
-  foods: IFood[];
-}
 
 function Repast({ navigation, route }: TProps) {
   const isFocused = useIsFocused();
 
   const { meals, setMeals } = useContext(MealContext);
 
-  useEffect(() => {
-    setMealName(
-      route.params && route.params.i < meals.length
-        ? meals[route.params.i].name
-        : ""
-    );
-  }, [isFocused]);
+  const [currentMeal, setCurrentMeal] = useState<IMeal>({
+    name: "",
+    foods: [],
+  });
 
-  const [mealName, setMealName] = useState<string>("");
-
-  const [histories, setHistories] = useState<IHistories>([
+  const [histories, setHistories] = useState<IFood[]>([
     {
       name: "Extra Virgin Olive Oil",
       calories: 460,
+      protein: 20,
+      fat: 20,
+      carbs: 20,
       amount: 4,
       amountType: "tbsp",
     },
     {
       name: "Pizza",
       calories: 600,
+      protein: 20,
+      fat: 20,
+      carbs: 20,
       amount: 2,
       amountType: "slices",
     },
   ]);
 
-  async function handleBlur() {
-    setMealName(mealName || "Meal Name");
+  useEffect(() => {
+    setCurrentMeal({
+      name:
+        route.params && route.params.i < meals.length
+          ? meals[route.params.i].name
+          : "",
+      foods:
+        route.params && route.params.i < meals.length
+          ? meals[route.params.i].foods
+          : [],
+    });
+  }, [isFocused]);
 
+  function handleLeftPress() {
     setMeals(
       meals.map((meal: IMeal, i: number) =>
-        !route.params || i == route.params.i
-          ? { ...meal, name: mealName || "Meal Name" }
-          : meal
+        route.params && i === route.params.i ? currentMeal : meal
       )
     );
+
+    navigation.goBack();
   }
 
-  function handlePress() {
+  function handleTrashPress() {
     Alert.alert(
       "Delete Meal?",
       `Are you sure you want to delete "${
@@ -97,7 +89,7 @@ function Repast({ navigation, route }: TProps) {
           onPress: () => {
             setMeals(
               meals.filter(
-                (__, i: number) => !route.params || i !== route.params.i
+                (_meal, i: number) => !route.params || i !== route.params.i
               )
             );
             navigation.goBack();
@@ -115,24 +107,28 @@ function Repast({ navigation, route }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity activeOpacity={0.5} onPress={handleLeftPress}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <View style={styles.inputContainer}>
           <TextInput
-            value={mealName}
+            value={currentMeal.name}
             placeholder="Meal Name"
             keyboardAppearance="dark"
             numberOfLines={1}
             style={styles.header}
-            onChangeText={setMealName}
-            onBlur={handleBlur}
+            onChangeText={(text) =>
+              setCurrentMeal({ ...currentMeal, name: text })
+            }
+            onBlur={() =>
+              setCurrentMeal({
+                ...currentMeal,
+                name: currentMeal.name || "Meal Name",
+              })
+            }
           />
         </View>
-        <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
+        <TouchableOpacity activeOpacity={0.5} onPress={handleTrashPress}>
           <Icon name="trash-can-outline" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
@@ -161,17 +157,24 @@ function Repast({ navigation, route }: TProps) {
         </View>
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>Foods</Text>
-          {(route.params && route.params.i < meals.length
-            ? meals[route.params.i].foods
-            : []
-          ).map((food: any, i: number) => (
-            <Food key={i} food={food} />
+          {currentMeal.foods.map((food: IFood, i: number) => (
+            <Food
+              key={i}
+              food={food}
+              currentMeal={currentMeal}
+              setCurrentMeal={setCurrentMeal}
+            />
           ))}
         </View>
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>History</Text>
-          {histories.map((history: IHistory, i: number) => (
-            <History key={i} history={history} />
+          {histories.map((history: IFood, i: number) => (
+            <History
+              key={i}
+              history={history}
+              currentMeal={currentMeal}
+              setCurrentMeal={setCurrentMeal}
+            />
           ))}
         </View>
       </ScrollView>

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Dimensions,
   SafeAreaView,
@@ -21,14 +21,19 @@ import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList>;
 
-interface IMeal {
+export interface IFood {
   name: string;
-  foods: {
-    name: string;
-    calories: number;
-    amount: number;
-    amountType: string;
-  }[];
+  calories: number;
+  protein: number;
+  fat: number;
+  carbs: number;
+  amount: number;
+  amountType: string;
+}
+
+export interface IMeal {
+  name: string;
+  foods: IFood[];
 }
 
 const windowWidth = Dimensions.get("window").width;
@@ -76,41 +81,67 @@ function Nutrition(props: TProps) {
               <Icon name="plus" size={32} color={COLORS.white} />
             </View>
             <View style={styles.circlesContainer}>
-              <Macro
-                color="#d13636"
-                current={10000}
-                total={30000}
-                unit="cal"
-                label="Calories"
-              />
-              <Macro
-                color="#d13636"
-                current={50}
-                total={60}
-                unit="g"
-                label="Protein"
-              />
-              <Macro
-                color="#d13636"
-                current={50}
-                total={60}
-                unit="g"
-                label="Fat"
-              />
-              <Macro
-                color="#d13636"
-                current={50}
-                total={60}
-                unit="g"
-                label="Carbs"
-              />
-              <Macro
-                color="#d13636"
-                current={50}
-                total={60}
-                unit="oz"
-                label="Water"
-              />
+              <View>
+                <Macro
+                  color="#d13636"
+                  current={meals.reduce(
+                    (total: number, meal: IMeal) =>
+                      (total += meal.foods.reduce(
+                        (total: number, { calories }) => (total += calories),
+                        0
+                      )),
+                    0
+                  )}
+                  total={30000}
+                  unit="cal"
+                  label="Calories"
+                />
+                <Macro
+                  color="#d13636"
+                  current={meals.reduce(
+                    (total: number, meal: IMeal) =>
+                      (total += meal.foods.reduce(
+                        (total: number, { fat }) => (total += fat),
+                        0
+                      )),
+                    0
+                  )}
+                  total={100}
+                  unit="g"
+                  label="Fat"
+                />
+              </View>
+              <View>
+                <Macro
+                  color="#d13636"
+                  current={meals.reduce(
+                    (total: number, meal: IMeal) =>
+                      (total += meal.foods.reduce(
+                        (total: number, { protein }) => (total += protein),
+                        0
+                      )),
+                    0
+                  )}
+                  total={180}
+                  unit="g"
+                  label="Protein"
+                />
+
+                <Macro
+                  color="#d13636"
+                  current={meals.reduce(
+                    (total: number, meal: IMeal) =>
+                      (total += meal.foods.reduce(
+                        (total: number, { carbs }) => (total += carbs),
+                        0
+                      )),
+                    0
+                  )}
+                  total={180}
+                  unit="g"
+                  label="Carbs"
+                />
+              </View>
             </View>
           </View>
           <View style={styles.sectionContainer}>
@@ -219,9 +250,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   circlesContainer: {
-    display: "flex",
     flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
   },
