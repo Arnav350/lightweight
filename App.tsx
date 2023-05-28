@@ -4,7 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext, AuthProvider } from "./hooks/useAuth";
 
 import Loading from "./pages/auth/Loading";
-import Workout from "./components/workout/Workout";
+import Add from "./pages/workout/Add";
+import Workout from "./pages/workout/Workout";
 import UserStack from "./stacks/UserStack";
 import AuthStack from "./stacks/AuthStack";
 
@@ -13,7 +14,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 export type TWorkoutStackParamList = {
   UserStack: undefined;
   Workout: undefined;
-  Gym: undefined;
+  Add: undefined;
 };
 
 const Stack = createStackNavigator<TWorkoutStackParamList>();
@@ -33,7 +34,8 @@ function RootNavigator() {
           screenOptions={{ headerShown: false }}
         >
           {/* <Stack.Screen name="UserStack" component={UserStack} /> */}
-          <Stack.Screen name="Workout" component={Workout} />
+          {/* <Stack.Screen name="Workout" component={Workout} /> */}
+          <Stack.Screen name="Add" component={Add} />
         </Stack.Navigator>
       ) : (
         <AuthStack />

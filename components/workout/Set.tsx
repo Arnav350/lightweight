@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
-import { ISet, IExercise, IWorkout } from "./Workout";
+import { ISet, IExercise, IWorkout } from "../../pages/workout/Workout";
 
 import { COLORS } from "../../constants/theme";
 
@@ -20,7 +20,11 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.set}>{j + 1}</Text>
+      <Text style={styles.set}>
+        {currentWorkout.exercises[i].sets[j].type === "N"
+          ? j + 1
+          : currentWorkout.exercises[i].sets[j].type}
+      </Text>
       <TextInput
         value={weight}
         placeholder={prevSet.weight.toString()}
@@ -30,6 +34,27 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
         keyboardAppearance="dark"
         style={styles.weight}
         onChangeText={setWeight}
+        onBlur={() =>
+          setCurrentWorkout({
+            ...currentWorkout,
+            exercises: [
+              ...currentWorkout.exercises.map(
+                (exercise: IExercise, k: number) =>
+                  k === i
+                    ? {
+                        ...exercise,
+                        sets: [
+                          ...currentWorkout.exercises[k].sets.map(
+                            (set: ISet, l: number) =>
+                              l === j ? { ...set, weight: Number(weight) } : set
+                          ),
+                        ],
+                      }
+                    : exercise
+              ),
+            ],
+          })
+        }
       />
       <TextInput
         value={reps}
@@ -40,6 +65,27 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
         keyboardAppearance="dark"
         style={styles.reps}
         onChangeText={setReps}
+        onBlur={() =>
+          setCurrentWorkout({
+            ...currentWorkout,
+            exercises: [
+              ...currentWorkout.exercises.map(
+                (exercise: IExercise, k: number) =>
+                  k === i
+                    ? {
+                        ...exercise,
+                        sets: [
+                          ...currentWorkout.exercises[k].sets.map(
+                            (set: ISet, l: number) =>
+                              l === j ? { ...set, reps: Number(reps) } : set
+                          ),
+                        ],
+                      }
+                    : exercise
+              ),
+            ],
+          })
+        }
       />
       <TextInput
         value={notes}
@@ -49,6 +95,27 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
         keyboardAppearance="dark"
         style={styles.notes}
         onChangeText={setNotes}
+        onBlur={() =>
+          setCurrentWorkout({
+            ...currentWorkout,
+            exercises: [
+              ...currentWorkout.exercises.map(
+                (exercise: IExercise, k: number) =>
+                  k === i
+                    ? {
+                        ...exercise,
+                        sets: [
+                          ...currentWorkout.exercises[k].sets.map(
+                            (set: ISet, l: number) =>
+                              l === j ? { ...set, notes } : set
+                          ),
+                        ],
+                      }
+                    : exercise
+              ),
+            ],
+          })
+        }
       />
     </View>
   );

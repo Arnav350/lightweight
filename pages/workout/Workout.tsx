@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Button,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -13,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import Exercise from "./Exercise";
+import Exercise from "../../components/workout/Exercise";
 import { TWorkoutStackParamList } from "../../App";
 
 import { COLORS } from "../../constants/theme";
@@ -21,7 +20,7 @@ import { COLORS } from "../../constants/theme";
 type TProps = StackScreenProps<TWorkoutStackParamList>;
 
 export interface ISet {
-  type: number | "D" | "S" | "W";
+  type: "D" | "N" | "S" | "W";
   weight: number;
   reps: number;
   notes: string;
@@ -44,11 +43,6 @@ export interface IWorkout {
   exercises: IExercise[];
 }
 
-export interface IExerciseFrame {
-  name: string;
-  sets: number;
-}
-
 const init: IWorkout = {
   date: {
     month: "Jun",
@@ -63,7 +57,7 @@ const init: IWorkout = {
       notes: "",
       sets: [
         { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8, notes: "" },
+        { type: "N", weight: 300, reps: 8, notes: "" },
         { type: "D", weight: 400, reps: 6, notes: "" },
       ],
     },
@@ -72,7 +66,7 @@ const init: IWorkout = {
       notes: "",
       sets: [
         { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8, notes: "" },
+        { type: "N", weight: 300, reps: 8, notes: "" },
         { type: "D", weight: 400, reps: 6, notes: "" },
       ],
     },
@@ -81,7 +75,7 @@ const init: IWorkout = {
       notes: "",
       sets: [
         { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: 1, weight: 300, reps: 8, notes: "" },
+        { type: "N", weight: 300, reps: 8, notes: "" },
         { type: "D", weight: 400, reps: 6, notes: "" },
       ],
     },
@@ -89,6 +83,47 @@ const init: IWorkout = {
 };
 
 const init2: IWorkout = {
+  date: {
+    month: "Jun",
+    day: "19",
+  },
+  name: "Workout Name",
+  time: "1:45:34",
+  weight: 0,
+  exercises: [
+    {
+      name: "Bench Press",
+      notes: "",
+      sets: [
+        { type: "W", weight: 0, reps: 0, notes: "" },
+        { type: "N", weight: 0, reps: 0, notes: "" },
+        { type: "N", weight: 0, reps: 0, notes: "" },
+      ],
+    },
+    {
+      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+      notes: "",
+      sets: [
+        { type: "N", weight: 0, reps: 0, notes: "" },
+        { type: "N", weight: 0, reps: 0, notes: "" },
+        { type: "D", weight: 0, reps: 0, notes: "" },
+        { type: "N", weight: 0, reps: 0, notes: "" },
+        { type: "N", weight: 0, reps: 0, notes: "" },
+      ],
+    },
+    {
+      name: "Bicep Curl",
+      notes: "",
+      sets: [
+        { type: "N", weight: 0, reps: 0, notes: "" },
+        { type: "S", weight: 0, reps: 0, notes: "" },
+        { type: "S", weight: 0, reps: 0, notes: "" },
+      ],
+    },
+  ],
+};
+
+const init3: IWorkout = {
   date: { month: "", day: "" },
   name: "",
   time: "",
@@ -98,9 +133,20 @@ const init2: IWorkout = {
 
 function Workout({ navigation }: TProps) {
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(init2);
-  const [exerciseFrames, setExerciseFrames] = useState<IExerciseFrame[]>([
-    { name: "Bench Press", sets: 3 },
-  ]);
+
+  function handleFinishPress() {
+    setCurrentWorkout({
+      ...currentWorkout,
+      weight: currentWorkout.exercises.reduce(
+        (total: number, exercise: IExercise) =>
+          (total += exercise.sets.reduce(
+            (total: number, set: ISet) => (total += set.weight),
+            0
+          )),
+        0
+      ),
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -125,16 +171,15 @@ function Workout({ navigation }: TProps) {
             }
           />
         </View>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableOpacity activeOpacity={0.5} onPress={handleFinishPress}>
           <Text style={styles.finish}>Finish</Text>
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.workoutContainer}>
-        {exerciseFrames.map((exerciseFrame, i: number) => (
+        {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
           <Exercise
             key={i}
             i={i}
-            exerciseFrame={exerciseFrame}
             currentWorkout={currentWorkout}
             setCurrentWorkout={setCurrentWorkout}
           />
@@ -207,7 +252,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "500",
   },
 });
 

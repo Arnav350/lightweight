@@ -1,15 +1,14 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Set from "./Set";
-import { ISet, IExercise, IWorkout, IExerciseFrame } from "./Workout";
+import { ISet, IExercise, IWorkout } from "../../pages/workout/Workout";
 
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
-  exerciseFrame: IExerciseFrame;
   currentWorkout: IWorkout;
   setCurrentWorkout: Dispatch<SetStateAction<IWorkout>>;
 }
@@ -19,24 +18,59 @@ const init: IExercise = {
   notes: "New PR!",
   sets: [
     { type: "W", weight: 200, reps: 10, notes: "notes" },
-    { type: 2, weight: 300, reps: 8, notes: "" },
+    { type: "N", weight: 300, reps: 8, notes: "" },
     { type: "D", weight: 400, reps: 6, notes: "" },
+    { type: "N", weight: 500, reps: 1, notes: "WOW" },
   ],
 };
 
-function Exercise({
-  i,
-  exerciseFrame,
-  currentWorkout,
-  setCurrentWorkout,
-}: IProps) {
+function Exercise({ i, currentWorkout, setCurrentWorkout }: IProps) {
   const [prevExercise, setPrevExercise] = useState<IExercise>(init);
+
+  useEffect(() => {
+    const lengthDifference =
+      currentWorkout.exercises[i].sets.length - prevExercise.sets.length;
+
+    if (lengthDifference > 0) {
+      setPrevExercise({
+        ...prevExercise,
+        sets: [
+          ...prevExercise.sets,
+          ...Array(lengthDifference).fill({
+            type: "N" as const,
+            weight: 0,
+            reps: 0,
+            notes: "",
+          }),
+        ],
+      });
+    }
+  }, [currentWorkout.exercises[i].sets.length]);
+
+  function handleAddPress() {
+    setCurrentWorkout({
+      ...currentWorkout,
+      exercises: [
+        ...currentWorkout.exercises.map((exercise: IExercise, j: number) =>
+          j === i
+            ? {
+                ...exercise,
+                sets: [
+                  ...exercise.sets,
+                  { type: "N" as const, weight: 0, reps: 0, notes: "" },
+                ],
+              }
+            : exercise
+        ),
+      ],
+    });
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.topText} numberOfLines={1}>
-          {exerciseFrame.name}
+          {currentWorkout.exercises[i].name}
         </Text>
         <Icon name="dots-horizontal" size={24} color={COLORS.white} />
       </View>
@@ -47,18 +81,24 @@ function Exercise({
         <Text style={styles.subtitle}>Notes</Text>
       </View>
       <View style={styles.setsContainer}>
-        {prevExercise.sets.map((prevSet: ISet, j: number) => (
-          <Set
-            key={j}
-            i={i}
-            j={j}
-            prevSet={prevSet}
-            currentWorkout={currentWorkout}
-            setCurrentWorkout={setCurrentWorkout}
-          />
-        ))}
+        {prevExercise.sets
+          .slice(0, currentWorkout.exercises[i].sets.length)
+          .map((prevSet: ISet, j: number) => (
+            <Set
+              key={j}
+              i={i}
+              j={j}
+              prevSet={prevSet}
+              currentWorkout={currentWorkout}
+              setCurrentWorkout={setCurrentWorkout}
+            />
+          ))}
       </View>
-      <TouchableOpacity activeOpacity={0.5} style={styles.addButton}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.addButton}
+        onPress={handleAddPress}
+      >
         <Text style={styles.addText}>+ Add Set</Text>
       </TouchableOpacity>
     </View>
