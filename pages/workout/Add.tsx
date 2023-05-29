@@ -32,9 +32,47 @@ const init: IActivity[] = [
   { name: "Bench Press", equipment: "Dumbbell", muscle: "Chest" },
 ];
 
+const equipmentDropdown: string[] = [
+  "Any Equipment",
+  "None",
+  "Barbell",
+  "Dumbbell",
+  "Kettlebell",
+  "Machine",
+  "Cable",
+  "Plate",
+  "Resistance Band",
+  "Other",
+];
+
+const muscleDropdown: string[] = [
+  "Any Muscle",
+  "Abs",
+  "Biceps",
+  "Calves",
+  "Cardio",
+  "Chest",
+  "Forearms",
+  "Full Body",
+  "Glutes",
+  "Hamstrings",
+  "Lats",
+  "Lower Back",
+  "Quads",
+  "Shoulders",
+  "Triceps",
+  "Upper Back",
+  "Other",
+];
+
 function Add() {
   const [activityName, setActivityName] = useState<string>("");
   const [activities, setActivities] = useState<IActivity[]>(init);
+
+  const [currentEquipment, setCurrentEquipment] =
+    useState<string>("Any Equipment");
+
+  const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -59,14 +97,17 @@ function Add() {
             onChangeText={setActivityName}
           />
         </View>
-        <View style={styles.buttonsContainer}>
-          {/* <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer}>
-            <Text style={styles.button}>Any Equipment</Text>
-          </TouchableOpacity> */}
-          <Dropdown />
-          <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer}>
-            <Text style={styles.button}>Any Muscle</Text>
-          </TouchableOpacity>
+        <View style={styles.dropdownsContainer}>
+          <Dropdown
+            data={equipmentDropdown}
+            current={currentEquipment}
+            setCurrent={setCurrentEquipment}
+          />
+          <Dropdown
+            data={muscleDropdown}
+            current={currentMuscle}
+            setCurrent={setCurrentMuscle}
+          />
         </View>
       </View>
       <ScrollView style={styles.exercisesContainer}>
@@ -76,11 +117,18 @@ function Add() {
         <View>
           <Text style={styles.subheader}>All Exercises</Text>
           {activities
-            .filter((activity) =>
-              activity.name.toLowerCase().includes(activityName.toLowerCase())
+            .filter(
+              (activity) =>
+                activity.name
+                  .toLowerCase()
+                  .includes(activityName.toLowerCase()) &&
+                (currentEquipment === activity.equipment ||
+                  currentEquipment === "Any Equipment") &&
+                (currentMuscle === activity.muscle ||
+                  currentMuscle === "Any Muscle")
             )
             .map((activity: IActivity, i: number) => (
-              <Activity activity={activity} />
+              <Activity key={i} activity={activity} />
             ))}
         </View>
       </ScrollView>
@@ -126,23 +174,10 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
   },
-  buttonsContainer: {
+  dropdownsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 8,
-  },
-  buttonContainer: {
-    flex: 1,
-    marginHorizontal: 4,
-    padding: 8,
-    backgroundColor: COLORS.blackOne,
-    borderRadius: 8,
-  },
-  button: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: "500",
-    textAlign: "center",
   },
   exercisesContainer: {
     padding: 16,

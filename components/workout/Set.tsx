@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { ISet, IExercise, IWorkout } from "../../pages/workout/Workout";
@@ -10,7 +10,7 @@ interface IProps {
   j: number;
   prevSet: ISet;
   currentWorkout: IWorkout;
-  setCurrentWorkout: React.Dispatch<React.SetStateAction<IWorkout>>;
+  setCurrentWorkout: Dispatch<SetStateAction<IWorkout>>;
 }
 
 function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {

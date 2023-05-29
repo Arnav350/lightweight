@@ -1,12 +1,53 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dispatch, SetStateAction, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { COLORS } from "../../constants/theme";
 
-function Dropdown() {
+interface IProps {
+  data: string[];
+  current: string;
+  setCurrent: Dispatch<SetStateAction<string>>;
+}
+
+function Dropdown({ data, current, setCurrent }: IProps) {
+  const [openDropdown, setOpenDropdown] = useState<boolean>(false);
+
+  function handlePress(item: string) {
+    setCurrent(item);
+    setOpenDropdown(false);
+  }
+
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container}>
-      <Text style={styles.text}>Dropdown</Text>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.labelContainer}
+        onPress={() => setOpenDropdown(true)}
+      >
+        <Text style={styles.text}>{current}</Text>
+      </TouchableOpacity>
+      {openDropdown && (
+        <FlatList
+          data={data}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => handlePress(item)}
+            >
+              <Text style={styles.text}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(equipment) => equipment}
+          style={styles.list}
+        />
+      )}
+    </View>
   );
 }
 
@@ -14,15 +55,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 4,
-    padding: 8,
+  },
+  labelContainer: {
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
   },
   text: {
+    marginVertical: 8,
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",
     textAlign: "center",
+  },
+  list: {
+    backgroundColor: COLORS.blackOne,
+    borderRadius: 8,
+    height: 200,
   },
 });
 
