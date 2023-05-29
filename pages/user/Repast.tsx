@@ -9,21 +9,18 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TNutritionProps } from "../../stacks/UserStack";
 import { MealContext } from "../../hooks/useMeal";
-import { TNutritionStackParamList } from "../../stacks/UserStack";
 import Food from "../../components/nutrition/Food";
 import History from "../../components/nutrition/History";
 import { IFood, IMeal } from "./Nutrition";
 
 import { COLORS } from "../../constants/theme";
 
-type TProps = StackScreenProps<TNutritionStackParamList>;
-
-function Repast({ navigation, route }: TProps) {
+function Repast({ navigation, route }: TNutritionProps) {
   const isFocused = useIsFocused();
 
   const { meals, setMeals } = useContext(MealContext);

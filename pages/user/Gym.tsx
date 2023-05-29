@@ -8,14 +8,12 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TGymProps } from "../../stacks/UserStack";
 import Log from "../../components/gym/Log";
 
 import { COLORS } from "../../constants/theme";
-import { useNavigation } from "@react-navigation/native";
 
-function Gym() {
-  const navigation = useNavigation();
-
+function Gym({ navigation }: TGymProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -54,7 +52,7 @@ function Gym() {
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.gymRoutine}
-              onPress={() => {}}
+              onPress={() => navigation.navigate("Select")}
             >
               <Icon name="bookmark-outline" size={24} color={COLORS.primary} />
               <Text style={styles.gymSubtitles}>Select Routine</Text>

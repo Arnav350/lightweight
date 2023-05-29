@@ -9,17 +9,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TNutritionProps } from "../../stacks/UserStack";
 import { MealContext } from "../../hooks/useMeal";
 import Macro from "../../components/nutrition/Macro";
 import Meal from "../../components/nutrition/Meal";
-import { TNutritionStackParamList } from "../../stacks/UserStack";
 
 import { COLORS } from "../../constants/theme";
-
-type TProps = StackScreenProps<TNutritionStackParamList>;
 
 export interface IFood {
   name: string;
@@ -38,7 +35,7 @@ export interface IMeal {
 
 const windowWidth = Dimensions.get("window").width;
 
-function Nutrition(props: TProps) {
+function Nutrition(props: TNutritionProps) {
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
 

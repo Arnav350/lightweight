@@ -7,6 +7,7 @@ import Icon from "@expo/vector-icons/Ionicons";
 
 import { MealProvider } from "../hooks/useMeal";
 import Gym from "../pages/user/Gym";
+import Select from "../pages/user/Select";
 import Nutrition from "../pages/user/Nutrition";
 import Repast from "../pages/user/Repast";
 import Compete from "../pages/user/Compete";
@@ -16,27 +17,48 @@ import { TWorkoutStackParamList } from "../App";
 
 import { COLORS } from "../constants/theme";
 
+export type TGymStackParamList = {
+  Gym: undefined;
+  Select: undefined;
+};
+
+export type TGymProps = StackScreenProps<TGymStackParamList>;
+
 export type TNutritionStackParamList = {
   Nutrition: undefined;
   Repast: { i: number };
 };
 
+export type TNutritionProps = StackScreenProps<TNutritionStackParamList>;
+
 type TProps = StackScreenProps<TWorkoutStackParamList>;
 
+const GStack = createStackNavigator<TGymStackParamList>();
+const NStack = createStackNavigator<TNutritionStackParamList>();
 const Tab = createBottomTabNavigator();
 
-const Stack = createStackNavigator<TNutritionStackParamList>();
+function GymStack() {
+  return (
+    <GStack.Navigator
+      initialRouteName="Gym"
+      screenOptions={{ headerShown: false }}
+    >
+      <GStack.Screen name="Gym" component={Gym} />
+      <GStack.Screen name="Select" component={Select} />
+    </GStack.Navigator>
+  );
+}
 
 function NutritionStack() {
   return (
     <MealProvider>
-      <Stack.Navigator
+      <NStack.Navigator
         initialRouteName="Nutrition"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="Nutrition" component={Nutrition} />
-        <Stack.Screen name="Repast" component={Repast} />
-      </Stack.Navigator>
+        <NStack.Screen name="Nutrition" component={Nutrition} />
+        <NStack.Screen name="Repast" component={Repast} />
+      </NStack.Navigator>
     </MealProvider>
   );
 }
@@ -63,7 +85,7 @@ function UserStack(props: TProps) {
             | "person-circle-outline" = "barbell";
           let routeName = route.name;
 
-          if (routeName === "Workout") {
+          if (routeName === "GymStack") {
             iconName = focused ? "barbell" : "barbell-outline";
           } else if (routeName === "NutritionStack") {
             iconName = focused ? "fast-food" : "fast-food-outline";
@@ -81,8 +103,8 @@ function UserStack(props: TProps) {
       })}
     >
       <Tab.Screen
-        name="Workout"
-        component={Gym}
+        name="GymStack"
+        component={GymStack}
         options={{ headerShown: false }}
       />
       <Tab.Screen

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -9,10 +9,12 @@ import {
   View,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Dropdown from "../../components/workout/Dropdown";
 import Activity from "../../components/workout/Activity";
 import New from "../../components/workout/New";
+import { AuthContext } from "../../hooks/useAuth";
 
 import { COLORS } from "../../constants/theme";
 
@@ -73,6 +75,25 @@ function Add() {
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   const [showNew, setShowNew] = useState<boolean>(false);
+
+  const currentUser = useContext(AuthContext);
+
+  useEffect(() => {
+    AsyncStorage.setItem(
+      `@${currentUser?.id}:activities`,
+      JSON.stringify(activities)
+    );
+  }, [activities]);
+
+  useEffect(() => {
+    AsyncStorage.getItem(`@${currentUser?.id}:activities`).then(
+      (jsonActivities) => {
+        if (jsonActivities) {
+          setActivities(JSON.parse(jsonActivities));
+        }
+      }
+    );
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
