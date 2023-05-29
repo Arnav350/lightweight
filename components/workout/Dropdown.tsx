@@ -43,7 +43,7 @@ function Dropdown({ data, current, setCurrent }: IProps) {
               <Text style={styles.text}>{item}</Text>
             </TouchableOpacity>
           )}
-          keyExtractor={(equipment) => equipment}
+          keyExtractor={(item) => item}
           style={styles.list}
         />
       )}
@@ -68,9 +68,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   list: {
+    position: "absolute",
+    width: "100%",
+    height: 200,
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
-    height: 200,
   },
 });
 
