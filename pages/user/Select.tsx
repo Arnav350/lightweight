@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import Routine from "../../components/gym/Routine";
 import { TGymProps } from "../../stacks/UserStack";
 
 import { COLORS } from "../../constants/theme";
@@ -72,7 +73,7 @@ function Select({ navigation }: TGymProps) {
             <View style={styles.topContainer}>
               <Text style={styles.name}>{routine.name}</Text>
               <TouchableOpacity activeOpacity={0.5}>
-                <Icon name="dots-horizontal" size={24} color={COLORS.primary} />
+                <Icon name="dots-horizontal" size={24} color={COLORS.white} />
               </TouchableOpacity>
             </View>
             <Text style={styles.exercises} numberOfLines={1}>
@@ -86,6 +87,66 @@ function Select({ navigation }: TGymProps) {
           </View>
         ))}
         <Text style={styles.subheading}>Explore Routines</Text>
+        <Text style={styles.routine}>Push Pull Legs</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.exploresContainer}
+        >
+          <Routine name="Push" />
+          <Routine name="Pull" />
+          <Routine name="Legs" />
+        </ScrollView>
+        <Text style={styles.routine}>Arnold Split</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.exploresContainer}
+        >
+          <Routine name="Chest & Back" />
+          <Routine name="Shoulders & Arms" />
+          <Routine name="Legs" />
+        </ScrollView>
+        <Text style={styles.routine}>Full Body Split</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.exploresContainer}
+        >
+          <Routine name="Full Body 1" />
+          <Routine name="Full Body 2" />
+          <Routine name="Full Body 3" />
+        </ScrollView>
+        <Text style={styles.routine}>Upper Lower</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.exploresContainer}
+        >
+          <Routine name="Upper 1" />
+          <Routine name="Lower 1" />
+          <Routine name="Upper 2" />
+          <Routine name="Lower 2" />
+        </ScrollView>
+        <Text style={styles.routine}>Only Dumbbells</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.exploresContainer}
+        >
+          <Routine name="Dumbbell Upper" />
+          <Routine name="Dumbbell Lower" />
+        </ScrollView>
+        <Text style={styles.routine}>No Equipment</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.exploresContainer}
+        >
+          <Routine name="Home Upper" />
+          <Routine name="Home Lower" />
+        </ScrollView>
+        <Text style={styles.name}></Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -111,10 +172,13 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   selectContainer: {
+    padding: 16,
     backgroundColor: COLORS.black,
   },
   subheading: {
+    marginVertical: 8,
     color: COLORS.white,
+    fontSize: 18,
   },
   myContainer: {
     marginVertical: 8,
@@ -128,7 +192,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: COLORS.white,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "500",
   },
   exercises: {
@@ -145,6 +209,16 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     textAlign: "center",
+  },
+  routine: {
+    marginTop: 8,
+    color: COLORS.white,
+    fontSize: 16,
+  },
+  exploresContainer: {
+    flexDirection: "row",
+    marginVertical: 16,
+    marginHorizontal: -8,
   },
 });
 
