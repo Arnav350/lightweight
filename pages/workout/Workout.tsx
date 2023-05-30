@@ -152,10 +152,10 @@ function Workout({ navigation }: TProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headerIcons}>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity activeOpacity={0.3}>
             <Icon name="chevron-left" size={32} color={COLORS.primary} />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity activeOpacity={0.3}>
             <Icon name="alarm" size={32} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
@@ -171,7 +171,7 @@ function Workout({ navigation }: TProps) {
             }
           />
         </View>
-        <TouchableOpacity activeOpacity={0.5} onPress={handleFinishPress}>
+        <TouchableOpacity activeOpacity={0.3} onPress={handleFinishPress}>
           <Text style={styles.finish}>Finish</Text>
         </TouchableOpacity>
       </View>

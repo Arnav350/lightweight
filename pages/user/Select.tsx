@@ -56,13 +56,13 @@ function Select({ navigation }: TGymProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity
-          activeOpacity={0.5}
+          activeOpacity={0.3}
           onPress={() => navigation.navigate("Gym")}
         >
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Select Routine</Text>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableOpacity activeOpacity={0.3}>
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>

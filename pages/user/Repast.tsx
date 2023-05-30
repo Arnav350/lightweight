@@ -20,7 +20,7 @@ import { IFood, IMeal } from "./Nutrition";
 
 import { COLORS } from "../../constants/theme";
 
-function Repast({ navigation, route }: TNutritionProps) {
+function Repast({ navigation, route: { params } }: TNutritionProps) {
   const isFocused = useIsFocused();
 
   const { meals, setMeals } = useContext(MealContext);
@@ -53,21 +53,15 @@ function Repast({ navigation, route }: TNutritionProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name:
-        route.params && route.params.i < meals.length
-          ? meals[route.params.i].name
-          : "",
-      foods:
-        route.params && route.params.i < meals.length
-          ? meals[route.params.i].foods
-          : [],
+      name: params && params.i < meals.length ? meals[params.i].name : "",
+      foods: params && params.i < meals.length ? meals[params.i].foods : [],
     });
   }, [isFocused]);
 
   function handleLeftPress() {
     setMeals(
       meals.map((meal: IMeal, i: number) =>
-        route.params && i === route.params.i ? currentMeal : meal
+        params && i === params.i ? currentMeal : meal
       )
     );
 
@@ -77,17 +71,13 @@ function Repast({ navigation, route }: TNutritionProps) {
   function handleTrashPress() {
     Alert.alert(
       "Delete Meal?",
-      `Are you sure you want to delete "${
-        route.params && meals[route.params.i].name
-      }"`,
+      `Are you sure you want to delete "${params && meals[params.i].name}"`,
       [
         {
           text: "Delete",
           onPress: () => {
             setMeals(
-              meals.filter(
-                (_meal, i: number) => !route.params || i !== route.params.i
-              )
+              meals.filter((_meal, i: number) => params && i !== params.i)
             );
             navigation.goBack();
           },
@@ -104,7 +94,7 @@ function Repast({ navigation, route }: TNutritionProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.5} onPress={handleLeftPress}>
+        <TouchableOpacity activeOpacity={0.3} onPress={handleLeftPress}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <View style={styles.inputContainer}>
@@ -125,7 +115,7 @@ function Repast({ navigation, route }: TNutritionProps) {
             }
           />
         </View>
-        <TouchableOpacity activeOpacity={0.5} onPress={handleTrashPress}>
+        <TouchableOpacity activeOpacity={0.3} onPress={handleTrashPress}>
           <Icon name="trash-can-outline" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
@@ -142,7 +132,13 @@ function Repast({ navigation, route }: TNutritionProps) {
             </TouchableOpacity>
           </View>
           <View style={styles.optionsRow}>
-            <TouchableOpacity activeOpacity={0.5} style={styles.optionsButton}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.optionsButton}
+              onPress={() =>
+                params && navigation.navigate("Quick", { i: params.i })
+              }
+            >
               <Icon name="timer-outline" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>Quick Add</Text>
             </TouchableOpacity>

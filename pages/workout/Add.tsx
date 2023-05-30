@@ -98,11 +98,11 @@ function Add() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableOpacity activeOpacity={0.3}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Add Exercise</Text>
-        <TouchableOpacity activeOpacity={0.5} onPress={() => setShowNew(true)}>
+        <TouchableOpacity activeOpacity={0.3} onPress={() => setShowNew(true)}>
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>

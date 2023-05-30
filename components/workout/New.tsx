@@ -50,13 +50,13 @@ function New({
       <View style={styles.newContainer}>
         <View style={styles.headerContainer}>
           <TouchableOpacity
-            activeOpacity={0.5}
+            activeOpacity={0.3}
             onPress={() => setShowNew(false)}
           >
             <Icon name="close" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <Text style={styles.header}>New Exercise</Text>
-          <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
+          <TouchableOpacity activeOpacity={0.3} onPress={handlePress}>
             <Text style={styles.save}>Save</Text>
           </TouchableOpacity>
         </View>
