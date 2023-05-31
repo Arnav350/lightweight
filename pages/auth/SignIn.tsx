@@ -56,7 +56,7 @@ function SignUp({ navigation }: TProps) {
           style={
             focusedInput === "email"
               ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : { ...styles.input }
+              : styles.input
           }
           onChangeText={setEmail}
           onFocus={() => setFocusedInput("email")}
@@ -72,7 +72,7 @@ function SignUp({ navigation }: TProps) {
             style={
               focusedInput === "password"
                 ? { ...styles.input, borderBottomColor: COLORS.primary }
-                : { ...styles.input }
+                : styles.input
             }
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}

@@ -167,7 +167,7 @@ function SignUp({ navigation }: TProps) {
           style={
             focusedInput === "username"
               ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : { ...styles.input }
+              : styles.input
           }
           onChangeText={setUsername}
           onFocus={() => setFocusedInput("username")}
@@ -182,7 +182,7 @@ function SignUp({ navigation }: TProps) {
           style={
             focusedInput === "email"
               ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : { ...styles.input }
+              : styles.input
           }
           onChangeText={setEmail}
           onFocus={() => setFocusedInput("email")}
@@ -199,7 +199,7 @@ function SignUp({ navigation }: TProps) {
             style={
               focusedInput === "password"
                 ? { ...styles.input, borderBottomColor: COLORS.primary }
-                : { ...styles.input }
+                : styles.input
             }
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}
@@ -227,7 +227,7 @@ function SignUp({ navigation }: TProps) {
           style={
             focusedInput === "confirm"
               ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : { ...styles.input }
+              : styles.input
           }
           onChangeText={setConfirm}
           onFocus={() => setFocusedInput("confirm")}
