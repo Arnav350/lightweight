@@ -10,7 +10,8 @@ import Gym from "../pages/user/Gym";
 import Select from "../pages/user/Select";
 import Nutrition from "../pages/user/Nutrition";
 import Repast from "../pages/user/Repast";
-import Quick from "../pages/user/Quick";
+import Create from "../pages/user/Create";
+import Recipes from "../pages/user/Recipes";
 import Compete from "../pages/user/Compete";
 import Connect from "../pages/user/Connect";
 import Profile from "../pages/user/Profile";
@@ -28,7 +29,8 @@ export type TGymProps = StackScreenProps<TGymStackParamList>;
 export type TNutritionStackParamList = {
   Nutrition: undefined;
   Repast: { i: number };
-  Quick: { i: number };
+  Create: { i: number };
+  Recipes: { i: number };
 };
 
 export type TNutritionProps = StackScreenProps<TNutritionStackParamList>;
@@ -60,7 +62,8 @@ function NutritionStack() {
       >
         <NStack.Screen name="Nutrition" component={Nutrition} />
         <NStack.Screen name="Repast" component={Repast} />
-        <NStack.Screen name="Quick" component={Quick} />
+        <NStack.Screen name="Create" component={Create} />
+        <NStack.Screen name="Recipes" component={Recipes} />
       </NStack.Navigator>
     </MealProvider>
   );

@@ -136,7 +136,7 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
               activeOpacity={0.5}
               style={styles.optionsButton}
               onPress={() =>
-                params && navigation.navigate("Quick", { i: params.i })
+                params && navigation.navigate("Create", { i: params.i })
               }
             >
               <Icon name="timer-outline" size={48} color={COLORS.primary} />

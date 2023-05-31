@@ -32,14 +32,14 @@ function Macro({ current, total, unit, label }: IProps) {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={current / total < 1 ? COLORS.primary : COLORS.blackOne}
+            stroke={current / total < 1 ? COLORS.primary : COLORS.white}
             strokeWidth={width}
             strokeDasharray={dash}
             strokeDashoffset={
               dash *
               (current / total < 1 ? 1 - current / total : total / current)
             }
-            opacity={current / total < 1 ? 1 : 0.5}
+            opacity={current / total < 1 ? 1 : 0.4}
           />
         </Svg>
 

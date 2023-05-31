@@ -15,7 +15,7 @@ import { MealContext } from "../../hooks/useMeal";
 
 import { COLORS } from "../../constants/theme";
 
-function Quick({ navigation, route: { params } }: TNutritionProps) {
+function Create({ navigation, route: { params } }: TNutritionProps) {
   const { meals, setMeals } = useContext(MealContext);
 
   const [focusedInput, setFocusedInput] = useState<string>("none");
@@ -25,8 +25,8 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
     protein: 0,
     fat: 0,
     carbs: 0,
-    amount: 1,
-    amountType: "amount",
+    amount: 0,
+    amountType: "",
   });
   const [error, setError] = useState<boolean>(false);
 
@@ -35,7 +35,17 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
       setMeals(
         meals.map((meal: IMeal, i: number) =>
           params && i === params.i
-            ? { ...meal, foods: [...meal.foods, { ...currentFood }] }
+            ? {
+                ...meal,
+                foods: [
+                  ...meal.foods,
+                  {
+                    ...currentFood,
+                    amount: currentFood.amount || 1,
+                    amountType: currentFood.amountType || "amountZ",
+                  },
+                ],
+              }
             : meal
         )
       );
@@ -50,9 +60,7 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
       <View style={styles.headerContainer}>
         <TouchableOpacity
           activeOpacity={0.3}
-          onPress={() =>
-            params && navigation.navigate("Repast", { i: params.i })
-          }
+          onPress={() => navigation.goBack()}
         >
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
@@ -61,7 +69,7 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
           <Icon name="check" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-      <View style={styles.quickContainer}>
+      <View style={styles.createContainer}>
         <Text numberOfLines={1} style={styles.name}>
           Meal:{" "}
           {meals.map(
@@ -106,7 +114,7 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
         />
         <TextInput
           value={currentFood.protein ? currentFood.protein.toString() : ""}
-          placeholder="Protein"
+          placeholder="Protein (optional)"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="numeric"
@@ -123,7 +131,7 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
         />
         <TextInput
           value={currentFood.fat ? currentFood.fat.toString() : ""}
-          placeholder="Fat"
+          placeholder="Fat (optional)"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="numeric"
@@ -140,7 +148,7 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
         />
         <TextInput
           value={currentFood.carbs ? currentFood.carbs.toString() : ""}
-          placeholder="Carbs"
+          placeholder="Carbs (optional)"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="numeric"
@@ -153,6 +161,39 @@ function Quick({ navigation, route: { params } }: TNutritionProps) {
             setCurrentFood({ ...currentFood, carbs: Number(text) })
           }
           onFocus={() => setFocusedInput("carbs")}
+          onBlur={() => setFocusedInput("none")}
+        />
+        <TextInput
+          value={currentFood.amount ? currentFood.amount.toString() : ""}
+          placeholder="Number of Servings (optional)"
+          placeholderTextColor={COLORS.gray}
+          keyboardAppearance="dark"
+          keyboardType="numeric"
+          style={
+            focusedInput === "number"
+              ? { ...styles.input, borderBottomColor: COLORS.primary }
+              : styles.input
+          }
+          onChangeText={(text: string) =>
+            setCurrentFood({ ...currentFood, amount: Number(text) })
+          }
+          onFocus={() => setFocusedInput("number")}
+          onBlur={() => setFocusedInput("none")}
+        />
+        <TextInput
+          value={currentFood.amountType}
+          placeholder="Serving Units (optional)"
+          placeholderTextColor={COLORS.gray}
+          keyboardAppearance="dark"
+          style={
+            focusedInput === "unit"
+              ? { ...styles.input, borderBottomColor: COLORS.primary }
+              : styles.input
+          }
+          onChangeText={(text: string) =>
+            setCurrentFood({ ...currentFood, amountType: text })
+          }
+          onFocus={() => setFocusedInput("unit")}
           onBlur={() => setFocusedInput("none")}
         />
         <TouchableOpacity
@@ -186,14 +227,15 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: COLORS.white,
   },
-  quickContainer: {
+  createContainer: {
     flex: 1,
     padding: 16,
     backgroundColor: COLORS.black,
   },
   name: {
+    marginBottom: 8,
     color: COLORS.white,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "500",
   },
   error: {
@@ -223,4 +265,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Quick;
+export default Create;

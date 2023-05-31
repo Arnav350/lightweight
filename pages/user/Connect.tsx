@@ -89,8 +89,8 @@ function Connect() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.containerTop}>
-        <View style={styles.containerSearch}>
+      <View style={styles.headerContainer}>
+        <View style={styles.inputContainer}>
           <Icon name="magnify" size={32} color={COLORS.darkGray} />
           <TextInput
             placeholder="Search user"
@@ -100,7 +100,7 @@ function Connect() {
         </View>
       </View>
       <View>
-        <ScrollView style={styles.containerStories} horizontal>
+        <ScrollView style={styles.storiesContainer} horizontal>
           <TouchableOpacity style={styles.story}>
             <View>
               <Icon name="plus" size={48} color={COLORS.darkGray} />
@@ -144,7 +144,7 @@ function Connect() {
               </View>
             </TouchableOpacity>
           )}
-          style={styles.containerContacts}
+          style={styles.contactsContainer}
         />
       </View>
     </SafeAreaView>
@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.blackTwo,
   },
-  containerTop: {
+  headerContainer: {
     alignItems: "center",
     padding: 16,
     width: "100%",
     backgroundColor: COLORS.blackTwo,
   },
-  containerSearch: {
+  inputContainer: {
     flexDirection: "row",
     width: "80%",
     padding: 8,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.white,
   },
-  containerStories: {
+  storiesContainer: {
     flexDirection: "row",
     paddingTop: 16,
     paddingBottom: 32,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: COLORS.white,
   },
-  containerContacts: {
+  contactsContainer: {
     backgroundColor: COLORS.black,
   },
   contact: {
