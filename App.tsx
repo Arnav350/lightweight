@@ -29,10 +29,7 @@ function RootNavigator() {
   return (
     <NavigationContainer>
       {currentUser ? (
-        <Stack.Navigator
-          initialRouteName="UserStack"
-          screenOptions={{ headerShown: false }}
-        >
+        <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="UserStack" component={UserStack} />
           {/* <Stack.Screen name="Workout" component={Workout} /> */}
           {/* <Stack.Screen name="Add" component={Add} /> */}

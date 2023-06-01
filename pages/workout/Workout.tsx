@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -139,10 +130,7 @@ function Workout({ navigation }: TProps) {
       ...currentWorkout,
       weight: currentWorkout.exercises.reduce(
         (total: number, exercise: IExercise) =>
-          (total += exercise.sets.reduce(
-            (total: number, set: ISet) => (total += set.weight),
-            0
-          )),
+          (total += exercise.sets.reduce((total: number, set: ISet) => (total += set.weight), 0)),
         0
       ),
     });
@@ -166,9 +154,7 @@ function Workout({ navigation }: TProps) {
             placeholderTextColor={COLORS.darkGray}
             keyboardAppearance="dark"
             style={styles.header}
-            onChangeText={(text) =>
-              setCurrentWorkout({ ...currentWorkout, name: text })
-            }
+            onChangeText={(text) => setCurrentWorkout({ ...currentWorkout, name: text })}
           />
         </View>
         <TouchableOpacity activeOpacity={0.3} onPress={handleFinishPress}>
@@ -177,18 +163,9 @@ function Workout({ navigation }: TProps) {
       </View>
       <ScrollView style={styles.workoutContainer}>
         {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
-          <Exercise
-            key={i}
-            i={i}
-            currentWorkout={currentWorkout}
-            setCurrentWorkout={setCurrentWorkout}
-          />
+          <Exercise key={i} i={i} currentWorkout={currentWorkout} setCurrentWorkout={setCurrentWorkout} />
         ))}
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.addButton}
-          onPress={() => {}}
-        >
+        <TouchableOpacity activeOpacity={0.5} style={styles.addButton} onPress={() => {}}>
           <Text style={styles.addText}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>

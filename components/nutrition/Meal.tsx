@@ -46,6 +46,7 @@ function Meal({ i, meal, navigate: { navigation } }: IProps) {
         onPress={() =>
           navigation.navigate("Repast", {
             i: i,
+            save: null,
           })
         }
       >

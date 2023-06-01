@@ -1,27 +1,21 @@
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { AuthContext } from "./useAuth";
-import { IMeal } from "../pages/user/Nutrition";
+import { IFood, IMeal } from "../pages/user/Nutrition";
 
 interface IProviderChildren {
   children: ReactNode;
 }
 
-interface IMealContext {
+interface INutritionContext {
   meals: IMeal[];
   setMeals: Dispatch<SetStateAction<IMeal[]>>;
+  recipes: IFood[];
+  setRecipes: Dispatch<SetStateAction<IFood[]>>;
 }
 
-export const MealContext = createContext<IMealContext>({} as IMealContext);
+export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
 
 const init = [
   {
@@ -95,14 +89,19 @@ const init = [
   },
 ];
 
-export function MealProvider({ children }: IProviderChildren) {
-  const [meals, setMeals] = useState<IMeal[]>(init);
-
+export function NutritionProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
+
+  const [meals, setMeals] = useState<IMeal[]>(init);
+  const [recipes, setRecipes] = useState<IFood[]>([]);
 
   useEffect(() => {
     AsyncStorage.setItem(`@${currentUser?.id}:meals`, JSON.stringify(meals));
   }, [meals]);
+
+  useEffect(() => {
+    AsyncStorage.setItem(`@${currentUser?.id}:recipes`, JSON.stringify(recipes));
+  }, [recipes]);
 
   useEffect(() => {
     AsyncStorage.getItem(`@${currentUser?.id}:meals`).then((jsonMeals) => {
@@ -110,11 +109,15 @@ export function MealProvider({ children }: IProviderChildren) {
         setMeals(JSON.parse(jsonMeals));
       }
     });
+
+    AsyncStorage.getItem(`@${currentUser?.id}:recipes`).then((jsonRecipes) => {
+      if (jsonRecipes) {
+        setRecipes(JSON.parse(jsonRecipes));
+      }
+    });
   }, []);
 
   return (
-    <MealContext.Provider value={{ meals, setMeals }}>
-      {children}
-    </MealContext.Provider>
+    <NutritionContext.Provider value={{ meals, setMeals, recipes, setRecipes }}>{children}</NutritionContext.Provider>
   );
 }

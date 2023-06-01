@@ -1,11 +1,4 @@
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TGymProps } from "../../stacks/UserStack";
@@ -27,26 +20,14 @@ function Gym({ navigation }: TGymProps) {
       </View>
       <ScrollView style={styles.gymContainer}>
         <View style={styles.gymButtons}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.gymRoutine}
-            onPress={() => {}}
-          >
+          <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={() => {}}>
             <Icon name="plus" size={24} color={COLORS.primary} />
             <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
           </TouchableOpacity>
 
           <View style={styles.gymRoutines}>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={styles.gymRoutine}
-              onPress={() => {}}
-            >
-              <Icon
-                name="clipboard-plus-outline"
-                size={24}
-                color={COLORS.primary}
-              />
+            <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={() => {}}>
+              <Icon name="clipboard-plus-outline" size={24} color={COLORS.primary} />
               <Text style={styles.gymSubtitles}>New Routine</Text>
             </TouchableOpacity>
             <TouchableOpacity

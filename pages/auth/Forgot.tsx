@@ -27,30 +27,19 @@ function Forgot({ navigation }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Forgot Password</Text>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.formContainer}
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.formContainer}>
         <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <TextInput
           value={email}
           placeholder="Enter Email"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
-          style={
-            focused
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : { ...styles.input }
-          }
+          style={focused ? { ...styles.input, borderBottomColor: COLORS.primary } : { ...styles.input }}
           onChangeText={setEmail}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.button}
-          onPress={handlePress}
-        >
+        <TouchableOpacity activeOpacity={0.5} style={styles.button} onPress={handlePress}>
           <Text style={styles.text}>Send Email</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>

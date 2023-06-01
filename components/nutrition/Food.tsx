@@ -8,18 +8,24 @@ import { COLORS } from "../../constants/theme";
 
 interface IProps {
   food: IFood;
+  add: boolean;
   currentMeal: IMeal;
   setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
 }
 
-function Food({ food, currentMeal, setCurrentMeal }: IProps) {
+function Food({ food, add, currentMeal, setCurrentMeal }: IProps) {
   function handlePress() {
-    setCurrentMeal({
-      ...currentMeal,
-      foods: currentMeal.foods.filter(
-        (currentFood: IFood) => currentFood.name !== food.name
-      ),
-    });
+    if (add) {
+      setCurrentMeal({
+        ...currentMeal,
+        foods: [...currentMeal.foods, food],
+      });
+    } else {
+      setCurrentMeal({
+        ...currentMeal,
+        foods: currentMeal.foods.filter((currentFood: IFood) => currentFood.name !== food.name),
+      });
+    }
   }
 
   return (
@@ -32,12 +38,8 @@ function Food({ food, currentMeal, setCurrentMeal }: IProps) {
           {food.calories} cal - {food.amount} {food.amountType}
         </Text>
       </View>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={styles.button}
-        onPress={handlePress}
-      >
-        <Icon name="minus" size={24} color={COLORS.white} />
+      <TouchableOpacity activeOpacity={0.5} style={styles.button} onPress={handlePress}>
+        <Icon name={add ? "plus" : "minus"} size={24} color={COLORS.white} />
       </TouchableOpacity>
     </View>
   );

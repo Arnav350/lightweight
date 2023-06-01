@@ -1,11 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  StackScreenProps,
-  createStackNavigator,
-} from "@react-navigation/stack";
+import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/Ionicons";
 
-import { MealProvider } from "../hooks/useMeal";
+import { NutritionProvider } from "../hooks/useNutrition";
 import Gym from "../pages/user/Gym";
 import Select from "../pages/user/Select";
 import Nutrition from "../pages/user/Nutrition";
@@ -19,7 +16,7 @@ import { TWorkoutStackParamList } from "../App";
 
 import { COLORS } from "../constants/theme";
 
-type TGymStackParamList = {
+export type TGymStackParamList = {
   Gym: undefined;
   Select: undefined;
 };
@@ -30,21 +27,18 @@ const GStack = createStackNavigator<TGymStackParamList>();
 
 function GymStack() {
   return (
-    <GStack.Navigator
-      initialRouteName="Gym"
-      screenOptions={{ headerShown: false }}
-    >
+    <GStack.Navigator initialRouteName="Gym" screenOptions={{ headerShown: false }}>
       <GStack.Screen name="Gym" component={Gym} />
       <GStack.Screen name="Select" component={Select} />
     </GStack.Navigator>
   );
 }
 
-type TNutritionStackParamList = {
+export type TNutritionStackParamList = {
   Nutrition: undefined;
-  Repast: { i: number };
-  Create: { i: number };
-  Recipes: { i: number };
+  Repast: { i: number; save: boolean | null };
+  Create: { i: number; save: boolean };
+  Recipes: { i: number; save: boolean | null };
 };
 
 export type TNutritionProps = StackScreenProps<TNutritionStackParamList>;
@@ -53,17 +47,14 @@ const NStack = createStackNavigator<TNutritionStackParamList>();
 
 function NutritionStack() {
   return (
-    <MealProvider>
-      <NStack.Navigator
-        initialRouteName="Nutrition"
-        screenOptions={{ headerShown: false }}
-      >
+    <NutritionProvider>
+      <NStack.Navigator initialRouteName="Nutrition" screenOptions={{ headerShown: false }}>
         <NStack.Screen name="Nutrition" component={Nutrition} />
         <NStack.Screen name="Repast" component={Repast} />
         <NStack.Screen name="Create" component={Create} />
         <NStack.Screen name="Recipes" component={Recipes} />
       </NStack.Navigator>
-    </MealProvider>
+    </NutritionProvider>
   );
 }
 
@@ -110,31 +101,11 @@ function UserStack(props: TProps) {
         tabBarInactiveTintColor: COLORS.gray,
       })}
     >
-      <Tab.Screen
-        name="GymStack"
-        component={GymStack}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="NutritionStack"
-        component={NutritionStack}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Compete"
-        component={Compete}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Connect"
-        component={Connect}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{ headerShown: false }}
-      />
+      <Tab.Screen name="GymStack" component={GymStack} options={{ headerShown: false }} />
+      <Tab.Screen name="NutritionStack" component={NutritionStack} options={{ headerShown: false }} />
+      <Tab.Screen name="Compete" component={Compete} options={{ headerShown: false }} />
+      <Tab.Screen name="Connect" component={Connect} options={{ headerShown: false }} />
+      <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }

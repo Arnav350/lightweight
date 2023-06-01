@@ -1,12 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Routine from "../../components/gym/Routine";
@@ -55,10 +48,7 @@ function Select({ navigation }: TGymProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity
-          activeOpacity={0.3}
-          onPress={() => navigation.navigate("Gym")}
-        >
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Gym")}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Select Routine</Text>
@@ -77,9 +67,7 @@ function Select({ navigation }: TGymProps) {
               </TouchableOpacity>
             </View>
             <Text style={styles.exercises} numberOfLines={1}>
-              {routine.exercises
-                .map((exercise: IExercise) => exercise.name)
-                .join(", ")}
+              {routine.exercises.map((exercise: IExercise) => exercise.name).join(", ")}
             </Text>
             <TouchableOpacity activeOpacity={0.5} style={styles.startContainer}>
               <Text style={styles.start}>Start Routine</Text>
@@ -88,61 +76,37 @@ function Select({ navigation }: TGymProps) {
         ))}
         <Text style={styles.subheading}>Explore Routines</Text>
         <Text style={styles.routine}>Push Pull Legs</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.exploresContainer}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
           <Routine name="Push" />
           <Routine name="Pull" />
           <Routine name="Legs" />
         </ScrollView>
         <Text style={styles.routine}>Arnold Split</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.exploresContainer}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
           <Routine name="Chest & Back" />
           <Routine name="Shoulders & Arms" />
           <Routine name="Legs" />
         </ScrollView>
         <Text style={styles.routine}>Full Body Split</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.exploresContainer}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
           <Routine name="Full Body 1" />
           <Routine name="Full Body 2" />
           <Routine name="Full Body 3" />
         </ScrollView>
         <Text style={styles.routine}>Upper Lower</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.exploresContainer}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
           <Routine name="Upper 1" />
           <Routine name="Lower 1" />
           <Routine name="Upper 2" />
           <Routine name="Lower 2" />
         </ScrollView>
         <Text style={styles.routine}>Only Dumbbells</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.exploresContainer}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
           <Routine name="Dumbbell Upper" />
           <Routine name="Dumbbell Lower" />
         </ScrollView>
         <Text style={styles.routine}>No Equipment</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.exploresContainer}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
           <Routine name="Home Upper" />
           <Routine name="Home Lower" />
         </ScrollView>

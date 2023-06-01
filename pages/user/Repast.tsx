@@ -1,21 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  Alert,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
-import { MealContext } from "../../hooks/useMeal";
+import { NutritionContext } from "../../hooks/useNutrition";
 import Food from "../../components/nutrition/Food";
-import History from "../../components/nutrition/History";
 import { IFood, IMeal } from "./Nutrition";
 
 import { COLORS } from "../../constants/theme";
@@ -23,7 +13,7 @@ import { COLORS } from "../../constants/theme";
 function Repast({ navigation, route: { params } }: TNutritionProps) {
   const isFocused = useIsFocused();
 
-  const { meals, setMeals } = useContext(MealContext);
+  const { meals, setMeals } = useContext(NutritionContext);
 
   const [currentMeal, setCurrentMeal] = useState<IMeal>({
     name: "",
@@ -59,36 +49,26 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
   }, [isFocused]);
 
   function handleLeftPress() {
-    setMeals(
-      meals.map((meal: IMeal, i: number) =>
-        params && i === params.i ? currentMeal : meal
-      )
-    );
+    setMeals(meals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
 
     navigation.goBack();
   }
 
   function handleTrashPress() {
-    Alert.alert(
-      "Delete Meal?",
-      `Are you sure you want to delete "${params && meals[params.i].name}"`,
-      [
-        {
-          text: "Delete",
-          onPress: () => {
-            setMeals(
-              meals.filter((_meal, i: number) => params && i !== params.i)
-            );
-            navigation.goBack();
-          },
-          style: "destructive",
+    Alert.alert("Delete Meal?", `Are you sure you want to delete "${currentMeal.name}"`, [
+      {
+        text: "Delete",
+        onPress: () => {
+          setMeals(meals.filter((_meal, i: number) => i !== params?.i));
+          navigation.goBack();
         },
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]
-    );
+        style: "destructive",
+      },
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+    ]);
   }
 
   return (
@@ -104,9 +84,7 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
             keyboardAppearance="dark"
             numberOfLines={1}
             style={styles.header}
-            onChangeText={(text) =>
-              setCurrentMeal({ ...currentMeal, name: text })
-            }
+            onChangeText={(text) => setCurrentMeal({ ...currentMeal, name: text })}
             onBlur={() =>
               setCurrentMeal({
                 ...currentMeal,
@@ -126,18 +104,20 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
               <Icon name="barcode-scan" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>Scan Barcode</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} style={styles.optionsButton}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.optionsButton}
+              onPress={() => params && navigation.navigate("Recipes", { i: params.i, save: null })}
+            >
               <Icon name="cart-outline" size={48} color={COLORS.primary} />
-              <Text style={styles.optionsText}>My Foods</Text>
+              <Text style={styles.optionsText}>My Recipes</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.optionsRow}>
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.optionsButton}
-              onPress={() =>
-                params && navigation.navigate("Create", { i: params.i })
-              }
+              onPress={() => params && navigation.navigate("Create", { i: params.i, save: false })}
             >
               <Icon name="timer-outline" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>Quick Add</Text>
@@ -151,23 +131,13 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>Foods</Text>
           {currentMeal.foods.map((food: IFood, i: number) => (
-            <Food
-              key={i}
-              food={food}
-              currentMeal={currentMeal}
-              setCurrentMeal={setCurrentMeal}
-            />
+            <Food key={i} food={food} add={false} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
           ))}
         </View>
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>History</Text>
           {histories.map((history: IFood, i: number) => (
-            <History
-              key={i}
-              history={history}
-              currentMeal={currentMeal}
-              setCurrentMeal={setCurrentMeal}
-            />
+            <Food key={i} food={history} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
           ))}
         </View>
       </ScrollView>

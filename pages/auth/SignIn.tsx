@@ -43,21 +43,14 @@ function SignUp({ navigation }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Sign In</Text>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.formContainer}
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.formContainer}>
         <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <TextInput
           value={email}
           placeholder="Email"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
-          style={
-            focusedInput === "email"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
+          style={focusedInput === "email" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
           onChangeText={setEmail}
           onFocus={() => setFocusedInput("email")}
           onBlur={() => setFocusedInput("none")}
@@ -69,38 +62,23 @@ function SignUp({ navigation }: TProps) {
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
             secureTextEntry={showPassword ? false : true}
-            style={
-              focusedInput === "password"
-                ? { ...styles.input, borderBottomColor: COLORS.primary }
-                : styles.input
-            }
+            style={focusedInput === "password" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}
             onBlur={() => setFocusedInput("none")}
           />
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.eyeButton}
-            onPress={() => setShowPassword(!showPassword)}
-          >
+          <TouchableOpacity activeOpacity={0.5} style={styles.eyeButton} onPress={() => setShowPassword(!showPassword)}>
             {showPassword ? (
               <Icon name="eye-off-outline" size={28} color={COLORS.gray} />
             ) : (
               <Icon name="eye-outline" size={28} color={COLORS.gray} />
             )}
           </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate("Forgot")}
-          >
+          <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate("Forgot")}>
             <Text style={styles.passwordForgot}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.button}
-          onPress={handlePress}
-        >
+        <TouchableOpacity activeOpacity={0.5} style={styles.button} onPress={handlePress}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
         <View style={styles.orContainer}>
@@ -109,26 +87,17 @@ function SignUp({ navigation }: TProps) {
         <View style={styles.logosContainer}>
           {Platform.OS === "ios" && (
             <TouchableOpacity style={styles.logoContainer}>
-              <Image
-                source={require("../../assets/apple.png")}
-                style={styles.apple}
-              />
+              <Image source={require("../../assets/apple.png")} style={styles.apple} />
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.logoContainer}>
-            <Image
-              source={require("../../assets/google.png")}
-              style={styles.google}
-            />
+            <Image source={require("../../assets/google.png")} style={styles.google} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
       <View style={styles.bottomContainer}>
         <Text style={styles.bottomText}>Don't have an account? </Text>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => navigation.navigate("Signup")}
-        >
+        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate("Signup")}>
           <Text style={styles.bottomSign}>Sign Up</Text>
         </TouchableOpacity>
       </View>

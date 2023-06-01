@@ -1,13 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -70,8 +62,7 @@ function Add() {
   const [activityName, setActivityName] = useState<string>("");
   const [activities, setActivities] = useState<IActivity[]>(init);
 
-  const [currentEquipment, setCurrentEquipment] =
-    useState<string>("Any Equipment");
+  const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   const [showNew, setShowNew] = useState<boolean>(false);
@@ -79,20 +70,15 @@ function Add() {
   const currentUser = useContext(AuthContext);
 
   useEffect(() => {
-    AsyncStorage.setItem(
-      `@${currentUser?.id}:activities`,
-      JSON.stringify(activities)
-    );
+    AsyncStorage.setItem(`@${currentUser?.id}:activities`, JSON.stringify(activities));
   }, [activities]);
 
   useEffect(() => {
-    AsyncStorage.getItem(`@${currentUser?.id}:activities`).then(
-      (jsonActivities) => {
-        if (jsonActivities) {
-          setActivities(JSON.parse(jsonActivities));
-        }
+    AsyncStorage.getItem(`@${currentUser?.id}:activities`).then((jsonActivities) => {
+      if (jsonActivities) {
+        setActivities(JSON.parse(jsonActivities));
       }
-    );
+    });
   }, []);
 
   return (
@@ -124,29 +110,19 @@ function Add() {
             current={currentEquipment}
             setCurrent={setCurrentEquipment}
           />
-          <Dropdown
-            data={["Any Muscle", ...muscles]}
-            current={currentMuscle}
-            setCurrent={setCurrentMuscle}
-          />
+          <Dropdown data={["Any Muscle", ...muscles]} current={currentMuscle} setCurrent={setCurrentMuscle} />
         </View>
       </View>
       <ScrollView style={styles.exercisesContainer}>
-        <View>
-          {!activityName && <Text style={styles.subheader}>Recent</Text>}
-        </View>
+        <View>{!activityName && <Text style={styles.subheader}>Recent</Text>}</View>
         <View>
           {!activityName && <Text style={styles.subheader}>All Exercises</Text>}
           {activities
             .filter(
               (activity) =>
-                activity.name
-                  .toLowerCase()
-                  .includes(activityName.toLowerCase()) &&
-                (currentEquipment === activity.equipment ||
-                  currentEquipment === "Any Equipment") &&
-                (currentMuscle === activity.muscle ||
-                  currentMuscle === "Any Muscle")
+                activity.name.toLowerCase().includes(activityName.toLowerCase()) &&
+                (currentEquipment === activity.equipment || currentEquipment === "Any Equipment") &&
+                (currentMuscle === activity.muscle || currentMuscle === "Any Muscle")
             )
             .map((activity: IActivity, i: number) => (
               <Activity key={i} activity={activity} />
@@ -201,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 4,
-    paddingLeft: 8,
+    paddingHorizontal: 8,
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
   },

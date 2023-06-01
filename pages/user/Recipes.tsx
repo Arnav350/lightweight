@@ -1,21 +1,108 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
+import { NutritionContext } from "../../hooks/useNutrition";
+import { IFood, IMeal } from "./Nutrition";
+import Food from "../../components/nutrition/Food";
 
 import { COLORS } from "../../constants/theme";
 
 function Recipes({ navigation, route: { params } }: TNutritionProps) {
+  const isFocused = useIsFocused();
+
+  const { meals, setMeals, recipes, setRecipes } = useContext(NutritionContext);
+
+  const [recipeName, setRecipeName] = useState<string>("");
+
+  const [currentMeal, setCurrentMeal] = useState<IMeal>({ name: "", foods: [] });
+
+  useEffect(() => {
+    setCurrentMeal({
+      name: params?.i ? meals[params.i].name : "",
+      foods: params?.i ? meals[params.i].foods : [],
+    });
+  }, [isFocused]);
+
+  function handlePress() {
+    setMeals(meals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
+
+    navigation.goBack();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Recipes</Text>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity activeOpacity={0.3} onPress={handlePress}>
+          <Icon name="chevron-left" size={32} color={COLORS.primary} />
+        </TouchableOpacity>
+        <Text style={styles.header}>My Recipes</Text>
+        <TouchableOpacity
+          activeOpacity={0.3}
+          onPress={() => params && navigation.navigate("Create", { i: params.i, save: true })}
+        >
+          <Icon name="plus" size={32} color={COLORS.primary} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.recipesContainer}>
+        <View style={styles.inputContainer}>
+          <Icon name="magnify" size={24} color={COLORS.darkGray} />
+          <TextInput
+            value={recipeName}
+            placeholder="Search recipe name"
+            placeholderTextColor={COLORS.gray}
+            keyboardAppearance="dark"
+            style={styles.input}
+            onChangeText={setRecipeName}
+          />
+        </View>
+        <ScrollView>
+          {recipes.map((recipe: IFood, i: number) => (
+            <Food key={i} food={recipe} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
+          ))}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.blackTwo,
     flex: 1,
+    backgroundColor: COLORS.blackTwo,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: COLORS.blackTwo,
+  },
+  header: {
+    paddingVertical: 8,
+    color: COLORS.white,
+    fontSize: 24,
+    fontWeight: "500",
+  },
+  recipesContainer: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: COLORS.black,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 8,
+    backgroundColor: COLORS.blackOne,
+    borderRadius: 8,
+  },
+  input: {
+    flex: 1,
+    padding: 8,
+    color: COLORS.white,
+    fontSize: 16,
   },
 });
 

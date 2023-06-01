@@ -20,10 +20,7 @@ function AuthStack() {
   const currentUser = useContext(AuthContext);
 
   return (
-    <Stack.Navigator
-      initialRouteName="Signin"
-      screenOptions={{ headerShown: false }}
-    >
+    <Stack.Navigator initialRouteName="Signin" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Signin" component={SignIn} />
       <Stack.Screen name="Forgot" component={Forgot} />
       <Stack.Screen name="Signup" component={SignUp} />

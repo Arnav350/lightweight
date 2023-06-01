@@ -12,7 +12,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
-import { MealContext } from "../../hooks/useMeal";
+import { NutritionContext } from "../../hooks/useNutrition";
 import Macro from "../../components/nutrition/Macro";
 import Meal from "../../components/nutrition/Meal";
 
@@ -36,12 +36,11 @@ export interface IMeal {
 const windowWidth = Dimensions.get("window").width;
 
 function Nutrition(props: TNutritionProps) {
+  const { meals, setMeals } = useContext(NutritionContext);
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
 
   const [slide, setSlide] = useState<number>(0);
-
-  const { meals, setMeals } = useContext(MealContext);
 
   async function handlePress() {
     setMeals([...meals, { name: mealName || "Meal Name", foods: [] }]);
@@ -49,6 +48,7 @@ function Nutrition(props: TNutritionProps) {
 
     props.navigation.navigate("Repast", {
       i: meals.length,
+      save: null,
     });
   }
 
@@ -68,9 +68,7 @@ function Nutrition(props: TNutritionProps) {
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={(event) =>
-            setSlide(event.nativeEvent.contentOffset.x / windowWidth)
-          }
+          onMomentumScrollEnd={(event) => setSlide(event.nativeEvent.contentOffset.x / windowWidth)}
         >
           <View style={styles.sectionContainer}>
             <View style={styles.subheaderContainer}>
@@ -82,10 +80,7 @@ function Nutrition(props: TNutritionProps) {
                 <Macro
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce(
-                        (total: number, { calories }) => (total += calories),
-                        0
-                      )),
+                      (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
                     0
                   )}
                   total={30000}
@@ -95,10 +90,7 @@ function Nutrition(props: TNutritionProps) {
                 <Macro
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce(
-                        (total: number, { fat }) => (total += fat),
-                        0
-                      )),
+                      (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
                     0
                   )}
                   total={80}
@@ -110,10 +102,7 @@ function Nutrition(props: TNutritionProps) {
                 <Macro
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce(
-                        (total: number, { protein }) => (total += protein),
-                        0
-                      )),
+                      (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
                     0
                   )}
                   total={180}
@@ -124,10 +113,7 @@ function Nutrition(props: TNutritionProps) {
                 <Macro
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce(
-                        (total: number, { carbs }) => (total += carbs),
-                        0
-                      )),
+                      (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
                     0
                   )}
                   total={180}
@@ -151,21 +137,9 @@ function Nutrition(props: TNutritionProps) {
           </View>
         </ScrollView>
         <View style={styles.dotsContainer}>
-          <Icon
-            name="circle"
-            size={14}
-            color={slide === 0 ? COLORS.darkGray : COLORS.blackOne}
-          />
-          <Icon
-            name="circle"
-            size={14}
-            color={slide === 1 ? COLORS.darkGray : COLORS.blackOne}
-          />
-          <Icon
-            name="circle"
-            size={14}
-            color={slide === 2 ? COLORS.darkGray : COLORS.blackOne}
-          />
+          <Icon name="circle" size={14} color={slide === 0 ? COLORS.darkGray : COLORS.blackOne} />
+          <Icon name="circle" size={14} color={slide === 1 ? COLORS.darkGray : COLORS.blackOne} />
+          <Icon name="circle" size={14} color={slide === 2 ? COLORS.darkGray : COLORS.blackOne} />
         </View>
         <View style={styles.subheaderContainer}>
           <Text style={styles.subheader}>Meals</Text>
@@ -176,20 +150,12 @@ function Nutrition(props: TNutritionProps) {
             placeholder="Meal Name..."
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
-            style={
-              focused
-                ? { ...styles.input, borderBottomColor: COLORS.primary }
-                : { ...styles.input }
-            }
+            style={focused ? { ...styles.input, borderBottomColor: COLORS.primary } : { ...styles.input }}
             onChangeText={setMealName}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
           />
-          <TouchableOpacity
-            style={styles.inputButton}
-            activeOpacity={0.5}
-            onPress={handlePress}
-          >
+          <TouchableOpacity style={styles.inputButton} activeOpacity={0.5} onPress={handlePress}>
             <Text style={styles.inputText}>Add Meal</Text>
           </TouchableOpacity>
         </View>
@@ -214,11 +180,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingVertical: 8,
+    color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",
-    color: COLORS.white,
   },
   nutritionContainer: {
     backgroundColor: COLORS.black,

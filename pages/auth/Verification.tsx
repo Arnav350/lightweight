@@ -1,12 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import {
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
 import { TAuthStackParamList } from "../../stacks/AuthStack";
@@ -21,18 +14,13 @@ function Verification({ navigation, route: { params } }: TProps) {
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Verification Link Sent!</Text>
         <Text style={styles.subheader}>
-          We sent a confirmation email to {params?.email}. Check your email for
-          a link to sign in.
+          We sent a confirmation email to {params?.email}. Check your email for a link to sign in.
         </Text>
       </View>
       <View style={styles.mainContainer}>
         <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <Text style={styles.text}>Didn't get an email?</Text>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.button}
-          onPress={() => {}}
-        >
+        <TouchableOpacity activeOpacity={0.5} style={styles.button} onPress={() => {}}>
           <Text style={styles.buttonText}>Resend Email</Text>
         </TouchableOpacity>
       </View>

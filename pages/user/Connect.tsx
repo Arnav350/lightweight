@@ -94,7 +94,8 @@ function Connect() {
           <Icon name="magnify" size={32} color={COLORS.darkGray} />
           <TextInput
             placeholder="Search user"
-            placeholderTextColor="#888"
+            placeholderTextColor={COLORS.gray}
+            keyboardAppearance="dark"
             style={styles.search}
           />
         </View>
@@ -111,14 +112,7 @@ function Connect() {
             <TouchableOpacity style={styles.story} key={i}>
               <Image source={{ uri: story.image }} style={styles.storyImage} />
               <Text style={styles.storyText}>{story.name}</Text>
-              {story.seen && (
-                <Icon
-                  name="replay"
-                  size={48}
-                  color="#eee"
-                  style={{ position: "absolute" }}
-                />
-              )}
+              {story.seen && <Icon name="replay" size={48} color="#eee" style={{ position: "absolute" }} />}
             </TouchableOpacity>
           ))}
         </ScrollView>

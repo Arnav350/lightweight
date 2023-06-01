@@ -1,22 +1,15 @@
 import { useContext, useState } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
 import { IFood, IMeal } from "./Nutrition";
-import { MealContext } from "../../hooks/useMeal";
+import { NutritionContext } from "../../hooks/useNutrition";
 
 import { COLORS } from "../../constants/theme";
 
 function Create({ navigation, route: { params } }: TNutritionProps) {
-  const { meals, setMeals } = useContext(MealContext);
+  const { meals, setMeals, recipes, setRecipes } = useContext(NutritionContext);
 
   const [focusedInput, setFocusedInput] = useState<string>("none");
   const [currentFood, setCurrentFood] = useState<IFood>({
@@ -31,26 +24,29 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
   const [error, setError] = useState<boolean>(false);
 
   function handlePress() {
-    if (currentFood.name && currentFood.calories) {
-      setMeals(
-        meals.map((meal: IMeal, i: number) =>
-          params && i === params.i
-            ? {
-                ...meal,
-                foods: [
-                  ...meal.foods,
-                  {
-                    ...currentFood,
-                    amount: currentFood.amount || 1,
-                    amountType: currentFood.amountType || "amountZ",
-                  },
-                ],
-              }
-            : meal
-        )
-      );
+    if (currentFood.calories && currentFood.name) {
+      const tempFood: IFood = {
+        ...currentFood,
+        amount: currentFood.amount || 1,
+        amountType: currentFood.amountType || "amount",
+      };
 
-      params && navigation.navigate("Repast", { i: params.i });
+      navigation.goBack();
+
+      if (params?.save) {
+        setRecipes([...recipes, tempFood]);
+      } else {
+        setMeals(
+          meals.map((meal: IMeal, i: number) =>
+            i === params?.i
+              ? {
+                  ...meal,
+                  foods: [...meal.foods, tempFood],
+                }
+              : meal
+          )
+        );
+      }
     } else {
       setError(true);
     }
@@ -58,10 +54,7 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity
-          activeOpacity={0.3}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Quick Add</Text>
@@ -71,27 +64,16 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
       </View>
       <View style={styles.createContainer}>
         <Text numberOfLines={1} style={styles.name}>
-          Meal:{" "}
-          {meals.map(
-            (meal: IMeal, i: number) => params && i === params.i && meal.name
-          )}
+          Meal: {meals.map((meal: IMeal, i: number) => i === params?.i && meal.name)}
         </Text>
-        {error && (
-          <Text style={styles.error}>Fill out the name and calories field</Text>
-        )}
+        {error && <Text style={styles.error}>Fill out the name and calories fields</Text>}
         <TextInput
           value={currentFood.name}
           placeholder="Food name"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
-          style={
-            focusedInput === "name"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
-          onChangeText={(text: string) =>
-            setCurrentFood({ ...currentFood, name: text })
-          }
+          style={focusedInput === "name" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
+          onChangeText={(text: string) => setCurrentFood({ ...currentFood, name: text })}
           onFocus={() => setFocusedInput("name")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -101,14 +83,8 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="number-pad"
-          style={
-            focusedInput === "calories"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
-          onChangeText={(text: string) =>
-            setCurrentFood({ ...currentFood, calories: Number(text) })
-          }
+          style={focusedInput === "calories" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
+          onChangeText={(text: string) => setCurrentFood({ ...currentFood, calories: Number(text) })}
           onFocus={() => setFocusedInput("calories")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -118,14 +94,8 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="numeric"
-          style={
-            focusedInput === "protein"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
-          onChangeText={(text: string) =>
-            setCurrentFood({ ...currentFood, protein: Number(text) })
-          }
+          style={focusedInput === "protein" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
+          onChangeText={(text: string) => setCurrentFood({ ...currentFood, protein: Number(text) })}
           onFocus={() => setFocusedInput("protein")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -135,14 +105,8 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="numeric"
-          style={
-            focusedInput === "fat"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
-          onChangeText={(text: string) =>
-            setCurrentFood({ ...currentFood, fat: Number(text) })
-          }
+          style={focusedInput === "fat" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
+          onChangeText={(text: string) => setCurrentFood({ ...currentFood, fat: Number(text) })}
           onFocus={() => setFocusedInput("fat")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -152,14 +116,8 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="numeric"
-          style={
-            focusedInput === "carbs"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
-          onChangeText={(text: string) =>
-            setCurrentFood({ ...currentFood, carbs: Number(text) })
-          }
+          style={focusedInput === "carbs" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
+          onChangeText={(text: string) => setCurrentFood({ ...currentFood, carbs: Number(text) })}
           onFocus={() => setFocusedInput("carbs")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -169,14 +127,8 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           keyboardType="numeric"
-          style={
-            focusedInput === "number"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
-          onChangeText={(text: string) =>
-            setCurrentFood({ ...currentFood, amount: Number(text) })
-          }
+          style={focusedInput === "number" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
+          onChangeText={(text: string) => setCurrentFood({ ...currentFood, amount: Number(text) })}
           onFocus={() => setFocusedInput("number")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -185,22 +137,12 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
           placeholder="Serving Units (optional)"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
-          style={
-            focusedInput === "unit"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
-          onChangeText={(text: string) =>
-            setCurrentFood({ ...currentFood, amountType: text })
-          }
+          style={focusedInput === "unit" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
+          onChangeText={(text: string) => setCurrentFood({ ...currentFood, amountType: text })}
           onFocus={() => setFocusedInput("unit")}
           onBlur={() => setFocusedInput("none")}
         />
-        <TouchableOpacity
-          activeOpacity={0.2}
-          style={styles.addContainer}
-          onPress={handlePress}
-        >
+        <TouchableOpacity activeOpacity={0.2} style={styles.addContainer} onPress={handlePress}>
           <Text style={styles.add}>Add Food</Text>
         </TouchableOpacity>
       </View>
@@ -221,11 +163,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingVertical: 8,
+    color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",
-    color: COLORS.white,
   },
   createContainer: {
     flex: 1,

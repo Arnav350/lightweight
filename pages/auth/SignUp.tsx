@@ -127,8 +127,7 @@ function SignUp({ navigation }: TProps) {
     } else if (!password.match(passwordRegex)) {
       setErrors((errors) => ({
         ...errors,
-        password:
-          "Password must contain a special character and uppercase letter",
+        password: "Password must contain a special character and uppercase letter",
       }));
     } else {
       setErrors((errors) => ({ ...errors, password: "" }));
@@ -153,10 +152,7 @@ function SignUp({ navigation }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Sign Up</Text>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.formContainer}
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.formContainer}>
         <Image source={require("../../assets/logo.png")} style={styles.logo} />
         <Text style={styles.error}>{errors.username}</Text>
         <TextInput
@@ -164,11 +160,7 @@ function SignUp({ navigation }: TProps) {
           placeholder="Username"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
-          style={
-            focusedInput === "username"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
+          style={focusedInput === "username" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
           onChangeText={setUsername}
           onFocus={() => setFocusedInput("username")}
           onBlur={handleUsernameBlur}
@@ -179,11 +171,7 @@ function SignUp({ navigation }: TProps) {
           placeholder="Email"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
-          style={
-            focusedInput === "email"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
+          style={focusedInput === "email" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
           onChangeText={setEmail}
           onFocus={() => setFocusedInput("email")}
           onBlur={handleEmailBlur}
@@ -196,20 +184,12 @@ function SignUp({ navigation }: TProps) {
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
             secureTextEntry={showPassword ? false : true}
-            style={
-              focusedInput === "password"
-                ? { ...styles.input, borderBottomColor: COLORS.primary }
-                : styles.input
-            }
+            style={focusedInput === "password" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}
             onBlur={handlePasswordBlur}
           />
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.eyeButton}
-            onPress={() => setShowPassword(!showPassword)}
-          >
+          <TouchableOpacity activeOpacity={0.5} style={styles.eyeButton} onPress={() => setShowPassword(!showPassword)}>
             {showPassword ? (
               <Icon name="eye-off-outline" size={28} color={COLORS.gray} />
             ) : (
@@ -224,20 +204,12 @@ function SignUp({ navigation }: TProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           secureTextEntry={showPassword ? false : true}
-          style={
-            focusedInput === "confirm"
-              ? { ...styles.input, borderBottomColor: COLORS.primary }
-              : styles.input
-          }
+          style={focusedInput === "confirm" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
           onChangeText={setConfirm}
           onFocus={() => setFocusedInput("confirm")}
           onBlur={handleConfirmBlur}
         />
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.button}
-          onPress={handlePress}
-        >
+        <TouchableOpacity activeOpacity={0.5} style={styles.button} onPress={handlePress}>
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
         <View style={styles.orContainer}>
@@ -246,26 +218,17 @@ function SignUp({ navigation }: TProps) {
         <View style={styles.logosContainer}>
           {Platform.OS === "ios" && (
             <TouchableOpacity style={styles.logoContainer}>
-              <Image
-                source={require("../../assets/apple.png")}
-                style={styles.apple}
-              />
+              <Image source={require("../../assets/apple.png")} style={styles.apple} />
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.logoContainer}>
-            <Image
-              source={require("../../assets/google.png")}
-              style={styles.google}
-            />
+            <Image source={require("../../assets/google.png")} style={styles.google} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
       <View style={styles.bottomContainer}>
         <Text style={styles.bottomText}>Already have an account? </Text>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => navigation.navigate("Signin")}
-        >
+        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate("Signin")}>
           <Text style={styles.bottomSign}>Sign In</Text>
         </TouchableOpacity>
       </View>
