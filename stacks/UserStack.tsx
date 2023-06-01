@@ -19,27 +19,14 @@ import { TWorkoutStackParamList } from "../App";
 
 import { COLORS } from "../constants/theme";
 
-export type TGymStackParamList = {
+type TGymStackParamList = {
   Gym: undefined;
   Select: undefined;
 };
 
 export type TGymProps = StackScreenProps<TGymStackParamList>;
 
-export type TNutritionStackParamList = {
-  Nutrition: undefined;
-  Repast: { i: number };
-  Create: { i: number };
-  Recipes: { i: number };
-};
-
-export type TNutritionProps = StackScreenProps<TNutritionStackParamList>;
-
-type TProps = StackScreenProps<TWorkoutStackParamList>;
-
 const GStack = createStackNavigator<TGymStackParamList>();
-const NStack = createStackNavigator<TNutritionStackParamList>();
-const Tab = createBottomTabNavigator();
 
 function GymStack() {
   return (
@@ -52,6 +39,17 @@ function GymStack() {
     </GStack.Navigator>
   );
 }
+
+type TNutritionStackParamList = {
+  Nutrition: undefined;
+  Repast: { i: number };
+  Create: { i: number };
+  Recipes: { i: number };
+};
+
+export type TNutritionProps = StackScreenProps<TNutritionStackParamList>;
+
+const NStack = createStackNavigator<TNutritionStackParamList>();
 
 function NutritionStack() {
   return (
@@ -68,6 +66,10 @@ function NutritionStack() {
     </MealProvider>
   );
 }
+
+type TProps = StackScreenProps<TWorkoutStackParamList>;
+
+const Tab = createBottomTabNavigator();
 
 function UserStack(props: TProps) {
   return (
