@@ -5,6 +5,7 @@ import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
 import AuthStack from "./stacks/AuthStack";
 import UserStack, { TTabStackParamsList } from "./stacks/UserStack";
 import { AuthContext, AuthProvider } from "./hooks/useAuth";
+import { WorkoutProvider } from "./hooks/useWorkout";
 import Loading from "./pages/auth/Loading";
 import Add from "./pages/workout/Add";
 import Workout from "./pages/workout/Workout";
@@ -31,8 +32,10 @@ function RootNavigator() {
       {currentUser ? (
         <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="UserStack" component={UserStack} />
-          <Stack.Screen name="Workout" component={Workout} />
-          <Stack.Screen name="Add" component={Add} />
+          <WorkoutProvider>
+            <Stack.Screen name="Workout" component={Workout} />
+            <Stack.Screen name="Add" component={Add} />
+          </WorkoutProvider>
         </Stack.Navigator>
       ) : (
         <AuthStack />

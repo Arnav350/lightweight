@@ -2,6 +2,7 @@ import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigatio
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/Ionicons";
 
+import { WorkoutProvider } from "../hooks/useWorkout";
 import { NutritionProvider } from "../hooks/useNutrition";
 import Gym from "../pages/user/Gym";
 import Select from "../pages/user/Select";
@@ -28,10 +29,12 @@ const GStack = createStackNavigator<TGymStackParamList>();
 
 function GymStack() {
   return (
-    <GStack.Navigator initialRouteName="Gym" screenOptions={{ headerShown: false }}>
-      <GStack.Screen name="Gym" component={Gym} />
-      <GStack.Screen name="Select" component={Select} />
-    </GStack.Navigator>
+    <WorkoutProvider>
+      <GStack.Navigator initialRouteName="Gym" screenOptions={{ headerShown: false }}>
+        <GStack.Screen name="Gym" component={Gym} />
+        <GStack.Screen name="Select" component={Select} />
+      </GStack.Navigator>
+    </WorkoutProvider>
   );
 }
 

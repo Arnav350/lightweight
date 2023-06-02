@@ -59,7 +59,7 @@ const init: IActivity[] = [
   { name: "Bench Press", equipment: "Dumbbell", muscle: "Chest" },
 ];
 
-function Add(props: TWorkoutProps) {
+function Add({ navigation }: TWorkoutProps) {
   const [activityName, setActivityName] = useState<string>("");
   const [activities, setActivities] = useState<IActivity[]>(init);
 

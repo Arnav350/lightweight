@@ -104,15 +104,12 @@ export function NutritionProvider({ children }: IProviderChildren) {
   }, [recipes]);
 
   useEffect(() => {
-    AsyncStorage.getItem(`@${currentUser?.id}:meals`).then((jsonMeals) => {
-      if (jsonMeals) {
-        setMeals(JSON.parse(jsonMeals));
+    AsyncStorage.multiGet([`@${currentUser?.id}:meals`, `@${currentUser?.id}:recipes`]).then((arrayJson) => {
+      if (arrayJson[0][1]) {
+        setMeals(JSON.parse(arrayJson[0][1]));
       }
-    });
-
-    AsyncStorage.getItem(`@${currentUser?.id}:recipes`).then((jsonRecipes) => {
-      if (jsonRecipes) {
-        setRecipes(JSON.parse(jsonRecipes));
+      if (arrayJson[1][1]) {
+        setRecipes(JSON.parse(arrayJson[1][1]));
       }
     });
   }, []);

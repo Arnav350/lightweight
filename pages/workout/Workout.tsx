@@ -111,14 +111,6 @@ const init2: IWorkout = {
   ],
 };
 
-const init3: IWorkout = {
-  date: { month: "", day: "" },
-  name: "",
-  time: "",
-  weight: 0,
-  exercises: [],
-};
-
 function Workout({ navigation }: TWorkoutProps) {
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(init2);
 
