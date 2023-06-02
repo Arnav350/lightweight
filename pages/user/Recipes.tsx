@@ -58,10 +58,23 @@ function Recipes({ navigation, route: { params } }: TNutritionProps) {
             onChangeText={setRecipeName}
           />
         </View>
+        <Text style={styles.text}>Recipes</Text>
         <ScrollView>
-          {recipes.map((recipe: IFood, i: number) => (
-            <Food key={i} food={recipe} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
-          ))}
+          {recipes
+            .filter((recipe: IFood) => recipe.name.toLowerCase().includes(recipeName.toLowerCase()))
+            .map((recipe: IFood, i: number) => (
+              <Food key={i} food={recipe} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
+            ))}
+          <View style={styles.orContainer}>
+            <Text style={styles.or}>OR</Text>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.buttonContainer}
+            onPress={() => params && navigation.navigate("Create", { i: params.i, save: true })}
+          >
+            <Text style={styles.button}>Create a New Recipe</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -94,6 +107,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 12,
     paddingHorizontal: 8,
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
@@ -103,6 +117,37 @@ const styles = StyleSheet.create({
     padding: 8,
     color: COLORS.white,
     fontSize: 16,
+  },
+  text: {
+    marginVertical: 8,
+    color: COLORS.white,
+    fontSize: 16,
+  },
+  orContainer: {
+    marginBottom: 16,
+    width: 120,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.darkGray,
+    alignSelf: "center",
+  },
+  or: {
+    top: 10,
+    paddingHorizontal: 10,
+    backgroundColor: COLORS.black,
+    color: COLORS.gray,
+    alignSelf: "center",
+  },
+  buttonContainer: {
+    marginVertical: 8,
+    paddingVertical: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 8,
+  },
+  button: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: "500",
+    textAlign: "center",
   },
 });
 

@@ -294,8 +294,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   orContainer: {
-    width: 120,
     marginBottom: 24,
+    width: 120,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.darkGray,
     alignSelf: "center",

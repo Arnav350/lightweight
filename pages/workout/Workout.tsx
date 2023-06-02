@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Exercise from "../../components/workout/Exercise";
-import { TWorkoutStackParamList } from "../../App";
+import { TWorkoutProps } from "../../App";
 
 import { COLORS } from "../../constants/theme";
-
-type TProps = StackScreenProps<TWorkoutStackParamList>;
 
 export interface ISet {
   type: "D" | "N" | "S" | "W";
@@ -122,7 +119,7 @@ const init3: IWorkout = {
   exercises: [],
 };
 
-function Workout({ navigation }: TProps) {
+function Workout({ navigation }: TWorkoutProps) {
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(init2);
 
   function handleFinishPress() {

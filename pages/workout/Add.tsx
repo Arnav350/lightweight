@@ -9,6 +9,7 @@ import New from "../../components/workout/New";
 import { AuthContext } from "../../hooks/useAuth";
 
 import { COLORS } from "../../constants/theme";
+import { TWorkoutProps } from "../../App";
 
 export interface IActivity {
   name: string;
@@ -58,7 +59,7 @@ const init: IActivity[] = [
   { name: "Bench Press", equipment: "Dumbbell", muscle: "Chest" },
 ];
 
-function Add() {
+function Add(props: TWorkoutProps) {
   const [activityName, setActivityName] = useState<string>("");
   const [activities, setActivities] = useState<IActivity[]>(init);
 
@@ -119,7 +120,7 @@ function Add() {
           {!activityName && <Text style={styles.subheader}>All Exercises</Text>}
           {activities
             .filter(
-              (activity) =>
+              (activity: IActivity) =>
                 activity.name.toLowerCase().includes(activityName.toLowerCase()) &&
                 (currentEquipment === activity.equipment || currentEquipment === "Any Equipment") &&
                 (currentMuscle === activity.muscle || currentMuscle === "Any Muscle")

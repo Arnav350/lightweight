@@ -57,15 +57,17 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
         <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
-        <Text style={styles.header}>Quick Add</Text>
+        <Text style={styles.header}>{params?.save ? "Create Recipe" : "Quick Add"}</Text>
         <TouchableOpacity activeOpacity={0.3}>
           <Icon name="check" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <View style={styles.createContainer}>
-        <Text numberOfLines={1} style={styles.name}>
-          Meal: {meals.map((meal: IMeal, i: number) => i === params?.i && meal.name)}
-        </Text>
+        {!params?.save && (
+          <Text numberOfLines={1} style={styles.name}>
+            Meal: {meals.map((meal: IMeal, i: number) => i === params?.i && meal.name)}
+          </Text>
+        )}
         {error && <Text style={styles.error}>Fill out the name and calories fields</Text>}
         <TextInput
           value={currentFood.name}
@@ -143,7 +145,7 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
           onBlur={() => setFocusedInput("none")}
         />
         <TouchableOpacity activeOpacity={0.2} style={styles.addContainer} onPress={handlePress}>
-          <Text style={styles.add}>Add Food</Text>
+          <Text style={styles.add}>Add Recipe</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -14,12 +14,19 @@ interface IProps {
 }
 
 function Food({ food, add, currentMeal, setCurrentMeal }: IProps) {
+  const [pressed, setPressed] = useState<boolean>(false);
+
   function handlePress() {
     if (add) {
       setCurrentMeal({
         ...currentMeal,
         foods: [...currentMeal.foods, food],
       });
+
+      setPressed(true);
+      setTimeout(() => {
+        setPressed(false);
+      }, 2000);
     } else {
       setCurrentMeal({
         ...currentMeal,
@@ -38,8 +45,16 @@ function Food({ food, add, currentMeal, setCurrentMeal }: IProps) {
           {food.calories} cal - {food.amount} {food.amountType}
         </Text>
       </View>
-      <TouchableOpacity activeOpacity={0.5} style={styles.button} onPress={handlePress}>
-        <Icon name={add ? "plus" : "minus"} size={24} color={COLORS.white} />
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={pressed ? { ...styles.button, backgroundColor: COLORS.white } : styles.button}
+        onPress={handlePress}
+      >
+        <Icon
+          name={pressed ? "check" : add ? "plus" : "minus"}
+          size={24}
+          color={pressed ? COLORS.primary : COLORS.white}
+        />
       </TouchableOpacity>
     </View>
   );

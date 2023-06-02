@@ -20,11 +20,7 @@ function Meal({ i, meal, navigate: { navigation } }: IProps) {
           {meal.name}
         </Text>
         <Text style={styles.total}>
-          {!!meal.foods.length &&
-            meal.foods.reduce(
-              (total: number, { calories }) => (total += calories),
-              0
-            )}
+          {!!meal.foods.length && meal.foods.reduce((total: number, { calories }) => (total += calories), 0)}
         </Text>
       </View>
       {meal.foods.map((food: IFood, i: number) => (
@@ -106,7 +102,7 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 8,
     backgroundColor: COLORS.primary,
-    borderRadius: 4,
+    borderRadius: 8,
   },
   buttonText: {
     color: COLORS.white,
