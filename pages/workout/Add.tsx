@@ -1,15 +1,22 @@
 import { useContext, useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TRootStackParamList } from "../../App";
+import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
+import { AuthContext } from "../../hooks/useAuth";
 import Dropdown from "../../components/workout/Dropdown";
 import Activity from "../../components/workout/Activity";
 import New from "../../components/workout/New";
-import { AuthContext } from "../../hooks/useAuth";
-
 import { COLORS } from "../../constants/theme";
-import { TWorkoutProps } from "../../App";
+
+type TProps = CompositeScreenProps<
+  StackScreenProps<TWorkoutStackParamList, "Add">,
+  StackScreenProps<TRootStackParamList>
+>;
 
 export interface IActivity {
   name: string;
@@ -59,7 +66,7 @@ const init: IActivity[] = [
   { name: "Bench Press", equipment: "Dumbbell", muscle: "Chest" },
 ];
 
-function Add({ navigation }: TWorkoutProps) {
+function Add({ navigation }: TProps) {
   const [activityName, setActivityName] = useState<string>("");
   const [activities, setActivities] = useState<IActivity[]>(init);
 

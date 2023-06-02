@@ -7,7 +7,6 @@ import { TNutritionProps } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
 import Food from "../../components/nutrition/Food";
-
 import { COLORS } from "../../constants/theme";
 
 function Recipes({ navigation, route: { params } }: TNutritionProps) {

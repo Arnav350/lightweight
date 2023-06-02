@@ -15,7 +15,6 @@ import { TNutritionProps } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
 import Macro from "../../components/nutrition/Macro";
 import Meal from "../../components/nutrition/Meal";
-
 import { COLORS } from "../../constants/theme";
 
 export interface IFood {

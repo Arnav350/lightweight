@@ -3,9 +3,8 @@ import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } fro
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
-import { IFood, IMeal } from "./Nutrition";
 import { NutritionContext } from "../../hooks/useNutrition";
-
+import { IFood, IMeal } from "./Nutrition";
 import { COLORS } from "../../constants/theme";
 
 function Create({ navigation, route: { params } }: TNutritionProps) {

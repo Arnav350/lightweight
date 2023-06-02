@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigatorScreenParams } from "@react-navigation/native";
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/Ionicons";
 
@@ -13,16 +14,12 @@ import Recipes from "../pages/user/Recipes";
 import Compete from "../pages/user/Compete";
 import Connect from "../pages/user/Connect";
 import Profile from "../pages/user/Profile";
-
 import { COLORS } from "../constants/theme";
-import { NavigatorScreenParams } from "@react-navigation/native";
 
 export type TGymStackParamList = {
   Gym: undefined;
   Select: undefined;
 };
-
-export type TGymProps = StackScreenProps<TGymStackParamList>;
 
 const GStack = createStackNavigator<TGymStackParamList>();
 

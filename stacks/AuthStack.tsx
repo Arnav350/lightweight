@@ -1,11 +1,9 @@
-import { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import SignIn from "../pages/auth/SignIn";
 import Forgot from "../pages/auth/Forgot";
 import SignUp from "../pages/auth/SignUp";
 import Verification from "../pages/auth/Verification";
-import { AuthContext } from "../hooks/useAuth";
 
 export type TAuthStackParamList = {
   Signin: undefined;
@@ -17,8 +15,6 @@ export type TAuthStackParamList = {
 const Stack = createStackNavigator<TAuthStackParamList>();
 
 function AuthStack() {
-  const currentUser = useContext(AuthContext);
-
   return (
     <Stack.Navigator initialRouteName="Signin" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Signin" component={SignIn} />

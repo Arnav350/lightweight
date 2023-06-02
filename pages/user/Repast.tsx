@@ -5,9 +5,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
-import Food from "../../components/nutrition/Food";
 import { IFood, IMeal } from "./Nutrition";
-
+import Food from "../../components/nutrition/Food";
 import { COLORS } from "../../constants/theme";
 
 function Repast({ navigation, route: { params } }: TNutritionProps) {

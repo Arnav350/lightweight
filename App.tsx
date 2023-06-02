@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { NavigationContainer, NavigatorScreenParams } from "@react-navigation/native";
+import { CompositeScreenProps, NavigationContainer, NavigatorScreenParams } from "@react-navigation/native";
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 import AuthStack from "./stacks/AuthStack";
 import UserStack, { TTabParamsList } from "./stacks/UserStack";
@@ -14,7 +15,10 @@ export type TRootStackParamList = {
   WorkoutStack: NavigatorScreenParams<TWorkoutStackParamList>;
 };
 
-export type TRootProps = StackScreenProps<TRootStackParamList>;
+export type TCompositeProps = CompositeScreenProps<
+  BottomTabScreenProps<TTabParamsList>,
+  StackScreenProps<TRootStackParamList>
+>;
 
 const Stack = createStackNavigator<TRootStackParamList>();
 

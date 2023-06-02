@@ -1,12 +1,16 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TGymProps } from "../../stacks/UserStack";
+import { TCompositeProps } from "../../App";
+import { TGymStackParamList } from "../../stacks/UserStack";
 import Log from "../../components/gym/Log";
-
 import { COLORS } from "../../constants/theme";
 
-function Gym({ navigation }: TGymProps) {
+type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
+
+function Gym({ navigation }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -23,7 +27,7 @@ function Gym({ navigation }: TGymProps) {
           <TouchableOpacity
             activeOpacity={0.5}
             style={styles.gymRoutine}
-            // onPress={() => navigation.navigate("WorkoutStack", { screen: "Workout" })}
+            onPress={() => navigation.navigate("WorkoutStack", { screen: "Workout" })}
           >
             <Icon name="plus" size={24} color={COLORS.primary} />
             <Text style={styles.gymSubtitles}>Start Empty Workout</Text>

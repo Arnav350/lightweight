@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TCompositeProps } from "../../App";
+import { TGymStackParamList } from "../../stacks/UserStack";
 import Routine from "../../components/gym/Routine";
-import { TGymProps } from "../../stacks/UserStack";
-
 import { COLORS } from "../../constants/theme";
 
 interface IExercise {
@@ -17,7 +19,9 @@ interface IRoutine {
   exercises: IExercise[];
 }
 
-function Select({ navigation }: TGymProps) {
+type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Select">, TCompositeProps>;
+
+function Select({ navigation }: TProps) {
   const [routines, setRoutines] = useState<IRoutine[]>([
     {
       name: "Push",
