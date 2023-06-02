@@ -3,22 +3,20 @@ import { NavigationContainer, NavigatorScreenParams } from "@react-navigation/na
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
 
 import AuthStack from "./stacks/AuthStack";
-import UserStack, { TTabStackParamsList } from "./stacks/UserStack";
+import UserStack, { TTabParamsList } from "./stacks/UserStack";
+import WorkoutStack, { TWorkoutStackParamList } from "./stacks/WorkoutStack";
 import { AuthContext, AuthProvider } from "./hooks/useAuth";
 import { WorkoutProvider } from "./hooks/useWorkout";
 import Loading from "./pages/auth/Loading";
-import Add from "./pages/workout/Add";
-import Workout from "./pages/workout/Workout";
 
-export type TWorkoutStackParamList = {
-  UserStack: NavigatorScreenParams<TTabStackParamsList>;
-  Workout: undefined;
-  Add: undefined;
+export type TRootStackParamList = {
+  UserStack: NavigatorScreenParams<TTabParamsList>;
+  WorkoutStack: NavigatorScreenParams<TWorkoutStackParamList>;
 };
 
-export type TWorkoutProps = StackScreenProps<TWorkoutStackParamList>;
+export type TRootProps = StackScreenProps<TRootStackParamList>;
 
-const Stack = createStackNavigator<TWorkoutStackParamList>();
+const Stack = createStackNavigator<TRootStackParamList>();
 
 function RootNavigator() {
   const currentUser = useContext(AuthContext);
@@ -30,13 +28,12 @@ function RootNavigator() {
   return (
     <NavigationContainer>
       {currentUser ? (
-        <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="UserStack" component={UserStack} />
-          <WorkoutProvider>
-            <Stack.Screen name="Workout" component={Workout} />
-            <Stack.Screen name="Add" component={Add} />
-          </WorkoutProvider>
-        </Stack.Navigator>
+        <WorkoutProvider>
+          <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="UserStack" component={UserStack} />
+            <Stack.Screen name="WorkoutStack" component={WorkoutStack} />
+          </Stack.Navigator>
+        </WorkoutProvider>
       ) : (
         <AuthStack />
       )}

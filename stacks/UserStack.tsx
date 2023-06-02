@@ -1,4 +1,4 @@
-import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/Ionicons";
 
@@ -13,10 +13,9 @@ import Recipes from "../pages/user/Recipes";
 import Compete from "../pages/user/Compete";
 import Connect from "../pages/user/Connect";
 import Profile from "../pages/user/Profile";
-import { TWorkoutStackParamList } from "../App";
 
 import { COLORS } from "../constants/theme";
-import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
+import { NavigatorScreenParams } from "@react-navigation/native";
 
 export type TGymStackParamList = {
   Gym: undefined;
@@ -62,7 +61,7 @@ function NutritionStack() {
   );
 }
 
-export type TTabStackParamsList = {
+export type TTabParamsList = {
   GymStack: NavigatorScreenParams<TGymStackParamList>;
   NutritionStack: NavigatorScreenParams<TNutritionStackParamList>;
   Compete: undefined;
@@ -70,12 +69,7 @@ export type TTabStackParamsList = {
   Profile: undefined;
 };
 
-export type TCompositeParamList = CompositeScreenProps<
-  BottomTabScreenProps<TTabStackParamsList>,
-  StackScreenProps<TWorkoutStackParamList>
->;
-
-const Tab = createBottomTabNavigator<TTabStackParamsList>();
+const Tab = createBottomTabNavigator<TTabParamsList>();
 
 function UserStack() {
   return (
