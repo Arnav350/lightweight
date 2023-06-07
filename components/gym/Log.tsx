@@ -1,41 +1,36 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { IExercise, IWorkout } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
-function Log() {
+interface IProps {
+  workout: IWorkout;
+}
+
+function Log({ workout }: IProps) {
   return (
     <TouchableOpacity activeOpacity={0.5} style={styles.container}>
       <View style={styles.dateContainer}>
-        <Text style={styles.dateMonth}>May</Text>
-        <Text style={styles.dateDay}>12</Text>
+        <Text style={styles.dateMonth}>{workout.date.month}</Text>
+        <Text style={styles.dateDay}>{workout.date.day}</Text>
       </View>
       <View style={styles.logContainer}>
-        <Text style={styles.logTitle}>Workout Name</Text>
+        <Text style={styles.logTitle}>{workout.name}</Text>
         <View style={styles.logStats}>
           <Icon name="clock" style={styles.logStat}>
-            <Text>123425m</Text>
+            <Text>{workout.time}m</Text>
           </Icon>
           <Icon name="weight" style={styles.logStat}>
-            <Text>126382 lb</Text>
+            <Text>{workout.weight} lb</Text>
           </Icon>
         </View>
         <View style={styles.logExercises}>
-          <Text style={styles.logExercise} numberOfLines={1}>
-            3 x Chinups
-          </Text>
-          <Text style={styles.logExercise} numberOfLines={1}>
-            20 x Incline Dumbbell Upper Chest Press
-          </Text>
-          <Text style={styles.logExercise} numberOfLines={1}>
-            4 x Lateral Raises
-          </Text>
-          <Text style={styles.logExercise} numberOfLines={1}>
-            10 x Pushups
-          </Text>
-          <Text style={styles.logExercise} numberOfLines={1}>
-            2 x Bicep Curls
-          </Text>
+          {workout.exercises.map((exercise: IExercise, i: number) => (
+            <Text key={i} numberOfLines={1} style={styles.logExercise}>
+              {exercise.sets.length} x {exercise.name}
+            </Text>
+          ))}
         </View>
       </View>
     </TouchableOpacity>

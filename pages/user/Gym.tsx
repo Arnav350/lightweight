@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -5,12 +6,21 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../App";
 import { TGymStackParamList } from "../../stacks/UserStack";
+import { WorkoutContext } from "../../hooks/useWorkout";
+import { IWorkout } from "../workout/Workout";
 import Log from "../../components/gym/Log";
 import { COLORS } from "../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
 
 function Gym({ navigation }: TProps) {
+  const { setCurrentWorkout, workouts } = useContext(WorkoutContext);
+
+  function handleEmptyPress() {
+    navigation.navigate("WorkoutStack", { screen: "Workout" });
+    setCurrentWorkout({ date: { month: "", day: "" }, name: "Empty Workout", time: "", weight: 0, exercises: [] });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -24,11 +34,7 @@ function Gym({ navigation }: TProps) {
       </View>
       <ScrollView style={styles.gymContainer}>
         <View style={styles.gymButtons}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.gymRoutine}
-            onPress={() => navigation.navigate("WorkoutStack", { screen: "Workout" })}
-          >
+          <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={handleEmptyPress}>
             <Icon name="plus" size={24} color={COLORS.primary} />
             <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
           </TouchableOpacity>
@@ -49,9 +55,9 @@ function Gym({ navigation }: TProps) {
           </View>
         </View>
         <View style={styles.logContainer}>
-          <Log />
-          <Log />
-          <Log />
+          {workouts.map((workout: IWorkout, i: number) => (
+            <Log key={i} workout={workout} />
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>

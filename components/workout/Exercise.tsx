@@ -15,6 +15,8 @@ interface IProps {
 
 const init: IExercise = {
   name: "Bench Press",
+  equipment: "Barbell",
+  muscle: "Chest",
   notes: "New PR!",
   sets: [
     { type: "W", weight: 200, reps: 10, notes: "notes" },
@@ -28,8 +30,7 @@ function Exercise({ i, currentWorkout, setCurrentWorkout }: IProps) {
   const [prevExercise, setPrevExercise] = useState<IExercise>(init);
 
   useEffect(() => {
-    const lengthDifference =
-      currentWorkout.exercises[i].sets.length - prevExercise.sets.length;
+    const lengthDifference = currentWorkout.exercises[i].sets.length - prevExercise.sets.length;
 
     if (lengthDifference > 0) {
       setPrevExercise({
@@ -55,10 +56,7 @@ function Exercise({ i, currentWorkout, setCurrentWorkout }: IProps) {
           j === i
             ? {
                 ...exercise,
-                sets: [
-                  ...exercise.sets,
-                  { type: "N" as const, weight: 0, reps: 0, notes: "" },
-                ],
+                sets: [...exercise.sets, { type: "N" as const, weight: 0, reps: 0, notes: "" }],
               }
             : exercise
         ),
@@ -81,24 +79,18 @@ function Exercise({ i, currentWorkout, setCurrentWorkout }: IProps) {
         <Text style={styles.subtitle}>Notes</Text>
       </View>
       <View style={styles.setsContainer}>
-        {prevExercise.sets
-          .slice(0, currentWorkout.exercises[i].sets.length)
-          .map((prevSet: ISet, j: number) => (
-            <Set
-              key={j}
-              i={i}
-              j={j}
-              prevSet={prevSet}
-              currentWorkout={currentWorkout}
-              setCurrentWorkout={setCurrentWorkout}
-            />
-          ))}
+        {prevExercise.sets.slice(0, currentWorkout.exercises[i].sets.length).map((prevSet: ISet, j: number) => (
+          <Set
+            key={j}
+            i={i}
+            j={j}
+            prevSet={prevSet}
+            currentWorkout={currentWorkout}
+            setCurrentWorkout={setCurrentWorkout}
+          />
+        ))}
       </View>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={styles.addButton}
-        onPress={handleAddPress}
-      >
+      <TouchableOpacity activeOpacity={0.5} style={styles.addButton} onPress={handleAddPress}>
         <Text style={styles.addText}>+ Add Set</Text>
       </TouchableOpacity>
     </View>
@@ -108,51 +100,44 @@ function Exercise({ i, currentWorkout, setCurrentWorkout }: IProps) {
 const styles = StyleSheet.create({
   container: {
     margin: 4,
-    padding: 12,
+    padding: 16,
     backgroundColor: COLORS.blackOne,
     borderRadius: 16,
   },
   top: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    color: COLORS.white,
   },
   topText: {
-    maxWidth: "80%",
+    maxWidth: "90%",
     color: COLORS.white,
     fontSize: 18,
     fontWeight: "500",
   },
   subtitlesContainer: {
-    display: "flex",
     flexDirection: "row",
-    gap: 8,
-    paddingTop: 4,
-    paddingRight: 8,
-    paddingBottom: 4,
-    paddingLeft: 8,
+    padding: 4,
   },
   subtitle: {
+    marginHorizontal: 2,
     color: COLORS.white,
+    fontSize: 16,
   },
   setsContainer: {
-    paddingTop: 4,
-    paddingRight: 8,
+    marginTop: 4,
+    paddingHorizontal: 8,
     paddingBottom: 8,
-    paddingLeft: 8,
     borderBottomWidth: 2,
     borderBottomColor: COLORS.gray,
   },
   addButton: {
-    paddingTop: 8,
-    paddingRight: 8,
-    paddingLeft: 8,
+    marginTop: 8,
   },
   addText: {
     color: COLORS.white,
-    textAlign: "center",
+    fontSize: 16,
     fontWeight: "500",
+    textAlign: "center",
   },
 });
 

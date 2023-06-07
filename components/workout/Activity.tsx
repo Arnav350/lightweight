@@ -1,14 +1,11 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  activity: {
-    name: string;
-    equipment: string;
-    muscle: string;
-  };
+  activity: IExercise;
 }
 
 function Activity({ activity: { name, equipment, muscle } }: IProps) {

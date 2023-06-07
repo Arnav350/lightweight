@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -6,6 +6,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
 import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
+import { WorkoutContext } from "../../hooks/useWorkout";
 import Exercise from "../../components/workout/Exercise";
 import { COLORS } from "../../constants/theme";
 
@@ -23,6 +24,8 @@ export interface ISet {
 
 export interface IExercise {
   name: string;
+  equipment: string;
+  muscle: string;
   notes: string;
   sets: ISet[];
 }
@@ -38,88 +41,8 @@ export interface IWorkout {
   exercises: IExercise[];
 }
 
-const init: IWorkout = {
-  date: {
-    month: "Jun",
-    day: "19",
-  },
-  name: "Workout Name",
-  time: "1:45:34",
-  weight: 200,
-  exercises: [
-    {
-      name: "Bench Press",
-      notes: "",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: "N", weight: 300, reps: 8, notes: "" },
-        { type: "D", weight: 400, reps: 6, notes: "" },
-      ],
-    },
-    {
-      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
-      notes: "",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: "N", weight: 300, reps: 8, notes: "" },
-        { type: "D", weight: 400, reps: 6, notes: "" },
-      ],
-    },
-    {
-      name: "Bicep Curl",
-      notes: "",
-      sets: [
-        { type: "W", weight: 200, reps: 10, notes: "notes" },
-        { type: "N", weight: 300, reps: 8, notes: "" },
-        { type: "D", weight: 400, reps: 6, notes: "" },
-      ],
-    },
-  ],
-};
-
-const init2: IWorkout = {
-  date: {
-    month: "Jun",
-    day: "19",
-  },
-  name: "Workout Name",
-  time: "1:45:34",
-  weight: 0,
-  exercises: [
-    {
-      name: "Bench Press",
-      notes: "",
-      sets: [
-        { type: "W", weight: 0, reps: 0, notes: "" },
-        { type: "N", weight: 0, reps: 0, notes: "" },
-        { type: "N", weight: 0, reps: 0, notes: "" },
-      ],
-    },
-    {
-      name: "Smith Machine 45 Pound Plate Elevated Front Squat",
-      notes: "",
-      sets: [
-        { type: "N", weight: 0, reps: 0, notes: "" },
-        { type: "N", weight: 0, reps: 0, notes: "" },
-        { type: "D", weight: 0, reps: 0, notes: "" },
-        { type: "N", weight: 0, reps: 0, notes: "" },
-        { type: "N", weight: 0, reps: 0, notes: "" },
-      ],
-    },
-    {
-      name: "Bicep Curl",
-      notes: "",
-      sets: [
-        { type: "N", weight: 0, reps: 0, notes: "" },
-        { type: "S", weight: 0, reps: 0, notes: "" },
-        { type: "S", weight: 0, reps: 0, notes: "" },
-      ],
-    },
-  ],
-};
-
 function Workout({ navigation }: TProps) {
-  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(init2);
+  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleFinishPress() {
     setCurrentWorkout({
@@ -136,7 +59,10 @@ function Workout({ navigation }: TProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headerIcons}>
-          <TouchableOpacity activeOpacity={0.3}>
+          <TouchableOpacity
+            activeOpacity={0.3}
+            onPress={() => navigation.navigate("UserStack", { screen: "GymStack", params: { screen: "Gym" } })}
+          >
             <Icon name="chevron-left" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3}>
@@ -158,11 +84,11 @@ function Workout({ navigation }: TProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.workoutContainer}>
-        {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
+        {currentWorkout.exercises.map((_exercise: IExercise, i: number) => (
           <Exercise key={i} i={i} currentWorkout={currentWorkout} setCurrentWorkout={setCurrentWorkout} />
         ))}
-        <TouchableOpacity activeOpacity={0.5} style={styles.addButton} onPress={() => {}}>
-          <Text style={styles.addText}>Add Exercise</Text>
+        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
+          <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -209,23 +135,21 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   workoutContainer: {
-    padding: 8,
+    padding: 12,
     backgroundColor: COLORS.black,
   },
-  addButton: {
-    marginTop: 8,
-    marginRight: 4,
-    marginBottom: 8,
-    marginLeft: 4,
-    padding: 8,
+  buttonContainer: {
+    marginVertical: 8,
+    marginHorizontal: 4,
+    paddingVertical: 8,
     backgroundColor: COLORS.primary,
-    borderRadius: 8,
+    borderRadius: 16,
   },
-  addText: {
+  button: {
     color: COLORS.white,
-    textAlign: "center",
     fontSize: 16,
     fontWeight: "500",
+    textAlign: "center",
   },
 });
 

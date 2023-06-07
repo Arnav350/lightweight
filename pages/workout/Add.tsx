@@ -8,6 +8,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TRootStackParamList } from "../../App";
 import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { AuthContext } from "../../hooks/useAuth";
+import { WorkoutContext } from "../../hooks/useWorkout";
+import { IExercise } from "./Workout";
 import Dropdown from "../../components/workout/Dropdown";
 import Activity from "../../components/workout/Activity";
 import New from "../../components/workout/New";
@@ -17,12 +19,6 @@ type TProps = CompositeScreenProps<
   StackScreenProps<TWorkoutStackParamList, "Add">,
   StackScreenProps<TRootStackParamList>
 >;
-
-export interface IActivity {
-  name: string;
-  equipment: string;
-  muscle: string;
-}
 
 const equipments: string[] = [
   "None",
@@ -55,27 +51,55 @@ const muscles: string[] = [
   "Other",
 ];
 
-const init: IActivity[] = [
-  { name: "Bench Press", equipment: "Barbell", muscle: "Chest" },
-  { name: "Hammer Curl", equipment: "Dumbbell", muscle: "Bicep" },
+const init: IExercise[] = [
+  {
+    name: "Bench Press",
+    equipment: "Barbell",
+    muscle: "Chest",
+    notes: "",
+    sets: [
+      { type: "W", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+    ],
+  },
   {
     name: "Smith Machine 45 Pound Plate Elevated Front Squat",
     equipment: "Barbell",
     muscle: "Quads",
+    notes: "",
+    sets: [
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "D", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+    ],
   },
-  { name: "Bench Press", equipment: "Dumbbell", muscle: "Chest" },
+  {
+    name: "Bicep Curl",
+    equipment: "Dumbbell",
+    muscle: "Bicep",
+    notes: "",
+    sets: [
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "S", weight: 0, reps: 0, notes: "" },
+      { type: "S", weight: 0, reps: 0, notes: "" },
+    ],
+  },
 ];
 
 function Add({ navigation }: TProps) {
+  const currentUser = useContext(AuthContext);
+  const { exercises } = useContext(WorkoutContext);
+
   const [activityName, setActivityName] = useState<string>("");
-  const [activities, setActivities] = useState<IActivity[]>(init);
+  const [activities, setActivities] = useState<IExercise[]>(init);
 
   const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   const [showNew, setShowNew] = useState<boolean>(false);
-
-  const currentUser = useContext(AuthContext);
 
   useEffect(() => {
     AsyncStorage.setItem(`@${currentUser?.id}:activities`, JSON.stringify(activities));
@@ -92,7 +116,7 @@ function Add({ navigation }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3}>
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Add Exercise</Text>
@@ -127,12 +151,12 @@ function Add({ navigation }: TProps) {
           {!activityName && <Text style={styles.subheader}>All Exercises</Text>}
           {activities
             .filter(
-              (activity: IActivity) =>
+              (activity: IExercise) =>
                 activity.name.toLowerCase().includes(activityName.toLowerCase()) &&
                 (currentEquipment === activity.equipment || currentEquipment === "Any Equipment") &&
                 (currentMuscle === activity.muscle || currentMuscle === "Any Muscle")
             )
-            .map((activity: IActivity, i: number) => (
+            .map((activity: IExercise, i: number) => (
               <Activity key={i} activity={activity} />
             ))}
           <Text style={styles.dont}>Don't see the exercise you want?</Text>

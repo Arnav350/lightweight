@@ -1,37 +1,23 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { IExercise } from "../../pages/workout/Workout";
 import Dropdown from "./Dropdown";
-import { IActivity } from "../../pages/workout/Add";
-
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   equipments: string[];
   muscles: string[];
-  activities: IActivity[];
-  setActivities: Dispatch<SetStateAction<IActivity[]>>;
+  activities: IExercise[];
+  setActivities: Dispatch<SetStateAction<IExercise[]>>;
   setShowNew: Dispatch<SetStateAction<boolean>>;
 }
 
-function New({
-  equipments,
-  muscles,
-  activities,
-  setActivities,
-  setShowNew,
-}: IProps) {
+function New({ equipments, muscles, activities, setActivities, setShowNew }: IProps) {
   const [activityName, setActivityName] = useState<string>("");
 
-  const [currentEquipment, setCurrentEquipment] =
-    useState<string>("Any Equipment");
+  const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   function handlePress() {
@@ -41,6 +27,15 @@ function New({
         name: activityName,
         equipment: currentEquipment,
         muscle: currentMuscle,
+        notes: "",
+        sets: [
+          {
+            type: "N",
+            weight: 0,
+            reps: 0,
+            notes: "",
+          },
+        ],
       },
     ]);
   }
@@ -49,10 +44,7 @@ function New({
     <View style={styles.container}>
       <View style={styles.newContainer}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity
-            activeOpacity={0.3}
-            onPress={() => setShowNew(false)}
-          >
+          <TouchableOpacity activeOpacity={0.3} onPress={() => setShowNew(false)}>
             <Icon name="close" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <Text style={styles.header}>New Exercise</Text>
@@ -71,19 +63,11 @@ function New({
         <View style={styles.dropdownsContainer}>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Equipment:</Text>
-            <Dropdown
-              data={equipments}
-              current={currentEquipment}
-              setCurrent={setCurrentEquipment}
-            />
+            <Dropdown data={equipments} current={currentEquipment} setCurrent={setCurrentEquipment} />
           </View>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Muscle:</Text>
-            <Dropdown
-              data={muscles}
-              current={currentMuscle}
-              setCurrent={setCurrentMuscle}
-            />
+            <Dropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
           </View>
         </View>
       </View>

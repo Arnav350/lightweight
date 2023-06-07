@@ -17,7 +17,7 @@ interface INutritionContext {
 
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
 
-const init = [
+const initm: IMeal[] = [
   {
     name: "Breakfast Breakfast Breakfast Breakfast Breakfast",
     foods: [
@@ -89,18 +89,24 @@ const init = [
   },
 ];
 
+const initr: IFood[] = [];
+
 export function NutritionProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
-  const [meals, setMeals] = useState<IMeal[]>(init);
-  const [recipes, setRecipes] = useState<IFood[]>([]);
+  const [meals, setMeals] = useState<IMeal[]>(initm);
+  const [recipes, setRecipes] = useState<IFood[]>(initr);
 
   useEffect(() => {
-    AsyncStorage.setItem(`@${currentUser?.id}:meals`, JSON.stringify(meals));
+    if (meals !== initm) {
+      AsyncStorage.setItem(`@${currentUser?.id}:meals`, JSON.stringify(meals));
+    }
   }, [meals]);
 
   useEffect(() => {
-    AsyncStorage.setItem(`@${currentUser?.id}:recipes`, JSON.stringify(recipes));
+    if (recipes !== initr) {
+      AsyncStorage.setItem(`@${currentUser?.id}:recipes`, JSON.stringify(recipes));
+    }
   }, [recipes]);
 
   useEffect(() => {

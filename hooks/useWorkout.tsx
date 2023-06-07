@@ -21,39 +21,360 @@ interface IWorkoutContext {
 
 export const WorkoutContext = createContext<IWorkoutContext>({} as IWorkoutContext);
 
-const init: IWorkout = {
+const initcw: IWorkout = {
   date: {
     month: "",
     day: "",
   },
-  name: "",
+  name: "Name",
   time: "",
   weight: 0,
   exercises: [],
 };
 
+const inite: IExercise[] = [
+  {
+    name: "Bench Press",
+    equipment: "Barbell",
+    muscle: "Chest",
+    notes: "",
+    sets: [
+      { type: "W", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+    ],
+  },
+  {
+    name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+    equipment: "Barbell",
+    muscle: "Quads",
+    notes: "",
+    sets: [
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "D", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "N", weight: 0, reps: 0, notes: "" },
+    ],
+  },
+  {
+    name: "Bicep Curl",
+    equipment: "Dumbbell",
+    muscle: "Bicep",
+    notes: "",
+    sets: [
+      { type: "N", weight: 0, reps: 0, notes: "" },
+      { type: "S", weight: 0, reps: 0, notes: "" },
+      { type: "S", weight: 0, reps: 0, notes: "" },
+    ],
+  },
+];
+
+const initw: IWorkout[] = [
+  {
+    date: {
+      month: "June",
+      day: "19",
+    },
+    name: "Workout Name",
+    time: "1435612",
+    weight: 234536,
+    exercises: [
+      {
+        name: "Bench Press",
+        equipment: "Barbell",
+        muscle: "Chest",
+        notes: "",
+        sets: [
+          { type: "W", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+        equipment: "Barbell",
+        muscle: "Quads",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "D", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+    ],
+  },
+  {
+    date: {
+      month: "June",
+      day: "19",
+    },
+    name: "Workout Name",
+    time: "1435612",
+    weight: 234536,
+    exercises: [
+      {
+        name: "Bench Press",
+        equipment: "Barbell",
+        muscle: "Chest",
+        notes: "",
+        sets: [
+          { type: "W", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+        equipment: "Barbell",
+        muscle: "Quads",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "D", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+    ],
+  },
+  {
+    date: {
+      month: "June",
+      day: "19",
+    },
+    name: "Workout Name",
+    time: "1435612",
+    weight: 234536,
+    exercises: [
+      {
+        name: "Bench Press",
+        equipment: "Barbell",
+        muscle: "Chest",
+        notes: "",
+        sets: [
+          { type: "W", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Smith Machine 45 Pound Plate Elevated Front Squat",
+        equipment: "Barbell",
+        muscle: "Quads",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "D", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "N", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+      {
+        name: "Bicep Curl",
+        equipment: "Dumbbell",
+        muscle: "Bicep",
+        notes: "",
+        sets: [
+          { type: "N", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+          { type: "S", weight: 0, reps: 0, notes: "" },
+        ],
+      },
+    ],
+  },
+];
+
+const initr: IWorkout[] = [];
+
 export function WorkoutProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
-  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(init);
-  const [exercises, setExercises] = useState<IExercise[]>([]);
-  const [workouts, setWorkouts] = useState<IWorkout[]>([]);
-  const [routines, setRoutines] = useState<IWorkout[]>([]);
+  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initcw);
+  const [exercises, setExercises] = useState<IExercise[]>(inite);
+  const [workouts, setWorkouts] = useState<IWorkout[]>(initw);
+  const [routines, setRoutines] = useState<IWorkout[]>(initr);
 
   useEffect(() => {
-    AsyncStorage.setItem(`@${currentUser?.id}:currentWorkout`, JSON.stringify(currentWorkout));
+    if (currentWorkout !== initcw) {
+      AsyncStorage.setItem(`@${currentUser?.id}:currentWorkout`, JSON.stringify(currentWorkout));
+    }
   }, [currentWorkout]);
 
   useEffect(() => {
-    AsyncStorage.setItem(`@${currentUser?.id}:exercises`, JSON.stringify(exercises));
+    if (exercises !== inite) {
+      AsyncStorage.setItem(`@${currentUser?.id}:exercises`, JSON.stringify(exercises));
+    }
   }, [exercises]);
 
   useEffect(() => {
-    AsyncStorage.setItem(`@${currentUser?.id}:workouts`, JSON.stringify(workouts));
+    if (workouts !== initw) {
+      AsyncStorage.setItem(`@${currentUser?.id}:workouts`, JSON.stringify(workouts));
+    }
   }, [workouts]);
 
   useEffect(() => {
-    AsyncStorage.setItem(`@${currentUser?.id}:routines`, JSON.stringify(routines));
+    if (routines !== initr) {
+      AsyncStorage.setItem(`@${currentUser?.id}:routines`, JSON.stringify(routines));
+    }
   }, [routines]);
 
   useEffect(() => {
