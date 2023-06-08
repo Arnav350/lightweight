@@ -38,7 +38,6 @@ function Gym({ navigation }: TProps) {
             <Icon name="plus" size={24} color={COLORS.primary} />
             <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
           </TouchableOpacity>
-
           <View style={styles.gymRoutines}>
             <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={() => {}}>
               <Icon name="clipboard-plus-outline" size={24} color={COLORS.primary} />

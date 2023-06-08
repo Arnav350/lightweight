@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import {
   Dimensions,
-  SafeAreaView,
+  // SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import { TNutritionProps } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";

@@ -2,12 +2,12 @@ import { useContext } from "react";
 import { CompositeScreenProps, NavigationContainer, NavigatorScreenParams } from "@react-navigation/native";
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import AuthStack from "./stacks/AuthStack";
 import UserStack, { TTabParamsList } from "./stacks/UserStack";
 import WorkoutStack, { TWorkoutStackParamList } from "./stacks/WorkoutStack";
 import { AuthContext, AuthProvider } from "./hooks/useAuth";
-import { WorkoutProvider } from "./hooks/useWorkout";
 import Loading from "./pages/auth/Loading";
 
 export type TRootStackParamList = {
@@ -32,13 +32,13 @@ function RootNavigator() {
   return (
     <NavigationContainer>
       {currentUser ? (
-        <WorkoutProvider>
-          <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="UserStack" component={UserStack} />
-            <Stack.Screen name="WorkoutStack" component={WorkoutStack} />
-          </Stack.Navigator>
-        </WorkoutProvider>
+        // <WorkoutProvider>
+        <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="UserStack" component={UserStack} />
+          <Stack.Screen name="WorkoutStack" component={WorkoutStack} />
+        </Stack.Navigator>
       ) : (
+        // </WorkoutProvider>
         <AuthStack />
       )}
     </NavigationContainer>
@@ -48,7 +48,9 @@ function RootNavigator() {
 function App() {
   return (
     <AuthProvider>
-      <RootNavigator />
+      <SafeAreaProvider>
+        <RootNavigator />
+      </SafeAreaProvider>
     </AuthProvider>
   );
 }
