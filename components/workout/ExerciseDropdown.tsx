@@ -1,11 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { COLORS } from "../../constants/theme";
 
@@ -25,21 +19,14 @@ function Dropdown({ data, current, setCurrent }: IProps) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={styles.labelContainer}
-        onPress={() => setOpenDropdown(true)}
-      >
+      <TouchableOpacity activeOpacity={0.5} style={styles.labelContainer} onPress={() => setOpenDropdown(true)}>
         <Text style={styles.text}>{current}</Text>
       </TouchableOpacity>
       {openDropdown && (
         <FlatList
           data={data}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => handlePress(item)}
-            >
+            <TouchableOpacity activeOpacity={0.5} onPress={() => handlePress(item)}>
               <Text style={styles.text}>{item}</Text>
             </TouchableOpacity>
           )}

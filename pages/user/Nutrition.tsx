@@ -13,8 +13,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
-import Macro from "../../components/nutrition/Macro";
-import Meal from "../../components/nutrition/Meal";
+import MacroCircle from "../../components/nutrition/MacroCircle";
+import NutritionMeal from "../../components/nutrition/NutritionMeal";
 import { COLORS } from "../../constants/theme";
 
 export interface IFood {
@@ -35,6 +35,8 @@ export interface IMeal {
 const windowWidth = Dimensions.get("window").width;
 
 function Nutrition(props: TNutritionProps) {
+  const { navigation } = props;
+
   const { meals, setMeals } = useContext(NutritionContext);
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
@@ -45,7 +47,7 @@ function Nutrition(props: TNutritionProps) {
     setMeals([...meals, { name: mealName || "Meal Name", foods: [] }]);
     setMealName("");
 
-    props.navigation.navigate("Repast", {
+    navigation.navigate("Repast", {
       i: meals.length,
       save: null,
     });
@@ -76,7 +78,7 @@ function Nutrition(props: TNutritionProps) {
             </View>
             <View style={styles.circlesContainer}>
               <View>
-                <Macro
+                <MacroCircle
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
@@ -86,7 +88,7 @@ function Nutrition(props: TNutritionProps) {
                   unit="cal"
                   label="Calories"
                 />
-                <Macro
+                <MacroCircle
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
@@ -98,7 +100,7 @@ function Nutrition(props: TNutritionProps) {
                 />
               </View>
               <View>
-                <Macro
+                <MacroCircle
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
@@ -109,7 +111,7 @@ function Nutrition(props: TNutritionProps) {
                   label="Protein"
                 />
 
-                <Macro
+                <MacroCircle
                   current={meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
@@ -159,7 +161,7 @@ function Nutrition(props: TNutritionProps) {
           </TouchableOpacity>
         </View>
         {meals.map((meal: IMeal, i: number) => (
-          <Meal key={i} i={i} meal={meal} navigate={props} />
+          <NutritionMeal key={i} i={i} meal={meal} navigate={props} />
         ))}
       </ScrollView>
     </SafeAreaView>

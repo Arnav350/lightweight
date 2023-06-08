@@ -6,7 +6,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TNutritionProps } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
-import Food from "../../components/nutrition/Food";
+import SelectFood from "../../components/nutrition/SelectFood";
 import { COLORS } from "../../constants/theme";
 
 function Repast({ navigation, route: { params } }: TNutritionProps) {
@@ -130,13 +130,13 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>Foods</Text>
           {currentMeal.foods.map((food: IFood, i: number) => (
-            <Food key={i} food={food} add={false} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
+            <SelectFood key={i} food={food} add={false} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
           ))}
         </View>
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>History</Text>
           {histories.map((history: IFood, i: number) => (
-            <Food key={i} food={history} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
+            <SelectFood key={i} food={history} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
           ))}
         </View>
       </ScrollView>

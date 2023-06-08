@@ -13,7 +13,7 @@ interface IProps {
   setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
 }
 
-function Food({ food, add, currentMeal, setCurrentMeal }: IProps) {
+function SelectFood({ food, add, currentMeal, setCurrentMeal }: IProps) {
   const [pressed, setPressed] = useState<boolean>(false);
 
   function handlePress() {
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Food;
+export default SelectFood;

@@ -16,7 +16,7 @@ const width = (size * 3) / 32;
 const radius = (size - width) / 2;
 const dash = radius * 2 * Math.PI;
 
-function Macro({ current, total, unit, label }: IProps) {
+function MacroCircle({ current, total, unit, label }: IProps) {
   return (
     <View style={styles.container}>
       <View style={styles.circleContainer}>
@@ -35,10 +35,7 @@ function Macro({ current, total, unit, label }: IProps) {
             stroke={current / total < 1 ? COLORS.primary : COLORS.white}
             strokeWidth={width}
             strokeDasharray={dash}
-            strokeDashoffset={
-              dash *
-              (current / total < 1 ? 1 - current / total : total / current)
-            }
+            strokeDashoffset={dash * (current / total < 1 ? 1 - current / total : total / current)}
             opacity={current / total < 1 ? 1 : 0.4}
           />
         </Svg>
@@ -83,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Macro;
+export default MacroCircle;

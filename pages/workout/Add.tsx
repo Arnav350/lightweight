@@ -10,9 +10,9 @@ import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { AuthContext } from "../../hooks/useAuth";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "./Workout";
-import Dropdown from "../../components/workout/Dropdown";
-import Activity from "../../components/workout/Activity";
-import New from "../../components/workout/New";
+import ExerciseDropdown from "../../components/workout/ExerciseDropdown";
+import AddExercise from "../../components/workout/AddExercise";
+import NewExercise from "../../components/workout/NewExercise";
 import { COLORS } from "../../constants/theme";
 
 type TProps = CompositeScreenProps<
@@ -89,9 +89,11 @@ const init: IExercise[] = [
   },
 ];
 
-function Add({ navigation }: TProps) {
+function Add(props: TProps) {
+  const { navigation } = props;
+
   const currentUser = useContext(AuthContext);
-  const { exercises } = useContext(WorkoutContext);
+  const { exercises, setExercises } = useContext(WorkoutContext);
 
   const [activityName, setActivityName] = useState<string>("");
   const [activities, setActivities] = useState<IExercise[]>(init);
@@ -137,12 +139,12 @@ function Add({ navigation }: TProps) {
           />
         </View>
         <View style={styles.dropdownsContainer}>
-          <Dropdown
+          <ExerciseDropdown
             data={["Any Equipment", ...equipments]}
             current={currentEquipment}
             setCurrent={setCurrentEquipment}
           />
-          <Dropdown data={["Any Muscle", ...muscles]} current={currentMuscle} setCurrent={setCurrentMuscle} />
+          <ExerciseDropdown data={["Any Muscle", ...muscles]} current={currentMuscle} setCurrent={setCurrentMuscle} />
         </View>
       </View>
       <ScrollView style={styles.exercisesContainer}>
@@ -157,7 +159,7 @@ function Add({ navigation }: TProps) {
                 (currentMuscle === activity.muscle || currentMuscle === "Any Muscle")
             )
             .map((activity: IExercise, i: number) => (
-              <Activity key={i} activity={activity} />
+              <AddExercise key={i} activity={activity} navigate={props} />
             ))}
           <Text style={styles.dont}>Don't see the exercise you want?</Text>
           <TouchableOpacity activeOpacity={0.5} style={styles.newContainer}>
@@ -168,7 +170,7 @@ function Add({ navigation }: TProps) {
         </View>
       </ScrollView>
       {showNew && (
-        <New
+        <NewExercise
           equipments={equipments}
           muscles={muscles}
           activities={activities}

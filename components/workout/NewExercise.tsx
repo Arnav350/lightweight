@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-nativ
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { IExercise } from "../../pages/workout/Workout";
-import Dropdown from "./Dropdown";
+import ExerciseDropdown from "./ExerciseDropdown";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -16,28 +16,32 @@ interface IProps {
 
 function New({ equipments, muscles, activities, setActivities, setShowNew }: IProps) {
   const [activityName, setActivityName] = useState<string>("");
-
   const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
+  const [err, setErr] = useState<boolean>(false);
 
   function handlePress() {
-    setActivities([
-      ...activities,
-      {
-        name: activityName,
-        equipment: currentEquipment,
-        muscle: currentMuscle,
-        notes: "",
-        sets: [
-          {
-            type: "N",
-            weight: 0,
-            reps: 0,
-            notes: "",
-          },
-        ],
-      },
-    ]);
+    if (activityName.trim() && currentEquipment !== "Any Equipment" && currentMuscle !== "Any Muscle") {
+      setActivities([
+        ...activities,
+        {
+          name: activityName,
+          equipment: currentEquipment,
+          muscle: currentMuscle,
+          notes: "",
+          sets: [
+            {
+              type: "N",
+              weight: 0,
+              reps: 0,
+              notes: "",
+            },
+          ],
+        },
+      ]);
+    } else {
+      setErr(true);
+    }
   }
 
   return (
@@ -48,10 +52,11 @@ function New({ equipments, muscles, activities, setActivities, setShowNew }: IPr
             <Icon name="close" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <Text style={styles.header}>New Exercise</Text>
-          <TouchableOpacity activeOpacity={0.3} onPress={handlePress}>
+          <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
             <Text style={styles.save}>Save</Text>
           </TouchableOpacity>
         </View>
+        {err && <Text style={styles.err}>Please enter a name, equipment, and muscle</Text>}
         <TextInput
           value={activityName}
           placeholder="Exercise name"
@@ -63,11 +68,11 @@ function New({ equipments, muscles, activities, setActivities, setShowNew }: IPr
         <View style={styles.dropdownsContainer}>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Equipment:</Text>
-            <Dropdown data={equipments} current={currentEquipment} setCurrent={setCurrentEquipment} />
+            <ExerciseDropdown data={equipments} current={currentEquipment} setCurrent={setCurrentEquipment} />
           </View>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Muscle:</Text>
-            <Dropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
+            <ExerciseDropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
           </View>
         </View>
       </View>
@@ -91,8 +96,6 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: COLORS.black,
     borderRadius: 16,
-    width: 320,
-    height: 208,
   },
   headerContainer: {
     flexDirection: "row",
@@ -101,6 +104,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   header: {
+    marginHorizontal: 24,
     fontSize: 24,
     fontWeight: "500",
     color: COLORS.white,
@@ -109,6 +113,10 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: 20,
     fontWeight: "500",
+  },
+  err: {
+    margin: 4,
+    color: COLORS.primary,
   },
   input: {
     marginVertical: 8,

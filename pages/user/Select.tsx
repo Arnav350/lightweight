@@ -6,7 +6,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../App";
 import { TGymStackParamList } from "../../stacks/UserStack";
-import Routine from "../../components/gym/Routine";
+import MyRoutine from "../../components/gym/MyRoutine";
+import ExploreRoutine from "../../components/gym/ExploreRoutine";
 import { COLORS } from "../../constants/theme";
 
 interface IExercise {
@@ -63,56 +64,43 @@ function Select({ navigation }: TProps) {
       <ScrollView style={styles.selectContainer}>
         <Text style={styles.subheading}>My Routines</Text>
         {routines.map((routine: IRoutine, i: number) => (
-          <View key={i} style={styles.myContainer}>
-            <View style={styles.topContainer}>
-              <Text style={styles.name}>{routine.name}</Text>
-              <TouchableOpacity activeOpacity={0.5}>
-                <Icon name="dots-horizontal" size={24} color={COLORS.white} />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.exercises} numberOfLines={1}>
-              {routine.exercises.map((exercise: IExercise) => exercise.name).join(", ")}
-            </Text>
-            <TouchableOpacity activeOpacity={0.5} style={styles.startContainer}>
-              <Text style={styles.start}>Start Routine</Text>
-            </TouchableOpacity>
-          </View>
+          <MyRoutine key={i} routine={routine} />
         ))}
         <Text style={styles.subheading}>Explore Routines</Text>
         <Text style={styles.routine}>Push Pull Legs</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <Routine name="Push" />
-          <Routine name="Pull" />
-          <Routine name="Legs" />
+          <ExploreRoutine name="Push" />
+          <ExploreRoutine name="Pull" />
+          <ExploreRoutine name="Legs" />
         </ScrollView>
         <Text style={styles.routine}>Arnold Split</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <Routine name="Chest & Back" />
-          <Routine name="Shoulders & Arms" />
-          <Routine name="Legs" />
+          <ExploreRoutine name="Chest & Back" />
+          <ExploreRoutine name="Shoulders & Arms" />
+          <ExploreRoutine name="Legs" />
         </ScrollView>
         <Text style={styles.routine}>Full Body Split</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <Routine name="Full Body 1" />
-          <Routine name="Full Body 2" />
-          <Routine name="Full Body 3" />
+          <ExploreRoutine name="Full Body 1" />
+          <ExploreRoutine name="Full Body 2" />
+          <ExploreRoutine name="Full Body 3" />
         </ScrollView>
         <Text style={styles.routine}>Upper Lower</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <Routine name="Upper 1" />
-          <Routine name="Lower 1" />
-          <Routine name="Upper 2" />
-          <Routine name="Lower 2" />
+          <ExploreRoutine name="Upper 1" />
+          <ExploreRoutine name="Lower 1" />
+          <ExploreRoutine name="Upper 2" />
+          <ExploreRoutine name="Lower 2" />
         </ScrollView>
         <Text style={styles.routine}>Only Dumbbells</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <Routine name="Dumbbell Upper" />
-          <Routine name="Dumbbell Lower" />
+          <ExploreRoutine name="Dumbbell Upper" />
+          <ExploreRoutine name="Dumbbell Lower" />
         </ScrollView>
         <Text style={styles.routine}>No Equipment</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <Routine name="Home Upper" />
-          <Routine name="Home Lower" />
+          <ExploreRoutine name="Home Upper" />
+          <ExploreRoutine name="Home Lower" />
         </ScrollView>
         <Text style={styles.name}></Text>
       </ScrollView>
@@ -148,35 +136,10 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
   },
-  myContainer: {
-    marginVertical: 8,
-    padding: 16,
-    backgroundColor: COLORS.blackOne,
-    borderRadius: 16,
-  },
-  topContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
   name: {
     color: COLORS.white,
     fontSize: 18,
     fontWeight: "500",
-  },
-  exercises: {
-    marginVertical: 8,
-    color: COLORS.gray,
-    fontSize: 16,
-  },
-  startContainer: {
-    paddingVertical: 8,
-    backgroundColor: COLORS.primary,
-    borderRadius: 8,
-  },
-  start: {
-    color: COLORS.white,
-    fontSize: 16,
-    textAlign: "center",
   },
   routine: {
     marginTop: 8,

@@ -8,7 +8,7 @@ interface IProps {
   workout: IWorkout;
 }
 
-function Log({ workout }: IProps) {
+function WorkoutLog({ workout }: IProps) {
   return (
     <TouchableOpacity activeOpacity={0.5} style={styles.container}>
       <View style={styles.dateContainer}>
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Log;
+export default WorkoutLog;

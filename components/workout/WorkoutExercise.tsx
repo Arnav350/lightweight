@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import Set from "./Set";
+import ExerciseSet from "./ExerciseSet";
 import { ISet, IExercise, IWorkout } from "../../pages/workout/Workout";
 
 import { COLORS } from "../../constants/theme";
@@ -80,7 +80,7 @@ function Exercise({ i, currentWorkout, setCurrentWorkout }: IProps) {
       </View>
       <View style={styles.setsContainer}>
         {prevExercise.sets.slice(0, currentWorkout.exercises[i].sets.length).map((prevSet: ISet, j: number) => (
-          <Set
+          <ExerciseSet
             key={j}
             i={i}
             j={j}

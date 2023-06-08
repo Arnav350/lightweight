@@ -7,7 +7,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TRootStackParamList } from "../../App";
 import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
-import Exercise from "../../components/workout/Exercise";
+import WorkoutExercise from "../../components/workout/WorkoutExercise";
 import { COLORS } from "../../constants/theme";
 
 type TProps = CompositeScreenProps<
@@ -85,7 +85,7 @@ function Workout({ navigation }: TProps) {
       </View>
       <ScrollView style={styles.workoutContainer}>
         {currentWorkout.exercises.map((_exercise: IExercise, i: number) => (
-          <Exercise key={i} i={i} currentWorkout={currentWorkout} setCurrentWorkout={setCurrentWorkout} />
+          <WorkoutExercise key={i} i={i} currentWorkout={currentWorkout} setCurrentWorkout={setCurrentWorkout} />
         ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.button}>Add Exercise</Text>

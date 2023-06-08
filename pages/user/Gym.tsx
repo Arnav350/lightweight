@@ -8,7 +8,7 @@ import { TCompositeProps } from "../../App";
 import { TGymStackParamList } from "../../stacks/UserStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IWorkout } from "../workout/Workout";
-import Log from "../../components/gym/Log";
+import WorkoutLog from "../../components/gym/WorkoutLog";
 import { COLORS } from "../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
@@ -56,7 +56,7 @@ function Gym({ navigation }: TProps) {
         </View>
         <View style={styles.logContainer}>
           {workouts.map((workout: IWorkout, i: number) => (
-            <Log key={i} workout={workout} />
+            <WorkoutLog key={i} workout={workout} />
           ))}
         </View>
       </ScrollView>

@@ -12,7 +12,7 @@ interface IProps {
   navigate: StackScreenProps<TNutritionStackParamList>;
 }
 
-function Meal({ i, meal, navigate: { navigation } }: IProps) {
+function NutritionMeal({ i, meal, navigate: { navigation } }: IProps) {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Meal;
+export default NutritionMeal;

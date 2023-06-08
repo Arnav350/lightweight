@@ -1,16 +1,23 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   activity: IExercise;
+  navigate: StackScreenProps<TWorkoutStackParamList>;
 }
 
-function Activity({ activity: { name, equipment, muscle } }: IProps) {
+function Activity({ activity: { name, equipment, muscle }, navigate: { navigation } }: IProps) {
+  function handlePress() {
+    navigation.goBack();
+  }
+
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
       <Image source={require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>

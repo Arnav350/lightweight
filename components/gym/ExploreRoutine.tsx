@@ -7,7 +7,7 @@ interface IProps {
   name: string;
 }
 
-function Routine({ name }: IProps) {
+function ExploreRoutine({ name }: IProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{name}</Text>
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Routine;
+export default ExploreRoutine;
