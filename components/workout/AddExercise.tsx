@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -11,9 +11,10 @@ import { COLORS } from "../../constants/theme";
 interface IProps {
   exercise: IExercise;
   navigate: StackScreenProps<TWorkoutStackParamList>;
+  setShowEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-function Activity({ exercise, navigate: { navigation } }: IProps) {
+function Activity({ exercise, navigate: { navigation }, setShowEdit }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
   function handlePress() {
@@ -22,7 +23,7 @@ function Activity({ exercise, navigate: { navigation } }: IProps) {
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={() => setShowEdit(true)}>
       <Image source={require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>
@@ -32,9 +33,9 @@ function Activity({ exercise, navigate: { navigation } }: IProps) {
           {exercise.muscle} - {exercise.equipment}
         </Text>
       </View>
-      <View style={styles.iconContainer}>
+      <TouchableOpacity activeOpacity={0.5} style={styles.iconContainer} onPress={handlePress}>
         <Icon name="plus" size={32} color={COLORS.white} />
-      </View>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }

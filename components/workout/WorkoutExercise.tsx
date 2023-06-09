@@ -29,6 +29,8 @@ function Exercise({ i }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
   const [prevExercise, setPrevExercise] = useState<IExercise>(init);
 
+  // const a: number= exercises.filter((exercise, i) => exercise.name === exercises[i].name)[0].sets.length;
+
   useEffect(() => {
     const lengthDifference = currentWorkout.exercises[i].sets.length - prevExercise.sets.length;
 

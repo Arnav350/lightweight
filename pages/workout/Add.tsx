@@ -12,6 +12,7 @@ import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "./Workout";
 import ExerciseDropdown from "../../components/workout/ExerciseDropdown";
 import AddExercise from "../../components/workout/AddExercise";
+import EditExercise from "../../components/workout/EditExercise";
 import NewExercise from "../../components/workout/NewExercise";
 import { COLORS } from "../../constants/theme";
 
@@ -54,7 +55,6 @@ const muscles: string[] = [
 function Add(props: TProps) {
   const { navigation } = props;
 
-  const currentUser = useContext(AuthContext);
   const { exercises, setExercises } = useContext(WorkoutContext);
 
   const [exerciseName, setExerciseName] = useState<string>("");
@@ -63,6 +63,7 @@ function Add(props: TProps) {
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   const [showNew, setShowNew] = useState<boolean>(false);
+  const [showEdit, setShowEdit] = useState<boolean>(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -108,7 +109,7 @@ function Add(props: TProps) {
                 (currentMuscle === exercise.muscle || currentMuscle === "Any Muscle")
             )
             .map((exercise: IExercise, i: number) => (
-              <AddExercise key={i} exercise={exercise} navigate={props} />
+              <AddExercise key={i} exercise={exercise} navigate={props} setShowEdit={setShowEdit} />
             ))}
           <Text style={styles.dont}>Don't see the exercise you want?</Text>
           <TouchableOpacity activeOpacity={0.5} style={styles.newContainer}>
@@ -118,6 +119,7 @@ function Add(props: TProps) {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {showEdit && <EditExercise equipments={equipments} muscles={muscles} setShowEdit={setShowEdit} />}
       {showNew && <NewExercise equipments={equipments} muscles={muscles} setShowNew={setShowNew} />}
     </SafeAreaView>
   );
@@ -185,9 +187,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   newContainer: {
+    padding: 8,
     backgroundColor: COLORS.primary,
     borderRadius: 8,
-    padding: 8,
   },
   new: {
     color: COLORS.white,

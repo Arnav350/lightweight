@@ -1,76 +1,49 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise } from "../../pages/workout/Workout";
 import ExerciseDropdown from "./ExerciseDropdown";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   equipments: string[];
   muscles: string[];
-  setShowNew: Dispatch<SetStateAction<boolean>>;
+  setShowEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-function New({ equipments, muscles, setShowNew }: IProps) {
+function EditExercise({ equipments, muscles, setShowEdit }: IProps) {
   const { exercises, setExercises } = useContext(WorkoutContext);
-  const [exerciseName, setExerciseName] = useState<string>("");
-  const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
-  const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
-  const [err, setErr] = useState<boolean>(false);
 
-  function handlePress() {
-    if (
-      exerciseName.trim() &&
-      currentEquipment !== "Any Equipment" &&
-      currentMuscle !== "Any Muscle" &&
-      !exercises.some((exercise: IExercise) => exercise.name.toLowerCase() === exerciseName.toLowerCase())
-    ) {
-      setExercises([
-        ...exercises,
-        {
-          name: exerciseName,
-          equipment: currentEquipment,
-          muscle: currentMuscle,
-          notes: "",
-          sets: [
-            {
-              type: "N",
-              weight: 0,
-              reps: 0,
-              notes: "",
-            },
-          ],
-        },
-      ]);
-      setShowNew(false);
-    } else {
-      setErr(true);
-    }
-  }
+  const [exerciseName, setExerciseName] = useState("");
+  const [currentEquipment, setCurrentEquipment] = useState("");
+  const [currentMuscle, setCurrentMuscle] = useState("");
+
+  function handleSavePress() {}
+  function handleAddPress() {}
+  function handleDeletePress() {}
 
   return (
     <View style={styles.container}>
-      <View style={styles.newContainer}>
+      <View style={styles.editContainer}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setShowNew(false)}>
+          <TouchableOpacity activeOpacity={0.3} onPress={() => setShowEdit(false)}>
             <Icon name="close" size={32} color={COLORS.primary} />
           </TouchableOpacity>
-          <Text style={styles.header}>New Exercise</Text>
-          <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
+          <TextInput
+            value={exerciseName}
+            placeholder="Exercise Name"
+            placeholderTextColor={COLORS.gray}
+            style={styles.header}
+            onChangeText={setExerciseName}
+          />
+          <TouchableOpacity activeOpacity={0.5} onPress={handleSavePress}>
             <Text style={styles.save}>Save</Text>
           </TouchableOpacity>
         </View>
-        {err && <Text style={styles.err}>Enter an equipment, muscle, and unused name</Text>}
-        <TextInput
-          value={exerciseName}
-          placeholder="Exercise name"
-          placeholderTextColor={COLORS.gray}
-          keyboardAppearance="dark"
-          style={styles.input}
-          onChangeText={setExerciseName}
-        />
+        <View style={{ height: 192, width: 256, backgroundColor: COLORS.gray, alignSelf: "center" }}>
+          <Text>Graph</Text>
+        </View>
         <View style={styles.dropdownsContainer}>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Equipment:</Text>
@@ -81,6 +54,12 @@ function New({ equipments, muscles, setShowNew }: IProps) {
             <ExerciseDropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
           </View>
         </View>
+        <TouchableOpacity activeOpacity={0.3} style={styles.buttonContainer} onPress={handleAddPress}>
+          <Text style={styles.button}>Add Exercise</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.3} style={styles.buttonContainer} onPress={handleDeletePress}>
+          <Text style={styles.button}>Delete Exercise</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -98,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#000000bb",
   },
-  newContainer: {
+  editContainer: {
     padding: 12,
     backgroundColor: COLORS.black,
     borderRadius: 16,
@@ -120,21 +99,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
   },
-  err: {
-    margin: 4,
-    color: "#ff0000",
-  },
-  input: {
-    marginVertical: 8,
-    marginHorizontal: 4,
-    padding: 8,
-    backgroundColor: COLORS.blackOne,
-    borderRadius: 8,
-    color: COLORS.white,
-    fontSize: 16,
-  },
   dropdownsContainer: {
     marginTop: 8,
+    marginHorizontal: 4,
     flexDirection: "row",
   },
   dropdownContainer: {
@@ -148,6 +115,18 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
   },
+  buttonContainer: {
+    marginVertical: 4,
+    marginHorizontal: 8,
+    padding: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 8,
+  },
+  button: {
+    color: COLORS.white,
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
 
-export default New;
+export default EditExercise;
