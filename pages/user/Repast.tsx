@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -12,7 +13,7 @@ import { COLORS } from "../../constants/theme";
 function Repast({ navigation, route: { params } }: TNutritionProps) {
   const isFocused = useIsFocused();
 
-  const { meals, setMeals } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals } = useContext(NutritionContext);
 
   const [currentMeal, setCurrentMeal] = useState<IMeal>({
     name: "",
@@ -42,13 +43,13 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name: params && params.i < meals.length ? meals[params.i].name : "",
-      foods: params && params.i < meals.length ? meals[params.i].foods : [],
+      name: params && params.i < currentMeals.length ? currentMeals[params.i].name : "",
+      foods: params && params.i < currentMeals.length ? currentMeals[params.i].foods : [],
     });
   }, [isFocused]);
 
   function handleLeftPress() {
-    setMeals(meals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
+    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
 
     navigation.goBack();
   }
@@ -58,7 +59,7 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
       {
         text: "Delete",
         onPress: () => {
-          setMeals(meals.filter((_meal, i: number) => i !== params?.i));
+          setCurrentMeals(currentMeals.filter((_currentMeal, i: number) => i !== params?.i));
           navigation.goBack();
         },
         style: "destructive",

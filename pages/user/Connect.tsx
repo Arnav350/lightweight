@@ -1,15 +1,6 @@
 import { useState } from "react";
-import {
-  FlatList,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS } from "../../constants/theme";
@@ -152,7 +143,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: "center",
     padding: 16,
-    width: "100%",
     backgroundColor: COLORS.blackTwo,
   },
   inputContainer: {

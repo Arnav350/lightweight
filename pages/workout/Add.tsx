@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useContext, useState } from "react";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
@@ -51,69 +51,18 @@ const muscles: string[] = [
   "Other",
 ];
 
-const init: IExercise[] = [
-  {
-    name: "Bench Press",
-    equipment: "Barbell",
-    muscle: "Chest",
-    notes: "",
-    sets: [
-      { type: "W", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-    ],
-  },
-  {
-    name: "Smith Machine 45 Pound Plate Elevated Front Squat",
-    equipment: "Barbell",
-    muscle: "Quads",
-    notes: "",
-    sets: [
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "D", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-    ],
-  },
-  {
-    name: "Bicep Curl",
-    equipment: "Dumbbell",
-    muscle: "Bicep",
-    notes: "",
-    sets: [
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "S", weight: 0, reps: 0, notes: "" },
-      { type: "S", weight: 0, reps: 0, notes: "" },
-    ],
-  },
-];
-
 function Add(props: TProps) {
   const { navigation } = props;
 
   const currentUser = useContext(AuthContext);
   const { exercises, setExercises } = useContext(WorkoutContext);
 
-  const [activityName, setActivityName] = useState<string>("");
-  const [activities, setActivities] = useState<IExercise[]>(init);
+  const [exerciseName, setExerciseName] = useState<string>("");
 
   const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   const [showNew, setShowNew] = useState<boolean>(false);
-
-  useEffect(() => {
-    AsyncStorage.setItem(`@${currentUser?.id}:activities`, JSON.stringify(activities));
-  }, [activities]);
-
-  useEffect(() => {
-    AsyncStorage.getItem(`@${currentUser?.id}:activities`).then((jsonActivities) => {
-      if (jsonActivities) {
-        setActivities(JSON.parse(jsonActivities));
-      }
-    });
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -130,12 +79,12 @@ function Add(props: TProps) {
         <View style={styles.inputContainer}>
           <Icon name="magnify" size={24} color={COLORS.gray} />
           <TextInput
-            value={activityName}
+            value={exerciseName}
             placeholder="Search exercise"
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
             style={styles.input}
-            onChangeText={setActivityName}
+            onChangeText={setExerciseName}
           />
         </View>
         <View style={styles.dropdownsContainer}>
@@ -148,18 +97,18 @@ function Add(props: TProps) {
         </View>
       </View>
       <ScrollView style={styles.exercisesContainer}>
-        <View>{!activityName && <Text style={styles.subheader}>Recent</Text>}</View>
+        <View>{!exerciseName && <Text style={styles.subheader}>Recent</Text>}</View>
         <View>
-          {!activityName && <Text style={styles.subheader}>All Exercises</Text>}
-          {activities
+          {!exerciseName && <Text style={styles.subheader}>All Exercises</Text>}
+          {exercises
             .filter(
-              (activity: IExercise) =>
-                activity.name.toLowerCase().includes(activityName.toLowerCase()) &&
-                (currentEquipment === activity.equipment || currentEquipment === "Any Equipment") &&
-                (currentMuscle === activity.muscle || currentMuscle === "Any Muscle")
+              (exercise: IExercise) =>
+                exercise.name.toLowerCase().includes(exerciseName.toLowerCase()) &&
+                (currentEquipment === exercise.equipment || currentEquipment === "Any Equipment") &&
+                (currentMuscle === exercise.muscle || currentMuscle === "Any Muscle")
             )
-            .map((activity: IExercise, i: number) => (
-              <AddExercise key={i} activity={activity} navigate={props} />
+            .map((exercise: IExercise, i: number) => (
+              <AddExercise key={i} exercise={exercise} navigate={props} />
             ))}
           <Text style={styles.dont}>Don't see the exercise you want?</Text>
           <TouchableOpacity activeOpacity={0.5} style={styles.newContainer}>
@@ -169,15 +118,7 @@ function Add(props: TProps) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {showNew && (
-        <NewExercise
-          equipments={equipments}
-          muscles={muscles}
-          activities={activities}
-          setActivities={setActivities}
-          setShowNew={setShowNew}
-        />
-      )}
+      {showNew && <NewExercise equipments={equipments} muscles={muscles} setShowNew={setShowNew} />}
     </SafeAreaView>
   );
 }

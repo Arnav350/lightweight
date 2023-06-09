@@ -1,14 +1,4 @@
-interface IColors {
-  primary: string;
-  white: string;
-  gray: string;
-  darkGray: string;
-  blackOne: string;
-  blackTwo: string;
-  black: string;
-}
-
-const COLORS: IColors = {
+const COLORS = {
   primary: "#d13636",
   white: "#fef4f4",
   gray: "#888",

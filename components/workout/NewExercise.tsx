@@ -1,31 +1,30 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { IExercise } from "../../pages/workout/Workout";
+import { WorkoutContext } from "../../hooks/useWorkout";
 import ExerciseDropdown from "./ExerciseDropdown";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   equipments: string[];
   muscles: string[];
-  activities: IExercise[];
-  setActivities: Dispatch<SetStateAction<IExercise[]>>;
   setShowNew: Dispatch<SetStateAction<boolean>>;
 }
 
-function New({ equipments, muscles, activities, setActivities, setShowNew }: IProps) {
-  const [activityName, setActivityName] = useState<string>("");
+function New({ equipments, muscles, setShowNew }: IProps) {
+  const { exercises, setExercises } = useContext(WorkoutContext);
+  const [exerciseName, setExerciseName] = useState<string>("");
   const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
   const [err, setErr] = useState<boolean>(false);
 
   function handlePress() {
-    if (activityName.trim() && currentEquipment !== "Any Equipment" && currentMuscle !== "Any Muscle") {
-      setActivities([
-        ...activities,
+    if (exerciseName.trim() && currentEquipment !== "Any Equipment" && currentMuscle !== "Any Muscle") {
+      setExercises([
+        ...exercises,
         {
-          name: activityName,
+          name: exerciseName,
           equipment: currentEquipment,
           muscle: currentMuscle,
           notes: "",
@@ -39,6 +38,7 @@ function New({ equipments, muscles, activities, setActivities, setShowNew }: IPr
           ],
         },
       ]);
+      setShowNew(false);
     } else {
       setErr(true);
     }
@@ -58,12 +58,12 @@ function New({ equipments, muscles, activities, setActivities, setShowNew }: IPr
         </View>
         {err && <Text style={styles.err}>Please enter a name, equipment, and muscle</Text>}
         <TextInput
-          value={activityName}
+          value={exerciseName}
           placeholder="Exercise name"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={styles.input}
-          onChangeText={setActivityName}
+          onChangeText={setExerciseName}
         />
         <View style={styles.dropdownsContainer}>
           <View style={styles.dropdownContainer}>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   err: {
     margin: 4,
-    color: COLORS.primary,
+    color: "#ff0000",
   },
   input: {
     marginVertical: 8,

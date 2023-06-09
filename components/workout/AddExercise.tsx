@@ -1,18 +1,23 @@
+import { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
+import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  activity: IExercise;
+  exercise: IExercise;
   navigate: StackScreenProps<TWorkoutStackParamList>;
 }
 
-function Activity({ activity: { name, equipment, muscle }, navigate: { navigation } }: IProps) {
+function Activity({ exercise, navigate: { navigation } }: IProps) {
+  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
+
   function handlePress() {
+    setCurrentWorkout({ ...currentWorkout, exercises: [...currentWorkout.exercises, exercise] });
     navigation.goBack();
   }
 
@@ -21,10 +26,10 @@ function Activity({ activity: { name, equipment, muscle }, navigate: { navigatio
       <Image source={require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>
-          {name}
+          {exercise.name}
         </Text>
         <Text style={styles.specifier}>
-          {muscle} - {equipment}
+          {exercise.muscle} - {exercise.equipment}
         </Text>
       </View>
       <View style={styles.iconContainer}>

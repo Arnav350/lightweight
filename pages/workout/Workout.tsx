@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -85,7 +86,7 @@ function Workout({ navigation }: TProps) {
       </View>
       <ScrollView style={styles.workoutContainer}>
         {currentWorkout.exercises.map((_exercise: IExercise, i: number) => (
-          <WorkoutExercise key={i} i={i} currentWorkout={currentWorkout} setCurrentWorkout={setCurrentWorkout} />
+          <WorkoutExercise key={i} i={i} />
         ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.button}>Add Exercise</Text>

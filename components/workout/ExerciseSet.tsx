@@ -1,19 +1,18 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
+import { WorkoutContext } from "../../hooks/useWorkout";
 import { ISet, IExercise, IWorkout } from "../../pages/workout/Workout";
-
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
   j: number;
   prevSet: ISet;
-  currentWorkout: IWorkout;
-  setCurrentWorkout: Dispatch<SetStateAction<IWorkout>>;
 }
 
-function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
+function Set({ prevSet, i, j }: IProps) {
+  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
   const [weight, setWeight] = useState<string>("");
   const [reps, setReps] = useState<string>("");
   const [notes, setNotes] = useState<string>("");
@@ -21,9 +20,7 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.set}>
-        {currentWorkout.exercises[i].sets[j].type === "N"
-          ? j + 1
-          : currentWorkout.exercises[i].sets[j].type}
+        {currentWorkout.exercises[i].sets[j].type === "N" ? j + 1 : currentWorkout.exercises[i].sets[j].type}
       </Text>
       <TextInput
         value={weight}
@@ -38,19 +35,17 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
           setCurrentWorkout({
             ...currentWorkout,
             exercises: [
-              ...currentWorkout.exercises.map(
-                (exercise: IExercise, k: number) =>
-                  k === i
-                    ? {
-                        ...exercise,
-                        sets: [
-                          ...currentWorkout.exercises[k].sets.map(
-                            (set: ISet, l: number) =>
-                              l === j ? { ...set, weight: Number(weight) } : set
-                          ),
-                        ],
-                      }
-                    : exercise
+              ...currentWorkout.exercises.map((exercise: IExercise, k: number) =>
+                k === i
+                  ? {
+                      ...exercise,
+                      sets: [
+                        ...currentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
+                          l === j ? { ...set, weight: Number(weight) } : set
+                        ),
+                      ],
+                    }
+                  : exercise
               ),
             ],
           })
@@ -69,19 +64,17 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
           setCurrentWorkout({
             ...currentWorkout,
             exercises: [
-              ...currentWorkout.exercises.map(
-                (exercise: IExercise, k: number) =>
-                  k === i
-                    ? {
-                        ...exercise,
-                        sets: [
-                          ...currentWorkout.exercises[k].sets.map(
-                            (set: ISet, l: number) =>
-                              l === j ? { ...set, reps: Number(reps) } : set
-                          ),
-                        ],
-                      }
-                    : exercise
+              ...currentWorkout.exercises.map((exercise: IExercise, k: number) =>
+                k === i
+                  ? {
+                      ...exercise,
+                      sets: [
+                        ...currentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
+                          l === j ? { ...set, reps: Number(reps) } : set
+                        ),
+                      ],
+                    }
+                  : exercise
               ),
             ],
           })
@@ -99,19 +92,17 @@ function Set({ prevSet, i, j, currentWorkout, setCurrentWorkout }: IProps) {
           setCurrentWorkout({
             ...currentWorkout,
             exercises: [
-              ...currentWorkout.exercises.map(
-                (exercise: IExercise, k: number) =>
-                  k === i
-                    ? {
-                        ...exercise,
-                        sets: [
-                          ...currentWorkout.exercises[k].sets.map(
-                            (set: ISet, l: number) =>
-                              l === j ? { ...set, notes } : set
-                          ),
-                        ],
-                      }
-                    : exercise
+              ...currentWorkout.exercises.map((exercise: IExercise, k: number) =>
+                k === i
+                  ? {
+                      ...exercise,
+                      sets: [
+                        ...currentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
+                          l === j ? { ...set, notes } : set
+                        ),
+                      ],
+                    }
+                  : exercise
               ),
             ],
           })

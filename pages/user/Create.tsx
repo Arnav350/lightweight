@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionProps } from "../../stacks/UserStack";
@@ -8,7 +9,7 @@ import { IFood, IMeal } from "./Nutrition";
 import { COLORS } from "../../constants/theme";
 
 function Create({ navigation, route: { params } }: TNutritionProps) {
-  const { meals, setMeals, recipes, setRecipes } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, recipes, setRecipes } = useContext(NutritionContext);
 
   const [focusedInput, setFocusedInput] = useState<string>("none");
   const [currentFood, setCurrentFood] = useState<IFood>({
@@ -20,7 +21,7 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
     amount: 0,
     amountType: "",
   });
-  const [error, setError] = useState<boolean>(false);
+  const [err, setErr] = useState<boolean>(false);
 
   function handlePress() {
     if (currentFood.calories && currentFood.name) {
@@ -35,8 +36,8 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
       if (params?.save) {
         setRecipes([...recipes, tempFood]);
       } else {
-        setMeals(
-          meals.map((meal: IMeal, i: number) =>
+        setCurrentMeals(
+          currentMeals.map((meal: IMeal, i: number) =>
             i === params?.i
               ? {
                   ...meal,
@@ -47,7 +48,7 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
         );
       }
     } else {
-      setError(true);
+      setErr(true);
     }
   }
   return (
@@ -64,10 +65,10 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
       <View style={styles.createContainer}>
         {!params?.save && (
           <Text numberOfLines={1} style={styles.name}>
-            Meal: {meals.map((meal: IMeal, i: number) => i === params?.i && meal.name)}
+            Meal: {currentMeals.map((meal: IMeal, i: number) => i === params?.i && meal.name)}
           </Text>
         )}
-        {error && <Text style={styles.error}>Fill out the name and calories fields</Text>}
+        {err && <Text style={styles.err}>Fill out the name and calories fields</Text>}
         <TextInput
           value={currentFood.name}
           placeholder="Food name"
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
   },
-  error: {
+  err: {
     marginVertical: 4,
     color: "#ff0000",
     fontSize: 16,

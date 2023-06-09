@@ -3,12 +3,14 @@ import { CompositeScreenProps, NavigationContainer, NavigatorScreenParams } from
 import { StackScreenProps, createStackNavigator } from "@react-navigation/stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from "react-native";
 
 import AuthStack from "./stacks/AuthStack";
 import UserStack, { TTabParamsList } from "./stacks/UserStack";
 import WorkoutStack, { TWorkoutStackParamList } from "./stacks/WorkoutStack";
 import { AuthContext, AuthProvider } from "./hooks/useAuth";
 import Loading from "./pages/auth/Loading";
+import { COLORS } from "./constants/theme";
 
 export type TRootStackParamList = {
   UserStack: NavigatorScreenParams<TTabParamsList>;
@@ -25,20 +27,18 @@ const Stack = createStackNavigator<TRootStackParamList>();
 function RootNavigator() {
   const currentUser = useContext(AuthContext);
 
-  if (currentUser === undefined) {
+  if (!currentUser === undefined) {
     return <Loading />;
   }
 
   return (
     <NavigationContainer>
-      {currentUser ? (
-        // <WorkoutProvider>
+      {!currentUser ? (
         <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="UserStack" component={UserStack} />
           <Stack.Screen name="WorkoutStack" component={WorkoutStack} />
         </Stack.Navigator>
       ) : (
-        // </WorkoutProvider>
         <AuthStack />
       )}
     </NavigationContainer>
@@ -50,6 +50,7 @@ function App() {
     <AuthProvider>
       <SafeAreaProvider>
         <RootNavigator />
+        <StatusBar backgroundColor={COLORS.blackTwo} />
       </SafeAreaProvider>
     </AuthProvider>
   );

@@ -9,15 +9,15 @@ interface IProviderChildren {
 }
 
 interface INutritionContext {
-  meals: IMeal[];
-  setMeals: Dispatch<SetStateAction<IMeal[]>>;
+  currentMeals: IMeal[];
+  setCurrentMeals: Dispatch<SetStateAction<IMeal[]>>;
   recipes: IFood[];
   setRecipes: Dispatch<SetStateAction<IFood[]>>;
 }
 
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
 
-const initm: IMeal[] = [
+const initcm: IMeal[] = [
   {
     name: "Breakfast Breakfast Breakfast Breakfast Breakfast",
     foods: [
@@ -94,14 +94,14 @@ const initr: IFood[] = [];
 export function NutritionProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
-  const [meals, setMeals] = useState<IMeal[]>(initm);
+  const [currentMeals, setCurrentMeals] = useState<IMeal[]>(initcm);
   const [recipes, setRecipes] = useState<IFood[]>(initr);
 
   useEffect(() => {
-    if (meals !== initm) {
-      AsyncStorage.setItem(`@${currentUser?.id}:meals`, JSON.stringify(meals));
+    if (currentMeals !== initcm) {
+      AsyncStorage.setItem(`@${currentUser?.id}:currentMeals`, JSON.stringify(currentMeals));
     }
-  }, [meals]);
+  }, [currentMeals]);
 
   useEffect(() => {
     if (recipes !== initr) {
@@ -110,9 +110,9 @@ export function NutritionProvider({ children }: IProviderChildren) {
   }, [recipes]);
 
   useEffect(() => {
-    AsyncStorage.multiGet([`@${currentUser?.id}:meals`, `@${currentUser?.id}:recipes`]).then((arrayJson) => {
+    AsyncStorage.multiGet([`@${currentUser?.id}:currentMeals`, `@${currentUser?.id}:recipes`]).then((arrayJson) => {
       if (arrayJson[0][1]) {
-        setMeals(JSON.parse(arrayJson[0][1]));
+        setCurrentMeals(JSON.parse(arrayJson[0][1]));
       }
       if (arrayJson[1][1]) {
         setRecipes(JSON.parse(arrayJson[1][1]));
@@ -121,6 +121,8 @@ export function NutritionProvider({ children }: IProviderChildren) {
   }, []);
 
   return (
-    <NutritionContext.Provider value={{ meals, setMeals, recipes, setRecipes }}>{children}</NutritionContext.Provider>
+    <NutritionContext.Provider value={{ currentMeals, setCurrentMeals, recipes, setRecipes }}>
+      {children}
+    </NutritionContext.Provider>
   );
 }

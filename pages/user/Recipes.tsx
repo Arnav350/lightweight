@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -12,7 +13,7 @@ import { COLORS } from "../../constants/theme";
 function Recipes({ navigation, route: { params } }: TNutritionProps) {
   const isFocused = useIsFocused();
 
-  const { meals, setMeals, recipes, setRecipes } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, recipes, setRecipes } = useContext(NutritionContext);
 
   const [recipeName, setRecipeName] = useState<string>("");
 
@@ -20,13 +21,13 @@ function Recipes({ navigation, route: { params } }: TNutritionProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name: params?.i ? meals[params.i].name : "",
-      foods: params?.i ? meals[params.i].foods : [],
+      name: params?.i ? currentMeals[params.i].name : "",
+      foods: params?.i ? currentMeals[params.i].foods : [],
     });
   }, [isFocused]);
 
   function handlePress() {
-    setMeals(meals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
+    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
 
     navigation.goBack();
   }
