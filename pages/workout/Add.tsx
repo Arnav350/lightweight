@@ -63,7 +63,9 @@ function Add(props: TProps) {
   const [currentMuscle, setCurrentMuscle] = useState<string>("Any Muscle");
 
   const [showNew, setShowNew] = useState<boolean>(false);
+
   const [showEdit, setShowEdit] = useState<boolean>(false);
+  const [editExercise, setEditExercise] = useState<IExercise | null>(null);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -109,17 +111,23 @@ function Add(props: TProps) {
                 (currentMuscle === exercise.muscle || currentMuscle === "Any Muscle")
             )
             .map((exercise: IExercise, i: number) => (
-              <AddExercise key={i} exercise={exercise} navigate={props} setShowEdit={setShowEdit} />
+              <AddExercise
+                key={i}
+                exercise={exercise}
+                navigate={props}
+                setShowEdit={setShowEdit}
+                setEditExercise={setEditExercise}
+              />
             ))}
           <Text style={styles.dont}>Don't see the exercise you want?</Text>
-          <TouchableOpacity activeOpacity={0.5} style={styles.newContainer}>
-            <Text style={styles.new} onPress={() => setShowNew(true)}>
-              Create New Exercise
-            </Text>
+          <TouchableOpacity activeOpacity={0.5} style={styles.newContainer} onPress={() => setShowNew(true)}>
+            <Text style={styles.new}>Create New Exercise</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {showEdit && <EditExercise equipments={equipments} muscles={muscles} setShowEdit={setShowEdit} />}
+      {showEdit && (
+        <EditExercise equipments={equipments} muscles={muscles} setShowEdit={setShowEdit} editExercise={editExercise} />
+      )}
       {showNew && <NewExercise equipments={equipments} muscles={muscles} setShowNew={setShowNew} />}
     </SafeAreaView>
   );

@@ -12,18 +12,24 @@ interface IProps {
   exercise: IExercise;
   navigate: StackScreenProps<TWorkoutStackParamList>;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
+  setEditExercise: Dispatch<SetStateAction<IExercise | null>>;
 }
 
-function Activity({ exercise, navigate: { navigation }, setShowEdit }: IProps) {
+function Activity({ exercise, navigate: { navigation }, setShowEdit, setEditExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
-  function handlePress() {
+  function handleContainerPress() {
+    setShowEdit(true);
+    setEditExercise(exercise);
+  }
+
+  function handlePlusPress() {
     setCurrentWorkout({ ...currentWorkout, exercises: [...currentWorkout.exercises, exercise] });
     navigation.goBack();
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={() => setShowEdit(true)}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handleContainerPress}>
       <Image source={require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>
@@ -33,7 +39,7 @@ function Activity({ exercise, navigate: { navigation }, setShowEdit }: IProps) {
           {exercise.muscle} - {exercise.equipment}
         </Text>
       </View>
-      <TouchableOpacity activeOpacity={0.5} style={styles.iconContainer} onPress={handlePress}>
+      <TouchableOpacity activeOpacity={0.5} style={styles.iconContainer} onPress={handlePlusPress}>
         <Icon name="plus" size={32} color={COLORS.white} />
       </TouchableOpacity>
     </TouchableOpacity>

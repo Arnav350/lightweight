@@ -112,13 +112,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    margin: 32,
+    marginTop: 32,
+    marginLeft: 32,
     color: COLORS.white,
     fontSize: 48,
     fontWeight: "500",
   },
   formContainer: {
-    padding: 32,
+    paddingHorizontal: 32,
   },
   logo: {
     height: 192,

@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "reac
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
+import { IExercise } from "../../pages/workout/Workout";
 import ExerciseDropdown from "./ExerciseDropdown";
 import { COLORS } from "../../constants/theme";
 
@@ -10,18 +11,50 @@ interface IProps {
   equipments: string[];
   muscles: string[];
   setShowEdit: Dispatch<SetStateAction<boolean>>;
+  editExercise: IExercise | null;
 }
 
-function EditExercise({ equipments, muscles, setShowEdit }: IProps) {
-  const { exercises, setExercises } = useContext(WorkoutContext);
+function EditExercise({ equipments, muscles, setShowEdit, editExercise }: IProps) {
+  const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
-  const [exerciseName, setExerciseName] = useState("");
-  const [currentEquipment, setCurrentEquipment] = useState("");
-  const [currentMuscle, setCurrentMuscle] = useState("");
+  const [exerciseName, setExerciseName] = useState<string>(editExercise?.name || "");
+  const [currentEquipment, setCurrentEquipment] = useState<string>(editExercise?.equipment || "Any Equipment");
+  const [currentMuscle, setCurrentMuscle] = useState(editExercise?.muscle || "Any Muscle");
 
-  function handleSavePress() {}
-  function handleAddPress() {}
-  function handleDeletePress() {}
+  function handleSavePress() {
+    setExercises(
+      exercises.map((exercise) =>
+        exercise.name === editExercise?.name
+          ? { ...exercise, name: exerciseName, equipment: currentEquipment, muscle: currentMuscle }
+          : exercise
+      )
+    );
+    setShowEdit(false);
+  }
+
+  function handleAddPress() {
+    if (editExercise) {
+      setCurrentWorkout({ ...currentWorkout, exercises: [...currentWorkout.exercises, editExercise] });
+      setShowEdit(false);
+    }
+  }
+
+  function handleDeletePress() {
+    Alert.alert("Delete Meal?", `Are you sure you want to delete "${editExercise?.name}"`, [
+      {
+        text: "Delete",
+        onPress: () => {
+          setExercises(exercises.filter((exercise) => exercise.name !== editExercise?.name));
+          setShowEdit(false);
+        },
+        style: "destructive",
+      },
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+    ]);
+  }
 
   return (
     <View style={styles.container}>
@@ -54,10 +87,10 @@ function EditExercise({ equipments, muscles, setShowEdit }: IProps) {
             <ExerciseDropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.3} style={styles.buttonContainer} onPress={handleAddPress}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleAddPress}>
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.3} style={styles.buttonContainer} onPress={handleDeletePress}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleDeletePress}>
           <Text style={styles.button}>Delete Exercise</Text>
         </TouchableOpacity>
       </View>
@@ -100,9 +133,10 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   dropdownsContainer: {
+    zIndex: 1,
+    flexDirection: "row",
     marginTop: 8,
     marginHorizontal: 4,
-    flexDirection: "row",
   },
   dropdownContainer: {
     flex: 1,
@@ -125,6 +159,7 @@ const styles = StyleSheet.create({
   button: {
     color: COLORS.white,
     fontSize: 16,
+    fontWeight: "500",
     textAlign: "center",
   },
 });
