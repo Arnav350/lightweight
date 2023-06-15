@@ -7,6 +7,7 @@ import { WorkoutProvider } from "../hooks/useWorkout";
 import { NutritionProvider } from "../hooks/useNutrition";
 import Gym from "../pages/user/Gym";
 import Select from "../pages/user/Select";
+import Routine from "../pages/user/Routine";
 import Nutrition from "../pages/user/Nutrition";
 import Repast from "../pages/user/Repast";
 import Create from "../pages/user/Create";
@@ -19,6 +20,7 @@ import { COLORS } from "../constants/theme";
 export type TGymStackParamList = {
   Gym: undefined;
   Select: undefined;
+  Routine: undefined;
 };
 
 const GStack = createStackNavigator<TGymStackParamList>();
@@ -29,6 +31,7 @@ function GymStack() {
       <GStack.Navigator initialRouteName="Gym" screenOptions={{ headerShown: false }}>
         <GStack.Screen name="Gym" component={Gym} />
         <GStack.Screen name="Select" component={Select} />
+        <GStack.Screen name="Routine" component={Routine} />
       </GStack.Navigator>
     </WorkoutProvider>
   );

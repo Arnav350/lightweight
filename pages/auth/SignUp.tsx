@@ -16,7 +16,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../supabase";
 import { TAuthStackParamList } from "../../stacks/AuthStack";
-import { IExercise, IRoutine } from "../workout/Workout";
+import { initExercises, initRoutines } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
@@ -31,71 +31,6 @@ interface IErrors {
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}$/;
-
-const initExercises: IExercise[] = [
-  {
-    name: "Bench Press",
-    equipment: "Barbell",
-    muscle: "Chest",
-    notes: "",
-    sets: [
-      { type: "W", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-    ],
-  },
-  {
-    name: "Smith Machine 45 Pound Plate Elevated Front Squat",
-    equipment: "Barbell",
-    muscle: "Quads",
-    notes: "",
-    sets: [
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "D", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "N", weight: 0, reps: 0, notes: "" },
-    ],
-  },
-  {
-    name: "Bicep Curl",
-    equipment: "Dumbbell",
-    muscle: "Bicep",
-    notes: "",
-    sets: [
-      { type: "N", weight: 0, reps: 0, notes: "" },
-      { type: "S", weight: 0, reps: 0, notes: "" },
-      { type: "S", weight: 0, reps: 0, notes: "" },
-    ],
-  },
-];
-
-const initRoutines: IRoutine[] = [
-  {
-    name: "Push",
-    exercises: [
-      { name: "Bench Press", types: ["W", "W", "N", "N"] },
-      { name: "Shoulder Press", types: ["W", "N", "N", "D"] },
-      { name: "Tricep Extension", types: ["N", "D", "N", "D"] },
-    ],
-  },
-  {
-    name: "Pull",
-    exercises: [
-      { name: "Barbell Row", types: ["W", "W", "N", "N"] },
-      { name: "Lat Pulldown", types: ["W", "N", "N", "D"] },
-      { name: "Bicep Curl", types: ["N", "D", "N", "D"] },
-    ],
-  },
-  {
-    name: "Legs",
-    exercises: [
-      { name: "Squat", types: ["W", "N", "N", "N"] },
-      { name: "Leg Curls", types: ["W", "N", "N", "D"] },
-      { name: "Calf Raises", types: ["N", "D", "N", "D"] },
-    ],
-  },
-];
 
 function SignUp({ navigation }: TProps) {
   const [focusedInput, setFocusedInput] = useState<string>("none");

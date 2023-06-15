@@ -1,20 +1,23 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TGymStackParamList } from "../../stacks/UserStack";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   name: string;
+  navigate: StackScreenProps<TGymStackParamList, "Select">;
 }
 
-function ExploreRoutine({ name }: IProps) {
+function ExploreRoutine({ name, navigate: { navigation } }: IProps) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={() => navigation.navigate("Routine")}>
       <Text style={styles.name}>{name}</Text>
-      <TouchableOpacity activeOpacity={0.3}>
+      <View>
         <Icon name="plus" size={24} color={COLORS.primary} />
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 

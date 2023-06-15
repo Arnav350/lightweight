@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { supabase } from "../../supabase";
+import { AuthContext } from "../../hooks/useAuth";
+import { initExercises, initRoutines } from "../../constants/init";
 
 function Profile() {
+  const currentUser = useContext(AuthContext);
+
   return (
     <SafeAreaView>
       <TouchableOpacity onPress={() => supabase.auth.signOut()}>
@@ -12,6 +17,16 @@ function Profile() {
       </TouchableOpacity>
       <TouchableOpacity onPress={async () => await AsyncStorage.clear()}>
         <Text>Remove Data</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          AsyncStorage.multiSet([
+            [`@${currentUser?.id}:exercises`, JSON.stringify(initExercises)],
+            [`@${currentUser?.id}:routines`, JSON.stringify(initRoutines)],
+          ])
+        }
+      >
+        <Text>Set Init Data</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
