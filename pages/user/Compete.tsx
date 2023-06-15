@@ -5,7 +5,11 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { COLORS } from "../../constants/theme";
 
 function Compete() {
-  return <SafeAreaView></SafeAreaView>;
+  return (
+    <SafeAreaView>
+      <Text>COMPETE</Text>
+    </SafeAreaView>
+  );
 }
 
 export default Compete;

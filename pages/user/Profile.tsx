@@ -5,10 +5,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { supabase } from "../../supabase";
 import { AuthContext } from "../../hooks/useAuth";
-import { initExercises, initRoutines } from "../../constants/init";
+import { initExercises } from "../../constants/init";
 
 function Profile() {
   const currentUser = useContext(AuthContext);
+
+  async function handlePress() {
+    try {
+      await AsyncStorage.setItem(`@${currentUser?.id}:exercises`, JSON.stringify(initExercises));
+      await AsyncStorage.multiRemove([
+        `@${currentUser?.id}:currentWorkout`,
+        `@${currentUser?.id}:workouts`,
+        `@${currentUser?.id}:routines`,
+        `@${currentUser?.id}:meals`,
+        `@${currentUser?.id}:recipes`,
+      ]);
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -18,14 +33,7 @@ function Profile() {
       <TouchableOpacity onPress={async () => await AsyncStorage.clear()}>
         <Text>Remove Data</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          AsyncStorage.multiSet([
-            [`@${currentUser?.id}:exercises`, JSON.stringify(initExercises)],
-            [`@${currentUser?.id}:routines`, JSON.stringify(initRoutines)],
-          ])
-        }
-      >
+      <TouchableOpacity onPress={handlePress}>
         <Text>Set Init Data</Text>
       </TouchableOpacity>
     </SafeAreaView>

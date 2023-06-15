@@ -11,12 +11,12 @@ interface IProps {
   navigate: StackScreenProps<TGymStackParamList, "Select">;
 }
 
-function ExploreRoutine({ name, navigate: { navigation } }: IProps) {
+function ExploreRoutine({ i, name, navigate: { navigation } }: IProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
       style={styles.container}
-      onPress={() => navigation.navigate("Routine", { i: 1, explore: true })}
+      onPress={() => navigation.navigate("Routine", { i: i, explore: true })}
     >
       <Text style={styles.name}>{name}</Text>
       <View>

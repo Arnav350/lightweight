@@ -38,7 +38,7 @@ export const initExercises: IExercise[] = [
   },
 ];
 
-export const initRoutines: IRoutine[] = [
+export const exploreRoutines: IRoutine[] = [
   {
     name: "Push",
     creator: "PumpPeak",
