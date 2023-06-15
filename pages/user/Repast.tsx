@@ -2,15 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionProps } from "../../stacks/UserStack";
+import { TNutritionStackParamList } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
 import SelectFood from "../../components/nutrition/SelectFood";
 import { COLORS } from "../../constants/theme";
 
-function Repast({ navigation, route: { params } }: TNutritionProps) {
+type TProps = StackScreenProps<TNutritionStackParamList, "Repast">;
+
+function Repast({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
   const { currentMeals, setCurrentMeals } = useContext(NutritionContext);
@@ -43,13 +46,13 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name: params && params.i < currentMeals.length ? currentMeals[params.i].name : "",
-      foods: params && params.i < currentMeals.length ? currentMeals[params.i].foods : [],
+      name: params.i < currentMeals.length ? currentMeals[params.i].name : "",
+      foods: params.i < currentMeals.length ? currentMeals[params.i].foods : [],
     });
   }, [isFocused]);
 
   function handleLeftPress() {
-    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
+    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)));
 
     navigation.goBack();
   }
@@ -59,7 +62,7 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
       {
         text: "Delete",
         onPress: () => {
-          setCurrentMeals(currentMeals.filter((_currentMeal, i: number) => i !== params?.i));
+          setCurrentMeals(currentMeals.filter((_currentMeal, i: number) => i !== params.i));
           navigation.goBack();
         },
         style: "destructive",
@@ -107,7 +110,7 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.optionsButton}
-              onPress={() => params && navigation.navigate("Recipes", { i: params.i, save: null })}
+              onPress={() => navigation.navigate("Recipes", { i: params.i, save: null })}
             >
               <Icon name="cart-outline" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>My Recipes</Text>
@@ -117,7 +120,7 @@ function Repast({ navigation, route: { params } }: TNutritionProps) {
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.optionsButton}
-              onPress={() => params && navigation.navigate("Create", { i: params.i, save: false })}
+              onPress={() => navigation.navigate("Create", { i: params.i, save: false })}
             >
               <Icon name="timer-outline" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>Quick Add</Text>

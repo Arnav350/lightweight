@@ -1,14 +1,17 @@
 import { useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionProps } from "../../stacks/UserStack";
+import { TNutritionStackParamList } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
 import { COLORS } from "../../constants/theme";
 
-function Create({ navigation, route: { params } }: TNutritionProps) {
+type TProps = StackScreenProps<TNutritionStackParamList, "Create">;
+
+function Create({ navigation, route: { params } }: TProps) {
   const { currentMeals, setCurrentMeals, recipes, setRecipes } = useContext(NutritionContext);
 
   const [focusedInput, setFocusedInput] = useState<string>("none");
@@ -33,12 +36,12 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
 
       navigation.goBack();
 
-      if (params?.save) {
+      if (params.save) {
         setRecipes([...recipes, tempFood]);
       } else {
         setCurrentMeals(
           currentMeals.map((meal: IMeal, i: number) =>
-            i === params?.i
+            i === params.i
               ? {
                   ...meal,
                   foods: [...meal.foods, tempFood],
@@ -57,15 +60,15 @@ function Create({ navigation, route: { params } }: TNutritionProps) {
         <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
-        <Text style={styles.header}>{params?.save ? "Create Recipe" : "Quick Add"}</Text>
+        <Text style={styles.header}>{params.save ? "Create Recipe" : "Quick Add"}</Text>
         <TouchableOpacity activeOpacity={0.3}>
           <Icon name="check" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <View style={styles.createContainer}>
-        {!params?.save && (
+        {!params.save && (
           <Text numberOfLines={1} style={styles.name}>
-            Meal: {currentMeals.map((meal: IMeal, i: number) => i === params?.i && meal.name)}
+            Meal: {currentMeals.map((meal: IMeal, i: number) => i === params.i && meal.name)}
           </Text>
         )}
         {err && <Text style={styles.err}>Fill out the name and calories fields</Text>}

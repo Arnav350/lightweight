@@ -2,15 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionProps } from "../../stacks/UserStack";
+import { TNutritionStackParamList } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
 import SelectFood from "../../components/nutrition/SelectFood";
 import { COLORS } from "../../constants/theme";
 
-function Recipes({ navigation, route: { params } }: TNutritionProps) {
+type TProps = StackScreenProps<TNutritionStackParamList, "Recipes">;
+
+function Recipes({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
   const { currentMeals, setCurrentMeals, recipes, setRecipes } = useContext(NutritionContext);
@@ -21,13 +24,13 @@ function Recipes({ navigation, route: { params } }: TNutritionProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name: params?.i ? currentMeals[params.i].name : "",
-      foods: params?.i ? currentMeals[params.i].foods : [],
+      name: params.i ? currentMeals[params.i].name : "",
+      foods: params.i ? currentMeals[params.i].foods : [],
     });
   }, [isFocused]);
 
   function handlePress() {
-    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params?.i ? currentMeal : meal)));
+    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)));
 
     navigation.goBack();
   }
@@ -41,7 +44,7 @@ function Recipes({ navigation, route: { params } }: TNutritionProps) {
         <Text style={styles.header}>My Recipes</Text>
         <TouchableOpacity
           activeOpacity={0.3}
-          onPress={() => params && navigation.navigate("Create", { i: params.i, save: true })}
+          onPress={() => navigation.navigate("Create", { i: params.i, save: true })}
         >
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
@@ -71,7 +74,7 @@ function Recipes({ navigation, route: { params } }: TNutritionProps) {
           <TouchableOpacity
             activeOpacity={0.5}
             style={styles.buttonContainer}
-            onPress={() => params && navigation.navigate("Create", { i: params.i, save: true })}
+            onPress={() => navigation.navigate("Create", { i: params.i, save: true })}
           >
             <Text style={styles.button}>Create a New Recipe</Text>
           </TouchableOpacity>

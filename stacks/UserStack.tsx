@@ -20,7 +20,7 @@ import { COLORS } from "../constants/theme";
 export type TGymStackParamList = {
   Gym: undefined;
   Select: undefined;
-  Routine: undefined;
+  Routine: { i: number; explore: boolean };
 };
 
 const GStack = createStackNavigator<TGymStackParamList>();
@@ -43,8 +43,6 @@ export type TNutritionStackParamList = {
   Create: { i: number; save: boolean };
   Recipes: { i: number; save: boolean | null };
 };
-
-export type TNutritionProps = StackScreenProps<TNutritionStackParamList>;
 
 const NStack = createStackNavigator<TNutritionStackParamList>();
 

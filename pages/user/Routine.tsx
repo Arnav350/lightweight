@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -5,12 +6,16 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../App";
+import { WorkoutContext } from "../../hooks/useWorkout";
 import { TGymStackParamList } from "../../stacks/UserStack";
+import RoutineExercise from "../../components/workout/RoutineExercise";
 import { COLORS } from "../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
-function Routine({ navigation }: TProps) {
+function Routine({ navigation, route: { params } }: TProps) {
+  const { routines, setRoutines } = useContext(WorkoutContext);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -23,9 +28,17 @@ function Routine({ navigation }: TProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.routineContainer}>
+        <Text>{routines[params.i].name}</Text>
+        <Text>
+          Created by
+          <Text>{routines[params.i].creator}</Text>
+        </Text>
         <TouchableOpacity activeOpacity={0.5} style={styles.startContainer}>
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
+        {routines[params.i].exercises.map((exercise, i) => (
+          <RoutineExercise key={i} i={i} exercise={exercise} />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );

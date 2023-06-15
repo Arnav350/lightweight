@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionProps } from "../../stacks/UserStack";
+import { TNutritionStackParamList } from "../../stacks/UserStack";
 import { NutritionContext } from "../../hooks/useNutrition";
 import MacroCircle from "../../components/nutrition/MacroCircle";
 import NutritionMeal from "../../components/nutrition/NutritionMeal";
@@ -24,9 +25,11 @@ export interface IMeal {
   foods: IFood[];
 }
 
+type TProps = StackScreenProps<TNutritionStackParamList, "Nutrition">;
+
 const windowWidth = Dimensions.get("window").width;
 
-function Nutrition(props: TNutritionProps) {
+function Nutrition(props: TProps) {
   const { navigation } = props;
 
   const { currentMeals, setCurrentMeals } = useContext(NutritionContext);

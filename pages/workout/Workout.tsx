@@ -50,7 +50,8 @@ export interface IRoutineExercise {
 }
 
 export interface IRoutine {
-  name: String;
+  name: string;
+  creator: string;
   exercises: IRoutineExercise[];
 }
 

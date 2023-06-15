@@ -41,6 +41,7 @@ export const initExercises: IExercise[] = [
 export const initRoutines: IRoutine[] = [
   {
     name: "Push",
+    creator: "PumpPeak",
     exercises: [
       { name: "Bench Press", types: ["W", "W", "N", "N"] },
       { name: "Shoulder Press", types: ["W", "N", "N", "D"] },
@@ -49,6 +50,7 @@ export const initRoutines: IRoutine[] = [
   },
   {
     name: "Pull",
+    creator: "PumpPeak",
     exercises: [
       { name: "Barbell Row", types: ["W", "W", "N", "N"] },
       { name: "Lat Pulldown", types: ["W", "N", "N", "D"] },
@@ -57,24 +59,25 @@ export const initRoutines: IRoutine[] = [
   },
   {
     name: "Legs",
+    creator: "PumpPeak",
     exercises: [
       { name: "Squat", types: ["W", "N", "N", "N"] },
       { name: "Leg Curls", types: ["W", "N", "N", "D"] },
       { name: "Calf Raises", types: ["N", "D", "N", "D"] },
     ],
   },
-  { name: "Chest & Back", exercises: [] },
-  { name: "Shoulders & Arms", exercises: [] },
-  { name: "Legs", exercises: [] },
-  { name: "Full Body 1", exercises: [] },
-  { name: "Full Body 2", exercises: [] },
-  { name: "Full Body 3", exercises: [] },
-  { name: "Upper 1", exercises: [] },
-  { name: "Lower 1", exercises: [] },
-  { name: "Upper 2", exercises: [] },
-  { name: "Lower 2", exercises: [] },
-  { name: "Dumbbell Upper", exercises: [] },
-  { name: "Dumbbell Lower", exercises: [] },
-  { name: "Home Upper", exercises: [] },
-  { name: "Home Lower", exercises: [] },
+  { name: "Chest & Back", creator: "PumpPeak", exercises: [] },
+  { name: "Shoulders & Arms", creator: "PumpPeak", exercises: [] },
+  { name: "Legs", creator: "PumpPeak", exercises: [] },
+  { name: "Full Body 1", creator: "PumpPeak", exercises: [] },
+  { name: "Full Body 2", creator: "PumpPeak", exercises: [] },
+  { name: "Full Body 3", creator: "PumpPeak", exercises: [] },
+  { name: "Upper 1", creator: "PumpPeak", exercises: [] },
+  { name: "Lower 1", creator: "PumpPeak", exercises: [] },
+  { name: "Upper 2", creator: "PumpPeak", exercises: [] },
+  { name: "Lower 2", creator: "PumpPeak", exercises: [] },
+  { name: "Dumbbell Upper", creator: "PumpPeak", exercises: [] },
+  { name: "Dumbbell Lower", creator: "PumpPeak", exercises: [] },
+  { name: "Home Upper", creator: "PumpPeak", exercises: [] },
+  { name: "Home Lower", creator: "PumpPeak", exercises: [] },
 ];
