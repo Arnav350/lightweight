@@ -16,8 +16,10 @@ type TProps = CompositeScreenProps<
   StackScreenProps<TRootStackParamList>
 >;
 
+type TType = "D" | "N" | "S" | "W";
+
 export interface ISet {
-  type: "D" | "N" | "S" | "W";
+  type: TType;
   weight: number;
   reps: number;
   notes: string;
@@ -40,6 +42,16 @@ export interface IWorkout {
   time: string;
   weight: number;
   exercises: IExercise[];
+}
+
+export interface IRoutineExercise {
+  name: string;
+  types: TType[];
+}
+
+export interface IRoutine {
+  name: String;
+  exercises: IRoutineExercise[];
 }
 
 function Workout({ navigation }: TProps) {
@@ -85,8 +97,8 @@ function Workout({ navigation }: TProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.workoutContainer}>
-        {currentWorkout.exercises.map((_exercise: IExercise, i: number) => (
-          <WorkoutExercise key={i} i={i} />
+        {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
+          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} />
         ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.button}>Add Exercise</Text>

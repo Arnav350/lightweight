@@ -1,20 +1,23 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "../../pages/workout/Workout";
 import ExerciseDropdown from "./ExerciseDropdown";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  navigate: StackScreenProps<TWorkoutStackParamList>;
   equipments: string[];
   muscles: string[];
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   editExercise: IExercise | null;
 }
 
-function EditExercise({ equipments, muscles, setShowEdit, editExercise }: IProps) {
+function EditExercise({ navigate: { navigation }, equipments, muscles, setShowEdit, editExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
   const [exerciseName, setExerciseName] = useState<string>(editExercise?.name || "");
@@ -36,24 +39,8 @@ function EditExercise({ equipments, muscles, setShowEdit, editExercise }: IProps
     if (editExercise) {
       setCurrentWorkout({ ...currentWorkout, exercises: [...currentWorkout.exercises, editExercise] });
       setShowEdit(false);
+      navigation.goBack();
     }
-  }
-
-  function handleDeletePress() {
-    Alert.alert("Delete Meal?", `Are you sure you want to delete "${editExercise?.name}"`, [
-      {
-        text: "Delete",
-        onPress: () => {
-          setExercises(exercises.filter((exercise) => exercise.name !== editExercise?.name));
-          setShowEdit(false);
-        },
-        style: "destructive",
-      },
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-    ]);
   }
 
   return (
@@ -87,11 +74,8 @@ function EditExercise({ equipments, muscles, setShowEdit, editExercise }: IProps
             <ExerciseDropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleAddPress}>
-          <Text style={styles.button}>Add Exercise</Text>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleDeletePress}>
-          <Text style={styles.button}>Delete Exercise</Text>
+        <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>
+          <Text style={styles.add}>Add Exercise</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -149,14 +133,14 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
   },
-  buttonContainer: {
+  addContainer: {
     marginVertical: 4,
     marginHorizontal: 8,
     padding: 8,
     backgroundColor: COLORS.primary,
     borderRadius: 8,
   },
-  button: {
+  add: {
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",

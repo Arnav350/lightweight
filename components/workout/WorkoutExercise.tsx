@@ -10,29 +10,20 @@ import { WorkoutContext } from "../../hooks/useWorkout";
 
 interface IProps {
   i: number;
+  currentExercise: IExercise;
 }
 
-const init: IExercise = {
-  name: "Bench Press",
-  equipment: "Barbell",
-  muscle: "Chest",
-  notes: "New PR!",
-  sets: [
-    { type: "W", weight: 200, reps: 10, notes: "notes" },
-    { type: "N", weight: 300, reps: 8, notes: "" },
-    { type: "D", weight: 400, reps: 6, notes: "" },
-    { type: "N", weight: 500, reps: 1, notes: "WOW" },
-  ],
-};
-
-function Exercise({ i }: IProps) {
+function Exercise({ i, currentExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
-  const [prevExercise, setPrevExercise] = useState<IExercise>(init);
+
+  const [prevExercise, setPrevExercise] = useState<IExercise>(
+    exercises.filter((exercise) => exercise.name === currentExercise.name)[0]
+  );
 
   // const a: number= exercises.filter((exercise, i) => exercise.name === exercises[i].name)[0].sets.length;
 
   useEffect(() => {
-    const lengthDifference = currentWorkout.exercises[i].sets.length - prevExercise.sets.length;
+    const lengthDifference = currentExercise.sets.length - prevExercise.sets.length;
 
     if (lengthDifference > 0) {
       setPrevExercise({
@@ -48,7 +39,7 @@ function Exercise({ i }: IProps) {
         ],
       });
     }
-  }, [currentWorkout.exercises[i].sets.length]);
+  }, [currentExercise.sets.length]);
 
   function handleAddPress() {
     setCurrentWorkout({
@@ -70,7 +61,7 @@ function Exercise({ i }: IProps) {
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.topText} numberOfLines={1}>
-          {currentWorkout.exercises[i].name}
+          {currentExercise.name}
         </Text>
         <Icon name="dots-horizontal" size={24} color={COLORS.white} />
       </View>
@@ -81,7 +72,7 @@ function Exercise({ i }: IProps) {
         <Text style={styles.subtitle}>Notes</Text>
       </View>
       <View style={styles.setsContainer}>
-        {prevExercise.sets.slice(0, currentWorkout.exercises[i].sets.length).map((prevSet: ISet, j: number) => (
+        {prevExercise.sets.slice(0, currentExercise.sets.length).map((prevSet: ISet, j: number) => (
           <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} />
         ))}
       </View>

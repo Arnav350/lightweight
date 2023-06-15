@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffe
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { AuthContext } from "./useAuth";
-import { IExercise, IWorkout } from "../pages/workout/Workout";
+import { IExercise, IWorkout, IRoutine } from "../pages/workout/Workout";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -15,13 +15,13 @@ interface IWorkoutContext {
   setExercises: Dispatch<SetStateAction<IExercise[]>>;
   workouts: IWorkout[];
   setWorkouts: Dispatch<SetStateAction<IWorkout[]>>;
-  routines: IWorkout[];
-  setRoutines: Dispatch<SetStateAction<IWorkout[]>>;
+  routines: IRoutine[];
+  setRoutines: Dispatch<SetStateAction<IRoutine[]>>;
 }
 
 export const WorkoutContext = createContext<IWorkoutContext>({} as IWorkoutContext);
 
-const initcw: IWorkout = {
+const initWorkout: IWorkout = {
   date: {
     month: "",
     day: "",
@@ -343,36 +343,63 @@ const initw: IWorkout[] = [
   },
 ];
 
-const initr: IWorkout[] = [];
+const initr: IRoutine[] = [
+  {
+    name: "Push",
+    exercises: [
+      { name: "Bench Press", types: ["W", "W", "N", "N"] },
+      { name: "Shoulder Press", types: ["W", "N", "N", "D"] },
+      { name: "Tricep Extension", types: ["N", "D", "N", "D"] },
+    ],
+  },
+  {
+    name: "Pull",
+    exercises: [
+      { name: "Barbell Row", types: ["W", "W", "N", "N"] },
+      { name: "Lat Pulldown", types: ["W", "N", "N", "D"] },
+      { name: "Bicep Curl", types: ["N", "D", "N", "D"] },
+    ],
+  },
+  {
+    name: "Legs",
+    exercises: [
+      { name: "Squat", types: ["W", "N", "N", "N"] },
+      { name: "Leg Curls", types: ["W", "N", "N", "D"] },
+      { name: "Calf Raises", types: ["N", "D", "N", "D"] },
+    ],
+  },
+];
+
+const initArray: [] = [];
 
 export function WorkoutProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
-  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initcw);
-  const [exercises, setExercises] = useState<IExercise[]>(inite);
-  const [workouts, setWorkouts] = useState<IWorkout[]>(initw);
-  const [routines, setRoutines] = useState<IWorkout[]>(initr);
+  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initWorkout);
+  const [exercises, setExercises] = useState<IExercise[]>(initArray);
+  const [workouts, setWorkouts] = useState<IWorkout[]>(initArray);
+  const [routines, setRoutines] = useState<IRoutine[]>(initArray);
 
   useEffect(() => {
-    if (currentWorkout !== initcw) {
+    if (currentWorkout !== initWorkout) {
       AsyncStorage.setItem(`@${currentUser?.id}:currentWorkout`, JSON.stringify(currentWorkout));
     }
   }, [currentWorkout]);
 
   useEffect(() => {
-    if (exercises !== inite) {
+    if (exercises !== initArray) {
       AsyncStorage.setItem(`@${currentUser?.id}:exercises`, JSON.stringify(exercises));
     }
   }, [exercises]);
 
   useEffect(() => {
-    if (workouts !== initw) {
+    if (workouts !== initArray) {
       AsyncStorage.setItem(`@${currentUser?.id}:workouts`, JSON.stringify(workouts));
     }
   }, [workouts]);
 
   useEffect(() => {
-    if (routines !== initr) {
+    if (routines !== initArray) {
       AsyncStorage.setItem(`@${currentUser?.id}:routines`, JSON.stringify(routines));
     }
   }, [routines]);

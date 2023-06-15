@@ -9,13 +9,13 @@ import { IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  exercise: IExercise;
   navigate: StackScreenProps<TWorkoutStackParamList>;
+  exercise: IExercise;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   setEditExercise: Dispatch<SetStateAction<IExercise | null>>;
 }
 
-function Activity({ exercise, navigate: { navigation }, setShowEdit, setEditExercise }: IProps) {
+function Activity({ navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleContainerPress() {

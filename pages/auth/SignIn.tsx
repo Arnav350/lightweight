@@ -36,7 +36,11 @@ function SignUp({ navigation }: TProps) {
         password: password,
       });
 
-      if (error) alert(error.message);
+      // set asyncstorage from supabase
+
+      if (error) {
+        alert(error.message);
+      }
     }
   }
 

@@ -91,20 +91,22 @@ const initcm: IMeal[] = [
 
 const initr: IFood[] = [];
 
+const init: [] = [];
+
 export function NutritionProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
-  const [currentMeals, setCurrentMeals] = useState<IMeal[]>(initcm);
-  const [recipes, setRecipes] = useState<IFood[]>(initr);
+  const [currentMeals, setCurrentMeals] = useState<IMeal[]>(init);
+  const [recipes, setRecipes] = useState<IFood[]>(init);
 
   useEffect(() => {
-    if (currentMeals !== initcm) {
+    if (currentMeals !== init) {
       AsyncStorage.setItem(`@${currentUser?.id}:currentMeals`, JSON.stringify(currentMeals));
     }
   }, [currentMeals]);
 
   useEffect(() => {
-    if (recipes !== initr) {
+    if (recipes !== init) {
       AsyncStorage.setItem(`@${currentUser?.id}:recipes`, JSON.stringify(recipes));
     }
   }, [recipes]);

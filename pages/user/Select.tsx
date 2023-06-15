@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -7,49 +7,16 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../App";
 import { TGymStackParamList } from "../../stacks/UserStack";
+import { WorkoutContext } from "../../hooks/useWorkout";
+import { IRoutine } from "../workout/Workout";
 import MyRoutine from "../../components/gym/MyRoutine";
 import ExploreRoutine from "../../components/gym/ExploreRoutine";
 import { COLORS } from "../../constants/theme";
 
-interface IExercise {
-  name: string;
-  sets: number;
-}
-
-interface IRoutine {
-  name: String;
-  exercises: IExercise[];
-}
-
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Select">, TCompositeProps>;
 
 function Select({ navigation }: TProps) {
-  const [routines, setRoutines] = useState<IRoutine[]>([
-    {
-      name: "Push",
-      exercises: [
-        { name: "Bench Press", sets: 3 },
-        { name: "Dips", sets: 3 },
-        { name: "Incline Dumbbell Banded Bench Chest Press", sets: 3 },
-      ],
-    },
-    {
-      name: "Pull",
-      exercises: [
-        { name: "T-Bar Row", sets: 3 },
-        { name: "Curls", sets: 3 },
-        { name: "Lat Pulldown", sets: 3 },
-      ],
-    },
-    {
-      name: "Legs",
-      exercises: [
-        { name: "Squat", sets: 3 },
-        { name: "Leg Curls", sets: 3 },
-        { name: "Calf Raises", sets: 3 },
-      ],
-    },
-  ]);
+  const { routines, setRoutines } = useContext(WorkoutContext);
 
   return (
     <SafeAreaView style={styles.container}>

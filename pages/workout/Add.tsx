@@ -7,7 +7,6 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
 import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
-import { AuthContext } from "../../hooks/useAuth";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "./Workout";
 import ExerciseDropdown from "../../components/workout/ExerciseDropdown";
@@ -113,8 +112,8 @@ function Add(props: TProps) {
             .map((exercise: IExercise, i: number) => (
               <AddExercise
                 key={i}
-                exercise={exercise}
                 navigate={props}
+                exercise={exercise}
                 setShowEdit={setShowEdit}
                 setEditExercise={setEditExercise}
               />
@@ -126,7 +125,13 @@ function Add(props: TProps) {
         </View>
       </ScrollView>
       {showEdit && (
-        <EditExercise equipments={equipments} muscles={muscles} setShowEdit={setShowEdit} editExercise={editExercise} />
+        <EditExercise
+          navigate={props}
+          equipments={equipments}
+          muscles={muscles}
+          setShowEdit={setShowEdit}
+          editExercise={editExercise}
+        />
       )}
       {showNew && <NewExercise equipments={equipments} muscles={muscles} setShowNew={setShowNew} />}
     </SafeAreaView>
