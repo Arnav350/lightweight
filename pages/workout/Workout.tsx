@@ -16,10 +16,8 @@ type TProps = CompositeScreenProps<
   StackScreenProps<TRootStackParamList>
 >;
 
-type TType = "D" | "N" | "S" | "W";
-
 export interface ISet {
-  type: TType;
+  type: "D" | "N" | "S" | "W";
   weight: number;
   reps: number;
   notes: string;
@@ -44,15 +42,10 @@ export interface IWorkout {
   exercises: IExercise[];
 }
 
-export interface IRoutineExercise {
-  name: string;
-  types: TType[];
-}
-
 export interface IRoutine {
   name: string;
   creator: string;
-  exercises: IRoutineExercise[];
+  exercises: IExercise[];
 }
 
 function Workout({ navigation }: TProps) {

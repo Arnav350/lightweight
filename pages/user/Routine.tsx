@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -6,6 +7,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../App";
 import { TGymStackParamList } from "../../stacks/UserStack";
+import { WorkoutContext } from "../../hooks/useWorkout";
 import RoutineExercise from "../../components/gym/RoutineExercise";
 import { exploreRoutines } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
@@ -13,6 +15,22 @@ import { COLORS } from "../../constants/theme";
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
 function Routine({ navigation, route: { params } }: TProps) {
+  const { setCurrentWorkout } = useContext(WorkoutContext);
+
+  function handlePress() {
+    navigation.navigate("WorkoutStack", { screen: "Workout" });
+    setCurrentWorkout({
+      date: {
+        month: "",
+        day: "",
+      },
+      name: exploreRoutines[params.i].name,
+      time: "",
+      weight: 0,
+      exercises: [...exploreRoutines[params.i].exercises],
+    });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -30,7 +48,7 @@ function Routine({ navigation, route: { params } }: TProps) {
           Created by
           <Text style={styles.creator}> {exploreRoutines[params.i].creator}</Text>
         </Text>
-        <TouchableOpacity activeOpacity={0.5} style={styles.startContainer}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.startContainer} onPress={handlePress}>
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
         {exploreRoutines[params.i].exercises.map((exercise, i) => (

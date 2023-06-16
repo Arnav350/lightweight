@@ -56,7 +56,7 @@ function Set({ prevSet, i, j }: IProps) {
         placeholder={prevSet.reps.toString()}
         placeholderTextColor={COLORS.darkGray}
         keyboardType="numeric"
-        maxLength={6}
+        maxLength={4}
         keyboardAppearance="dark"
         style={styles.reps}
         onChangeText={setReps}
