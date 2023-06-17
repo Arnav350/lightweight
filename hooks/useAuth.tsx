@@ -8,7 +8,7 @@ interface IProviderChildren {
 
 export const AuthContext = createContext<User | null | undefined>(null);
 
-export function AuthProvider({ children }: IProviderChildren) {
+function AuthProvider({ children }: IProviderChildren) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function AuthProvider({ children }: IProviderChildren) {
     });
   }, []);
 
-  return (
-    <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>;
 }
+
+export default AuthProvider;

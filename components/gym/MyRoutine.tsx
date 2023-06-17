@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { IRoutineExercise, IRoutine } from "../../pages/workout/Workout";
+import { IExercise, IRoutine } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -18,7 +18,7 @@ function MyRoutine({ routine }: IProps) {
         </TouchableOpacity>
       </View>
       <Text style={styles.exercises} numberOfLines={1}>
-        {routine.exercises.map((exercise: IRoutineExercise) => exercise.name).join(", ")}
+        {routine.exercises.map((exercise: IExercise) => exercise.name).join(", ")}
       </Text>
       <TouchableOpacity activeOpacity={0.5} style={styles.startContainer}>
         <Text style={styles.start}>Start Routine</Text>

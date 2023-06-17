@@ -18,8 +18,8 @@ type TProps = CompositeScreenProps<
 
 export interface ISet {
   type: "D" | "N" | "S" | "W";
-  weight: number;
-  reps: number;
+  weight: number | "";
+  reps: number | "";
   notes: string;
 }
 
@@ -56,7 +56,7 @@ function Workout({ navigation }: TProps) {
       ...currentWorkout,
       weight: currentWorkout.exercises.reduce(
         (total: number, exercise: IExercise) =>
-          (total += exercise.sets.reduce((total: number, set: ISet) => (total += set.weight), 0)),
+          (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
         0
       ),
     });

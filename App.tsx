@@ -8,7 +8,8 @@ import { StatusBar } from "react-native";
 import AuthStack from "./stacks/AuthStack";
 import UserStack, { TTabParamsList } from "./stacks/UserStack";
 import WorkoutStack, { TWorkoutStackParamList } from "./stacks/WorkoutStack";
-import { AuthContext, AuthProvider } from "./hooks/useAuth";
+import AuthProvider, { AuthContext } from "./hooks/useAuth";
+import WorkoutProvider from "./hooks/useWorkout";
 import Loading from "./pages/auth/Loading";
 import { COLORS } from "./constants/theme";
 
@@ -48,10 +49,12 @@ function RootNavigator() {
 function App() {
   return (
     <AuthProvider>
-      <SafeAreaProvider>
-        <RootNavigator />
-        <StatusBar backgroundColor={COLORS.blackTwo} />
-      </SafeAreaProvider>
+      <WorkoutProvider>
+        <SafeAreaProvider>
+          <RootNavigator />
+          <StatusBar backgroundColor={COLORS.blackTwo} />
+        </SafeAreaProvider>
+      </WorkoutProvider>
     </AuthProvider>
   );
 }

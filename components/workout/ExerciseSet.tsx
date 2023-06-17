@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { ISet, IExercise, IWorkout } from "../../pages/workout/Workout";
+import { ISet, IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -41,7 +41,7 @@ function Set({ prevSet, i, j }: IProps) {
                       ...exercise,
                       sets: [
                         ...currentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
-                          l === j ? { ...set, weight: Number(weight) } : set
+                          l === j ? { ...set, weight: weight === "" ? (weight as "") : Number(weight) } : set
                         ),
                       ],
                     }
@@ -70,7 +70,7 @@ function Set({ prevSet, i, j }: IProps) {
                       ...exercise,
                       sets: [
                         ...currentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
-                          l === j ? { ...set, reps: Number(reps) } : set
+                          l === j ? { ...set, reps: reps === "" ? (reps as "") : Number(reps) } : set
                         ),
                       ],
                     }

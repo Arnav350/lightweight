@@ -37,38 +37,38 @@ function Select(props: TProps) {
         <Text style={styles.subheading}>Explore Routines</Text>
         <Text style={styles.routine}>Push Pull Legs</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <ExploreRoutine i={1} name="Push" navigate={props} />
-          <ExploreRoutine i={2} name="Pull" navigate={props} />
-          <ExploreRoutine i={3} name="Legs" navigate={props} />
+          <ExploreRoutine i={0} name="Push" navigate={props} />
+          <ExploreRoutine i={1} name="Pull" navigate={props} />
+          <ExploreRoutine i={2} name="Legs" navigate={props} />
         </ScrollView>
         <Text style={styles.routine}>Arnold Split</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <ExploreRoutine i={4} name="Chest & Back" navigate={props} />
-          <ExploreRoutine i={5} name="Shoulders & Arms" navigate={props} />
-          <ExploreRoutine i={6} name="Legs" navigate={props} />
+          <ExploreRoutine i={3} name="Chest & Back" navigate={props} />
+          <ExploreRoutine i={4} name="Shoulders & Arms" navigate={props} />
+          <ExploreRoutine i={5} name="Legs" navigate={props} />
         </ScrollView>
         <Text style={styles.routine}>Full Body Split</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <ExploreRoutine i={7} name="Full Body 1" navigate={props} />
-          <ExploreRoutine i={8} name="Full Body 2" navigate={props} />
-          <ExploreRoutine i={9} name="Full Body 3" navigate={props} />
+          <ExploreRoutine i={6} name="Full Body 1" navigate={props} />
+          <ExploreRoutine i={7} name="Full Body 2" navigate={props} />
+          <ExploreRoutine i={8} name="Full Body 3" navigate={props} />
         </ScrollView>
         <Text style={styles.routine}>Upper Lower</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <ExploreRoutine i={10} name="Upper 1" navigate={props} />
-          <ExploreRoutine i={11} name="Lower 1" navigate={props} />
-          <ExploreRoutine i={12} name="Upper 2" navigate={props} />
-          <ExploreRoutine i={13} name="Lower 2" navigate={props} />
+          <ExploreRoutine i={9} name="Upper 1" navigate={props} />
+          <ExploreRoutine i={10} name="Lower 1" navigate={props} />
+          <ExploreRoutine i={11} name="Upper 2" navigate={props} />
+          <ExploreRoutine i={12} name="Lower 2" navigate={props} />
         </ScrollView>
         <Text style={styles.routine}>Only Dumbbells</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <ExploreRoutine i={14} name="Dumbbell Upper" navigate={props} />
-          <ExploreRoutine i={15} name="Dumbbell Lower" navigate={props} />
+          <ExploreRoutine i={13} name="Dumbbell Upper" navigate={props} />
+          <ExploreRoutine i={14} name="Dumbbell Lower" navigate={props} />
         </ScrollView>
         <Text style={styles.routine}>No Equipment</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          <ExploreRoutine i={16} name="Home Upper" navigate={props} />
-          <ExploreRoutine i={17} name="Home Lower" navigate={props} />
+          <ExploreRoutine i={15} name="Home Upper" navigate={props} />
+          <ExploreRoutine i={16} name="Home Lower" navigate={props} />
         </ScrollView>
         <Text style={styles.name}></Text>
       </ScrollView>

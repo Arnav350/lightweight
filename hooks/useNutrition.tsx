@@ -19,7 +19,7 @@ export const NutritionContext = createContext<INutritionContext>({} as INutritio
 
 const init: [] = [];
 
-export function NutritionProvider({ children }: IProviderChildren) {
+function NutritionProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
   const [currentMeals, setCurrentMeals] = useState<IMeal[]>(init);
@@ -54,3 +54,5 @@ export function NutritionProvider({ children }: IProviderChildren) {
     </NutritionContext.Provider>
   );
 }
+
+export default NutritionProvider;

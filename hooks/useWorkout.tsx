@@ -34,11 +34,13 @@ const initWorkout: IWorkout = {
 
 const initArray: [] = [];
 
-export function WorkoutProvider({ children }: IProviderChildren) {
+const init: IExercise[] = [];
+
+function WorkoutProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initWorkout);
-  const [exercises, setExercises] = useState<IExercise[]>(initArray);
+  const [exercises, setExercises] = useState<IExercise[]>(init);
   const [workouts, setWorkouts] = useState<IWorkout[]>(initArray);
   const [routines, setRoutines] = useState<IRoutine[]>(initArray);
 
@@ -49,8 +51,13 @@ export function WorkoutProvider({ children }: IProviderChildren) {
   }, [currentWorkout]);
 
   useEffect(() => {
-    if (exercises !== initArray) {
+    if (exercises !== init) {
       AsyncStorage.setItem(`@${currentUser?.id}:exercises`, JSON.stringify(exercises));
+      console.log("====");
+      console.log(exercises);
+      console.log("====");
+      console.log(initArray);
+      console.log("====");
     }
   }, [exercises]);
 
@@ -105,3 +112,5 @@ export function WorkoutProvider({ children }: IProviderChildren) {
     </WorkoutContext.Provider>
   );
 }
+
+export default WorkoutProvider;
