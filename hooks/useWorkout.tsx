@@ -34,65 +34,88 @@ const initWorkout: IWorkout = {
 
 const initArray: [] = [];
 
-const init: IExercise[] = [];
-
 function WorkoutProvider({ children }: IProviderChildren) {
   const currentUser = useContext(AuthContext);
 
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initWorkout);
-  const [exercises, setExercises] = useState<IExercise[]>(init);
+  const [exercises, setExercises] = useState<IExercise[]>(initArray);
   const [workouts, setWorkouts] = useState<IWorkout[]>(initArray);
   const [routines, setRoutines] = useState<IRoutine[]>(initArray);
 
   useEffect(() => {
     if (currentWorkout !== initWorkout) {
-      AsyncStorage.setItem(`@${currentUser?.id}:currentWorkout`, JSON.stringify(currentWorkout));
+      async () => {
+        try {
+          await AsyncStorage.setItem(`@${currentUser?.id}:currentWorkout`, JSON.stringify(currentWorkout));
+        } catch (error) {
+          alert(error);
+        }
+      };
     }
   }, [currentWorkout]);
 
   useEffect(() => {
-    if (exercises !== init) {
-      AsyncStorage.setItem(`@${currentUser?.id}:exercises`, JSON.stringify(exercises));
-      console.log("====");
-      console.log(exercises);
-      console.log("====");
-      console.log(initArray);
-      console.log("====");
+    if (exercises !== initArray) {
+      async () => {
+        try {
+          await AsyncStorage.setItem(`@${currentUser?.id}:exercises`, JSON.stringify(exercises));
+        } catch (error) {
+          alert(error);
+        }
+      };
     }
   }, [exercises]);
 
   useEffect(() => {
     if (workouts !== initArray) {
-      AsyncStorage.setItem(`@${currentUser?.id}:workouts`, JSON.stringify(workouts));
+      async () => {
+        try {
+          await AsyncStorage.setItem(`@${currentUser?.id}:workouts`, JSON.stringify(workouts));
+        } catch (error) {
+          alert(error);
+        }
+      };
     }
   }, [workouts]);
 
   useEffect(() => {
     if (routines !== initArray) {
-      AsyncStorage.setItem(`@${currentUser?.id}:routines`, JSON.stringify(routines));
+      async () => {
+        try {
+          await AsyncStorage.setItem(`@${currentUser?.id}:routines`, JSON.stringify(routines));
+        } catch (error) {
+          alert(error);
+        }
+      };
     }
   }, [routines]);
 
   useEffect(() => {
-    AsyncStorage.multiGet([
-      `@${currentUser?.id}:currentWorkout`,
-      `@${currentUser?.id}:exercises`,
-      `@${currentUser?.id}:workouts`,
-      `@${currentUser?.id}:routines`,
-    ]).then((arrayJson) => {
-      if (arrayJson[0][1]) {
-        setCurrentWorkout(JSON.parse(arrayJson[0][1]));
+    async () => {
+      try {
+        await AsyncStorage.multiGet([
+          `@${currentUser?.id}:currentWorkout`,
+          `@${currentUser?.id}:exercises`,
+          `@${currentUser?.id}:workouts`,
+          `@${currentUser?.id}:routines`,
+        ]).then((arrayJson) => {
+          if (arrayJson[0][1]) {
+            setCurrentWorkout(JSON.parse(arrayJson[0][1]));
+          }
+          if (arrayJson[1][1]) {
+            setExercises(JSON.parse(arrayJson[1][1]));
+          }
+          if (arrayJson[2][1]) {
+            setWorkouts(JSON.parse(arrayJson[2][1]));
+          }
+          if (arrayJson[3][1]) {
+            setRoutines(JSON.parse(arrayJson[3][1]));
+          }
+        });
+      } catch (error) {
+        alert(error);
       }
-      if (arrayJson[1][1]) {
-        setExercises(JSON.parse(arrayJson[1][1]));
-      }
-      if (arrayJson[2][1]) {
-        setWorkouts(JSON.parse(arrayJson[2][1]));
-      }
-      if (arrayJson[3][1]) {
-        setRoutines(JSON.parse(arrayJson[3][1]));
-      }
-    });
+    };
   }, []);
 
   return (

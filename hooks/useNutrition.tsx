@@ -27,25 +27,45 @@ function NutritionProvider({ children }: IProviderChildren) {
 
   useEffect(() => {
     if (currentMeals !== init) {
-      AsyncStorage.setItem(`@${currentUser?.id}:currentMeals`, JSON.stringify(currentMeals));
+      async () => {
+        try {
+          await AsyncStorage.setItem(`@${currentUser?.id}:currentMeals`, JSON.stringify(currentMeals));
+        } catch (error) {
+          alert(error);
+        }
+      };
     }
   }, [currentMeals]);
 
   useEffect(() => {
     if (recipes !== init) {
-      AsyncStorage.setItem(`@${currentUser?.id}:recipes`, JSON.stringify(recipes));
+      async () => {
+        try {
+          await AsyncStorage.setItem(`@${currentUser?.id}:recipes`, JSON.stringify(recipes));
+        } catch (error) {
+          alert(error);
+        }
+      };
     }
   }, [recipes]);
 
   useEffect(() => {
-    AsyncStorage.multiGet([`@${currentUser?.id}:currentMeals`, `@${currentUser?.id}:recipes`]).then((arrayJson) => {
-      if (arrayJson[0][1]) {
-        setCurrentMeals(JSON.parse(arrayJson[0][1]));
+    async () => {
+      try {
+        await AsyncStorage.multiGet([`@${currentUser?.id}:currentMeals`, `@${currentUser?.id}:recipes`]).then(
+          (arrayJson) => {
+            if (arrayJson[0][1]) {
+              setCurrentMeals(JSON.parse(arrayJson[0][1]));
+            }
+            if (arrayJson[1][1]) {
+              setRecipes(JSON.parse(arrayJson[1][1]));
+            }
+          }
+        );
+      } catch (error) {
+        alert(error);
       }
-      if (arrayJson[1][1]) {
-        setRecipes(JSON.parse(arrayJson[1][1]));
-      }
-    });
+    };
   }, []);
 
   return (
