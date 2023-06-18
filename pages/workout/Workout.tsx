@@ -49,17 +49,21 @@ export interface IRoutine {
 }
 
 function Workout({ navigation }: TProps) {
-  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
+  const { currentWorkout, setCurrentWorkout, workouts, setWorkouts } = useContext(WorkoutContext);
 
   function handleFinishPress() {
-    setCurrentWorkout({
+    const tempWorkout: IWorkout = {
       ...currentWorkout,
       weight: currentWorkout.exercises.reduce(
         (total: number, exercise: IExercise) =>
           (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
         0
       ),
-    });
+    };
+
+    setCurrentWorkout(tempWorkout);
+    setWorkouts([...workouts, tempWorkout]);
+    // navigation.navigate("UserStack", {screen: "Gym"});
   }
 
   return (

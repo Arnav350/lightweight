@@ -16,30 +16,26 @@ interface IProps {
 function Exercise({ i, currentExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
-  const [prevExercise, setPrevExercise] = useState<IExercise | null>(
+  const [prevExercise, setPrevExercise] = useState<IExercise>(
     exercises.filter((exercise) => exercise.name === currentExercise.name)[0]
   );
 
-  // const a: number= exercises.filter((exercise, i) => exercise.name === exercises[i].name)[0].sets.length;
-
   useEffect(() => {
-    if (prevExercise) {
-      const lengthDifference = currentExercise.sets.length - prevExercise.sets.length;
+    const lengthDifference = currentExercise.sets.length - prevExercise.sets.length;
 
-      if (lengthDifference > 0) {
-        setPrevExercise({
-          ...prevExercise,
-          sets: [
-            ...prevExercise.sets,
-            ...Array(lengthDifference).fill({
-              type: "N" as const,
-              weight: 0,
-              reps: 0,
-              notes: "",
-            }),
-          ],
-        });
-      }
+    if (lengthDifference > 0) {
+      setPrevExercise({
+        ...prevExercise,
+        sets: [
+          ...prevExercise.sets,
+          ...Array(lengthDifference).fill({
+            type: "N" as const,
+            weight: "",
+            reps: "",
+            notes: "",
+          }),
+        ],
+      });
     }
   }, [currentExercise.sets.length]);
 
@@ -51,7 +47,7 @@ function Exercise({ i, currentExercise }: IProps) {
           j === i
             ? {
                 ...exercise,
-                sets: [...exercise.sets, { type: "N" as const, weight: 0, reps: 0, notes: "" }],
+                sets: [...exercise.sets, { type: "N" as const, weight: "" as "", reps: "" as "", notes: "" }],
               }
             : exercise
         ),
@@ -74,10 +70,9 @@ function Exercise({ i, currentExercise }: IProps) {
         <Text style={styles.subtitle}>Notes</Text>
       </View>
       <View style={styles.setsContainer}>
-        {prevExercise &&
-          prevExercise.sets
-            .slice(0, currentExercise.sets.length)
-            .map((prevSet: ISet, j: number) => <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} />)}
+        {prevExercise.sets.slice(0, currentExercise.sets.length).map((prevSet: ISet, j: number) => (
+          <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} />
+        ))}
       </View>
       <TouchableOpacity activeOpacity={0.5} style={styles.addButton} onPress={handleAddPress}>
         <Text style={styles.addText}>+ Add Set</Text>

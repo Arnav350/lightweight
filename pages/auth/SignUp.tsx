@@ -80,11 +80,7 @@ function SignUp({ navigation }: TProps) {
       } else {
         navigation.navigate("Verification", { email });
 
-        try {
-          await AsyncStorage.setItem(`@${session?.user.id}:exercises`, JSON.stringify(initExercises));
-        } catch (error) {
-          console.log(error);
-        }
+        AsyncStorage.setItem(`@exercises`, JSON.stringify(initExercises));
       }
     }
   }
