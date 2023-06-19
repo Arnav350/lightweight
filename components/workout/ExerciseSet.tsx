@@ -114,7 +114,6 @@ function ExerciseSet({ prevSet, i, j }: IProps) {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
   },

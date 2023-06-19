@@ -57,8 +57,8 @@ function WorkoutExercise({ i, currentExercise }: IProps) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.topText} numberOfLines={1}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header} numberOfLines={1}>
           {currentExercise.name}
         </Text>
         <Icon name="dots-horizontal" size={24} color={COLORS.white} />
@@ -74,8 +74,8 @@ function WorkoutExercise({ i, currentExercise }: IProps) {
           <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} />
         ))}
       </View>
-      <TouchableOpacity activeOpacity={0.5} style={styles.addButton} onPress={handleAddPress}>
-        <Text style={styles.addText}>+ Add Set</Text>
+      <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>
+        <Text style={styles.add}>+ Add Set</Text>
       </TouchableOpacity>
     </View>
   );
@@ -88,11 +88,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackOne,
     borderRadius: 16,
   },
-  top: {
+  headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  topText: {
+  header: {
     maxWidth: "90%",
     color: COLORS.white,
     fontSize: 18,
@@ -114,10 +114,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: COLORS.gray,
   },
-  addButton: {
+  addContainer: {
     marginTop: 8,
   },
-  addText: {
+  add: {
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",

@@ -9,6 +9,8 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
+import { IExercise } from "../../workout/Workout";
+import NewRoutine from "../../../components/gym/NewRoutine";
 import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
@@ -22,7 +24,10 @@ function New({ navigation }: TProps) {
 
   function handleSavePress() {
     //set creator to username
-    setRoutines([...routines, { name: currentWorkout.name, creator: "", exercises: currentWorkout.exercises }]);
+    setRoutines([
+      ...routines,
+      { name: currentWorkout.name || "Untitled Workout", creator: "", exercises: currentWorkout.exercises },
+    ]);
     setCurrentWorkout(initCurrentWorkout);
 
     navigation.goBack();
@@ -50,6 +55,10 @@ function New({ navigation }: TProps) {
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
+
+        {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
+          <NewRoutine key={i} exercise={exercise} />
+        ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.add}>Add Exercise</Text>
         </TouchableOpacity>
@@ -100,7 +109,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingVertical: 8,
     backgroundColor: COLORS.primary,
-    borderRadius: 8,
+    borderRadius: 16,
   },
   add: {
     color: COLORS.white,
