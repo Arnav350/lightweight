@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
 import { TNutritionStackParamList } from "../../stacks/UserStack";
-import { IFood, IMeal } from "../../pages/user/Nutrition";
+import { IFood, IMeal } from "../../pages/user/nutrition/Nutrition";
 
 import { COLORS } from "../../constants/theme";
 

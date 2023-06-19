@@ -4,12 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TGymStackParamList } from "../../stacks/UserStack";
-import { WorkoutContext } from "../../hooks/useWorkout";
-import { IRoutine } from "../workout/Workout";
-import MyRoutine from "../../components/gym/MyRoutine";
-import ExploreRoutine from "../../components/gym/ExploreRoutine";
-import { COLORS } from "../../constants/theme";
+import { TGymStackParamList } from "../../../stacks/UserStack";
+import { WorkoutContext } from "../../../hooks/useWorkout";
+import { IRoutine } from "../../workout/Workout";
+import MyRoutine from "../../../components/gym/MyRoutine";
+import ExploreRoutine from "../../../components/gym/ExploreRoutine";
+import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TGymStackParamList, "Select">;
 

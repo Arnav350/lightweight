@@ -1,4 +1,47 @@
-import { IExercise, IRoutine } from "../pages/workout/Workout";
+import { IExercise, IRoutine, IWorkout } from "../pages/workout/Workout";
+
+export const initCurrentWorkout: IWorkout = {
+  date: {
+    month: "",
+    day: "",
+    year: 0,
+  },
+  name: "Name",
+  time: 0,
+  weight: 0,
+  exercises: [],
+};
+
+export const equipmentsList: string[] = [
+  "None",
+  "Barbell",
+  "Dumbbell",
+  "Kettlebell",
+  "Machine",
+  "Cable",
+  "Plate",
+  "Resistance Band",
+  "Other",
+];
+
+export const musclesList: string[] = [
+  "Abs",
+  "Biceps",
+  "Calves",
+  "Cardio",
+  "Chest",
+  "Forearms",
+  "Full Body",
+  "Glutes",
+  "Hamstrings",
+  "Lats",
+  "Lower Back",
+  "Quads",
+  "Shoulders",
+  "Triceps",
+  "Upper Back",
+  "Other",
+];
 
 export const initExercises: IExercise[] = [
   {

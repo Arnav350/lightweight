@@ -9,7 +9,7 @@ interface IProps {
   setCurrent: Dispatch<SetStateAction<string>>;
 }
 
-function Dropdown({ data, current, setCurrent }: IProps) {
+function ExerciseDropdown({ data, current, setCurrent }: IProps) {
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
 
   function handlePress(item: string) {
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dropdown;
+export default ExerciseDropdown;

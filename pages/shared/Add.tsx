@@ -1,55 +1,20 @@
 import { useContext, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
-import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise } from "./Workout";
-import ExerciseDropdown from "../../components/workout/ExerciseDropdown";
-import AddExercise from "../../components/workout/AddExercise";
-import EditExercise from "../../components/workout/EditExercise";
-import NewExercise from "../../components/workout/NewExercise";
+import { IExercise } from "../workout/Workout";
+import ExerciseDropdown from "../../components/shared/ExerciseDropdown";
+import AddExercise from "../../components/shared/AddExercise";
+import EditExercise from "../../components/shared/EditExercise";
+import NewExercise from "../../components/shared/NewExercise";
+import { equipmentsList, musclesList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
-type TProps = CompositeScreenProps<
-  StackScreenProps<TWorkoutStackParamList, "Add">,
-  StackScreenProps<TRootStackParamList>
->;
-
-const equipments: string[] = [
-  "None",
-  "Barbell",
-  "Dumbbell",
-  "Kettlebell",
-  "Machine",
-  "Cable",
-  "Plate",
-  "Resistance Band",
-  "Other",
-];
-
-const muscles: string[] = [
-  "Abs",
-  "Biceps",
-  "Calves",
-  "Cardio",
-  "Chest",
-  "Forearms",
-  "Full Body",
-  "Glutes",
-  "Hamstrings",
-  "Lats",
-  "Lower Back",
-  "Quads",
-  "Shoulders",
-  "Triceps",
-  "Upper Back",
-  "Other",
-];
+type TProps = StackScreenProps<TRootStackParamList, "Add">;
 
 function Add(props: TProps) {
   const { navigation } = props;
@@ -91,11 +56,15 @@ function Add(props: TProps) {
         </View>
         <View style={styles.dropdownsContainer}>
           <ExerciseDropdown
-            data={["Any Equipment", ...equipments]}
+            data={["Any Equipment", ...equipmentsList]}
             current={currentEquipment}
             setCurrent={setCurrentEquipment}
           />
-          <ExerciseDropdown data={["Any Muscle", ...muscles]} current={currentMuscle} setCurrent={setCurrentMuscle} />
+          <ExerciseDropdown
+            data={["Any Muscle", ...musclesList]}
+            current={currentMuscle}
+            setCurrent={setCurrentMuscle}
+          />
         </View>
       </View>
       <ScrollView style={styles.exercisesContainer}>
@@ -124,16 +93,8 @@ function Add(props: TProps) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {showEdit && (
-        <EditExercise
-          navigate={props}
-          equipments={equipments}
-          muscles={muscles}
-          setShowEdit={setShowEdit}
-          editExercise={editExercise}
-        />
-      )}
-      {showNew && <NewExercise equipments={equipments} muscles={muscles} setShowNew={setShowNew} />}
+      {showEdit && <EditExercise navigate={props} setShowEdit={setShowEdit} editExercise={editExercise} />}
+      {showNew && <NewExercise setShowNew={setShowNew} />}
     </SafeAreaView>
   );
 }

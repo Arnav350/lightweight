@@ -3,7 +3,7 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpac
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { COLORS } from "../../constants/theme";
+import { COLORS } from "../../../constants/theme";
 
 interface IStory {
   image: string;

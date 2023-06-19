@@ -3,21 +3,20 @@ import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "reac
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
+import { TRootStackParamList } from "../../App";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "../../pages/workout/Workout";
 import ExerciseDropdown from "./ExerciseDropdown";
+import { equipmentsList, musclesList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  navigate: StackScreenProps<TWorkoutStackParamList>;
-  equipments: string[];
-  muscles: string[];
+  navigate: StackScreenProps<TRootStackParamList, "Add">;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   editExercise: IExercise | null;
 }
 
-function EditExercise({ navigate: { navigation }, equipments, muscles, setShowEdit, editExercise }: IProps) {
+function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
   const [exerciseName, setExerciseName] = useState<string>(editExercise?.name || "");
@@ -67,11 +66,11 @@ function EditExercise({ navigate: { navigation }, equipments, muscles, setShowEd
         <View style={styles.dropdownsContainer}>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Equipment:</Text>
-            <ExerciseDropdown data={equipments} current={currentEquipment} setCurrent={setCurrentEquipment} />
+            <ExerciseDropdown data={equipmentsList} current={currentEquipment} setCurrent={setCurrentEquipment} />
           </View>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Muscle:</Text>
-            <ExerciseDropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
+            <ExerciseDropdown data={musclesList} current={currentMuscle} setCurrent={setCurrentMuscle} />
           </View>
         </View>
         <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>

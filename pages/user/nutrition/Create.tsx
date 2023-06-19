@@ -4,10 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionStackParamList } from "../../stacks/UserStack";
-import { NutritionContext } from "../../hooks/useNutrition";
+import { TNutritionStackParamList } from "../../../stacks/UserStack";
+import { NutritionContext } from "../../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
-import { COLORS } from "../../constants/theme";
+import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList, "Create">;
 

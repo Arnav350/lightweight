@@ -9,6 +9,7 @@ import { TRootStackParamList } from "../../App";
 import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import WorkoutExercise from "../../components/workout/WorkoutExercise";
+import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
 type TProps = CompositeScreenProps<
@@ -35,9 +36,10 @@ export interface IWorkout {
   date: {
     month: string;
     day: string;
+    year: number;
   };
   name: string;
-  time: string;
+  time: number;
   weight: number;
   exercises: IExercise[];
 }
@@ -51,29 +53,41 @@ export interface IRoutine {
 function Workout({ navigation }: TProps) {
   const { currentWorkout, setCurrentWorkout, workouts, setWorkouts } = useContext(WorkoutContext);
 
-  function handleFinishPress() {
-    const tempWorkout: IWorkout = {
-      ...currentWorkout,
-      weight: currentWorkout.exercises.reduce(
-        (total: number, exercise: IExercise) =>
-          (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
-        0
-      ),
-    };
+  function handleLeftPress() {
+    //temporary
+    setCurrentWorkout(initCurrentWorkout);
 
-    setCurrentWorkout(tempWorkout);
-    setWorkouts([...workouts, tempWorkout]);
-    // navigation.navigate("UserStack", {screen: "Gym"});
+    navigation.navigate("UserStack", { screen: "GymStack", params: { screen: "Gym" } });
+  }
+
+  function handleFinishPress() {
+    const date = new Date();
+
+    setCurrentWorkout(initCurrentWorkout);
+    setWorkouts([
+      ...workouts,
+      {
+        ...currentWorkout,
+        time: Math.round((date.getTime() - currentWorkout.time) / 60000),
+        weight: currentWorkout.exercises.reduce(
+          (total: number, exercise: IExercise) =>
+            (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
+          0
+        ),
+      },
+    ]);
+
+    navigation.navigate("UserStack", {
+      screen: "GymStack",
+      params: { screen: "Gym" },
+    });
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headerIcons}>
-          <TouchableOpacity
-            activeOpacity={0.3}
-            onPress={() => navigation.navigate("UserStack", { screen: "GymStack", params: { screen: "Gym" } })}
-          >
+          <TouchableOpacity activeOpacity={0.3} onPress={handleLeftPress}>
             <Icon name="chevron-left" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3}>

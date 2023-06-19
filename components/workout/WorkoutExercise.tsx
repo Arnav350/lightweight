@@ -13,7 +13,7 @@ interface IProps {
   currentExercise: IExercise;
 }
 
-function Exercise({ i, currentExercise }: IProps) {
+function WorkoutExercise({ i, currentExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
   const [prevExercise, setPrevExercise] = useState<IExercise>(
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Exercise;
+export default WorkoutExercise;

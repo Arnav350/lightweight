@@ -5,12 +5,12 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TCompositeProps } from "../../App";
-import { TGymStackParamList } from "../../stacks/UserStack";
-import { WorkoutContext } from "../../hooks/useWorkout";
-import { IWorkout } from "../workout/Workout";
-import WorkoutLog from "../../components/gym/WorkoutLog";
-import { COLORS } from "../../constants/theme";
+import { TCompositeProps } from "../../../App";
+import { TGymStackParamList } from "../../../stacks/UserStack";
+import { WorkoutContext } from "../../../hooks/useWorkout";
+import { IWorkout } from "../../workout/Workout";
+import WorkoutLog from "../../../components/gym/WorkoutLog";
+import { COLORS } from "../../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
 
@@ -18,8 +18,20 @@ function Gym({ navigation }: TProps) {
   const { setCurrentWorkout, workouts } = useContext(WorkoutContext);
 
   function handleEmptyPress() {
+    const date: Date = new Date();
+    setCurrentWorkout({
+      date: {
+        month: date.toLocaleDateString("default", { month: "short" }),
+        day: date.toLocaleDateString("default", { day: "2-digit" }),
+        year: date.getFullYear(),
+      },
+      name: "Untitled Workout",
+      time: date.getTime(),
+      weight: 0,
+      exercises: [],
+    });
+
     navigation.navigate("WorkoutStack", { screen: "Workout" });
-    setCurrentWorkout({ date: { month: "", day: "" }, name: "Empty Workout", time: "", weight: 0, exercises: [] });
   }
 
   return (
@@ -40,7 +52,7 @@ function Gym({ navigation }: TProps) {
             <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
           </TouchableOpacity>
           <View style={styles.gymRoutines}>
-            <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={() => {}}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={() => navigation.navigate("New")}>
               <Icon name="clipboard-plus-outline" size={24} color={COLORS.primary} />
               <Text style={styles.gymSubtitles}>New Routine</Text>
             </TouchableOpacity>

@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IFood, IMeal } from "../pages/user/Nutrition";
+import { IFood, IMeal } from "../pages/user/nutrition/Nutrition";
 
 interface IProviderChildren {
   children: ReactNode;

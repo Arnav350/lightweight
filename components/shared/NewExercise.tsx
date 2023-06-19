@@ -5,15 +5,14 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "../../pages/workout/Workout";
 import ExerciseDropdown from "./ExerciseDropdown";
+import { equipmentsList, musclesList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  equipments: string[];
-  muscles: string[];
   setShowNew: Dispatch<SetStateAction<boolean>>;
 }
 
-function New({ equipments, muscles, setShowNew }: IProps) {
+function NewExercise({ setShowNew }: IProps) {
   const { exercises, setExercises } = useContext(WorkoutContext);
   const [exerciseName, setExerciseName] = useState<string>("");
   const [currentEquipment, setCurrentEquipment] = useState<string>("Any Equipment");
@@ -74,11 +73,11 @@ function New({ equipments, muscles, setShowNew }: IProps) {
         <View style={styles.dropdownsContainer}>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Equipment:</Text>
-            <ExerciseDropdown data={equipments} current={currentEquipment} setCurrent={setCurrentEquipment} />
+            <ExerciseDropdown data={equipmentsList} current={currentEquipment} setCurrent={setCurrentEquipment} />
           </View>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Muscle:</Text>
-            <ExerciseDropdown data={muscles} current={currentMuscle} setCurrent={setCurrentMuscle} />
+            <ExerciseDropdown data={musclesList} current={currentMuscle} setCurrent={setCurrentMuscle} />
           </View>
         </View>
       </View>
@@ -150,4 +149,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default New;
+export default NewExercise;

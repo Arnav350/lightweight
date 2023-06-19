@@ -3,19 +3,19 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
+import { TRootStackParamList } from "../../App";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  navigate: StackScreenProps<TWorkoutStackParamList>;
+  navigate: StackScreenProps<TRootStackParamList, "Add">;
   exercise: IExercise;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   setEditExercise: Dispatch<SetStateAction<IExercise | null>>;
 }
 
-function Activity({ navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
+function AddExercise({ navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleContainerPress() {
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Activity;
+export default AddExercise;

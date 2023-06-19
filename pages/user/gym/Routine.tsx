@@ -5,12 +5,12 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TCompositeProps } from "../../App";
-import { TGymStackParamList } from "../../stacks/UserStack";
-import { WorkoutContext } from "../../hooks/useWorkout";
-import RoutineExercise from "../../components/gym/RoutineExercise";
-import { exploreRoutines } from "../../constants/init";
-import { COLORS } from "../../constants/theme";
+import { TCompositeProps } from "../../../App";
+import { TGymStackParamList } from "../../../stacks/UserStack";
+import { WorkoutContext } from "../../../hooks/useWorkout";
+import RoutineExercise from "../../../components/gym/RoutineExercise";
+import { exploreRoutines } from "../../../constants/init";
+import { COLORS } from "../../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
@@ -18,17 +18,20 @@ function Routine({ navigation, route: { params } }: TProps) {
   const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handlePress() {
-    navigation.navigate("WorkoutStack", { screen: "Workout" });
+    const date = new Date();
     setCurrentWorkout({
       date: {
-        month: "",
-        day: "",
+        month: date.toLocaleDateString("default", { month: "short" }),
+        day: date.toLocaleDateString("default", { day: "2-digit" }),
+        year: date.getFullYear(),
       },
       name: exploreRoutines[params.i].name,
-      time: "",
+      time: date.getTime(),
       weight: 0,
       exercises: [...exploreRoutines[params.i].exercises],
     });
+
+    navigation.navigate("WorkoutStack", { screen: "Workout" });
   }
 
   return (

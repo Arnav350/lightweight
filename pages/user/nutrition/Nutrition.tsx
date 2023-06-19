@@ -4,11 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionStackParamList } from "../../stacks/UserStack";
-import { NutritionContext } from "../../hooks/useNutrition";
-import MacroCircle from "../../components/nutrition/MacroCircle";
-import NutritionMeal from "../../components/nutrition/NutritionMeal";
-import { COLORS } from "../../constants/theme";
+import { TNutritionStackParamList } from "../../../stacks/UserStack";
+import { NutritionContext } from "../../../hooks/useNutrition";
+import MacroCircle from "../../../components/nutrition/MacroCircle";
+import NutritionMeal from "../../../components/nutrition/NutritionMeal";
+import { COLORS } from "../../../constants/theme";
 
 export interface IFood {
   name: string;

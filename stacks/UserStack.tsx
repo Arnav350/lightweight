@@ -4,20 +4,22 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/Ionicons";
 
 import NutritionProvider from "../hooks/useNutrition";
-import Gym from "../pages/user/Gym";
-import Select from "../pages/user/Select";
-import Routine from "../pages/user/Routine";
-import Nutrition from "../pages/user/Nutrition";
-import Repast from "../pages/user/Repast";
-import Create from "../pages/user/Create";
-import Recipes from "../pages/user/Recipes";
-import Compete from "../pages/user/Compete";
-import Connect from "../pages/user/Connect";
+import Gym from "../pages/user/gym/Gym";
+import New from "../pages/user/gym/New";
+import Select from "../pages/user/gym/Select";
+import Routine from "../pages/user/gym/Routine";
+import Nutrition from "../pages/user/nutrition/Nutrition";
+import Repast from "../pages/user/nutrition/Repast";
+import Create from "../pages/user/nutrition/Create";
+import Recipes from "../pages/user/nutrition/Recipes";
+import Compete from "../pages/user/compete/Compete";
+import Connect from "../pages/user/connect/Connect";
 import Profile from "../pages/user/Profile";
 import { COLORS } from "../constants/theme";
 
 export type TGymStackParamList = {
   Gym: undefined;
+  New: undefined;
   Select: undefined;
   Routine: { i: number; explore: boolean };
 };
@@ -28,6 +30,7 @@ function GymStack() {
   return (
     <GStack.Navigator initialRouteName="Gym" screenOptions={{ headerShown: false }}>
       <GStack.Screen name="Gym" component={Gym} />
+      <GStack.Screen name="New" component={New} />
       <GStack.Screen name="Select" component={Select} />
       <GStack.Screen name="Routine" component={Routine} />
     </GStack.Navigator>

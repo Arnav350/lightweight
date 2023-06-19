@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { IFood, IMeal } from "../../pages/user/Nutrition";
+import { IFood, IMeal } from "../../pages/user/nutrition/Nutrition";
 
 import { COLORS } from "../../constants/theme";
 

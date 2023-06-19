@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { IExercise, IWorkout, IRoutine } from "../pages/workout/Workout";
+import { initCurrentWorkout } from "../constants/init";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -20,27 +21,16 @@ interface IWorkoutContext {
 
 export const WorkoutContext = createContext<IWorkoutContext>({} as IWorkoutContext);
 
-const initWorkout: IWorkout = {
-  date: {
-    month: "",
-    day: "",
-  },
-  name: "Name",
-  time: "",
-  weight: 0,
-  exercises: [],
-};
-
 const initArray: [] = [];
 
 function WorkoutProvider({ children }: IProviderChildren) {
-  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initWorkout);
+  const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initCurrentWorkout);
   const [exercises, setExercises] = useState<IExercise[]>(initArray);
   const [workouts, setWorkouts] = useState<IWorkout[]>(initArray);
   const [routines, setRoutines] = useState<IRoutine[]>(initArray);
 
   useEffect(() => {
-    if (currentWorkout !== initWorkout) {
+    if (currentWorkout !== initCurrentWorkout) {
       AsyncStorage.setItem(`@currentWorkout`, JSON.stringify(currentWorkout));
     }
   }, [currentWorkout]);

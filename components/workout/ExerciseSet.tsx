@@ -11,7 +11,7 @@ interface IProps {
   prevSet: ISet;
 }
 
-function Set({ prevSet, i, j }: IProps) {
+function ExerciseSet({ prevSet, i, j }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
   const [weight, setWeight] = useState<string>("");
   const [reps, setReps] = useState<string>("");
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Set;
+export default ExerciseSet;

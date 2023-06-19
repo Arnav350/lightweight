@@ -25,7 +25,7 @@ function Profile() {
       <TouchableOpacity
         onPress={async () => await AsyncStorage.getItem(`@exercises`).then((j) => j && console.log(JSON.parse(j)))}
       >
-        <Text>Test</Text>
+        <Text>Check Exercises</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

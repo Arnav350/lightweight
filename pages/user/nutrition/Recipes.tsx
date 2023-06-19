@@ -5,11 +5,11 @@ import { useIsFocused } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionStackParamList } from "../../stacks/UserStack";
-import { NutritionContext } from "../../hooks/useNutrition";
+import { TNutritionStackParamList } from "../../../stacks/UserStack";
+import { NutritionContext } from "../../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
-import SelectFood from "../../components/nutrition/SelectFood";
-import { COLORS } from "../../constants/theme";
+import SelectFood from "../../../components/nutrition/SelectFood";
+import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList, "Recipes">;
 

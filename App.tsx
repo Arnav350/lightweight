@@ -10,12 +10,14 @@ import UserStack, { TTabParamsList } from "./stacks/UserStack";
 import WorkoutStack, { TWorkoutStackParamList } from "./stacks/WorkoutStack";
 import AuthProvider, { AuthContext } from "./hooks/useAuth";
 import WorkoutProvider from "./hooks/useWorkout";
+import Add from "./pages/shared/Add";
 import Loading from "./pages/auth/Loading";
 import { COLORS } from "./constants/theme";
 
 export type TRootStackParamList = {
   UserStack: NavigatorScreenParams<TTabParamsList>;
   WorkoutStack: NavigatorScreenParams<TWorkoutStackParamList>;
+  Add: undefined;
 };
 
 export type TCompositeProps = CompositeScreenProps<
@@ -38,6 +40,7 @@ function RootNavigator() {
         <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="UserStack" component={UserStack} />
           <Stack.Screen name="WorkoutStack" component={WorkoutStack} />
+          <Stack.Screen name="Add" component={Add} />
         </Stack.Navigator>
       ) : (
         <AuthStack />
