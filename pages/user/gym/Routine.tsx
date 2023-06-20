@@ -55,7 +55,7 @@ function Routine({ navigation, route: { params } }: TProps) {
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
         {exploreRoutines[params.i].exercises.map((exercise, i) => (
-          <RoutineExercise key={i} i={i} exercise={exercise} />
+          <RoutineExercise key={i} exercise={exercise} />
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   startContainer: {
+    marginVertical: 8,
     paddingVertical: 8,
     backgroundColor: COLORS.primary,
     borderRadius: 8,

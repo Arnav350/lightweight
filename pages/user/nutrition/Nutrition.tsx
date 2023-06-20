@@ -25,11 +25,11 @@ export interface IMeal {
   foods: IFood[];
 }
 
-type TProps = StackScreenProps<TNutritionStackParamList, "Nutrition">;
+export type TNutritionProps = StackScreenProps<TNutritionStackParamList, "Nutrition">;
 
 const windowWidth = Dimensions.get("window").width;
 
-function Nutrition(props: TProps) {
+function Nutrition(props: TNutritionProps) {
   const { navigation } = props;
 
   const { currentMeals, setCurrentMeals } = useContext(NutritionContext);

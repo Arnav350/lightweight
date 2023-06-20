@@ -1,29 +1,42 @@
-import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise } from "../../pages/workout/Workout";
+import { IExercise, ISet } from "../../pages/workout/Workout";
+import RoutineSet from "./RoutineSet";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  i: number;
   exercise: IExercise;
 }
 
-function RoutineExercise({ i, exercise }: IProps) {
-  const { routines, setRoutines } = useContext(WorkoutContext);
-
+function RoutineExercise({ exercise: { name, sets } }: IProps) {
   return (
     <View style={styles.container}>
-      <Text>{exercise.name}</Text>
+      <Text style={styles.name}>{name}</Text>
+      <View style={styles.routineContainer}>
+        {sets.map((set: ISet, i: number) => (
+          <RoutineSet key={i} set={set} />
+        ))}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginVertical: 8,
+    padding: 8,
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
+  },
+  name: {
+    margin: 8,
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  routineContainer: {
+    padding: 8,
+    marginHorizontal: 8,
   },
 });
 

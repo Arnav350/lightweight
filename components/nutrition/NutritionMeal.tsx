@@ -1,15 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 
-import { TNutritionStackParamList } from "../../stacks/UserStack";
 import { IFood, IMeal } from "../../pages/user/nutrition/Nutrition";
-
+import { TNutritionProps } from "../../pages/user/nutrition/Nutrition";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
   meal: IMeal;
-  navigate: StackScreenProps<TNutritionStackParamList>;
+  navigate: TNutritionProps;
 }
 
 function NutritionMeal({ i, meal, navigate: { navigation } }: IProps) {

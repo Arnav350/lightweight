@@ -1,16 +1,28 @@
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise, IWorkout } from "../../pages/workout/Workout";
+import { TGymProps } from "../../pages/user/gym/Gym";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   workout: IWorkout;
+  navigate: TGymProps;
 }
 
-function WorkoutLog({ workout }: IProps) {
+function WorkoutLog({ workout, navigate: { navigation } }: IProps) {
+  const { setCurrentWorkout } = useContext(WorkoutContext);
+
+  function handlePress() {
+    setCurrentWorkout(workout);
+
+    navigation.navigate("WorkoutStack", { screen: "Workout" });
+  }
+
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
       <View style={styles.dateContainer}>
         <Text style={styles.dateMonth}>{workout.date.month}</Text>
         <Text style={styles.dateDay}>{workout.date.day}</Text>

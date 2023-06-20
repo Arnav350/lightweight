@@ -11,10 +11,12 @@ import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IWorkout } from "../../workout/Workout";
 import WorkoutLog from "../../../components/gym/WorkoutLog";
 import { COLORS } from "../../../constants/theme";
+import { initCurrentWorkout } from "../../../constants/init";
 
-type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
+export type TGymProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
 
-function Gym({ navigation }: TProps) {
+function Gym(props: TGymProps) {
+  const { navigation } = props;
   const { setCurrentWorkout, workouts } = useContext(WorkoutContext);
 
   function handleEmptyPress() {
@@ -32,6 +34,12 @@ function Gym({ navigation }: TProps) {
     });
 
     navigation.navigate("WorkoutStack", { screen: "Workout" });
+  }
+
+  function handleNewPress() {
+    setCurrentWorkout(initCurrentWorkout);
+
+    navigation.navigate("New");
   }
 
   return (
@@ -52,7 +60,7 @@ function Gym({ navigation }: TProps) {
             <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
           </TouchableOpacity>
           <View style={styles.gymRoutines}>
-            <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={() => navigation.navigate("New")}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={handleNewPress}>
               <Icon name="clipboard-plus-outline" size={24} color={COLORS.primary} />
               <Text style={styles.gymSubtitles}>New Routine</Text>
             </TouchableOpacity>
@@ -68,7 +76,7 @@ function Gym({ navigation }: TProps) {
         </View>
         <View style={styles.logContainer}>
           {workouts.map((workout: IWorkout, i: number) => (
-            <WorkoutLog key={i} workout={workout} />
+            <WorkoutLog key={i} workout={workout} navigate={props} />
           ))}
         </View>
       </ScrollView>
