@@ -30,10 +30,17 @@ function New({ navigation }: TProps) {
 
   function handleSavePress() {
     //set creator to username
-    setRoutines([
-      ...routines,
-      { name: currentWorkout.name || "Untitled Workout", creator: "", exercises: currentWorkout.exercises },
-    ]);
+    const name: string = currentWorkout.name.trim() || "Untitled Workout";
+    if (routines.filter((routine) => routine.name === name).length > 0) {
+      let i = 1;
+      while (routines.filter((routine) => routine.name === name + ` (${i})`).length > 0) {
+        i++;
+      }
+      setRoutines([...routines, { name: `${name} (${i})`, creator: "", exercises: [...currentWorkout.exercises] }]);
+    } else {
+      setRoutines([...routines, { name, creator: "", exercises: currentWorkout.exercises }]);
+    }
+
     setCurrentWorkout(initCurrentWorkout);
 
     navigation.goBack();

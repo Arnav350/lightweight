@@ -38,7 +38,18 @@ function Nutrition(props: TProps) {
 
   const [slide, setSlide] = useState<number>(0);
 
-  async function handlePress() {
+  function handlePress() {
+    const name: string = mealName.trim() || "Untitled Workout";
+    if (currentMeals.filter((currentMeal) => currentMeal.name === name).length > 0) {
+      let i = 1;
+      while (currentMeals.filter((currentMeal) => currentMeal.name === name + ` (${i})`).length > 0) {
+        i++;
+      }
+      setCurrentMeals([...currentMeals, { name: `${mealName} (${i})`, foods: [] }]);
+    } else {
+      setCurrentMeals([...currentMeals, { name: mealName, foods: [] }]);
+    }
+
     setCurrentMeals([...currentMeals, { name: mealName || "Meal Name", foods: [] }]);
     setMealName("");
 
