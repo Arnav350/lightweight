@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise, ISet } from "../../pages/workout/Workout";
 import RoutineSet from "./RoutineSet";
 import { COLORS } from "../../constants/theme";
@@ -10,7 +12,23 @@ interface IProps {
 }
 
 function NewRoutine({ exercise: { name, notes, sets } }: IProps) {
-  function handleAddPress() {}
+  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
+
+  function handleAddPress() {
+    setCurrentWorkout({
+      ...currentWorkout,
+      exercises: [
+        ...currentWorkout.exercises.map((exercise: IExercise) =>
+          exercise.name === name
+            ? {
+                ...exercise,
+                sets: [...exercise.sets, { type: "N" as const, weight: "" as const, reps: "" as const, notes: "" }],
+              }
+            : exercise
+        ),
+      ],
+    });
+  }
 
   return (
     <View style={styles.container}>

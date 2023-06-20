@@ -47,7 +47,7 @@ function WorkoutExercise({ i, currentExercise }: IProps) {
           j === i
             ? {
                 ...exercise,
-                sets: [...exercise.sets, { type: "N" as const, weight: "" as "", reps: "" as "", notes: "" }],
+                sets: [...exercise.sets, { type: "N" as const, weight: "" as const, reps: "" as const, notes: "" }],
               }
             : exercise
         ),

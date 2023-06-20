@@ -41,7 +41,7 @@ function ExerciseSet({ prevSet, i, j }: IProps) {
                       ...exercise,
                       sets: [
                         ...currentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
-                          l === j ? { ...set, weight: weight === "" ? ("" as "") : Number(weight) } : set
+                          l === j ? { ...set, weight: weight === "" ? ("" as const) : Number(weight) } : set
                         ),
                       ],
                     }
@@ -70,7 +70,7 @@ function ExerciseSet({ prevSet, i, j }: IProps) {
                       ...exercise,
                       sets: [
                         ...currentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
-                          l === j ? { ...set, reps: reps === "" ? (reps as "") : Number(reps) } : set
+                          l === j ? { ...set, reps: reps === "" ? ("" as const) : Number(reps) } : set
                         ),
                       ],
                     }

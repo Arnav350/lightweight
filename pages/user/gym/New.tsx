@@ -22,6 +22,12 @@ function New({ navigation }: TProps) {
 
   const [focused, setFocused] = useState<boolean>(false);
 
+  function handleLeftPress() {
+    setCurrentWorkout(initCurrentWorkout);
+
+    navigation.goBack();
+  }
+
   function handleSavePress() {
     //set creator to username
     setRoutines([
@@ -36,7 +42,7 @@ function New({ navigation }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
+        <TouchableOpacity activeOpacity={0.3} onPress={handleLeftPress}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>New Routine</Text>
