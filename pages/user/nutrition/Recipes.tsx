@@ -24,13 +24,16 @@ function Recipes({ navigation, route: { params } }: TProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name: currentMeals[params.i].name,
-      foods: currentMeals[params.i].foods,
+      name: currentMeals.meals[params.i].name,
+      foods: currentMeals.meals[params.i].foods,
     });
   }, [isFocused]);
 
   function handlePress() {
-    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)));
+    setCurrentMeals({
+      ...currentMeals,
+      meals: currentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
+    });
 
     navigation.goBack();
   }

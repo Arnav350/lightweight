@@ -1,32 +1,37 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IFood, IMeal } from "../pages/user/nutrition/Nutrition";
+import { IFood, IMeal, IDay } from "../pages/user/nutrition/Nutrition";
 
 interface IProviderChildren {
   children: ReactNode;
 }
 
 interface INutritionContext {
-  currentMeals: IMeal[];
-  setCurrentMeals: Dispatch<SetStateAction<IMeal[]>>;
-  meals: IMeal[][];
-  setMeals: Dispatch<SetStateAction<IMeal[][]>>;
+  currentMeals: IDay;
+  setCurrentMeals: Dispatch<SetStateAction<IDay>>;
+  meals: IDay[];
+  setMeals: Dispatch<SetStateAction<IDay[]>>;
   recipes: IFood[];
   setRecipes: Dispatch<SetStateAction<IFood[]>>;
 }
 
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
 
+const initCurrentMeals: IDay = {
+  date: 0,
+  meals: [],
+};
+
 const init: [] = [];
 
 function NutritionProvider({ children }: IProviderChildren) {
-  const [currentMeals, setCurrentMeals] = useState<IMeal[]>(init);
-  const [meals, setMeals] = useState<IMeal[][]>(init);
+  const [currentMeals, setCurrentMeals] = useState<IDay>(initCurrentMeals);
+  const [meals, setMeals] = useState<IDay[]>(init);
   const [recipes, setRecipes] = useState<IFood[]>(init);
 
   useEffect(() => {
-    if (currentMeals !== init) {
+    if (currentMeals !== initCurrentMeals) {
       AsyncStorage.setItem("@currentMeals", JSON.stringify(currentMeals));
     }
   }, [currentMeals]);

@@ -46,13 +46,16 @@ function Repast({ navigation, route: { params } }: TProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name: params.i < currentMeals.length ? currentMeals[params.i].name : "",
-      foods: params.i < currentMeals.length ? currentMeals[params.i].foods : [],
+      name: params.i < currentMeals.meals.length ? currentMeals.meals[params.i].name : "",
+      foods: params.i < currentMeals.meals.length ? currentMeals.meals[params.i].foods : [],
     });
   }, [isFocused]);
 
   function handleNavigatePress(page: "left" | "recipes" | "create") {
-    setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)));
+    setCurrentMeals({
+      ...currentMeals,
+      meals: currentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
+    });
 
     switch (page) {
       case "left":
@@ -72,7 +75,10 @@ function Repast({ navigation, route: { params } }: TProps) {
       {
         text: "Delete",
         onPress: () => {
-          setCurrentMeals(currentMeals.filter((_currentMeal, i: number) => i !== params.i));
+          setCurrentMeals({
+            ...currentMeals,
+            meals: currentMeals.meals.filter((_meal, i: number) => i !== params.i),
+          });
           navigation.goBack();
         },
         style: "destructive",

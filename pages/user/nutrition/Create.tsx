@@ -47,16 +47,17 @@ function Create({ navigation, route: { params } }: TProps) {
           setRecipes([...recipes, { ...tempFood, name: tempFood.name }]);
         }
       } else {
-        setCurrentMeals(
-          currentMeals.map((meal: IMeal, i: number) =>
+        setCurrentMeals({
+          ...currentMeals,
+          meals: currentMeals.meals.map((meal: IMeal, i: number) =>
             i === params.i
               ? {
                   ...meal,
                   foods: [...meal.foods, tempFood],
                 }
               : meal
-          )
-        );
+          ),
+        });
       }
     } else {
       setErr(true);
@@ -76,7 +77,7 @@ function Create({ navigation, route: { params } }: TProps) {
       <View style={styles.createContainer}>
         {!params.save && (
           <Text numberOfLines={1} style={styles.name}>
-            Meal: {currentMeals.map((meal: IMeal, i: number) => i === params.i && meal.name)}
+            Meal: {currentMeals.meals.map((meal: IMeal, i: number) => i === params.i && meal.name)}
           </Text>
         )}
         {err && <Text style={styles.err}>Fill out the name and calories fields</Text>}

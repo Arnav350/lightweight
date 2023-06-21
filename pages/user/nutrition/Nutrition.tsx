@@ -25,6 +25,11 @@ export interface IMeal {
   foods: IFood[];
 }
 
+export interface IDay {
+  date: number;
+  meals: IMeal[];
+}
+
 export type TNutritionProps = StackScreenProps<TNutritionStackParamList, "Nutrition">;
 
 const windowWidth = Dimensions.get("window").width;
@@ -40,21 +45,20 @@ function Nutrition(props: TNutritionProps) {
 
   function handlePress() {
     const name: string = mealName.trim() || "Untitled Workout";
-    if (currentMeals.filter((currentMeal) => currentMeal.name === name).length > 0) {
+    if (currentMeals.meals.filter((currentMeal) => currentMeal.name === name).length > 0) {
       let i = 1;
-      while (currentMeals.filter((currentMeal) => currentMeal.name === name + ` (${i})`).length > 0) {
+      while (currentMeals.meals.filter((currentMeal) => currentMeal.name === name + ` (${i})`).length > 0) {
         i++;
       }
-      setCurrentMeals([...currentMeals, { name: `${mealName} (${i})`, foods: [] }]);
+      setCurrentMeals({ ...currentMeals, meals: [...currentMeals.meals, { name: `${mealName} (${i})`, foods: [] }] });
     } else {
-      setCurrentMeals([...currentMeals, { name: mealName, foods: [] }]);
+      setCurrentMeals({ ...currentMeals, meals: [...currentMeals.meals, { name: mealName, foods: [] }] });
     }
 
-    setCurrentMeals([...currentMeals, { name: mealName || "Meal Name", foods: [] }]);
     setMealName("");
 
     navigation.navigate("Repast", {
-      i: currentMeals.length,
+      i: currentMeals.meals.length,
       save: null,
     });
   }
@@ -85,7 +89,7 @@ function Nutrition(props: TNutritionProps) {
             <View style={styles.circlesContainer}>
               <View>
                 <MacroCircle
-                  current={currentMeals.reduce(
+                  current={currentMeals.meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
                     0
@@ -95,7 +99,7 @@ function Nutrition(props: TNutritionProps) {
                   label="Calories"
                 />
                 <MacroCircle
-                  current={currentMeals.reduce(
+                  current={currentMeals.meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
                     0
@@ -107,7 +111,7 @@ function Nutrition(props: TNutritionProps) {
               </View>
               <View>
                 <MacroCircle
-                  current={currentMeals.reduce(
+                  current={currentMeals.meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
                     0
@@ -118,7 +122,7 @@ function Nutrition(props: TNutritionProps) {
                 />
 
                 <MacroCircle
-                  current={currentMeals.reduce(
+                  current={currentMeals.meals.reduce(
                     (total: number, meal: IMeal) =>
                       (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
                     0
@@ -166,7 +170,7 @@ function Nutrition(props: TNutritionProps) {
             <Text style={styles.inputText}>Add Meal</Text>
           </TouchableOpacity>
         </View>
-        {currentMeals.map((meal: IMeal, i: number) => (
+        {currentMeals.meals.map((meal: IMeal, i: number) => (
           <NutritionMeal key={i} i={i} meal={meal} navigate={props} />
         ))}
       </ScrollView>
