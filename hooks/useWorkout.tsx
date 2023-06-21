@@ -31,30 +31,30 @@ function WorkoutProvider({ children }: IProviderChildren) {
 
   useEffect(() => {
     if (currentWorkout !== initCurrentWorkout) {
-      AsyncStorage.setItem(`@currentWorkout`, JSON.stringify(currentWorkout));
+      AsyncStorage.setItem("@currentWorkout", JSON.stringify(currentWorkout));
     }
   }, [currentWorkout]);
 
   useEffect(() => {
     if (exercises !== initArray) {
-      AsyncStorage.setItem(`@exercises`, JSON.stringify(exercises));
+      AsyncStorage.setItem("@exercises", JSON.stringify(exercises));
     }
   }, [exercises]);
 
   useEffect(() => {
     if (workouts !== initArray) {
-      AsyncStorage.setItem(`@workouts`, JSON.stringify(workouts));
+      AsyncStorage.setItem("@workouts", JSON.stringify(workouts));
     }
   }, [workouts]);
 
   useEffect(() => {
     if (routines !== initArray) {
-      AsyncStorage.setItem(`@routines`, JSON.stringify(routines));
+      AsyncStorage.setItem("@routines", JSON.stringify(routines));
     }
   }, [routines]);
 
   useEffect(() => {
-    AsyncStorage.multiGet([`@currentWorkout`, `@exercises`, `@workouts`, `@routines`]).then((arrayJson) => {
+    AsyncStorage.multiGet(["@currentWorkout", "@exercises", "@workouts", "@routines"]).then((arrayJson) => {
       if (arrayJson[0][1]) {
         setCurrentWorkout(JSON.parse(arrayJson[0][1]));
       }

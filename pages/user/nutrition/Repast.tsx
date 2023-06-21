@@ -51,10 +51,20 @@ function Repast({ navigation, route: { params } }: TProps) {
     });
   }, [isFocused]);
 
-  function handleLeftPress() {
+  function handleNavigatePress(page: "left" | "recipes" | "create") {
     setCurrentMeals(currentMeals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)));
 
-    navigation.goBack();
+    switch (page) {
+      case "left":
+        navigation.goBack();
+        break;
+      case "recipes":
+        navigation.navigate("Recipes", { i: params.i, save: null });
+        break;
+      case "create":
+        navigation.navigate("Create", { i: params.i, save: false });
+        break;
+    }
   }
 
   function handleTrashPress() {
@@ -77,7 +87,7 @@ function Repast({ navigation, route: { params } }: TProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3} onPress={handleLeftPress}>
+        <TouchableOpacity activeOpacity={0.3} onPress={() => handleNavigatePress("left")}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <View style={styles.inputContainer}>
@@ -110,7 +120,7 @@ function Repast({ navigation, route: { params } }: TProps) {
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.optionsButton}
-              onPress={() => navigation.navigate("Recipes", { i: params.i, save: null })}
+              onPress={() => handleNavigatePress("recipes")}
             >
               <Icon name="cart-outline" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>My Recipes</Text>
@@ -120,7 +130,7 @@ function Repast({ navigation, route: { params } }: TProps) {
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.optionsButton}
-              onPress={() => navigation.navigate("Create", { i: params.i, save: false })}
+              onPress={() => handleNavigatePress("create")}
             >
               <Icon name="timer-outline" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>Quick Add</Text>

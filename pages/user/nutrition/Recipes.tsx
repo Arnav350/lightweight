@@ -24,8 +24,8 @@ function Recipes({ navigation, route: { params } }: TProps) {
 
   useEffect(() => {
     setCurrentMeal({
-      name: params.i ? currentMeals[params.i].name : "",
-      foods: params.i ? currentMeals[params.i].foods : [],
+      name: currentMeals[params.i].name,
+      foods: currentMeals[params.i].foods,
     });
   }, [isFocused]);
 

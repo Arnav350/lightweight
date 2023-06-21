@@ -39,7 +39,7 @@ function Create({ navigation, route: { params } }: TProps) {
       if (params.save) {
         if (recipes.filter((recipe) => recipe.name === tempFood.name).length > 0) {
           let i = 1;
-          while (recipes.filter((recipe) => recipe.name === name + ` (${i})`).length > 0) {
+          while (recipes.filter((recipe) => recipe.name === tempFood.name + ` (${i})`).length > 0) {
             i++;
           }
           setRecipes([...recipes, { ...tempFood, name: `${tempFood.name} (${i})` }]);
@@ -156,7 +156,7 @@ function Create({ navigation, route: { params } }: TProps) {
           onBlur={() => setFocusedInput("none")}
         />
         <TouchableOpacity activeOpacity={0.2} style={styles.addContainer} onPress={handlePress}>
-          <Text style={styles.add}>Add Recipe</Text>
+          <Text style={styles.add}>{params.save ? "Add Recipe" : "Quick Add"}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
