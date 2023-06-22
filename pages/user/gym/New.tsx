@@ -14,7 +14,7 @@ import NewRoutine from "../../../components/gym/NewRoutine";
 import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
-type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
+type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "New">, TCompositeProps>;
 
 function New({ navigation }: TProps) {
   const currentUser = useContext(AuthContext);

@@ -21,7 +21,7 @@ export type TGymStackParamList = {
   Gym: undefined;
   New: undefined;
   Select: undefined;
-  Routine: { i: number; explore: boolean };
+  Routine: { i: number };
 };
 
 const GStack = createStackNavigator<TGymStackParamList>();

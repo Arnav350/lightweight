@@ -9,13 +9,12 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import RoutineExercise from "../../../components/gym/RoutineExercise";
-import { exploreRoutines } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
 function Routine({ navigation, route: { params } }: TProps) {
-  const { setCurrentWorkout } = useContext(WorkoutContext);
+  const { setCurrentWorkout, routines } = useContext(WorkoutContext);
 
   function handlePress() {
     const date = new Date();
@@ -25,10 +24,10 @@ function Routine({ navigation, route: { params } }: TProps) {
         day: date.toLocaleDateString("default", { day: "2-digit" }),
         year: date.getFullYear(),
       },
-      name: exploreRoutines[params.i].name,
+      name: routines[params.i].name,
       time: date.getTime(),
       weight: 0,
-      exercises: [...exploreRoutines[params.i].exercises],
+      exercises: [...routines[params.i].exercises],
     });
 
     navigation.navigate("WorkoutStack", { screen: "Workout" });
@@ -46,15 +45,15 @@ function Routine({ navigation, route: { params } }: TProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.routineContainer}>
-        <Text style={styles.name}>{exploreRoutines[params.i].name}</Text>
+        <Text style={styles.name}>{routines[params.i].name}</Text>
         <Text style={styles.created}>
           Created by
-          <Text style={styles.creator}> {exploreRoutines[params.i].creator}</Text>
+          <Text style={styles.creator}> {routines[params.i].creator}</Text>
         </Text>
         <TouchableOpacity activeOpacity={0.5} style={styles.startContainer} onPress={handlePress}>
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
-        {exploreRoutines[params.i].exercises.map((exercise, i) => (
+        {routines[params.i].exercises.map((exercise, i) => (
           <RoutineExercise key={i} exercise={exercise} />
         ))}
       </ScrollView>

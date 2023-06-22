@@ -16,33 +16,14 @@ type TProps = StackScreenProps<TNutritionStackParamList, "Repast">;
 function Repast({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
-  const { currentMeals, setCurrentMeals } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, histories, setHistories } = useContext(NutritionContext);
 
   const [currentMeal, setCurrentMeal] = useState<IMeal>({
     name: "",
     foods: [],
   });
 
-  const [histories, setHistories] = useState<IFood[]>([
-    {
-      name: "Extra Virgin Olive Oil",
-      calories: 460,
-      protein: 20,
-      fat: 20,
-      carbs: 20,
-      amount: 4,
-      amountType: "tbsp",
-    },
-    {
-      name: "Pizza",
-      calories: 600,
-      protein: 20,
-      fat: 20,
-      carbs: 20,
-      amount: 2,
-      amountType: "slices",
-    },
-  ]);
+  const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
 
   useEffect(() => {
     setCurrentMeal({
@@ -56,6 +37,8 @@ function Repast({ navigation, route: { params } }: TProps) {
       ...currentMeals,
       meals: currentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
     });
+
+    setHistories([...currentHistories, ...histories.filter((food) => !currentHistories.includes(food))].splice(0, 10));
 
     switch (page) {
       case "left":
@@ -150,13 +133,29 @@ function Repast({ navigation, route: { params } }: TProps) {
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>Foods</Text>
           {currentMeal.foods.map((food: IFood, i: number) => (
-            <SelectFood key={i} food={food} add={false} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
+            <SelectFood
+              key={i}
+              food={food}
+              add={false}
+              currentMeal={currentMeal}
+              setCurrentMeal={setCurrentMeal}
+              currentHistories={currentHistories}
+              setCurrentHistories={setCurrentHistories}
+            />
           ))}
         </View>
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>History</Text>
           {histories.map((history: IFood, i: number) => (
-            <SelectFood key={i} food={history} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
+            <SelectFood
+              key={i}
+              food={history}
+              add={true}
+              currentMeal={currentMeal}
+              setCurrentMeal={setCurrentMeal}
+              currentHistories={currentHistories}
+              setCurrentHistories={setCurrentHistories}
+            />
           ))}
         </View>
       </ScrollView>

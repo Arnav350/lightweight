@@ -16,7 +16,7 @@ function ExploreRoutine({ i, name, navigate: { navigation } }: IProps) {
     <TouchableOpacity
       activeOpacity={0.5}
       style={styles.container}
-      onPress={() => navigation.navigate("Routine", { i: i, explore: true })}
+      onPress={() => navigation.navigate("Routine", { i: i })}
     >
       <Text style={styles.name}>{name}</Text>
       <View>

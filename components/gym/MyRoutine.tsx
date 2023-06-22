@@ -1,19 +1,27 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TGymStackParamList } from "../../stacks/UserStack";
 import { IExercise, IRoutine } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  i: number;
   routine: IRoutine;
+  navigate: StackScreenProps<TGymStackParamList, "Select">;
 }
 
-function MyRoutine({ routine }: IProps) {
+function MyRoutine({ i, routine, navigate: { navigation } }: IProps) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={styles.container}
+      onPress={() => navigation.navigate("Routine", { i: i })}
+    >
       <View style={styles.topContainer}>
         <Text style={styles.name}>{routine.name}</Text>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableOpacity activeOpacity={0.3}>
           <Icon name="dots-horizontal" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>
@@ -23,7 +31,7 @@ function MyRoutine({ routine }: IProps) {
       <TouchableOpacity activeOpacity={0.5} style={styles.startContainer}>
         <Text style={styles.start}>Start Routine</Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
 

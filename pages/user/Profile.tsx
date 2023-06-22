@@ -3,12 +3,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { supabase } from "../../supabase";
-import { initExercises } from "../../constants/init";
+import { exploreRoutines, initExercises } from "../../constants/init";
 
 function Profile() {
   function handlePress() {
-    AsyncStorage.setItem(`@exercises`, JSON.stringify(initExercises));
-    AsyncStorage.multiRemove([`@currentWorkout`, `@workouts`, `@routines`, `@meals`, `@recipes`]);
+    AsyncStorage.setItem("@exercises", JSON.stringify(initExercises));
+    AsyncStorage.setItem("@routines", JSON.stringify(exploreRoutines));
+    AsyncStorage.multiRemove(["@currentWorkout", "@workouts", "@currentMeals", "@meals", "@recipes", "@histories"]);
   }
 
   return (
@@ -23,7 +24,11 @@ function Profile() {
         <Text>Set Init Data</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={async () => await AsyncStorage.getItem(`@exercises`).then((j) => j && console.log(JSON.parse(j)))}
+        onPress={async () =>
+          await AsyncStorage.getItem("@exercises")
+            .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
+            .catch((error) => console.log(error))
+        }
       >
         <Text>Check Exercises</Text>
       </TouchableOpacity>

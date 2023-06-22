@@ -11,9 +11,11 @@ interface IProps {
   add: boolean;
   currentMeal: IMeal;
   setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
+  currentHistories: IFood[];
+  setCurrentHistories: Dispatch<SetStateAction<IFood[]>>;
 }
 
-function SelectFood({ food, add, currentMeal, setCurrentMeal }: IProps) {
+function SelectFood({ food, add, currentMeal, setCurrentMeal, currentHistories, setCurrentHistories }: IProps) {
   const [pressed, setPressed] = useState<boolean>(false);
 
   function handlePress() {
@@ -22,6 +24,12 @@ function SelectFood({ food, add, currentMeal, setCurrentMeal }: IProps) {
         ...currentMeal,
         foods: [...currentMeal.foods, food],
       });
+      setCurrentHistories([
+        food,
+        ...currentHistories.filter(
+          (currentFood: IFood) => currentFood.name !== food.name && currentFood.calories !== food.calories
+        ),
+      ]);
 
       setPressed(true);
       setTimeout(() => {

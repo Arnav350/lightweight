@@ -16,11 +16,12 @@ type TProps = StackScreenProps<TNutritionStackParamList, "Recipes">;
 function Recipes({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
-  const { currentMeals, setCurrentMeals, recipes, setRecipes } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, recipes, setRecipes, histories, setHistories } = useContext(NutritionContext);
 
   const [recipeName, setRecipeName] = useState<string>("");
 
   const [currentMeal, setCurrentMeal] = useState<IMeal>({ name: "", foods: [] });
+  const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
 
   useEffect(() => {
     setCurrentMeal({
@@ -34,6 +35,8 @@ function Recipes({ navigation, route: { params } }: TProps) {
       ...currentMeals,
       meals: currentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
     });
+
+    setHistories([...currentHistories, ...histories.filter((food) => !currentHistories.includes(food))].splice(0, 10));
 
     navigation.goBack();
   }
@@ -69,7 +72,15 @@ function Recipes({ navigation, route: { params } }: TProps) {
           {recipes
             .filter((recipe: IFood) => recipe.name.toLowerCase().includes(recipeName.toLowerCase()))
             .map((recipe: IFood, i: number) => (
-              <SelectFood key={i} food={recipe} add={true} currentMeal={currentMeal} setCurrentMeal={setCurrentMeal} />
+              <SelectFood
+                key={i}
+                food={recipe}
+                add={true}
+                currentMeal={currentMeal}
+                setCurrentMeal={setCurrentMeal}
+                currentHistories={currentHistories}
+                setCurrentHistories={setCurrentHistories}
+              />
             ))}
           <View style={styles.orContainer}>
             <Text style={styles.or}>OR</Text>
