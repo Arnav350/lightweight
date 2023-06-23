@@ -8,13 +8,14 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
+import { IExercise, ISet } from "../../workout/Workout";
 import RoutineExercise from "../../../components/gym/RoutineExercise";
 import { COLORS } from "../../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
 function Routine({ navigation, route: { params } }: TProps) {
-  const { setCurrentWorkout, routines } = useContext(WorkoutContext);
+  const { setCurrentWorkout, exercises, setExercises, routines } = useContext(WorkoutContext);
 
   function handlePress() {
     const date = new Date();
@@ -28,6 +29,29 @@ function Routine({ navigation, route: { params } }: TProps) {
       time: date.getTime(),
       weight: 0,
       exercises: [...routines[params.i].exercises],
+    });
+
+    routines[params.i].exercises.forEach((routineExercise) => {
+      const sortedSets: ISet[] = [];
+      const usedIndexes: number[] = [];
+
+      const sets: ISet[] = exercises.filter((exercise) => exercise.name === routineExercise.name)[0].sets;
+
+      routineExercise.sets.forEach((routineSet) => {
+        const index = sets.findIndex((set, i) => !usedIndexes.includes(i) && set.type === routineSet.type);
+        if (index !== -1) {
+          sortedSets.push(sets[index]);
+          usedIndexes.push(index);
+        } else {
+          sortedSets.push({ type: routineSet.type, weight: "", reps: "", notes: "" });
+        }
+      });
+
+      setExercises((prevExercises) =>
+        prevExercises.map((prevExercise) =>
+          prevExercise.name === routineExercise.name ? { ...routineExercise, sets: sortedSets } : prevExercise
+        )
+      );
     });
 
     navigation.navigate("WorkoutStack", { screen: "Workout" });

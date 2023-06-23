@@ -176,8 +176,8 @@ export const exploreRoutines: IRoutine[] = [
         muscle: "Chest",
         notes: "",
         sets: [
-          { type: "W", weight: "", reps: "", notes: "" },
-          { type: "W", weight: "", reps: "", notes: "" },
+          { type: "N", weight: "", reps: "", notes: "" },
+          { type: "N", weight: "", reps: "", notes: "" },
           { type: "N", weight: "", reps: "", notes: "" },
           { type: "N", weight: "", reps: "", notes: "" },
         ],

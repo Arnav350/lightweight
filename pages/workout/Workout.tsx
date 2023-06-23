@@ -9,17 +9,20 @@ import { TRootStackParamList } from "../../App";
 import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import WorkoutExercise from "../../components/workout/WorkoutExercise";
+import WorkoutTimer from "../../components/workout/WorkoutTimer";
+import SetType from "../../components/shared/SetType";
 import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
-import WorkoutTimer from "../../components/workout/WorkoutTimer";
 
 type TProps = CompositeScreenProps<
   StackScreenProps<TWorkoutStackParamList, "Workout">,
   StackScreenProps<TRootStackParamList>
 >;
 
+export type TType = "D" | "N" | "S" | "W";
+
 export interface ISet {
-  type: "D" | "N" | "S" | "W";
+  type: TType;
   weight: number | "";
   reps: number | "";
   notes: string;
@@ -51,11 +54,18 @@ export interface IRoutine {
   exercises: IExercise[];
 }
 
+export interface ITypeSettings {
+  show: boolean;
+  i: number;
+  j: number;
+}
+
 function Workout({ navigation }: TProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises, workouts, setWorkouts } =
     useContext(WorkoutContext);
 
   const [showTimer, setShowTimer] = useState<boolean>(false);
+  const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 
   function handleLeftPress() {
     //temporary
@@ -126,7 +136,7 @@ function Workout({ navigation }: TProps) {
       </View>
       <ScrollView style={styles.workoutContainer}>
         {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
-          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} />
+          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} setTypeSettings={setTypeSettings} />
         ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.button}>Add Exercise</Text>
@@ -134,6 +144,9 @@ function Workout({ navigation }: TProps) {
       </ScrollView>
       <Modal animationType="fade" transparent={true} visible={showTimer}>
         <WorkoutTimer setShowTimer={setShowTimer} />
+      </Modal>
+      <Modal animationType="fade" transparent={true} visible={typeSettings.show}>
+        <SetType typeSettings={typeSettings} setTypeSettings={setTypeSettings} />
       </Modal>
     </SafeAreaView>
   );

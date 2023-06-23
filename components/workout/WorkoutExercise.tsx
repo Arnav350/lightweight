@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import ExerciseSet from "./ExerciseSet";
-import { ISet, IExercise } from "../../pages/workout/Workout";
+import { ISet, IExercise, ITypeSettings } from "../../pages/workout/Workout";
 
 import { COLORS } from "../../constants/theme";
 import { WorkoutContext } from "../../hooks/useWorkout";
@@ -11,9 +11,10 @@ import { WorkoutContext } from "../../hooks/useWorkout";
 interface IProps {
   i: number;
   currentExercise: IExercise;
+  setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
 }
 
-function WorkoutExercise({ i, currentExercise }: IProps) {
+function WorkoutExercise({ i, currentExercise, setTypeSettings }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
   const [prevExercise, setPrevExercise] = useState<IExercise>(
@@ -71,7 +72,7 @@ function WorkoutExercise({ i, currentExercise }: IProps) {
       </View>
       <View style={styles.setsContainer}>
         {prevExercise.sets.slice(0, currentExercise.sets.length).map((prevSet: ISet, j: number) => (
-          <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} />
+          <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} setTypeSettings={setTypeSettings} />
         ))}
       </View>
       <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>

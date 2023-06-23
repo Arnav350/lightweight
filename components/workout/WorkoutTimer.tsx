@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#111111ee",
   },
   timerContainer: {
+    margin: 16,
     padding: 8,
     backgroundColor: COLORS.black,
     borderRadius: 16,
