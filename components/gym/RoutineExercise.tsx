@@ -1,20 +1,23 @@
+import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { IExercise, ISet } from "../../pages/workout/Workout";
+import { IExercise, ISet, ITypeSettings } from "../../pages/workout/Workout";
 import RoutineSet from "./RoutineSet";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  i: number;
   exercise: IExercise;
+  setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
 }
 
-function RoutineExercise({ exercise: { name, sets } }: IProps) {
+function RoutineExercise({ i, exercise: { name, sets }, setTypeSettings }: IProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{name}</Text>
       <View style={styles.routineContainer}>
-        {sets.map((set: ISet, i: number) => (
-          <RoutineSet key={i} set={set} />
+        {sets.map((set: ISet, j: number) => (
+          <RoutineSet key={j} i={i} j={j} set={set} setTypeSettings={setTypeSettings} />
         ))}
       </View>
     </View>

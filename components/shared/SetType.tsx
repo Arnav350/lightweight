@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { ITypeSettings, TType } from "../../pages/workout/Workout";
+import { ISet, ITypeSettings, TType } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -26,7 +26,26 @@ function SetType({ typeSettings, setTypeSettings }: IProps) {
       ),
     });
 
-    //NEED TO CHANGE EXERCISES TOO
+    const currentExercise = currentWorkout.exercises[typeSettings.i];
+    const sortedSets: ISet[] = [];
+    const usedIndexes: number[] = [];
+    const sets: ISet[] = exercises.filter((exercise) => exercise.name === currentExercise.name)[0].sets;
+
+    currentExercise.sets.forEach((workoutSet) => {
+      const index = sets.findIndex((set, i) => !usedIndexes.includes(i) && set.type === workoutSet.type);
+      if (index !== -1) {
+        sortedSets.push(sets[index]);
+        usedIndexes.push(index);
+      } else {
+        sortedSets.push({ type: workoutSet.type, weight: "", reps: "", notes: "" });
+      }
+    });
+
+    setExercises(
+      exercises.map((exercise) =>
+        exercise.name === currentExercise.name ? { ...exercise, sets: sortedSets } : exercise
+      )
+    );
 
     setTypeSettings({ ...typeSettings, show: false });
   }

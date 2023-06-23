@@ -27,7 +27,7 @@ function ExerciseSet({ i, j, prevSet, setTypeSettings }: IProps) {
       </TouchableOpacity>
       <TextInput
         value={weight}
-        placeholder={prevSet.weight.toString()}
+        placeholder={prevSet.weight.toString() || "-"}
         placeholderTextColor={COLORS.darkGray}
         keyboardType="numeric"
         maxLength={5}
@@ -56,7 +56,7 @@ function ExerciseSet({ i, j, prevSet, setTypeSettings }: IProps) {
       />
       <TextInput
         value={reps}
-        placeholder={prevSet.reps.toString()}
+        placeholder={prevSet.reps.toString() || "-"}
         placeholderTextColor={COLORS.darkGray}
         keyboardType="numeric"
         maxLength={4}
@@ -85,7 +85,7 @@ function ExerciseSet({ i, j, prevSet, setTypeSettings }: IProps) {
       />
       <TextInput
         value={notes}
-        placeholder={prevSet.notes}
+        placeholder={prevSet.notes || "-"}
         placeholderTextColor={COLORS.darkGray}
         numberOfLines={1}
         keyboardAppearance="dark"

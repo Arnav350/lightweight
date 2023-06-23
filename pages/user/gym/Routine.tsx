@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -8,7 +8,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, ISet } from "../../workout/Workout";
+import { ISet, ITypeSettings } from "../../workout/Workout";
+import SetType from "../../../components/shared/SetType";
 import RoutineExercise from "../../../components/gym/RoutineExercise";
 import { COLORS } from "../../../constants/theme";
 
@@ -16,6 +17,8 @@ type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine
 
 function Routine({ navigation, route: { params } }: TProps) {
   const { setCurrentWorkout, exercises, setExercises, routines } = useContext(WorkoutContext);
+
+  const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 
   function handlePress() {
     const date = new Date();
@@ -34,7 +37,6 @@ function Routine({ navigation, route: { params } }: TProps) {
     routines[params.i].exercises.forEach((routineExercise) => {
       const sortedSets: ISet[] = [];
       const usedIndexes: number[] = [];
-
       const sets: ISet[] = exercises.filter((exercise) => exercise.name === routineExercise.name)[0].sets;
 
       routineExercise.sets.forEach((routineSet) => {
@@ -49,7 +51,7 @@ function Routine({ navigation, route: { params } }: TProps) {
 
       setExercises((prevExercises) =>
         prevExercises.map((prevExercise) =>
-          prevExercise.name === routineExercise.name ? { ...routineExercise, sets: sortedSets } : prevExercise
+          prevExercise.name === routineExercise.name ? { ...prevExercise, sets: sortedSets } : prevExercise
         )
       );
     });
@@ -78,9 +80,12 @@ function Routine({ navigation, route: { params } }: TProps) {
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
         {routines[params.i].exercises.map((exercise, i) => (
-          <RoutineExercise key={i} exercise={exercise} />
+          <RoutineExercise key={i} i={i} exercise={exercise} setTypeSettings={setTypeSettings} />
         ))}
       </ScrollView>
+      <Modal animationType="fade" transparent={true} visible={typeSettings.show}>
+        <SetType typeSettings={typeSettings} setTypeSettings={setTypeSettings} />
+      </Modal>
     </SafeAreaView>
   );
 }
