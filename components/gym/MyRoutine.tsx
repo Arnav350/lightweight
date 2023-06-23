@@ -1,18 +1,38 @@
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TGymStackParamList } from "../../stacks/UserStack";
+import { WorkoutContext } from "../../hooks/useWorkout";
+import { TSelectProps } from "../../pages/user/gym/Select";
 import { IExercise, IRoutine } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
   routine: IRoutine;
-  navigate: StackScreenProps<TGymStackParamList, "Select">;
+  navigate: TSelectProps;
 }
 
 function MyRoutine({ i, routine, navigate: { navigation } }: IProps) {
+  const { setCurrentWorkout, routines } = useContext(WorkoutContext);
+
+  function handlePress() {
+    const date = new Date();
+    setCurrentWorkout({
+      date: {
+        month: date.toLocaleDateString("default", { month: "short" }),
+        day: date.toLocaleDateString("default", { day: "2-digit" }),
+        year: date.getFullYear(),
+      },
+      name: routines[i].name,
+      time: date.getTime(),
+      weight: 0,
+      exercises: [...routines[i].exercises],
+    });
+
+    navigation.navigate("WorkoutStack", { screen: "Workout" });
+  }
+
   return (
     <TouchableOpacity
       activeOpacity={0.5}
@@ -28,7 +48,7 @@ function MyRoutine({ i, routine, navigate: { navigation } }: IProps) {
       <Text style={styles.exercises} numberOfLines={1}>
         {routine.exercises.map((exercise: IExercise) => exercise.name).join(", ")}
       </Text>
-      <TouchableOpacity activeOpacity={0.5} style={styles.startContainer}>
+      <TouchableOpacity activeOpacity={0.5} style={styles.startContainer} onPress={handlePress}>
         <Text style={styles.start}>Start Routine</Text>
       </TouchableOpacity>
     </TouchableOpacity>

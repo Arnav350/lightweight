@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IRoutine } from "../../workout/Workout";
@@ -11,9 +13,9 @@ import MyRoutine from "../../../components/gym/MyRoutine";
 import ExploreRoutine from "../../../components/gym/ExploreRoutine";
 import { COLORS } from "../../../constants/theme";
 
-type TProps = StackScreenProps<TGymStackParamList, "Select">;
+export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Select">, TCompositeProps>;
 
-function Select(props: TProps) {
+function Select(props: TSelectProps) {
   const { navigation } = props;
 
   const { routines, setRoutines } = useContext(WorkoutContext);

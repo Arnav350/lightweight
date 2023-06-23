@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000000bb",
+    backgroundColor: "#111111ee",
   },
   editContainer: {
     padding: 12,

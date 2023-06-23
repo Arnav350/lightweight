@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useContext, useState } from "react";
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -11,6 +11,7 @@ import { WorkoutContext } from "../../hooks/useWorkout";
 import WorkoutExercise from "../../components/workout/WorkoutExercise";
 import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
+import WorkoutTimer from "../../components/workout/WorkoutTimer";
 
 type TProps = CompositeScreenProps<
   StackScreenProps<TWorkoutStackParamList, "Workout">,
@@ -51,7 +52,10 @@ export interface IRoutine {
 }
 
 function Workout({ navigation }: TProps) {
-  const { currentWorkout, setCurrentWorkout, workouts, setWorkouts } = useContext(WorkoutContext);
+  const { currentWorkout, setCurrentWorkout, exercises, setExercises, workouts, setWorkouts } =
+    useContext(WorkoutContext);
+
+  const [showTimer, setShowTimer] = useState<boolean>(false);
 
   function handleLeftPress() {
     //temporary
@@ -77,6 +81,18 @@ function Workout({ navigation }: TProps) {
       },
     ]);
 
+    setExercises(
+      exercises.map((exercise) => {
+        const matchedExercise = currentWorkout.exercises.find(
+          (currentExercise) => currentExercise.name === exercise.name
+        );
+        if (matchedExercise) {
+          return matchedExercise;
+        }
+        return exercise;
+      })
+    );
+
     navigation.navigate("UserStack", {
       screen: "GymStack",
       params: { screen: "Gym" },
@@ -90,7 +106,7 @@ function Workout({ navigation }: TProps) {
           <TouchableOpacity activeOpacity={0.3} onPress={handleLeftPress}>
             <Icon name="chevron-left" size={32} color={COLORS.primary} />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.3}>
+          <TouchableOpacity activeOpacity={0.3} onPress={() => setShowTimer(true)}>
             <Icon name="alarm" size={32} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
@@ -116,6 +132,9 @@ function Workout({ navigation }: TProps) {
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
+      <Modal animationType="fade" transparent={true} visible={showTimer}>
+        <WorkoutTimer setShowTimer={setShowTimer} />
+      </Modal>
     </SafeAreaView>
   );
 }

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -93,8 +93,12 @@ function Add(props: TProps) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {showEdit && <EditExercise navigate={props} setShowEdit={setShowEdit} editExercise={editExercise} />}
-      {showNew && <NewExercise setShowNew={setShowNew} />}
+      <Modal animationType="fade" transparent={true} visible={showEdit}>
+        <EditExercise navigate={props} setShowEdit={setShowEdit} editExercise={editExercise} />
+      </Modal>
+      <Modal animationType="fade" transparent={true} visible={showNew}>
+        <NewExercise setShowNew={setShowNew} />
+      </Modal>
     </SafeAreaView>
   );
 }
