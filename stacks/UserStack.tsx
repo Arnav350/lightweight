@@ -5,7 +5,7 @@ import Icon from "@expo/vector-icons/Ionicons";
 
 import NutritionProvider from "../hooks/useNutrition";
 import Gym from "../pages/user/gym/Gym";
-import New from "../pages/user/gym/New";
+import Design from "../pages/user/gym/Design";
 import Select from "../pages/user/gym/Select";
 import Routine from "../pages/user/gym/Routine";
 import Nutrition from "../pages/user/nutrition/Nutrition";
@@ -19,7 +19,7 @@ import { COLORS } from "../constants/theme";
 
 export type TGymStackParamList = {
   Gym: undefined;
-  New: undefined;
+  Design: undefined;
   Select: undefined;
   Routine: { i: number };
 };
@@ -30,7 +30,7 @@ function GymStack() {
   return (
     <GStack.Navigator initialRouteName="Gym" screenOptions={{ headerShown: false }}>
       <GStack.Screen name="Gym" component={Gym} />
-      <GStack.Screen name="New" component={New} />
+      <GStack.Screen name="Design" component={Design} />
       <GStack.Screen name="Select" component={Select} />
       <GStack.Screen name="Routine" component={Routine} />
     </GStack.Navigator>

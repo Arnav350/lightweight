@@ -12,15 +12,24 @@ import { ISet, ITypeSettings } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
 import RoutineExercise from "../../../components/gym/RoutineExercise";
 import { COLORS } from "../../../constants/theme";
+import { initCurrentWorkout } from "../../../constants/init";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
 function Routine({ navigation, route: { params } }: TProps) {
   const { setCurrentWorkout, exercises, setExercises, routines } = useContext(WorkoutContext);
 
-  const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
+  function handleEditPress() {
+    setCurrentWorkout({
+      ...initCurrentWorkout,
+      name: routines[params.i].name,
+      exercises: [...routines[params.i].exercises],
+    });
 
-  function handlePress() {
+    navigation.navigate("Design");
+  }
+
+  function handleStartPress() {
     const date = new Date();
     setCurrentWorkout({
       date: {
@@ -66,8 +75,8 @@ function Routine({ navigation, route: { params } }: TProps) {
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Routine</Text>
-        <TouchableOpacity activeOpacity={0.3}>
-          <Icon name="bird" size={32} color={COLORS.primary} />
+        <TouchableOpacity activeOpacity={0.3} onPress={handleEditPress}>
+          <Icon name="square-edit-outline" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.routineContainer}>
@@ -76,16 +85,13 @@ function Routine({ navigation, route: { params } }: TProps) {
           Created by
           <Text style={styles.creator}> {routines[params.i].creator}</Text>
         </Text>
-        <TouchableOpacity activeOpacity={0.5} style={styles.startContainer} onPress={handlePress}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.startContainer} onPress={handleStartPress}>
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
         {routines[params.i].exercises.map((exercise, i) => (
-          <RoutineExercise key={i} i={i} exercise={exercise} setTypeSettings={setTypeSettings} />
+          <RoutineExercise key={i} exercise={exercise} />
         ))}
       </ScrollView>
-      <Modal animationType="fade" transparent={true} visible={typeSettings.show}>
-        <SetType typeSettings={typeSettings} setTypeSettings={setTypeSettings} />
-      </Modal>
     </SafeAreaView>
   );
 }

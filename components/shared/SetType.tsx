@@ -12,7 +12,8 @@ interface IProps {
 }
 
 function SetType({ typeSettings, setTypeSettings }: IProps) {
-  const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
+  const { currentWorkout, setCurrentWorkout, exercises, setExercises, routines, setRoutines } =
+    useContext(WorkoutContext);
 
   const [showMeanings, setShowMeanings] = useState<boolean>(false);
 

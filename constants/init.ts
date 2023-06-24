@@ -6,7 +6,7 @@ export const initCurrentWorkout: IWorkout = {
     day: "",
     year: 0,
   },
-  name: "Name",
+  name: "",
   time: 0,
   weight: 0,
   exercises: [],

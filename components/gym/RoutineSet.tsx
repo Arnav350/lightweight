@@ -5,18 +5,22 @@ import { ISet, ITypeSettings } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  i: number;
-  j: number;
+  i?: number;
+  j?: number;
   set: ISet;
-  setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
+  setTypeSettings?: Dispatch<SetStateAction<ITypeSettings>>;
 }
 
 function RoutineSet({ i, j, set: { type }, setTypeSettings }: IProps) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.3} onPress={() => setTypeSettings({ show: true, i: i, j: j })}>
+      {i !== undefined && j !== undefined && setTypeSettings !== undefined ? (
+        <TouchableOpacity activeOpacity={0.3} onPress={() => setTypeSettings({ show: true, i: i, j: j })}>
+          <Text style={styles.text}>{type}</Text>
+        </TouchableOpacity>
+      ) : (
         <Text style={styles.text}>{type}</Text>
-      </TouchableOpacity>
+      )}
       <Text style={styles.text}>-</Text>
       <Text style={styles.text}>-</Text>
       <Text style={styles.text}>-</Text>

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -9,18 +9,21 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise } from "../../workout/Workout";
-import NewRoutine from "../../../components/gym/NewRoutine";
+import { IExercise, ITypeSettings } from "../../workout/Workout";
+import SetType from "../../../components/shared/SetType";
+import DesignExercise from "../../../components/gym/DesignExercise";
 import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
-type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "New">, TCompositeProps>;
+type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Design">, TCompositeProps>;
 
-function New({ navigation }: TProps) {
+function Design({ navigation }: TProps) {
   const currentUser = useContext(AuthContext);
   const { currentWorkout, setCurrentWorkout, routines, setRoutines } = useContext(WorkoutContext);
 
   const [focused, setFocused] = useState<boolean>(false);
+
+  const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 
   function handleLeftPress() {
     setCurrentWorkout(initCurrentWorkout);
@@ -70,12 +73,15 @@ function New({ navigation }: TProps) {
         />
 
         {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
-          <NewRoutine key={i} exercise={exercise} />
+          <DesignExercise key={i} i={i} exercise={exercise} setTypeSettings={setTypeSettings} />
         ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.add}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
+      <Modal animationType="fade" transparent={true} visible={typeSettings.show}>
+        <SetType typeSettings={typeSettings} setTypeSettings={setTypeSettings} />
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -132,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default New;
+export default Design;

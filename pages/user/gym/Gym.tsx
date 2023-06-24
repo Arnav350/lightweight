@@ -39,7 +39,7 @@ function Gym(props: TGymProps) {
   function handleNewPress() {
     setCurrentWorkout(initCurrentWorkout);
 
-    navigation.navigate("New");
+    navigation.navigate("Design");
   }
 
   return (
