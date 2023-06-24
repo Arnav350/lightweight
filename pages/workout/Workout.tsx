@@ -64,7 +64,7 @@ function Workout({ navigation }: TProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises, workouts, setWorkouts } =
     useContext(WorkoutContext);
 
-  const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
+  // const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
   const [showTimer, setShowTimer] = useState<boolean>(false);
   const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 
@@ -92,17 +92,36 @@ function Workout({ navigation }: TProps) {
       },
     ]);
 
-    setExercises(
-      exercises.map((exercise) => {
-        const matchedExercise = currentWorkout.exercises.find(
-          (currentExercise) => currentExercise.name === exercise.name
-        );
-        if (matchedExercise) {
-          return matchedExercise;
-        }
-        return exercise;
-      })
-    );
+    currentWorkout.exercises.forEach((currentExercise) => {
+      const tempSets: ISet[] = [];
+      const usedIndexes: number[] = [];
+      const exercise: IExercise | undefined = exercises.find((exercise) => exercise.name === currentExercise.name);
+
+      exercise &&
+        exercise.sets.forEach((element) => {
+          const matchingElements = currentExercise.sets.filter(
+            (el, index) => !usedIndexes.includes(index) && el.type === element.type
+          );
+
+          if (matchingElements.length > 0) {
+            const [matchedElement] = matchingElements;
+            tempSets.push(matchedElement);
+            usedIndexes.push(currentExercise.sets.indexOf(matchedElement));
+          } else {
+            tempSets.push(element);
+          }
+        });
+
+      const extraElements = currentExercise.sets.filter((el, index) => !usedIndexes.includes(index));
+      tempSets.push(...extraElements);
+      tempSets.sort((a: ISet, b: ISet) => a.type.localeCompare(b.type));
+
+      setExercises((prevExercises) =>
+        prevExercises.map((exercise) =>
+          exercise.name === currentExercise.name ? { ...exercise, sets: tempSets } : exercise
+        )
+      );
+    });
 
     navigation.navigate("UserStack", {
       screen: "GymStack",

@@ -17,7 +17,7 @@ export type TGymProps = CompositeScreenProps<StackScreenProps<TGymStackParamList
 
 function Gym(props: TGymProps) {
   const { navigation } = props;
-  const { setCurrentWorkout, workouts } = useContext(WorkoutContext);
+  const { setCurrentWorkout, workouts, routines, setRoutines } = useContext(WorkoutContext);
 
   function handleEmptyPress() {
     const date: Date = new Date();
@@ -38,8 +38,9 @@ function Gym(props: TGymProps) {
 
   function handleNewPress() {
     setCurrentWorkout(initCurrentWorkout);
+    setRoutines([...routines, { name: "", creator: "", exercises: [] }]);
 
-    navigation.navigate("Design");
+    navigation.navigate("Design", { i: routines.length });
   }
 
   return (

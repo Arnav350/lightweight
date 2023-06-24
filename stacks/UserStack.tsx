@@ -19,7 +19,7 @@ import { COLORS } from "../constants/theme";
 
 export type TGymStackParamList = {
   Gym: undefined;
-  Design: undefined;
+  Design: { i: number };
   Select: undefined;
   Routine: { i: number };
 };

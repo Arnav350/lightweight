@@ -50,10 +50,10 @@ export const initExercises: IExercise[] = [
     muscle: "Upper Back",
     notes: "",
     sets: [
-      { type: "W", weight: "", reps: "", notes: "" },
-      { type: "W", weight: "", reps: "", notes: "" },
       { type: "N", weight: "", reps: "", notes: "" },
       { type: "N", weight: "", reps: "", notes: "" },
+      { type: "W", weight: "", reps: "", notes: "" },
+      { type: "W", weight: "", reps: "", notes: "" },
     ],
   },
   {
@@ -62,9 +62,9 @@ export const initExercises: IExercise[] = [
     muscle: "Chest",
     notes: "",
     sets: [
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
       { type: "W", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
     ],
   },
   {
@@ -84,10 +84,10 @@ export const initExercises: IExercise[] = [
     muscle: "Calves",
     notes: "",
     sets: [
-      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "D", weight: "", reps: "", notes: "" },
       { type: "D", weight: "", reps: "", notes: "" },
       { type: "N", weight: "", reps: "", notes: "" },
-      { type: "D", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
     ],
   },
   {
@@ -96,10 +96,10 @@ export const initExercises: IExercise[] = [
     muscle: "Lats",
     notes: "",
     sets: [
-      { type: "W", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
       { type: "D", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "W", weight: "", reps: "", notes: "" },
     ],
   },
   {
@@ -108,10 +108,10 @@ export const initExercises: IExercise[] = [
     muscle: "Hamstrings",
     notes: "",
     sets: [
-      { type: "W", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
       { type: "D", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "W", weight: "", reps: "", notes: "" },
     ],
   },
   {
@@ -120,10 +120,10 @@ export const initExercises: IExercise[] = [
     muscle: "Shoulders",
     notes: "",
     sets: [
-      { type: "W", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
       { type: "D", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "W", weight: "", reps: "", notes: "" },
     ],
   },
   {
@@ -132,9 +132,9 @@ export const initExercises: IExercise[] = [
     muscle: "Quads",
     notes: "",
     sets: [
-      { type: "N", weight: "", reps: "", notes: "" },
-      { type: "N", weight: "", reps: "", notes: "" },
       { type: "D", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
       { type: "N", weight: "", reps: "", notes: "" },
       { type: "N", weight: "", reps: "", notes: "" },
     ],
@@ -157,10 +157,10 @@ export const initExercises: IExercise[] = [
     muscle: "Triceps",
     notes: "",
     sets: [
-      { type: "N", weight: "", reps: "", notes: "" },
+      { type: "D", weight: "", reps: "", notes: "" },
       { type: "D", weight: "", reps: "", notes: "" },
       { type: "N", weight: "", reps: "", notes: "" },
-      { type: "D", weight: "", reps: "", notes: "" },
+      { type: "N", weight: "", reps: "", notes: "" },
     ],
   },
 ];

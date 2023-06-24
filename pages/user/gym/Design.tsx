@@ -33,15 +33,18 @@ function Design({ navigation }: TProps) {
 
   function handleSavePress() {
     //set creator to username
-    const name: string = currentWorkout.name.trim() || "Untitled Workout";
-    if (routines.filter((routine) => routine.name === name).length > 0) {
+    const workoutName: string = currentWorkout.name.trim() || "Untitled Workout";
+    if (routines.filter((routine) => routine.name === workoutName).length > 0) {
       let i = 1;
-      while (routines.filter((routine) => routine.name === name + ` (${i})`).length > 0) {
+      while (routines.find((routine) => routine.name === workoutName + ` (${i})`)) {
         i++;
       }
-      setRoutines([...routines, { name: `${name} (${i})`, creator: "", exercises: [...currentWorkout.exercises] }]);
+      setRoutines([
+        ...routines,
+        { name: `${workoutName} (${i})`, creator: "", exercises: [...currentWorkout.exercises] },
+      ]);
     } else {
-      setRoutines([...routines, { name, creator: "", exercises: currentWorkout.exercises }]);
+      setRoutines([...routines, { name: workoutName, creator: "", exercises: currentWorkout.exercises }]);
     }
 
     setCurrentWorkout(initCurrentWorkout);

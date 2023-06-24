@@ -26,11 +26,11 @@ function Profile() {
       <TouchableOpacity
         onPress={async () =>
           await AsyncStorage.getItem("@exercises")
-            .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
+            .then((j) => (j ? console.log(JSON.parse(j)[0].sets) : console.log(j)))
             .catch((error) => console.log(error))
         }
       >
-        <Text>Check Exercises</Text>
+        <Text>Check BarbellRow</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
