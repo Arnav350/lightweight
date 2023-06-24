@@ -18,8 +18,26 @@ function WorkoutExercise({ i, currentExercise, setTypeSettings }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
   const [prevExercise, setPrevExercise] = useState<IExercise>(
-    exercises.filter((exercise) => exercise.name === currentExercise.name)[0]
+    exercises.find((exercise) => exercise.name === currentExercise.name) || currentExercise
   );
+
+  useEffect(() => {
+    const sortedSets: ISet[] = [];
+    const usedIndexes: number[] = [];
+    const sets: ISet[] = currentExercise.sets;
+
+    sets.forEach((set) => {
+      const index = prevExercise.sets.findIndex((prevSet, i) => !usedIndexes.includes(i) && prevSet.type === set.type);
+      if (index !== -1) {
+        sortedSets.push(prevExercise.sets[index]);
+        usedIndexes.push(index);
+      } else {
+        sortedSets.push({ type: set.type, weight: "", reps: "", notes: "" });
+      }
+    });
+
+    setPrevExercise({ ...prevExercise, sets: sortedSets });
+  }, [currentExercise]);
 
   useEffect(() => {
     const lengthDifference = currentExercise.sets.length - prevExercise.sets.length;
@@ -44,8 +62,8 @@ function WorkoutExercise({ i, currentExercise, setTypeSettings }: IProps) {
     setCurrentWorkout({
       ...currentWorkout,
       exercises: [
-        ...currentWorkout.exercises.map((exercise: IExercise, j: number) =>
-          j === i
+        ...currentWorkout.exercises.map((exercise: IExercise) =>
+          exercise.name === currentExercise.name
             ? {
                 ...exercise,
                 sets: [...exercise.sets, { type: "N" as const, weight: "" as const, reps: "" as const, notes: "" }],

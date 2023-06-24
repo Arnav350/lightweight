@@ -21,9 +21,7 @@ function ExerciseSet({ i, j, prevSet, setTypeSettings }: IProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.3} onPress={() => setTypeSettings({ show: true, i: i, j: j })}>
-        <Text style={styles.set}>
-          {currentWorkout.exercises[i].sets[j].type === "N" ? j + 1 : currentWorkout.exercises[i].sets[j].type}
-        </Text>
+        <Text style={styles.set}>{prevSet.type === "N" ? j + 1 : prevSet.type}</Text>
       </TouchableOpacity>
       <TextInput
         value={weight}

@@ -64,6 +64,7 @@ function Workout({ navigation }: TProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises, workouts, setWorkouts } =
     useContext(WorkoutContext);
 
+  const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
   const [showTimer, setShowTimer] = useState<boolean>(false);
   const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 

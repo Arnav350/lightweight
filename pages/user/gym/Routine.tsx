@@ -43,27 +43,27 @@ function Routine({ navigation, route: { params } }: TProps) {
       exercises: [...routines[params.i].exercises],
     });
 
-    routines[params.i].exercises.forEach((routineExercise) => {
-      const sortedSets: ISet[] = [];
-      const usedIndexes: number[] = [];
-      const sets: ISet[] = exercises.filter((exercise) => exercise.name === routineExercise.name)[0].sets;
+    // routines[params.i].exercises.forEach((routineExercise) => {
+    //   const sortedSets: ISet[] = [];
+    //   const usedIndexes: number[] = [];
+    //   const sets: ISet[] = exercises.filter((exercise) => exercise.name === routineExercise.name)[0].sets;
 
-      routineExercise.sets.forEach((routineSet) => {
-        const index = sets.findIndex((set, i) => !usedIndexes.includes(i) && set.type === routineSet.type);
-        if (index !== -1) {
-          sortedSets.push(sets[index]);
-          usedIndexes.push(index);
-        } else {
-          sortedSets.push({ type: routineSet.type, weight: "", reps: "", notes: "" });
-        }
-      });
+    //   routineExercise.sets.forEach((routineSet) => {
+    //     const index = sets.findIndex((set, i) => !usedIndexes.includes(i) && set.type === routineSet.type);
+    //     if (index !== -1) {
+    //       sortedSets.push(sets[index]);
+    //       usedIndexes.push(index);
+    //     } else {
+    //       sortedSets.push({ type: routineSet.type, weight: "", reps: "", notes: "" });
+    //     }
+    //   });
 
-      setExercises((prevExercises) =>
-        prevExercises.map((prevExercise) =>
-          prevExercise.name === routineExercise.name ? { ...prevExercise, sets: sortedSets } : prevExercise
-        )
-      );
-    });
+    //   setExercises((prevExercises) =>
+    //     prevExercises.map((prevExercise) =>
+    //       prevExercise.name === routineExercise.name ? { ...prevExercise, sets: sortedSets } : prevExercise
+    //     )
+    //   );
+    // });
 
     navigation.navigate("WorkoutStack", { screen: "Workout" });
   }

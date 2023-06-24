@@ -12,41 +12,42 @@ interface IProps {
 }
 
 function SetType({ typeSettings, setTypeSettings }: IProps) {
-  const { currentWorkout, setCurrentWorkout, exercises, setExercises, routines, setRoutines } =
-    useContext(WorkoutContext);
+  const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
   const [showMeanings, setShowMeanings] = useState<boolean>(false);
 
   function handlePress(type: TType) {
-    setCurrentWorkout({
+    const tempWorkout = {
       ...currentWorkout,
       exercises: currentWorkout.exercises.map((exercise, i) =>
         i === typeSettings.i
           ? { ...exercise, sets: exercise.sets.map((set, j) => (j === typeSettings.j ? { ...set, type } : set)) }
           : exercise
       ),
-    });
+    };
 
-    const currentExercise = currentWorkout.exercises[typeSettings.i];
-    const sortedSets: ISet[] = [];
-    const usedIndexes: number[] = [];
-    const sets: ISet[] = exercises.filter((exercise) => exercise.name === currentExercise.name)[0].sets;
+    setCurrentWorkout(tempWorkout);
 
-    currentExercise.sets.forEach((workoutSet) => {
-      const index = sets.findIndex((set, i) => !usedIndexes.includes(i) && set.type === workoutSet.type);
-      if (index !== -1) {
-        sortedSets.push(sets[index]);
-        usedIndexes.push(index);
-      } else {
-        sortedSets.push({ type: workoutSet.type, weight: "", reps: "", notes: "" });
-      }
-    });
+    // const currentExercise = tempWorkout.exercises[typeSettings.i];
+    // const sortedSets: ISet[] = [];
+    // const usedIndexes: number[] = [];
+    // const sets: ISet[] = exercises.filter((exercise) => exercise.name === currentExercise.name)[0].sets;
 
-    setExercises(
-      exercises.map((exercise) =>
-        exercise.name === currentExercise.name ? { ...exercise, sets: sortedSets } : exercise
-      )
-    );
+    // currentExercise.sets.forEach((workoutSet) => {
+    //   const index = sets.findIndex((set, i) => !usedIndexes.includes(i) && set.type === workoutSet.type);
+    //   if (index !== -1) {
+    //     sortedSets.push(sets[index]);
+    //     usedIndexes.push(index);
+    //   } else {
+    //     sortedSets.push({ type: workoutSet.type, weight: "", reps: "", notes: "" });
+    //   }
+    // });
+
+    // setExercises(
+    //   exercises.map((exercise) =>
+    //     exercise.name === currentExercise.name ? { ...exercise, sets: sortedSets } : exercise
+    //   )
+    // );
 
     setTypeSettings({ ...typeSettings, show: false });
   }
