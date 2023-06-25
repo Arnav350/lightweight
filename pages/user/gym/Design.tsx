@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -9,7 +9,7 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, ITypeSettings } from "../../workout/Workout";
+import { IExercise, IRoutine, ITypeSettings } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
 import DesignExercise from "../../../components/gym/DesignExercise";
 import { initCurrentWorkout } from "../../../constants/init";
@@ -17,7 +17,7 @@ import { COLORS } from "../../../constants/theme";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Design">, TCompositeProps>;
 
-function Design({ navigation }: TProps) {
+function Design({ navigation, route: { params } }: TProps) {
   const currentUser = useContext(AuthContext);
   const { currentWorkout, setCurrentWorkout, routines, setRoutines } = useContext(WorkoutContext);
 
@@ -26,25 +26,48 @@ function Design({ navigation }: TProps) {
   const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 
   function handleLeftPress() {
-    setCurrentWorkout(initCurrentWorkout);
+    if (currentWorkout !== initCurrentWorkout) {
+      Alert.alert("Are you sure?", `Routine "${currentWorkout.name.trim() || "Untitled Routine"}" will not be saved`, [
+        {
+          text: "Back",
+          onPress: back,
+          style: "destructive",
+        },
+        { text: "Cancel", style: "cancel" },
+      ]);
+    } else {
+      navigation.goBack();
+    }
+  }
 
+  function back() {
+    // if (params.i === routines.length - 1) {
+    //   // setRoutines(routines.slice(0, -1));
+    //   console.log(params.i);
+    //   console.log(routines.length - 1);
+    // }
+    setCurrentWorkout(initCurrentWorkout);
     navigation.goBack();
   }
 
   function handleSavePress() {
-    //set creator to username
-    const workoutName: string = currentWorkout.name.trim() || "Untitled Workout";
-    if (routines.filter((routine) => routine.name === workoutName).length > 0) {
-      let i = 1;
-      while (routines.find((routine) => routine.name === workoutName + ` (${i})`)) {
-        i++;
+    const workoutName: string = currentWorkout.name.trim() || "Untitled Routine";
+    if (routines.find((routine: IRoutine, i: number) => routine.name === workoutName && i !== params.i)) {
+      let j = 1;
+      while (routines.find((routine) => routine.name === `${workoutName} (${j})`) && j !== params.i) {
+        j++;
       }
-      setRoutines([
-        ...routines,
-        { name: `${workoutName} (${i})`, creator: "", exercises: [...currentWorkout.exercises] },
-      ]);
+      setRoutines(
+        routines.map((routine: IRoutine, i: number) =>
+          i === params.i ? { ...routine, name: `${workoutName} (${j})`, exercises: currentWorkout.exercises } : routine
+        )
+      );
     } else {
-      setRoutines([...routines, { name: workoutName, creator: "", exercises: currentWorkout.exercises }]);
+      setRoutines(
+        routines.map((routine: IRoutine, i: number) =>
+          i === params.i ? { ...routine, name: workoutName, exercises: currentWorkout.exercises } : routine
+        )
+      );
     }
 
     setCurrentWorkout(initCurrentWorkout);
