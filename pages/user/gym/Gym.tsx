@@ -38,7 +38,6 @@ function Gym(props: TGymProps) {
 
   function handleNewPress() {
     setCurrentWorkout(initCurrentWorkout);
-    //set creator to username
     setRoutines([...routines, { name: "", creator: "", exercises: [] }]);
 
     navigation.navigate("Design", { i: routines.length });

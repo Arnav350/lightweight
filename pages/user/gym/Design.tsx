@@ -9,7 +9,7 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, IRoutine, ITypeSettings } from "../../workout/Workout";
+import { IExercise, IRoutine, ITypeSettings, IWorkout } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
 import DesignExercise from "../../../components/gym/DesignExercise";
 import { initCurrentWorkout } from "../../../constants/init";
@@ -25,8 +25,11 @@ function Design({ navigation, route: { params } }: TProps) {
 
   const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 
+  const [originalWorkout, setOriginalWorkout] = useState<IWorkout>(currentWorkout);
+
   function handleLeftPress() {
-    if (currentWorkout !== initCurrentWorkout) {
+    //should be original workout not init
+    if (currentWorkout !== originalWorkout) {
       Alert.alert("Are you sure?", `Routine "${currentWorkout.name.trim() || "Untitled Routine"}" will not be saved`, [
         {
           text: "Back",
@@ -36,22 +39,21 @@ function Design({ navigation, route: { params } }: TProps) {
         { text: "Cancel", style: "cancel" },
       ]);
     } else {
-      navigation.goBack();
+      back();
     }
   }
 
   function back() {
-    // if (params.i === routines.length - 1) {
-    //   // setRoutines(routines.slice(0, -1));
-    //   console.log(params.i);
-    //   console.log(routines.length - 1);
-    // }
+    if (!routines[params.i].creator) {
+      setRoutines(routines.slice(0, -1));
+    }
     setCurrentWorkout(initCurrentWorkout);
     navigation.goBack();
   }
 
   function handleSavePress() {
     const workoutName: string = currentWorkout.name.trim() || "Untitled Routine";
+    //set creator to username
     if (routines.find((routine: IRoutine, i: number) => routine.name === workoutName && i !== params.i)) {
       let j = 1;
       while (routines.find((routine) => routine.name === `${workoutName} (${j})`) && j !== params.i) {
@@ -59,13 +61,15 @@ function Design({ navigation, route: { params } }: TProps) {
       }
       setRoutines(
         routines.map((routine: IRoutine, i: number) =>
-          i === params.i ? { ...routine, name: `${workoutName} (${j})`, exercises: currentWorkout.exercises } : routine
+          i === params.i
+            ? { name: `${workoutName} (${j})`, creator: "PumpPeak", exercises: currentWorkout.exercises }
+            : routine
         )
       );
     } else {
       setRoutines(
         routines.map((routine: IRoutine, i: number) =>
-          i === params.i ? { ...routine, name: workoutName, exercises: currentWorkout.exercises } : routine
+          i === params.i ? { name: workoutName, creator: "PumpPeak", exercises: currentWorkout.exercises } : routine
         )
       );
     }

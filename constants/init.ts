@@ -167,7 +167,7 @@ export const initExercises: IExercise[] = [
 
 export const exploreRoutines: IRoutine[] = [
   {
-    name: "Push",
+    name: "PPL Push",
     creator: "PumpPeak",
     exercises: [
       {
@@ -209,7 +209,7 @@ export const exploreRoutines: IRoutine[] = [
     ],
   },
   {
-    name: "Pull",
+    name: "PPL Pull",
     creator: "PumpPeak",
     exercises: [
       {
@@ -251,7 +251,7 @@ export const exploreRoutines: IRoutine[] = [
     ],
   },
   {
-    name: "Legs",
+    name: "PPL Legs",
     creator: "PumpPeak",
     exercises: [
       {
@@ -292,16 +292,16 @@ export const exploreRoutines: IRoutine[] = [
       },
     ],
   },
-  { name: "Chest & Back", creator: "PumpPeak", exercises: [] },
-  { name: "Shoulders & Arms", creator: "PumpPeak", exercises: [] },
-  { name: "Legs", creator: "PumpPeak", exercises: [] },
+  { name: "Arnold Chest & Back", creator: "PumpPeak", exercises: [] },
+  { name: "Arnold Shoulders & Arms", creator: "PumpPeak", exercises: [] },
+  { name: "Arnold Legs", creator: "PumpPeak", exercises: [] },
   { name: "Full Body 1", creator: "PumpPeak", exercises: [] },
   { name: "Full Body 2", creator: "PumpPeak", exercises: [] },
   { name: "Full Body 3", creator: "PumpPeak", exercises: [] },
-  { name: "Upper 1", creator: "PumpPeak", exercises: [] },
-  { name: "Lower 1", creator: "PumpPeak", exercises: [] },
-  { name: "Upper 2", creator: "PumpPeak", exercises: [] },
-  { name: "Lower 2", creator: "PumpPeak", exercises: [] },
+  { name: "Upper Body 1", creator: "PumpPeak", exercises: [] },
+  { name: "Lower Body 1", creator: "PumpPeak", exercises: [] },
+  { name: "Upper Body 2", creator: "PumpPeak", exercises: [] },
+  { name: "Lower Body 2", creator: "PumpPeak", exercises: [] },
   { name: "Dumbbell Upper", creator: "PumpPeak", exercises: [] },
   { name: "Dumbbell Lower", creator: "PumpPeak", exercises: [] },
   { name: "Home Upper", creator: "PumpPeak", exercises: [] },
