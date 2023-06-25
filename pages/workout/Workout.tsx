@@ -78,7 +78,6 @@ function Workout({ navigation }: TProps) {
   function handleFinishPress() {
     const date = new Date();
 
-    setCurrentWorkout(initCurrentWorkout);
     setWorkouts([
       ...workouts,
       {
@@ -127,6 +126,8 @@ function Workout({ navigation }: TProps) {
       screen: "GymStack",
       params: { screen: "Gym" },
     });
+
+    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
   }
 
   return (

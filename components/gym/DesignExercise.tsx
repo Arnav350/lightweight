@@ -13,20 +13,23 @@ interface IProps {
   setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
 }
 
-function DesignExercise({ i, exercise: { name, notes, sets }, setTypeSettings }: IProps) {
+function DesignExercise({ i, exercise, setTypeSettings }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleAddPress() {
     setCurrentWorkout({
       ...currentWorkout,
       exercises: [
-        ...currentWorkout.exercises.map((exercise: IExercise) =>
-          exercise.name === name
+        ...currentWorkout.exercises.map((currentExercise: IExercise) =>
+          currentExercise.name === exercise.name
             ? {
-                ...exercise,
-                sets: [...exercise.sets, { type: "N" as const, weight: "" as const, reps: "" as const, notes: "" }],
+                ...currentExercise,
+                sets: [
+                  ...currentExercise.sets,
+                  { type: "N" as const, weight: "" as const, reps: "" as const, notes: "" },
+                ],
               }
-            : exercise
+            : currentExercise
         ),
       ],
     });
@@ -35,15 +38,15 @@ function DesignExercise({ i, exercise: { name, notes, sets }, setTypeSettings }:
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>{name}</Text>
+        <Text style={styles.header}>{exercise.name}</Text>
         <TouchableOpacity activeOpacity={0.3}>
           <Icon name="dots-horizontal" color={COLORS.white} size={24} />
         </TouchableOpacity>
       </View>
-      {notes && <Text style={styles.notes}>{notes}</Text>}
+      {exercise.notes && <Text style={styles.notes}>{exercise.notes}</Text>}
       <View style={styles.newContainer}>
-        {sets.map((set: ISet, j: number) => (
-          <RoutineSet key={j} i={i} j={j} set={set} setTypeSettings={setTypeSettings} />
+        {exercise.sets.map((set: ISet, j: number) => (
+          <RoutineSet key={j} i={i} j={j} set={set} exercise={exercise} setTypeSettings={setTypeSettings} />
         ))}
       </View>
       <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>

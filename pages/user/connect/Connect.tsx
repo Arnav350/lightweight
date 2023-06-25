@@ -79,7 +79,7 @@ function Connect() {
   ]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.inputContainer}>
           <Icon name="magnify" size={32} color={COLORS.darkGray} />

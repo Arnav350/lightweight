@@ -13,7 +13,7 @@ function Profile() {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={["top", "right", "left"]}>
       <TouchableOpacity onPress={() => supabase.auth.signOut()}>
         <Text>Sign Out</Text>
       </TouchableOpacity>

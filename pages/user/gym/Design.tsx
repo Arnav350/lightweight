@@ -25,10 +25,9 @@ function Design({ navigation, route: { params } }: TProps) {
 
   const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
 
-  const [originalWorkout, setOriginalWorkout] = useState<IWorkout>(currentWorkout);
+  const [originalWorkout] = useState<IWorkout>(currentWorkout);
 
   function handleLeftPress() {
-    //should be original workout not init
     if (currentWorkout !== originalWorkout) {
       Alert.alert("Are you sure?", `Routine "${currentWorkout.name.trim() || "Untitled Routine"}" will not be saved`, [
         {
@@ -47,8 +46,10 @@ function Design({ navigation, route: { params } }: TProps) {
     if (!routines[params.i].creator) {
       setRoutines(routines.slice(0, -1));
     }
-    setCurrentWorkout(initCurrentWorkout);
+
     navigation.goBack();
+
+    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
   }
 
   function handleSavePress() {
@@ -74,13 +75,13 @@ function Design({ navigation, route: { params } }: TProps) {
       );
     }
 
-    setCurrentWorkout(initCurrentWorkout);
-
     navigation.goBack();
+
+    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity activeOpacity={0.3} onPress={handleLeftPress}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />

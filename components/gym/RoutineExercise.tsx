@@ -8,13 +8,13 @@ interface IProps {
   exercise: IExercise;
 }
 
-function RoutineExercise({ exercise: { name, sets } }: IProps) {
+function RoutineExercise({ exercise }: IProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.name}>{exercise.name}</Text>
       <View style={styles.routineContainer}>
-        {sets.map((set: ISet, j: number) => (
-          <RoutineSet key={j} set={set} />
+        {exercise.sets.map((set: ISet, j: number) => (
+          <RoutineSet key={j} j={j} set={set} exercise={exercise} />
         ))}
       </View>
     </View>

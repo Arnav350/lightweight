@@ -9,10 +9,11 @@ interface IProps {
   i: number;
   j: number;
   prevSet: ISet;
+  prevExercise: IExercise;
   setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
 }
 
-function ExerciseSet({ i, j, prevSet, setTypeSettings }: IProps) {
+function ExerciseSet({ i, j, prevSet, prevExercise, setTypeSettings }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
   const [weight, setWeight] = useState<string>("");
   const [reps, setReps] = useState<string>("");
@@ -21,7 +22,11 @@ function ExerciseSet({ i, j, prevSet, setTypeSettings }: IProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.3} onPress={() => setTypeSettings({ show: true, i: i, j: j })}>
-        <Text style={styles.set}>{prevSet.type === "N" ? j + 1 : prevSet.type}</Text>
+        <Text style={styles.set}>
+          {prevSet.type === "N"
+            ? prevExercise.sets.slice(0, j + 1).filter((set: ISet) => set.type === "N").length
+            : prevSet.type}
+        </Text>
       </TouchableOpacity>
       <TextInput
         value={weight}

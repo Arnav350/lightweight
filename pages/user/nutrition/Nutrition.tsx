@@ -64,7 +64,7 @@ function Nutrition(props: TNutritionProps) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity activeOpacity={0.3}>
           <Icon name="chart-line" size={32} color={COLORS.primary} />

@@ -16,6 +16,10 @@ function SetType({ typeSettings, setTypeSettings }: IProps) {
 
   const [showMeanings, setShowMeanings] = useState<boolean>(false);
 
+  const setNumber: number = currentWorkout.exercises[typeSettings.i].sets
+    .slice(0, typeSettings.j + 1)
+    .filter((set: ISet) => set.type === "N").length;
+
   function handlePress(type: TType) {
     setCurrentWorkout({
       ...currentWorkout,
@@ -40,7 +44,9 @@ function SetType({ typeSettings, setTypeSettings }: IProps) {
             <Text style={styles.type}>W</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("N")}>
-            <Text style={styles.type}>{typeSettings.j + 1}</Text>
+            <Text style={styles.type}>
+              {currentWorkout.exercises[typeSettings.i].sets[typeSettings.j].type === "N" ? setNumber : setNumber + 1}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("D")}>
             <Text style={styles.type}>D</Text>

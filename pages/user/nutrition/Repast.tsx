@@ -74,7 +74,7 @@ function Repast({ navigation, route: { params } }: TProps) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity activeOpacity={0.3} onPress={() => handleNavigatePress("left")}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
@@ -145,7 +145,7 @@ function Repast({ navigation, route: { params } }: TProps) {
           ))}
         </View>
         <View style={styles.foodsContainer}>
-          <Text style={styles.subheader}>History</Text>
+          {histories.length !== 0 && <Text style={styles.subheader}>History</Text>}
           {histories.map((history: IFood, i: number) => (
             <SelectFood
               key={i}

@@ -73,7 +73,7 @@ function Create({ navigation, route: { params } }: TProps) {
     }
   }
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
