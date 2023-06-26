@@ -16,7 +16,7 @@ type TProps = StackScreenProps<TNutritionStackParamList, "Recipes">;
 function Recipes({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
-  const { currentMeals, setCurrentMeals, recipes, setRecipes, histories, setHistories } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, recipes, histories, setHistories } = useContext(NutritionContext);
 
   const [recipeName, setRecipeName] = useState<string>("");
 
@@ -31,10 +31,10 @@ function Recipes({ navigation, route: { params } }: TProps) {
   }, [isFocused]);
 
   function handlePress() {
-    setCurrentMeals({
-      ...currentMeals,
-      meals: currentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
-    });
+    setCurrentMeals((prevCurrentMeals) => ({
+      ...prevCurrentMeals,
+      meals: prevCurrentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
+    }));
 
     setHistories([...currentHistories, ...histories.filter((food) => !currentHistories.includes(food))].splice(0, 10));
 
@@ -76,9 +76,7 @@ function Recipes({ navigation, route: { params } }: TProps) {
                 key={i}
                 food={recipe}
                 add={true}
-                currentMeal={currentMeal}
                 setCurrentMeal={setCurrentMeal}
-                currentHistories={currentHistories}
                 setCurrentHistories={setCurrentHistories}
               />
             ))}

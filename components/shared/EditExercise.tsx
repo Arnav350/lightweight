@@ -17,15 +17,15 @@ interface IProps {
 }
 
 function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: IProps) {
-  const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
+  const { setCurrentWorkout, setExercises } = useContext(WorkoutContext);
 
   const [exerciseName, setExerciseName] = useState<string>(editExercise?.name || "");
   const [currentEquipment, setCurrentEquipment] = useState<string>(editExercise?.equipment || "Any Equipment");
   const [currentMuscle, setCurrentMuscle] = useState(editExercise?.muscle || "Any Muscle");
 
   function handleSavePress() {
-    setExercises(
-      exercises.map((exercise) =>
+    setExercises((prevExercises) =>
+      prevExercises.map((exercise) =>
         exercise.name === editExercise?.name
           ? { ...exercise, name: exerciseName, equipment: currentEquipment, muscle: currentMuscle }
           : exercise
@@ -36,7 +36,10 @@ function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: I
 
   function handleAddPress() {
     if (editExercise) {
-      setCurrentWorkout({ ...currentWorkout, exercises: [...currentWorkout.exercises, editExercise] });
+      setCurrentWorkout((prevCurrentWorkout) => ({
+        ...prevCurrentWorkout,
+        exercises: [...prevCurrentWorkout.exercises, editExercise],
+      }));
       setShowEdit(false);
       navigation.goBack();
     }

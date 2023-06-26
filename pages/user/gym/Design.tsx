@@ -9,7 +9,7 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, IRoutine, ITypeSettings, IWorkout } from "../../workout/Workout";
+import { IExercise, IRoutine, IWorkoutSettings, IWorkout } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
 import DesignExercise from "../../../components/gym/DesignExercise";
 import { initCurrentWorkout } from "../../../constants/init";
@@ -23,13 +23,18 @@ function Design({ navigation, route: { params } }: TProps) {
 
   const [focused, setFocused] = useState<boolean>(false);
 
-  const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
+  const [settings, setSettings] = useState<IWorkoutSettings>({
+    showType: false,
+    showOptions: false,
+    i: 0,
+    j: 0,
+  });
 
   const [originalWorkout] = useState<IWorkout>(currentWorkout);
 
   function back() {
     if (!routines[params.i].creator) {
-      setRoutines(routines.slice(0, -1));
+      setRoutines((prevRoutines) => prevRoutines.slice(0, -1));
     }
 
     navigation.goBack();
@@ -60,16 +65,16 @@ function Design({ navigation, route: { params } }: TProps) {
       while (routines.find((routine) => routine.name === `${workoutName} (${j})`) && j !== params.i) {
         j++;
       }
-      setRoutines(
-        routines.map((routine: IRoutine, i: number) =>
+      setRoutines((prevRoutines) =>
+        prevRoutines.map((routine: IRoutine, i: number) =>
           i === params.i
             ? { name: `${workoutName} (${j})`, creator: "PumpPeak", exercises: currentWorkout.exercises }
             : routine
         )
       );
     } else {
-      setRoutines(
-        routines.map((routine: IRoutine, i: number) =>
+      setRoutines((prevRoutines) =>
+        prevRoutines.map((routine: IRoutine, i: number) =>
           i === params.i ? { name: workoutName, creator: "PumpPeak", exercises: currentWorkout.exercises } : routine
         )
       );
@@ -88,7 +93,7 @@ function Design({ navigation, route: { params } }: TProps) {
         {
           text: "Delete",
           onPress: () => {
-            setRoutines(routines.filter((_routine, i) => i !== params.i));
+            setRoutines((prevRoutines) => prevRoutines.filter((_routine, i) => i !== params.i));
             navigation.navigate("Gym");
           },
           style: "destructive",
@@ -125,7 +130,7 @@ function Design({ navigation, route: { params } }: TProps) {
         />
 
         {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
-          <DesignExercise key={i} i={i} exercise={exercise} setTypeSettings={setTypeSettings} />
+          <DesignExercise key={i} i={i} exercise={exercise} setSettings={setSettings} />
         ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.button}>Add Exercise</Text>
@@ -136,8 +141,8 @@ function Design({ navigation, route: { params } }: TProps) {
           </TouchableOpacity>
         )}
       </ScrollView>
-      <Modal animationType="fade" transparent={true} visible={typeSettings.show}>
-        <SetType typeSettings={typeSettings} setTypeSettings={setTypeSettings} />
+      <Modal animationType="fade" transparent={true} visible={settings.showType}>
+        <SetType settings={settings} setSettings={setSettings} />
       </Modal>
     </SafeAreaView>
   );

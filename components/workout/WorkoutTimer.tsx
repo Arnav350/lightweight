@@ -17,7 +17,7 @@ function WorkoutTimer({ setShowTimer }: IProps) {
   const [presets, setPresets] = useState<number[]>([60, 30, 200]);
 
   function handleLeftPress() {
-    setKey(key + 1);
+    setKey((prevKey) => prevKey + 1);
     setPlaying(false);
   }
 

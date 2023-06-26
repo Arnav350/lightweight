@@ -42,14 +42,14 @@ function Create({ navigation, route: { params } }: TProps) {
           while (recipes.filter((recipe) => recipe.name === tempFood.name + ` (${i})`).length > 0) {
             i++;
           }
-          setRecipes([...recipes, { ...tempFood, name: `${tempFood.name} (${i})` }]);
+          setRecipes((prevRecipes) => [{ ...tempFood, name: `${tempFood.name} (${i})` }, ...prevRecipes]);
         } else {
-          setRecipes([...recipes, { ...tempFood, name: tempFood.name }]);
+          setRecipes((prevRecipes) => [{ ...tempFood, name: tempFood.name }, ...prevRecipes]);
         }
       } else {
-        setCurrentMeals({
-          ...currentMeals,
-          meals: currentMeals.meals.map((meal: IMeal, i: number) =>
+        setCurrentMeals((prevCurrentMeals) => ({
+          ...prevCurrentMeals,
+          meals: prevCurrentMeals.meals.map((meal: IMeal, i: number) =>
             i === params.i
               ? {
                   ...meal,
@@ -57,12 +57,12 @@ function Create({ navigation, route: { params } }: TProps) {
                 }
               : meal
           ),
-        });
+        }));
 
-        setHistories(
+        setHistories((prevHistories) =>
           [
             tempFood,
-            ...histories.filter(
+            ...prevHistories.filter(
               (currentFood: IFood) => currentFood.name !== tempFood.name && currentFood.calories !== tempFood.calories
             ),
           ].splice(0, 10)
@@ -96,7 +96,7 @@ function Create({ navigation, route: { params } }: TProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={focusedInput === "name" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentFood({ ...currentFood, name: text })}
+          onChangeText={(text: string) => setCurrentFood((prevCurrentFood) => ({ ...prevCurrentFood, name: text }))}
           onFocus={() => setFocusedInput("name")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -107,7 +107,9 @@ function Create({ navigation, route: { params } }: TProps) {
           keyboardAppearance="dark"
           keyboardType="number-pad"
           style={focusedInput === "calories" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentFood({ ...currentFood, calories: Number(text) })}
+          onChangeText={(text: string) =>
+            setCurrentFood((prevCurrentFood) => ({ ...prevCurrentFood, calories: Number(text) }))
+          }
           onFocus={() => setFocusedInput("calories")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -118,7 +120,9 @@ function Create({ navigation, route: { params } }: TProps) {
           keyboardAppearance="dark"
           keyboardType="numeric"
           style={focusedInput === "protein" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentFood({ ...currentFood, protein: Number(text) })}
+          onChangeText={(text: string) =>
+            setCurrentFood((prevCurrentFood) => ({ ...prevCurrentFood, protein: Number(text) }))
+          }
           onFocus={() => setFocusedInput("protein")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -129,7 +133,9 @@ function Create({ navigation, route: { params } }: TProps) {
           keyboardAppearance="dark"
           keyboardType="numeric"
           style={focusedInput === "fat" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentFood({ ...currentFood, fat: Number(text) })}
+          onChangeText={(text: string) =>
+            setCurrentFood((prevCurrentFood) => ({ ...prevCurrentFood, fat: Number(text) }))
+          }
           onFocus={() => setFocusedInput("fat")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -140,7 +146,9 @@ function Create({ navigation, route: { params } }: TProps) {
           keyboardAppearance="dark"
           keyboardType="numeric"
           style={focusedInput === "carbs" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentFood({ ...currentFood, carbs: Number(text) })}
+          onChangeText={(text: string) =>
+            setCurrentFood((prevCurrentFood) => ({ ...prevCurrentFood, carbs: Number(text) }))
+          }
           onFocus={() => setFocusedInput("carbs")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -151,7 +159,9 @@ function Create({ navigation, route: { params } }: TProps) {
           keyboardAppearance="dark"
           keyboardType="numeric"
           style={focusedInput === "number" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentFood({ ...currentFood, amount: Number(text) })}
+          onChangeText={(text: string) =>
+            setCurrentFood((prevCurrentFood) => ({ ...prevCurrentFood, amount: Number(text) }))
+          }
           onFocus={() => setFocusedInput("number")}
           onBlur={() => setFocusedInput("none")}
         />
@@ -161,7 +171,9 @@ function Create({ navigation, route: { params } }: TProps) {
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={focusedInput === "unit" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentFood({ ...currentFood, amountType: text })}
+          onChangeText={(text: string) =>
+            setCurrentFood((prevCurrentFood) => ({ ...prevCurrentFood, amountType: text }))
+          }
           onFocus={() => setFocusedInput("unit")}
           onBlur={() => setFocusedInput("none")}
         />

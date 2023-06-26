@@ -19,7 +19,7 @@ type TProps = StackScreenProps<TRootStackParamList, "Add">;
 function Add(props: TProps) {
   const { navigation } = props;
 
-  const { exercises, setExercises } = useContext(WorkoutContext);
+  const { exercises } = useContext(WorkoutContext);
 
   const [exerciseName, setExerciseName] = useState<string>("");
 

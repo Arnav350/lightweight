@@ -16,7 +16,7 @@ interface IProps {
 }
 
 function AddExercise({ navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
-  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
+  const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleContainerPress() {
     setShowEdit(true);
@@ -24,7 +24,10 @@ function AddExercise({ navigate: { navigation }, exercise, setShowEdit, setEditE
   }
 
   function handlePlusPress() {
-    setCurrentWorkout({ ...currentWorkout, exercises: [...currentWorkout.exercises, exercise] });
+    setCurrentWorkout((prevCurrentWorkout) => ({
+      ...prevCurrentWorkout,
+      exercises: [...prevCurrentWorkout.exercises, exercise],
+    }));
     navigation.goBack();
   }
 

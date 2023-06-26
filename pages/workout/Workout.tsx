@@ -78,7 +78,7 @@ function Workout({ navigation }: TProps) {
   }
 
   function finish(tempWorkout: IWorkout) {
-    setWorkouts([...workouts, tempWorkout]);
+    setWorkouts((prevWorkouts) => [tempWorkout, ...prevWorkouts]);
 
     tempWorkout.exercises.forEach((currentExercise) => {
       const tempSets: ISet[] = [];
@@ -156,6 +156,8 @@ function Workout({ navigation }: TProps) {
           style: "cancel",
         },
       ]);
+    } else {
+      finish(tempWorkout);
     }
   }
 
@@ -177,7 +179,7 @@ function Workout({ navigation }: TProps) {
             placeholderTextColor={COLORS.darkGray}
             keyboardAppearance="dark"
             style={styles.header}
-            onChangeText={(text) => setCurrentWorkout({ ...currentWorkout, name: text })}
+            onChangeText={(text) => setCurrentWorkout((prevCurrentWorkout) => ({ ...prevCurrentWorkout, name: text }))}
           />
         </View>
         <TouchableOpacity activeOpacity={0.3} onPress={handleFinishPress}>
@@ -196,7 +198,7 @@ function Workout({ navigation }: TProps) {
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
       <Modal animationType="fade" transparent={true} visible={settings.showOptions}>
-        <ExerciseOptions settings={settings} setSettings={setSettings} />
+        <ExerciseOptions setSettings={setSettings} />
       </Modal>
       <Modal animationType="fade" transparent={true} visible={settings.showType}>
         <SetType settings={settings} setSettings={setSettings} />

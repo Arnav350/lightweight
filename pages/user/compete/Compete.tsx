@@ -6,7 +6,7 @@ import { COLORS } from "../../../constants/theme";
 
 function Compete() {
   return (
-    <SafeAreaView edges={["top", "right", "left"]}>
+    <SafeAreaView>
       <Text>COMPETE</Text>
     </SafeAreaView>
   );

@@ -15,7 +15,7 @@ interface IProps {
 }
 
 function WorkoutExercise({ i, currentExercise, setSettings }: IProps) {
-  const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
+  const { setCurrentWorkout, exercises } = useContext(WorkoutContext);
 
   const [prevExercise, setPrevExercise] = useState<IExercise>(
     exercises.find((exercise) => exercise.name === currentExercise.name) || currentExercise
@@ -36,17 +36,17 @@ function WorkoutExercise({ i, currentExercise, setSettings }: IProps) {
       }
     });
 
-    setPrevExercise({ ...prevExercise, sets: sortedSets });
+    setPrevExercise((prevPrevExercise) => ({ ...prevPrevExercise, sets: sortedSets }));
   }, [currentExercise]);
 
   useEffect(() => {
     const lengthDifference = currentExercise.sets.length - prevExercise.sets.length;
 
     if (lengthDifference > 0) {
-      setPrevExercise({
-        ...prevExercise,
+      setPrevExercise((prevPrevExercise) => ({
+        ...prevPrevExercise,
         sets: [
-          ...prevExercise.sets,
+          ...prevPrevExercise.sets,
           ...Array(lengthDifference).fill({
             type: "N" as const,
             weight: "",
@@ -54,15 +54,15 @@ function WorkoutExercise({ i, currentExercise, setSettings }: IProps) {
             notes: "",
           }),
         ],
-      });
+      }));
     }
   }, [currentExercise.sets.length]);
 
   function handleAddPress() {
-    setCurrentWorkout({
-      ...currentWorkout,
+    setCurrentWorkout((prevCurrentWorkout) => ({
+      ...prevCurrentWorkout,
       exercises: [
-        ...currentWorkout.exercises.map((exercise: IExercise) =>
+        ...prevCurrentWorkout.exercises.map((exercise: IExercise) =>
           exercise.name === currentExercise.name
             ? {
                 ...exercise,
@@ -71,7 +71,7 @@ function WorkoutExercise({ i, currentExercise, setSettings }: IProps) {
             : exercise
         ),
       ],
-    });
+    }));
   }
 
   return (

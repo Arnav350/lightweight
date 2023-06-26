@@ -33,12 +33,14 @@ function Repast({ navigation, route: { params } }: TProps) {
   }, [isFocused]);
 
   function handleNavigatePress(page: "left" | "recipes" | "create") {
-    setCurrentMeals({
-      ...currentMeals,
-      meals: currentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
-    });
+    setCurrentMeals((prevCurrentMeals) => ({
+      ...prevCurrentMeals,
+      meals: prevCurrentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
+    }));
 
-    setHistories([...currentHistories, ...histories.filter((food) => !currentHistories.includes(food))].splice(0, 10));
+    setHistories((prevHistories) =>
+      [...currentHistories, ...prevHistories.filter((food: IFood) => !currentHistories.includes(food))].splice(0, 10)
+    );
 
     switch (page) {
       case "left":
@@ -58,10 +60,10 @@ function Repast({ navigation, route: { params } }: TProps) {
       {
         text: "Delete",
         onPress: () => {
-          setCurrentMeals({
-            ...currentMeals,
-            meals: currentMeals.meals.filter((_meal, i: number) => i !== params.i),
-          });
+          setCurrentMeals((prevCurrentMeals) => ({
+            ...prevCurrentMeals,
+            meals: prevCurrentMeals.meals.filter((_meal, i: number) => i !== params.i),
+          }));
           navigation.goBack();
         },
         style: "destructive",
@@ -137,9 +139,7 @@ function Repast({ navigation, route: { params } }: TProps) {
               key={i}
               food={food}
               add={false}
-              currentMeal={currentMeal}
               setCurrentMeal={setCurrentMeal}
-              currentHistories={currentHistories}
               setCurrentHistories={setCurrentHistories}
             />
           ))}
@@ -151,9 +151,7 @@ function Repast({ navigation, route: { params } }: TProps) {
               key={i}
               food={history}
               add={true}
-              currentMeal={currentMeal}
               setCurrentMeal={setCurrentMeal}
-              currentHistories={currentHistories}
               setCurrentHistories={setCurrentHistories}
             />
           ))}

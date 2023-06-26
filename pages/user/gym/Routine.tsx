@@ -8,8 +8,6 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { ISet, ITypeSettings } from "../../workout/Workout";
-import SetType from "../../../components/shared/SetType";
 import RoutineExercise from "../../../components/gym/RoutineExercise";
 import { COLORS } from "../../../constants/theme";
 import { initCurrentWorkout } from "../../../constants/init";
@@ -17,7 +15,7 @@ import { initCurrentWorkout } from "../../../constants/init";
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
 function Routine({ navigation, route: { params } }: TProps) {
-  const { setCurrentWorkout, exercises, setExercises, routines } = useContext(WorkoutContext);
+  const { setCurrentWorkout, routines } = useContext(WorkoutContext);
 
   function handleEditPress() {
     setCurrentWorkout({

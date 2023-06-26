@@ -18,7 +18,7 @@ export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamL
 function Select(props: TSelectProps) {
   const { navigation } = props;
 
-  const { routines, setRoutines } = useContext(WorkoutContext);
+  const { routines } = useContext(WorkoutContext);
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>

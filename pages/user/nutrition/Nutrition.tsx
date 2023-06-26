@@ -1,5 +1,14 @@
 import { useContext, useState } from "react";
-import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  InputAccessoryView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -50,9 +59,15 @@ function Nutrition(props: TNutritionProps) {
       while (currentMeals.meals.filter((currentMeal) => currentMeal.name === name + ` (${i})`).length > 0) {
         i++;
       }
-      setCurrentMeals({ ...currentMeals, meals: [...currentMeals.meals, { name: `${mealName} (${i})`, foods: [] }] });
+      setCurrentMeals((prevCurrentMeals) => ({
+        ...prevCurrentMeals,
+        meals: [...prevCurrentMeals.meals, { name: `${mealName} (${i})`, foods: [] }],
+      }));
     } else {
-      setCurrentMeals({ ...currentMeals, meals: [...currentMeals.meals, { name: mealName, foods: [] }] });
+      setCurrentMeals((prevCurrentMeals) => ({
+        ...prevCurrentMeals,
+        meals: [...prevCurrentMeals.meals, { name: mealName, foods: [] }],
+      }));
     }
 
     setMealName("");

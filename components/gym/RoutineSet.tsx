@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { IExercise, ISet, ITypeSettings } from "../../pages/workout/Workout";
+import { IExercise, ISet, IWorkoutSettings } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -9,14 +9,17 @@ interface IProps {
   j: number;
   set: ISet;
   exercise: IExercise;
-  setTypeSettings?: Dispatch<SetStateAction<ITypeSettings>>;
+  setSettings?: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function RoutineSet({ i, j, set: { type }, exercise: { sets }, setTypeSettings }: IProps) {
+function RoutineSet({ i, j, set: { type }, exercise: { sets }, setSettings }: IProps) {
   return (
     <View style={styles.container}>
-      {i !== undefined && j !== undefined && setTypeSettings !== undefined ? (
-        <TouchableOpacity activeOpacity={0.3} onPress={() => setTypeSettings({ show: true, i: i, j: j })}>
+      {i !== undefined && j !== undefined && setSettings !== undefined ? (
+        <TouchableOpacity
+          activeOpacity={0.3}
+          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, show: true, i: i, j: j }))}
+        >
           <Text style={styles.text}>
             {type === "N" ? sets.slice(0, j + 1).filter((set: ISet) => set.type === "N").length : type}
           </Text>

@@ -1,16 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
-import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View } from "react-native";
+import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { IWorkoutSettings } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  settings: IWorkoutSettings;
   setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function ExerciseOptions({ settings, setSettings }: IProps) {
+function ExerciseOptions({ setSettings }: IProps) {
   return (
     <View style={styles.container}>
       <View style={styles.optionsContainer}>
@@ -36,7 +35,7 @@ function ExerciseOptions({ settings, setSettings }: IProps) {
       <View style={styles.optionsContainer}>
         <TouchableHighlight
           underlayColor={COLORS.gray}
-          onPress={() => setSettings({ ...settings, showOptions: false })}
+          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }))}
         >
           <View style={styles.optionContainer}>
             <Text style={styles.cancel}>Cancel</Text>

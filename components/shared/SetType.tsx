@@ -21,23 +21,26 @@ function SetType({ settings, setSettings }: IProps) {
     .filter((set: ISet) => set.type === "N").length;
 
   function handlePress(type: TType) {
-    setCurrentWorkout({
-      ...currentWorkout,
-      exercises: currentWorkout.exercises.map((exercise, i) =>
+    setCurrentWorkout((prevCurrentWorkout) => ({
+      ...prevCurrentWorkout,
+      exercises: prevCurrentWorkout.exercises.map((exercise, i) =>
         i === settings.i
           ? { ...exercise, sets: exercise.sets.map((set, j) => (j === settings.j ? { ...set, type } : set)) }
           : exercise
       ),
-    });
+    }));
 
-    setSettings({ ...settings, showType: false });
+    setSettings((prevSettings) => ({ ...prevSettings, showType: false }));
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.typeContainer}>
         <View style={styles.typesContainer}>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setSettings({ ...settings, showType: false })}>
+          <TouchableOpacity
+            activeOpacity={0.3}
+            onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showType: false }))}
+          >
             <Icon name="close" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("W")}>

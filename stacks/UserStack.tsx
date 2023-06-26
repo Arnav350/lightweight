@@ -14,7 +14,7 @@ import Create from "../pages/user/nutrition/Create";
 import Recipes from "../pages/user/nutrition/Recipes";
 import Compete from "../pages/user/compete/Compete";
 import Connect from "../pages/user/connect/Connect";
-import Profile from "../pages/user/Profile";
+import Profile from "../pages/user/profile/Profile";
 import { COLORS } from "../constants/theme";
 
 export type TGymStackParamList = {

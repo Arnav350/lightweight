@@ -3,24 +3,24 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise, ISet, ITypeSettings } from "../../pages/workout/Workout";
+import { IExercise, ISet, IWorkoutSettings } from "../../pages/workout/Workout";
 import RoutineSet from "./RoutineSet";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
   exercise: IExercise;
-  setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
+  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function DesignExercise({ i, exercise, setTypeSettings }: IProps) {
-  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
+function DesignExercise({ i, exercise, setSettings }: IProps) {
+  const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleAddPress() {
-    setCurrentWorkout({
-      ...currentWorkout,
+    setCurrentWorkout((prevCurrentWorkout) => ({
+      ...prevCurrentWorkout,
       exercises: [
-        ...currentWorkout.exercises.map((currentExercise: IExercise) =>
+        ...prevCurrentWorkout.exercises.map((currentExercise: IExercise) =>
           currentExercise.name === exercise.name
             ? {
                 ...currentExercise,
@@ -32,7 +32,7 @@ function DesignExercise({ i, exercise, setTypeSettings }: IProps) {
             : currentExercise
         ),
       ],
-    });
+    }));
   }
 
   return (
@@ -46,7 +46,7 @@ function DesignExercise({ i, exercise, setTypeSettings }: IProps) {
       {exercise.notes && <Text style={styles.notes}>{exercise.notes}</Text>}
       <View style={styles.newContainer}>
         {exercise.sets.map((set: ISet, j: number) => (
-          <RoutineSet key={j} i={i} j={j} set={set} exercise={exercise} setTypeSettings={setTypeSettings} />
+          <RoutineSet key={j} i={i} j={j} set={set} exercise={exercise} setSettings={setSettings} />
         ))}
       </View>
       <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>
