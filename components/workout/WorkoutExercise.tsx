@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import ExerciseSet from "./ExerciseSet";
-import { ISet, IExercise, ITypeSettings } from "../../pages/workout/Workout";
+import { ISet, IExercise, IWorkoutSettings } from "../../pages/workout/Workout";
 
 import { COLORS } from "../../constants/theme";
 import { WorkoutContext } from "../../hooks/useWorkout";
@@ -11,10 +11,10 @@ import { WorkoutContext } from "../../hooks/useWorkout";
 interface IProps {
   i: number;
   currentExercise: IExercise;
-  setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
+  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function WorkoutExercise({ i, currentExercise, setTypeSettings }: IProps) {
+function WorkoutExercise({ i, currentExercise, setSettings }: IProps) {
   const { currentWorkout, setCurrentWorkout, exercises, setExercises } = useContext(WorkoutContext);
 
   const [prevExercise, setPrevExercise] = useState<IExercise>(
@@ -80,7 +80,12 @@ function WorkoutExercise({ i, currentExercise, setTypeSettings }: IProps) {
         <Text style={styles.header} numberOfLines={1}>
           {currentExercise.name}
         </Text>
-        <Icon name="dots-horizontal" size={24} color={COLORS.white} />
+        <TouchableOpacity
+          activeOpacity={0.3}
+          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showOptions: true, i: i }))}
+        >
+          <Icon name="dots-horizontal" size={24} color={COLORS.white} />
+        </TouchableOpacity>
       </View>
       <View style={styles.subtitlesContainer}>
         <Text style={styles.subtitle}>Set</Text>
@@ -90,14 +95,7 @@ function WorkoutExercise({ i, currentExercise, setTypeSettings }: IProps) {
       </View>
       <View style={styles.setsContainer}>
         {prevExercise.sets.slice(0, currentExercise.sets.length).map((prevSet: ISet, j: number) => (
-          <ExerciseSet
-            key={j}
-            i={i}
-            j={j}
-            prevSet={prevSet}
-            prevExercise={prevExercise}
-            setTypeSettings={setTypeSettings}
-          />
+          <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} prevExercise={prevExercise} setSettings={setSettings} />
         ))}
       </View>
       <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>

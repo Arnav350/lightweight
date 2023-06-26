@@ -3,41 +3,41 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { ISet, ITypeSettings, TType } from "../../pages/workout/Workout";
+import { ISet, IWorkoutSettings, TType } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  typeSettings: ITypeSettings;
-  setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
+  settings: IWorkoutSettings;
+  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function SetType({ typeSettings, setTypeSettings }: IProps) {
+function SetType({ settings, setSettings }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
   const [showMeanings, setShowMeanings] = useState<boolean>(false);
 
-  const setNumber: number = currentWorkout.exercises[typeSettings.i].sets
-    .slice(0, typeSettings.j + 1)
+  const setNumber: number = currentWorkout.exercises[settings.i].sets
+    .slice(0, settings.j + 1)
     .filter((set: ISet) => set.type === "N").length;
 
   function handlePress(type: TType) {
     setCurrentWorkout({
       ...currentWorkout,
       exercises: currentWorkout.exercises.map((exercise, i) =>
-        i === typeSettings.i
-          ? { ...exercise, sets: exercise.sets.map((set, j) => (j === typeSettings.j ? { ...set, type } : set)) }
+        i === settings.i
+          ? { ...exercise, sets: exercise.sets.map((set, j) => (j === settings.j ? { ...set, type } : set)) }
           : exercise
       ),
     });
 
-    setTypeSettings({ ...typeSettings, show: false });
+    setSettings({ ...settings, showType: false });
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.typeContainer}>
         <View style={styles.typesContainer}>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setTypeSettings({ ...typeSettings, show: false })}>
+          <TouchableOpacity activeOpacity={0.3} onPress={() => setSettings({ ...settings, showType: false })}>
             <Icon name="close" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("W")}>
@@ -45,7 +45,7 @@ function SetType({ typeSettings, setTypeSettings }: IProps) {
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("N")}>
             <Text style={styles.type}>
-              {currentWorkout.exercises[typeSettings.i].sets[typeSettings.j].type === "N" ? setNumber : setNumber + 1}
+              {currentWorkout.exercises[settings.i].sets[settings.j].type === "N" ? setNumber : setNumber + 1}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("D")}>
@@ -67,7 +67,7 @@ function SetType({ typeSettings, setTypeSettings }: IProps) {
               </Text>
             </View>
             <View style={styles.meaningContainer}>
-              <Text style={styles.character}>{typeSettings.j + 1}- </Text>
+              <Text style={styles.character}>{settings.j + 1}- </Text>
               <Text style={styles.meaning}>Normal Sets should be used most of the time to build muscle</Text>
             </View>
             <View style={styles.meaningContainer}>

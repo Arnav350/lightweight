@@ -27,6 +27,16 @@ function Design({ navigation, route: { params } }: TProps) {
 
   const [originalWorkout] = useState<IWorkout>(currentWorkout);
 
+  function back() {
+    if (!routines[params.i].creator) {
+      setRoutines(routines.slice(0, -1));
+    }
+
+    navigation.goBack();
+
+    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
+  }
+
   function handleLeftPress() {
     if (currentWorkout !== originalWorkout) {
       Alert.alert("Are you sure?", `Routine "${currentWorkout.name.trim() || "Untitled Routine"}" will not be saved`, [
@@ -40,16 +50,6 @@ function Design({ navigation, route: { params } }: TProps) {
     } else {
       back();
     }
-  }
-
-  function back() {
-    if (!routines[params.i].creator) {
-      setRoutines(routines.slice(0, -1));
-    }
-
-    navigation.goBack();
-
-    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
   }
 
   function handleSavePress() {
@@ -80,6 +80,27 @@ function Design({ navigation, route: { params } }: TProps) {
     setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
   }
 
+  function handleDeletePress() {
+    Alert.alert(
+      "Delete Routine?",
+      `Are you sure you want to delete "${currentWorkout.name.trim() || "Untitled Routine"}"`,
+      [
+        {
+          text: "Delete",
+          onPress: () => {
+            setRoutines(routines.filter((_routine, i) => i !== params.i));
+            navigation.navigate("Gym");
+          },
+          style: "destructive",
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+    );
+  }
+
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
@@ -106,9 +127,14 @@ function Design({ navigation, route: { params } }: TProps) {
         {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
           <DesignExercise key={i} i={i} exercise={exercise} setTypeSettings={setTypeSettings} />
         ))}
-        <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={() => navigation.navigate("Add")}>
-          <Text style={styles.add}>Add Exercise</Text>
+        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
+          <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
+        {routines.length > params.i && routines[params.i].creator && (
+          <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleDeletePress}>
+            <Text style={styles.button}>Delete Routine</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
       <Modal animationType="fade" transparent={true} visible={typeSettings.show}>
         <SetType typeSettings={typeSettings} setTypeSettings={setTypeSettings} />
@@ -155,13 +181,13 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
   },
-  addContainer: {
+  buttonContainer: {
     marginTop: 8,
     paddingVertical: 8,
     backgroundColor: COLORS.primary,
     borderRadius: 16,
   },
-  add: {
+  button: {
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",

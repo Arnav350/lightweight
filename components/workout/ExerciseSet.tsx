@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { ISet, IExercise, ITypeSettings } from "../../pages/workout/Workout";
+import { ISet, IExercise, IWorkoutSettings } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -10,10 +10,10 @@ interface IProps {
   j: number;
   prevSet: ISet;
   prevExercise: IExercise;
-  setTypeSettings: Dispatch<SetStateAction<ITypeSettings>>;
+  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function ExerciseSet({ i, j, prevSet, prevExercise, setTypeSettings }: IProps) {
+function ExerciseSet({ i, j, prevSet, prevExercise, setSettings }: IProps) {
   const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
   const [weight, setWeight] = useState<string>("");
   const [reps, setReps] = useState<string>("");
@@ -21,7 +21,10 @@ function ExerciseSet({ i, j, prevSet, prevExercise, setTypeSettings }: IProps) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.3} onPress={() => setTypeSettings({ show: true, i: i, j: j })}>
+      <TouchableOpacity
+        activeOpacity={0.3}
+        onPress={() => setSettings((prevSetting) => ({ ...prevSetting, showType: true, i: i, j: j }))}
+      >
         <Text style={styles.set}>
           {prevSet.type === "N"
             ? prevExercise.sets.slice(0, j + 1).filter((set: ISet) => set.type === "N").length

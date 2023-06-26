@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -10,6 +10,7 @@ import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import WorkoutExercise from "../../components/workout/WorkoutExercise";
 import WorkoutTimer from "../../components/workout/WorkoutTimer";
+import ExerciseOptions from "../../components/shared/ExerciseOptions";
 import SetType from "../../components/shared/SetType";
 import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
@@ -54,8 +55,9 @@ export interface IRoutine {
   exercises: IExercise[];
 }
 
-export interface ITypeSettings {
-  show: boolean;
+export interface IWorkoutSettings {
+  showType: boolean;
+  showOptions: boolean;
   i: number;
   j: number;
 }
@@ -66,7 +68,7 @@ function Workout({ navigation }: TProps) {
 
   // const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
   const [showTimer, setShowTimer] = useState<boolean>(false);
-  const [typeSettings, setTypeSettings] = useState<ITypeSettings>({ show: false, i: 0, j: 0 });
+  const [settings, setSettings] = useState<IWorkoutSettings>({ showType: false, showOptions: false, i: 0, j: 0 });
 
   function handleLeftPress() {
     //temporary
@@ -75,23 +77,10 @@ function Workout({ navigation }: TProps) {
     navigation.navigate("UserStack", { screen: "GymStack", params: { screen: "Gym" } });
   }
 
-  function handleFinishPress() {
-    const date = new Date();
+  function finish(tempWorkout: IWorkout) {
+    setWorkouts([...workouts, tempWorkout]);
 
-    setWorkouts([
-      ...workouts,
-      {
-        ...currentWorkout,
-        time: Math.round((date.getTime() - currentWorkout.time) / 60000),
-        weight: currentWorkout.exercises.reduce(
-          (total: number, exercise: IExercise) =>
-            (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
-          0
-        ),
-      },
-    ]);
-
-    currentWorkout.exercises.forEach((currentExercise) => {
+    tempWorkout.exercises.forEach((currentExercise) => {
       const tempSets: ISet[] = [];
       const usedIndexes: number[] = [];
       const exercise: IExercise | undefined = exercises.find((exercise) => exercise.name === currentExercise.name);
@@ -130,6 +119,46 @@ function Workout({ navigation }: TProps) {
     setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
   }
 
+  function handleFinishPress() {
+    const date = new Date();
+
+    const tempWorkout: IWorkout = {
+      ...currentWorkout,
+      time: Math.round((date.getTime() - currentWorkout.time) / 60000),
+      weight: currentWorkout.exercises.reduce(
+        (total: number, exercise: IExercise) =>
+          (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
+        0
+      ),
+    };
+
+    if (tempWorkout.exercises.find((exercise) => exercise.sets.find((set) => set.weight === "" || set.reps === ""))) {
+      Alert.alert("Finish Workout?", "Some weight or reps are missing. Should we autofill them?", [
+        {
+          text: "Yes, Please Autofill",
+          onPress: () => {
+            //NEED TO GET PREV EXERCISES
+            tempWorkout.exercises.map((exercise) =>
+              exercise.sets.map((set) => {
+                set.weight === "" ? set : set;
+                set.reps === "" ? set : set;
+              })
+            );
+            finish(tempWorkout);
+          },
+        },
+        {
+          text: "No Thanks",
+          onPress: () => finish(tempWorkout),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -157,7 +186,7 @@ function Workout({ navigation }: TProps) {
       </View>
       <ScrollView style={styles.workoutContainer}>
         {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
-          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} setTypeSettings={setTypeSettings} />
+          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} setSettings={setSettings} />
         ))}
         <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
           <Text style={styles.button}>Add Exercise</Text>
@@ -166,8 +195,11 @@ function Workout({ navigation }: TProps) {
       <Modal animationType="fade" transparent={true} visible={showTimer}>
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
-      <Modal animationType="fade" transparent={true} visible={typeSettings.show}>
-        <SetType typeSettings={typeSettings} setTypeSettings={setTypeSettings} />
+      <Modal animationType="fade" transparent={true} visible={settings.showOptions}>
+        <ExerciseOptions settings={settings} setSettings={setSettings} />
+      </Modal>
+      <Modal animationType="fade" transparent={true} visible={settings.showType}>
+        <SetType settings={settings} setSettings={setSettings} />
       </Modal>
     </SafeAreaView>
   );
