@@ -1,15 +1,34 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { WorkoutContext } from "../../hooks/useWorkout";
 import { IWorkoutSettings } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  settings: IWorkoutSettings;
   setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function ExerciseOptions({ setSettings }: IProps) {
+function ExerciseOptions({ settings, setSettings }: IProps) {
+  const { setCurrentWorkout } = useContext(WorkoutContext);
+
+  function handleReplacePress() {
+    // setCurrentWorkout((prevCurrentWorkout) => ({
+    //   ...prevCurrentWorkout,
+    //   exercises: prevCurrentWorkout.exercises.filter((_exercise, i) => i !== settings.i),
+    // }));
+  }
+
+  function handleRemovePress() {
+    setCurrentWorkout((prevCurrentWorkout) => ({
+      ...prevCurrentWorkout,
+      exercises: prevCurrentWorkout.exercises.filter((_exercise, i) => i !== settings.i),
+    }));
+    setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }));
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.optionsContainer}>
@@ -19,13 +38,13 @@ function ExerciseOptions({ setSettings }: IProps) {
             <Text style={styles.option}>Reorder Exercises</Text>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight underlayColor={COLORS.gray} onPress={() => {}}>
+        <TouchableHighlight underlayColor={COLORS.gray} onPress={handleReplacePress}>
           <View style={styles.optionContainer}>
             <Icon name="find-replace" size={32} color={COLORS.white} />
             <Text style={styles.option}>Replace Exercise</Text>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight underlayColor={COLORS.gray} onPress={() => {}}>
+        <TouchableHighlight underlayColor={COLORS.gray} onPress={handleRemovePress}>
           <View style={styles.optionContainer}>
             <Icon name="close" size={32} color={COLORS.primary} />
             <Text style={styles.remove}>Remove Exercise</Text>

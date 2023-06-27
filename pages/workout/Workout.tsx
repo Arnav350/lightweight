@@ -198,7 +198,7 @@ function Workout({ navigation }: TProps) {
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
       <Modal animationType="fade" transparent={true} visible={settings.showOptions}>
-        <ExerciseOptions setSettings={setSettings} />
+        <ExerciseOptions settings={settings} setSettings={setSettings} />
       </Modal>
       <Modal animationType="fade" transparent={true} visible={settings.showType}>
         <SetType settings={settings} setSettings={setSettings} />
