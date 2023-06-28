@@ -1,7 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Workout from "../pages/workout/Workout";
-import Add from "../pages/shared/Add";
 
 export type TWorkoutStackParamList = {
   Workout: undefined;

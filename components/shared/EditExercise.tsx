@@ -11,7 +11,7 @@ import { equipmentsList, musclesList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  navigate: StackScreenProps<TRootStackParamList, "Add">;
+  navigate: StackScreenProps<TRootStackParamList, "Exercises">;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   editExercise: IExercise | null;
 }

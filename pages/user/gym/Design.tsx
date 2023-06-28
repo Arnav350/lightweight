@@ -132,7 +132,11 @@ function Design({ navigation, route: { params } }: TProps) {
         {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
           <DesignExercise key={i} i={i} exercise={exercise} setSettings={setSettings} />
         ))}
-        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.buttonContainer}
+          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length })}
+        >
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
         {routines.length > params.i && routines[params.i].creator && (

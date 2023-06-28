@@ -9,14 +9,15 @@ import { IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  navigate: StackScreenProps<TRootStackParamList, "Add">;
+  i: number;
+  navigate: StackScreenProps<TRootStackParamList, "Exercises">;
   exercise: IExercise;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   setEditExercise: Dispatch<SetStateAction<IExercise | null>>;
 }
 
-function AddExercise({ navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
-  const { setCurrentWorkout } = useContext(WorkoutContext);
+function AddExercise({ i, navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
+  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleContainerPress() {
     setShowEdit(true);
@@ -24,15 +25,27 @@ function AddExercise({ navigate: { navigation }, exercise, setShowEdit, setEditE
   }
 
   function handlePlusPress() {
-    setCurrentWorkout((prevCurrentWorkout) => ({
-      ...prevCurrentWorkout,
-      exercises: [...prevCurrentWorkout.exercises, exercise],
-    }));
+    if (i === currentWorkout.exercises.length) {
+      setCurrentWorkout((prevCurrentWorkout) => ({
+        ...prevCurrentWorkout,
+        exercises: [...prevCurrentWorkout.exercises, exercise],
+      }));
+    } else {
+      setCurrentWorkout((prevCurrentWorkout) => ({
+        ...prevCurrentWorkout,
+        exercises: prevCurrentWorkout.exercises.map((prevExercise, j) => (j === i ? exercise : prevExercise)),
+      }));
+    }
     navigation.goBack();
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handleContainerPress}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      disabled={i !== currentWorkout.exercises.length}
+      style={styles.container}
+      onPress={handleContainerPress}
+    >
       <Image source={require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>

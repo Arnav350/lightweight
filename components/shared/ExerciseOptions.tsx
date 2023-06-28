@@ -3,22 +3,22 @@ import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IWorkoutSettings } from "../../pages/workout/Workout";
+import { IWorkoutSettings, TWorkoutProps } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  navigate: TWorkoutProps;
   settings: IWorkoutSettings;
   setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function ExerciseOptions({ settings, setSettings }: IProps) {
+function ExerciseOptions({ navigate: { navigation }, settings, setSettings }: IProps) {
   const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleReplacePress() {
-    // setCurrentWorkout((prevCurrentWorkout) => ({
-    //   ...prevCurrentWorkout,
-    //   exercises: prevCurrentWorkout.exercises.filter((_exercise, i) => i !== settings.i),
-    // }));
+    navigation.navigate("Exercises", { i: settings.i });
+
+    setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }));
   }
 
   function handleRemovePress() {

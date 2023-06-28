@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -14,12 +14,15 @@ import NewExercise from "../../components/shared/NewExercise";
 import { equipmentsList, musclesList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
-type TProps = StackScreenProps<TRootStackParamList, "Add">;
+type TProps = StackScreenProps<TRootStackParamList, "Exercises">;
 
-function Add(props: TProps) {
-  const { navigation } = props;
+function Exercises(props: TProps) {
+  const {
+    navigation,
+    route: { params },
+  } = props;
 
-  const { exercises } = useContext(WorkoutContext);
+  const { currentWorkout, exercises } = useContext(WorkoutContext);
 
   const [exerciseName, setExerciseName] = useState<string>("");
 
@@ -81,16 +84,21 @@ function Add(props: TProps) {
             .map((exercise: IExercise, i: number) => (
               <AddExercise
                 key={i}
+                i={params.i}
                 navigate={props}
                 exercise={exercise}
                 setShowEdit={setShowEdit}
                 setEditExercise={setEditExercise}
               />
             ))}
-          <Text style={styles.dont}>Don't see the exercise you want?</Text>
-          <TouchableOpacity activeOpacity={0.5} style={styles.newContainer} onPress={() => setShowNew(true)}>
-            <Text style={styles.new}>Create New Exercise</Text>
-          </TouchableOpacity>
+          {params.i === currentWorkout.exercises.length && (
+            <Fragment>
+              <Text style={styles.dont}>Don't see the exercise you want?</Text>
+              <TouchableOpacity activeOpacity={0.5} style={styles.newContainer} onPress={() => setShowNew(true)}>
+                <Text style={styles.new}>Create New Exercise</Text>
+              </TouchableOpacity>
+            </Fragment>
+          )}
         </View>
       </ScrollView>
       <Modal animationType="fade" transparent={true} visible={showEdit}>
@@ -176,4 +184,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Add;
+export default Exercises;

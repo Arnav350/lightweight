@@ -15,7 +15,7 @@ import SetType from "../../components/shared/SetType";
 import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
-type TProps = CompositeScreenProps<
+export type TWorkoutProps = CompositeScreenProps<
   StackScreenProps<TWorkoutStackParamList, "Workout">,
   StackScreenProps<TRootStackParamList>
 >;
@@ -62,7 +62,9 @@ export interface IWorkoutSettings {
   j: number;
 }
 
-function Workout({ navigation }: TProps) {
+function Workout(props: TWorkoutProps) {
+  const { navigation } = props;
+
   const { currentWorkout, setCurrentWorkout, exercises, setExercises, workouts, setWorkouts } =
     useContext(WorkoutContext);
 
@@ -190,7 +192,11 @@ function Workout({ navigation }: TProps) {
         {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
           <WorkoutExercise key={i} i={i} currentExercise={currentExercise} setSettings={setSettings} />
         ))}
-        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={() => navigation.navigate("Add")}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.buttonContainer}
+          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length })}
+        >
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -198,7 +204,7 @@ function Workout({ navigation }: TProps) {
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
       <Modal animationType="fade" transparent={true} visible={settings.showOptions}>
-        <ExerciseOptions settings={settings} setSettings={setSettings} />
+        <ExerciseOptions navigate={props} settings={settings} setSettings={setSettings} />
       </Modal>
       <Modal animationType="fade" transparent={true} visible={settings.showType}>
         <SetType settings={settings} setSettings={setSettings} />
