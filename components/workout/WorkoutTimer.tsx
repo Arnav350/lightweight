@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   header: {
+    marginHorizontal: 24,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

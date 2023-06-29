@@ -1,22 +1,22 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IWorkoutSettings, TWorkoutProps } from "../../pages/workout/Workout";
+import { TWorkoutProps } from "../../pages/workout/Workout";
+import { TDesignProps } from "../../pages/user/gym/Design";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  navigate: TWorkoutProps;
-  settings: IWorkoutSettings;
-  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
+  navigate: TWorkoutProps | TDesignProps;
 }
 
-function ExerciseOptions({ navigate: { navigation }, settings, setSettings }: IProps) {
-  const { setCurrentWorkout } = useContext(WorkoutContext);
+function ExerciseOptions({ navigate: { navigation } }: IProps) {
+  const { setCurrentWorkout, settings, setSettings } = useContext(WorkoutContext);
 
   function handleReplacePress() {
-    navigation.navigate("Exercises", { i: settings.i });
+    // FIX THIS
+    // navigation.navigate("Exercises", { i: settings.i });
 
     setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }));
   }

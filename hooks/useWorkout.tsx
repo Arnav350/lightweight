@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IExercise, IWorkout, IRoutine } from "../pages/workout/Workout";
+import { IExercise, IWorkout, IRoutine, IWorkoutSettings } from "../pages/workout/Workout";
 import { initCurrentWorkout } from "../constants/init";
 
 interface IProviderChildren {
@@ -17,17 +17,28 @@ interface IWorkoutContext {
   setWorkouts: Dispatch<SetStateAction<IWorkout[]>>;
   routines: IRoutine[];
   setRoutines: Dispatch<SetStateAction<IRoutine[]>>;
+  settings: IWorkoutSettings;
+  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
 export const WorkoutContext = createContext<IWorkoutContext>({} as IWorkoutContext);
 
 const initArray: [] = [];
 
+const initSettings: IWorkoutSettings = {
+  showOptions: false,
+  showType: false,
+  showCalculator: false,
+  i: 0,
+  j: 0,
+};
+
 function WorkoutProvider({ children }: IProviderChildren) {
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initCurrentWorkout);
   const [exercises, setExercises] = useState<IExercise[]>(initArray);
   const [workouts, setWorkouts] = useState<IWorkout[]>(initArray);
   const [routines, setRoutines] = useState<IRoutine[]>(initArray);
+  const [settings, setSettings] = useState<IWorkoutSettings>(initSettings);
 
   useEffect(() => {
     if (currentWorkout !== initCurrentWorkout) {
@@ -81,6 +92,8 @@ function WorkoutProvider({ children }: IProviderChildren) {
         setWorkouts,
         routines,
         setRoutines,
+        settings,
+        setSettings,
       }}
     >
       {children}

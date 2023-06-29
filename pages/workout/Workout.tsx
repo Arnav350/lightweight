@@ -12,6 +12,7 @@ import WorkoutExercise from "../../components/workout/WorkoutExercise";
 import WorkoutTimer from "../../components/workout/WorkoutTimer";
 import ExerciseOptions from "../../components/shared/ExerciseOptions";
 import SetType from "../../components/shared/SetType";
+import WeightCalculator from "../../components/workout/WeightCalculator";
 import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
@@ -58,6 +59,7 @@ export interface IRoutine {
 export interface IWorkoutSettings {
   showType: boolean;
   showOptions: boolean;
+  showCalculator: boolean;
   i: number;
   j: number;
 }
@@ -65,12 +67,11 @@ export interface IWorkoutSettings {
 function Workout(props: TWorkoutProps) {
   const { navigation } = props;
 
-  const { currentWorkout, setCurrentWorkout, exercises, setExercises, workouts, setWorkouts } =
+  const { currentWorkout, setCurrentWorkout, exercises, setExercises, setWorkouts, settings, setSettings } =
     useContext(WorkoutContext);
 
   // const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
   const [showTimer, setShowTimer] = useState<boolean>(false);
-  const [settings, setSettings] = useState<IWorkoutSettings>({ showType: false, showOptions: false, i: 0, j: 0 });
 
   function handleLeftPress() {
     //temporary
@@ -189,8 +190,11 @@ function Workout(props: TWorkoutProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.workoutContainer}>
+        <TouchableOpacity onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showCalculator: true }))}>
+          <Text style={{ color: COLORS.white }}>CALCULATOR</Text>
+        </TouchableOpacity>
         {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
-          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} setSettings={setSettings} />
+          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} />
         ))}
         <TouchableOpacity
           activeOpacity={0.5}
@@ -200,14 +204,17 @@ function Workout(props: TWorkoutProps) {
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
-      <Modal animationType="fade" transparent={true} visible={showTimer}>
+      <Modal animationType="fade" transparent visible={showTimer}>
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
-      <Modal animationType="fade" transparent={true} visible={settings.showOptions}>
-        <ExerciseOptions navigate={props} settings={settings} setSettings={setSettings} />
+      <Modal animationType="fade" transparent visible={settings.showOptions}>
+        <ExerciseOptions navigate={props} />
       </Modal>
-      <Modal animationType="fade" transparent={true} visible={settings.showType}>
-        <SetType settings={settings} setSettings={setSettings} />
+      <Modal animationType="fade" transparent visible={settings.showCalculator}>
+        <WeightCalculator />
+      </Modal>
+      <Modal animationType="fade" transparent visible={settings.showType}>
+        <SetType />
       </Modal>
     </SafeAreaView>
   );

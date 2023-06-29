@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { IExercise, ISet, IWorkoutSettings } from "../../pages/workout/Workout";
+import { WorkoutContext } from "../../hooks/useWorkout";
+import { IExercise, ISet } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -9,13 +10,14 @@ interface IProps {
   j: number;
   set: ISet;
   exercise: IExercise;
-  setSettings?: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function RoutineSet({ i, j, set: { type }, exercise: { sets }, setSettings }: IProps) {
+function RoutineSet({ i, j, set: { type }, exercise: { sets } }: IProps) {
+  const { setSettings } = useContext(WorkoutContext);
+
   return (
     <View style={styles.container}>
-      {i !== undefined && j !== undefined && setSettings !== undefined ? (
+      {i !== undefined && j !== undefined ? (
         <TouchableOpacity
           activeOpacity={0.3}
           onPress={() => setSettings((prevSettings) => ({ ...prevSettings, show: true, i: i, j: j }))}

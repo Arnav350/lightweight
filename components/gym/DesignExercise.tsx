@@ -1,19 +1,18 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise, ISet, IWorkoutSettings } from "../../pages/workout/Workout";
+import { IExercise, ISet } from "../../pages/workout/Workout";
 import RoutineSet from "./RoutineSet";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
   exercise: IExercise;
-  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
 }
 
-function DesignExercise({ i, exercise, setSettings }: IProps) {
+function DesignExercise({ i, exercise }: IProps) {
   const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleAddPress() {
@@ -46,7 +45,7 @@ function DesignExercise({ i, exercise, setSettings }: IProps) {
       {exercise.notes && <Text style={styles.notes}>{exercise.notes}</Text>}
       <View style={styles.newContainer}>
         {exercise.sets.map((set: ISet, j: number) => (
-          <RoutineSet key={j} i={i} j={j} set={set} exercise={exercise} setSettings={setSettings} />
+          <RoutineSet key={j} i={i} j={j} set={set} exercise={exercise} />
         ))}
       </View>
       <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>

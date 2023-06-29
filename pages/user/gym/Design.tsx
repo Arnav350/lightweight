@@ -11,24 +11,22 @@ import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IExercise, IRoutine, IWorkoutSettings, IWorkout } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
+import ExerciseOptions from "../../../components/shared/ExerciseOptions";
 import DesignExercise from "../../../components/gym/DesignExercise";
 import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
-type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Design">, TCompositeProps>;
+export type TDesignProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Design">, TCompositeProps>;
 
-function Design({ navigation, route: { params } }: TProps) {
+function Design(props: TDesignProps) {
+  const {
+    navigation,
+    route: { params },
+  } = props;
   const currentUser = useContext(AuthContext);
-  const { currentWorkout, setCurrentWorkout, routines, setRoutines } = useContext(WorkoutContext);
+  const { currentWorkout, setCurrentWorkout, routines, setRoutines, settings } = useContext(WorkoutContext);
 
   const [focused, setFocused] = useState<boolean>(false);
-
-  const [settings, setSettings] = useState<IWorkoutSettings>({
-    showType: false,
-    showOptions: false,
-    i: 0,
-    j: 0,
-  });
 
   const [originalWorkout] = useState<IWorkout>(currentWorkout);
 
@@ -130,7 +128,7 @@ function Design({ navigation, route: { params } }: TProps) {
         />
 
         {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
-          <DesignExercise key={i} i={i} exercise={exercise} setSettings={setSettings} />
+          <DesignExercise key={i} i={i} exercise={exercise} />
         ))}
         <TouchableOpacity
           activeOpacity={0.5}
@@ -145,8 +143,11 @@ function Design({ navigation, route: { params } }: TProps) {
           </TouchableOpacity>
         )}
       </ScrollView>
-      <Modal animationType="fade" transparent={true} visible={settings.showType}>
-        <SetType settings={settings} setSettings={setSettings} />
+      <Modal animationType="fade" transparent visible={settings.showOptions}>
+        <ExerciseOptions navigate={props} />
+      </Modal>
+      <Modal animationType="fade" transparent visible={settings.showType}>
+        <SetType />
       </Modal>
     </SafeAreaView>
   );

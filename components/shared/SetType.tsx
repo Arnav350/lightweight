@@ -1,18 +1,13 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { ISet, IWorkoutSettings, TType } from "../../pages/workout/Workout";
+import { ISet, TType } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
-interface IProps {
-  settings: IWorkoutSettings;
-  setSettings: Dispatch<SetStateAction<IWorkoutSettings>>;
-}
-
-function SetType({ settings, setSettings }: IProps) {
-  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
+function SetType() {
+  const { currentWorkout, setCurrentWorkout, settings, setSettings } = useContext(WorkoutContext);
 
   const [showMeanings, setShowMeanings] = useState<boolean>(false);
 
