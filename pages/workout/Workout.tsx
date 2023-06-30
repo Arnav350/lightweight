@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
-import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Keyboard, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
+import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
@@ -140,13 +141,34 @@ function Workout(props: TWorkoutProps) {
         {
           text: "Yes, Please Autofill",
           onPress: () => {
-            //NEED TO GET PREV EXERCISES
-            tempWorkout.exercises.map((exercise) =>
-              exercise.sets.map((set) => {
-                set.weight === "" ? set : set;
-                set.reps === "" ? set : set;
-              })
-            );
+            //IDK IF THIS WORKS
+            tempWorkout.exercises.map((tempExercise: IExercise) => {
+              const sortedSets: ISet[] = [];
+              const usedIndexes: number[] = [];
+              const sets: ISet[] = tempExercise.sets;
+              const prevExercise: IExercise =
+                exercises.find((exercise: IExercise) => exercise.name === tempExercise.name) || tempExercise;
+
+              sets.forEach((set: ISet) => {
+                const index: number = prevExercise.sets.findIndex(
+                  (prevSet: ISet, i: number) => !usedIndexes.includes(i) && prevSet.type === set.type
+                );
+                if (index !== -1) {
+                  sortedSets.push(prevExercise.sets[index]);
+                  usedIndexes.push(index);
+                } else {
+                  sortedSets.push({ type: set.type, weight: "", reps: "", notes: "" });
+                }
+              });
+
+              return tempExercise.sets.map((set: ISet, i: number) => {
+                return {
+                  ...set,
+                  weight: set.weight === "" ? sortedSets[i].weight : set.weight,
+                  reps: set.reps === "" ? sortedSets[i].reps : set.reps,
+                };
+              });
+            });
             finish(tempWorkout);
           },
         },
@@ -204,6 +226,28 @@ function Workout(props: TWorkoutProps) {
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
       </ScrollView>
+      {/* I DONT LIKE THAT ANIMATE ON IS NONE */}
+      <KeyboardAccessoryView
+        androidAdjustResize
+        animateOn="none"
+        hideBorder
+        inSafeAreaView
+        style={styles.keyboardContainer}
+      >
+        <View style={styles.accessoryContainer}>
+          <TouchableOpacity onPress={() => {}}>
+            <Icon name="calculator" size={32} color={COLORS.primary} />
+          </TouchableOpacity>
+          <View style={styles.rightContainer}>
+            <TouchableOpacity onPress={() => {}} style={styles.check}>
+              <Icon name="check" size={32} color={COLORS.primary} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={Keyboard.dismiss}>
+              <Icon name="keyboard-close" size={32} color={COLORS.primary} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAccessoryView>
       <Modal animationType="fade" transparent visible={showTimer}>
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
@@ -275,6 +319,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     textAlign: "center",
+  },
+  keyboardContainer: {
+    backgroundColor: COLORS.blackTwo,
+  },
+  accessoryContainer: {
+    padding: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  rightContainer: {
+    flexDirection: "row",
+  },
+  check: {
+    marginRight: 8,
   },
 });
 
