@@ -212,9 +212,6 @@ function Workout(props: TWorkoutProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.workoutContainer}>
-        <TouchableOpacity onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showCalculator: true }))}>
-          <Text style={{ color: COLORS.white }}>CALCULATOR</Text>
-        </TouchableOpacity>
         {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
           <WorkoutExercise key={i} i={i} currentExercise={currentExercise} />
         ))}
@@ -235,7 +232,7 @@ function Workout(props: TWorkoutProps) {
         style={styles.keyboardContainer}
       >
         <View style={styles.accessoryContainer}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showCalculator: true }))}>
             <Icon name="calculator" size={32} color={COLORS.primary} />
           </TouchableOpacity>
           <View style={styles.rightContainer}>

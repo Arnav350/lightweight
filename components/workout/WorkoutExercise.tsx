@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   setsContainer: {
     marginTop: 4,
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
     paddingBottom: 8,
     borderBottomWidth: 2,
     borderBottomColor: COLORS.gray,

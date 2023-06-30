@@ -123,28 +123,28 @@ function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-between",
   },
   set: {
-    width: 23,
+    width: 27,
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
   weight: {
-    width: 52.46,
+    width: 55,
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
   reps: {
-    width: 34.59,
+    width: 40,
     color: COLORS.white,
     textAlign: "center",
     fontSize: 16,
   },
   notes: {
-    width: "100%",
+    flex: 1,
+    paddingLeft: 19,
     color: COLORS.white,
     fontSize: 16,
   },

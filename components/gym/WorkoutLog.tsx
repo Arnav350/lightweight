@@ -1,18 +1,21 @@
 import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Swipeable } from "react-native-gesture-handler";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { IExercise, IWorkout } from "../../pages/workout/Workout";
 import { TGymProps } from "../../pages/user/gym/Gym";
+import DeleteSwipe from "../shared/DeleteSwipe";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  i: number;
   workout: IWorkout;
   navigate: TGymProps;
 }
 
-function WorkoutLog({ workout, navigate: { navigation } }: IProps) {
+function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
   const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handlePress() {
@@ -22,30 +25,35 @@ function WorkoutLog({ workout, navigate: { navigation } }: IProps) {
   }
 
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
-      <View style={styles.dateContainer}>
-        <Text style={styles.dateMonth}>{workout.date.month}</Text>
-        <Text style={styles.dateDay}>{workout.date.day}</Text>
-      </View>
-      <View style={styles.logContainer}>
-        <Text style={styles.logTitle}>{workout.name}</Text>
-        <View style={styles.logStats}>
-          <Icon name="clock" style={styles.logStat}>
-            <Text>{workout.time}m</Text>
-          </Icon>
-          <Icon name="weight" style={styles.logStat}>
-            <Text>{workout.weight} lb</Text>
-          </Icon>
+    <Swipeable
+      renderRightActions={(_progress, dragX) => <DeleteSwipe dragX={dragX} variable="workout" i={i} />}
+      overshootFriction={8}
+    >
+      <TouchableOpacity activeOpacity={0.5} disabled style={styles.container} onPress={handlePress}>
+        <View style={styles.dateContainer}>
+          <Text style={styles.dateMonth}>{workout.date.month}</Text>
+          <Text style={styles.dateDay}>{workout.date.day}</Text>
         </View>
-        <View style={styles.logExercises}>
-          {workout.exercises.map((exercise: IExercise, i: number) => (
-            <Text key={i} numberOfLines={1} style={styles.logExercise}>
-              {exercise.sets.length} x {exercise.name}
-            </Text>
-          ))}
+        <View style={styles.logContainer}>
+          <Text style={styles.logTitle}>{workout.name}</Text>
+          <View style={styles.logStats}>
+            <Icon name="clock" style={styles.logStat}>
+              <Text>{workout.time}m</Text>
+            </Icon>
+            <Icon name="weight" style={styles.logStat}>
+              <Text>{workout.weight} lb</Text>
+            </Icon>
+          </View>
+          <View style={styles.logExercises}>
+            {workout.exercises.map((exercise: IExercise, i: number) => (
+              <Text key={i} numberOfLines={1} style={styles.logExercise}>
+                {exercise.sets.length} x {exercise.name}
+              </Text>
+            ))}
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Swipeable>
   );
 }
 
