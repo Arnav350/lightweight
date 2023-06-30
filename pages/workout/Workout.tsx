@@ -11,7 +11,7 @@ import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import WorkoutExercise from "../../components/workout/WorkoutExercise";
 import WorkoutTimer from "../../components/workout/WorkoutTimer";
-import ExerciseOptions from "../../components/shared/ExerciseOptions";
+import ExerciseActions from "../../components/shared/ExerciseActions";
 import SetType from "../../components/shared/SetType";
 import WeightCalculator from "../../components/workout/WeightCalculator";
 import { initCurrentWorkout } from "../../constants/init";
@@ -249,7 +249,7 @@ function Workout(props: TWorkoutProps) {
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <ExerciseOptions navigate={props} />
+        <ExerciseActions navigate={props} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showCalculator}>
         <WeightCalculator />

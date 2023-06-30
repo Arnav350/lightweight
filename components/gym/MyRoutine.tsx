@@ -43,7 +43,7 @@ function MyRoutine({ i, routine, navigate: { navigation } }: IProps) {
         <Text style={styles.name}>{routine.name}</Text>
         <TouchableOpacity
           activeOpacity={0.3}
-          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showOptions: true }))}
+          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showOptions: true, i: i }))}
         >
           <Icon name="dots-horizontal" size={24} color={COLORS.white} />
         </TouchableOpacity>

@@ -11,7 +11,7 @@ import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IRoutine } from "../../workout/Workout";
 import MyRoutine from "../../../components/gym/MyRoutine";
 import ExploreRoutine from "../../../components/gym/ExploreRoutine";
-import RoutineOptions from "../../../components/gym/RoutineOptions";
+import RoutineActions from "../../../components/gym/RoutineActions";
 import { COLORS } from "../../../constants/theme";
 
 export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Select">, TCompositeProps>;
@@ -77,7 +77,7 @@ function Select(props: TSelectProps) {
         <Text style={styles.name}></Text>
       </ScrollView>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <RoutineOptions navigate={props} />
+        <RoutineActions navigate={props} />
       </Modal>
     </SafeAreaView>
   );

@@ -11,7 +11,7 @@ import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IExercise, IRoutine, IWorkoutSettings, IWorkout } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
-import ExerciseOptions from "../../../components/shared/ExerciseOptions";
+import ExerciseOptions from "../../../components/shared/ExerciseActions";
 import DesignExercise from "../../../components/gym/DesignExercise";
 import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";

@@ -1,17 +1,17 @@
 import { useContext } from "react";
-import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { StyleSheet, View } from "react-native";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { TWorkoutProps } from "../../pages/workout/Workout";
 import { TDesignProps } from "../../pages/user/gym/Design";
+import ActionOptions from "./ActionOptions";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   navigate: TWorkoutProps | TDesignProps;
 }
 
-function ExerciseOptions({ navigate: { navigation } }: IProps) {
+function ExerciseActions({ navigate: { navigation } }: IProps) {
   const { setCurrentWorkout, settings, setSettings } = useContext(WorkoutContext);
 
   function handleReplacePress() {
@@ -32,34 +32,15 @@ function ExerciseOptions({ navigate: { navigation } }: IProps) {
   return (
     <View style={styles.container}>
       <View style={styles.optionsContainer}>
-        <TouchableHighlight underlayColor={COLORS.gray} onPress={() => {}}>
-          <View style={styles.optionContainer}>
-            <Icon name="reorder-horizontal" size={32} color={COLORS.white} />
-            <Text style={styles.option}>Reorder Exercises</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight underlayColor={COLORS.gray} onPress={handleReplacePress}>
-          <View style={styles.optionContainer}>
-            <Icon name="find-replace" size={32} color={COLORS.white} />
-            <Text style={styles.option}>Replace Exercise</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight underlayColor={COLORS.gray} onPress={handleRemovePress}>
-          <View style={styles.optionContainer}>
-            <Icon name="close" size={32} color={COLORS.primary} />
-            <Text style={styles.remove}>Remove Exercise</Text>
-          </View>
-        </TouchableHighlight>
+        <ActionOptions handlePress={() => {}} icon="reorder-horizontal" text="Reorder Exercises" />
+        <ActionOptions handlePress={handleReplacePress} icon="find-replace" text="Replace Exercise" />
+        <ActionOptions handlePress={handleRemovePress} icon="close" text="Remove Exercise" />
       </View>
       <View style={styles.optionsContainer}>
-        <TouchableHighlight
-          underlayColor={COLORS.gray}
-          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }))}
-        >
-          <View style={styles.optionContainer}>
-            <Text style={styles.cancel}>Cancel</Text>
-          </View>
-        </TouchableHighlight>
+        <ActionOptions
+          handlePress={() => setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }))}
+          text="Cancel"
+        />
       </View>
     </View>
   );
@@ -109,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExerciseOptions;
+export default ExerciseActions;
