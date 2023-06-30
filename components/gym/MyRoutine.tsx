@@ -14,7 +14,7 @@ interface IProps {
 }
 
 function MyRoutine({ i, routine, navigate: { navigation } }: IProps) {
-  const { setCurrentWorkout, routines } = useContext(WorkoutContext);
+  const { setCurrentWorkout, routines, setSettings } = useContext(WorkoutContext);
 
   function handlePress() {
     const date = new Date();
@@ -41,7 +41,10 @@ function MyRoutine({ i, routine, navigate: { navigation } }: IProps) {
     >
       <View style={styles.topContainer}>
         <Text style={styles.name}>{routine.name}</Text>
-        <TouchableOpacity activeOpacity={0.3}>
+        <TouchableOpacity
+          activeOpacity={0.3}
+          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showOptions: true }))}
+        >
           <Icon name="dots-horizontal" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>

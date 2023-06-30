@@ -29,7 +29,7 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
       renderRightActions={(_progress, dragX) => <DeleteSwipe dragX={dragX} variable="workout" i={i} />}
       overshootFriction={8}
     >
-      <TouchableOpacity activeOpacity={0.5} disabled style={styles.container} onPress={handlePress}>
+      <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
         <View style={styles.dateContainer}>
           <Text style={styles.dateMonth}>{workout.date.month}</Text>
           <Text style={styles.dateDay}>{workout.date.day}</Text>
@@ -60,7 +60,6 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginVertical: 4,
     padding: 8,
     backgroundColor: COLORS.blackOne,
     borderRadius: 16,

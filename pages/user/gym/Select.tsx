@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { Modal, ScrollView, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -11,6 +11,7 @@ import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IRoutine } from "../../workout/Workout";
 import MyRoutine from "../../../components/gym/MyRoutine";
 import ExploreRoutine from "../../../components/gym/ExploreRoutine";
+import RoutineOptions from "../../../components/gym/RoutineOptions";
 import { COLORS } from "../../../constants/theme";
 
 export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Select">, TCompositeProps>;
@@ -18,7 +19,7 @@ export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamL
 function Select(props: TSelectProps) {
   const { navigation } = props;
 
-  const { routines } = useContext(WorkoutContext);
+  const { routines, settings } = useContext(WorkoutContext);
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -75,6 +76,9 @@ function Select(props: TSelectProps) {
         </ScrollView>
         <Text style={styles.name}></Text>
       </ScrollView>
+      <Modal animationType="fade" transparent visible={settings.showOptions}>
+        <RoutineOptions navigate={props} />
+      </Modal>
     </SafeAreaView>
   );
 }

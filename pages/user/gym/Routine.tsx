@@ -56,17 +56,16 @@ function Routine({ navigation, route: { params } }: TProps) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.routineContainer}>
-        <Text style={styles.name}>{routines[params.i].name}</Text>
+        <Text style={styles.name}>{routines[params.i] && routines[params.i].name}</Text>
         <Text style={styles.created}>
           Created by
-          <Text style={styles.creator}> {routines[params.i].creator}</Text>
+          <Text style={styles.creator}> {routines[params.i] && routines[params.i].creator}</Text>
         </Text>
         <TouchableOpacity activeOpacity={0.5} style={styles.startContainer} onPress={handleStartPress}>
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
-        {routines[params.i].exercises.map((exercise, i) => (
-          <RoutineExercise key={i} exercise={exercise} />
-        ))}
+        {routines[params.i] &&
+          routines[params.i].exercises.map((exercise, i) => <RoutineExercise key={i} exercise={exercise} />)}
       </ScrollView>
     </SafeAreaView>
   );

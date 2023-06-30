@@ -48,7 +48,11 @@ function DeleteSwipe({ dragX, variable, i, j }: IProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      style={[styles.deleteContainer, variable === "workout" && { borderRadius: 16 }]}
+      style={[
+        styles.deleteContainer,
+        variable === "workout" && { borderRadius: 16 },
+        variable === "set" && { borderRadius: 4 },
+      ]}
       onPress={handlePress}
     >
       <Animated.Text style={[styles.delete, { transform: [{ scale: scale }] }]}>Delete</Animated.Text>
@@ -59,7 +63,6 @@ function DeleteSwipe({ dragX, variable, i, j }: IProps) {
 const styles = StyleSheet.create({
   deleteContainer: {
     justifyContent: "center",
-    marginVertical: 4,
     paddingHorizontal: 16,
     backgroundColor: COLORS.primary,
   },
