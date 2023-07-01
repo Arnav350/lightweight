@@ -13,7 +13,7 @@ interface IProps {
 
 //SHOULD BE ANY
 function DeleteSwipe({ dragX, variable, i, j }: IProps) {
-  const { setWorkouts } = useContext(WorkoutContext);
+  const { setCurrentWorkout, setWorkouts } = useContext(WorkoutContext);
 
   const scale = dragX.interpolate({
     inputRange: [-100, 100],
@@ -23,6 +23,16 @@ function DeleteSwipe({ dragX, variable, i, j }: IProps) {
 
   function remove() {
     switch (variable) {
+      case "set":
+        setCurrentWorkout((prevCurrentWorkout) => ({
+          ...prevCurrentWorkout,
+          exercises: prevCurrentWorkout.exercises.map((currentExercise, k) =>
+            k === i
+              ? { ...currentExercise, sets: currentExercise.sets.filter((_currentSet, l) => l !== j) }
+              : currentExercise
+          ),
+        }));
+        break;
       case "workout":
         setWorkouts((prevWorkouts) => prevWorkouts.filter((_prevWorkout, k) => k !== i));
         break;

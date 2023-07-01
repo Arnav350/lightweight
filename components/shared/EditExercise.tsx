@@ -38,7 +38,7 @@ function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: I
     if (editExercise) {
       setCurrentWorkout((prevCurrentWorkout) => ({
         ...prevCurrentWorkout,
-        exercises: [...prevCurrentWorkout.exercises, editExercise],
+        exercises: [...prevCurrentWorkout.exercises, { ...editExercise, sets: [editExercise.sets[0]] }],
       }));
       setShowEdit(false);
       navigation.goBack();

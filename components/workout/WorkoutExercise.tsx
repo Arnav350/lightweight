@@ -24,11 +24,13 @@ function WorkoutExercise({ i, currentExercise }: IProps) {
     const sortedSets: ISet[] = [];
     const usedIndexes: number[] = [];
     const sets: ISet[] = currentExercise.sets;
+    const prevSets: ISet[] =
+      exercises.find((exercise) => exercise.name === currentExercise.name)?.sets || currentExercise.sets;
 
     sets.forEach((set) => {
-      const index = prevExercise.sets.findIndex((prevSet, i) => !usedIndexes.includes(i) && prevSet.type === set.type);
+      const index = prevSets.findIndex((prevSet, i) => !usedIndexes.includes(i) && prevSet.type === set.type);
       if (index !== -1) {
-        sortedSets.push(prevExercise.sets[index]);
+        sortedSets.push(prevSets[index]);
         usedIndexes.push(index);
       } else {
         sortedSets.push({ type: set.type, weight: "", reps: "", notes: "" });
