@@ -1,9 +1,10 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import TimerPreset from "./TimerPreset";
+import EditTimer from "./EditTimer";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -15,6 +16,7 @@ function WorkoutTimer({ setShowTimer }: IProps) {
   const [key, setKey] = useState<number>(0);
   const [time, setTime] = useState<number>(60);
   const [presets, setPresets] = useState<number[]>([60, 30, 200]);
+  const [showEdit, setShowEdit] = useState<boolean>(false);
 
   function handleLeftPress() {
     setKey((prevKey) => prevKey + 1);
@@ -65,14 +67,17 @@ function WorkoutTimer({ setShowTimer }: IProps) {
           </TouchableOpacity>
         </View>
         <ScrollView horizontal style={styles.presetsContainer}>
-          <TouchableOpacity activeOpacity={0.5} style={styles.presetContainer}>
-            <Icon name="plus" size={32} color={COLORS.white} />
+          <TouchableOpacity activeOpacity={0.5} style={styles.presetContainer} onPress={() => setShowEdit(true)}>
+            <Icon name="square-edit-outline" size={32} color={COLORS.white} />
           </TouchableOpacity>
           {presets.map((preset, i) => (
             <TimerPreset key={i} preset={preset} setTime={setTime} />
           ))}
         </ScrollView>
       </View>
+      <Modal animationType="fade" transparent visible={showEdit}>
+        <EditTimer setShowEdit={setShowEdit} presets={presets} setPresets={setPresets} />
+      </Modal>
     </View>
   );
 }
