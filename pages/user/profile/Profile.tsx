@@ -3,11 +3,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { supabase } from "../../../supabase";
-import { exploreRoutines, initExercises } from "../../../constants/init";
+import { exploreRoutines, initExercises, initPresets } from "../../../constants/init";
 
 function Profile() {
   function handlePress() {
     AsyncStorage.setItem("@exercises", JSON.stringify(initExercises));
+    AsyncStorage.setItem("@presets", JSON.stringify(initPresets));
     AsyncStorage.setItem("@routines", JSON.stringify(exploreRoutines));
     AsyncStorage.multiRemove(["@currentWorkout", "@workouts", "@currentMeals", "@meals", "@recipes", "@histories"]);
   }

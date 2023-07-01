@@ -165,6 +165,8 @@ export const initExercises: IExercise[] = [
   },
 ];
 
+export const initPresets: number[] = [30, 60, 90, 120];
+
 export const exploreRoutines: IRoutine[] = [
   {
     name: "PPL Push",

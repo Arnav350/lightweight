@@ -6,17 +6,34 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import TimerPreset from "./TimerPreset";
 import EditTimer from "./EditTimer";
 import { COLORS } from "../../constants/theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface IProps {
   setShowTimer: Dispatch<SetStateAction<boolean>>;
 }
 
+const initPresets: [] = [];
+
 function WorkoutTimer({ setShowTimer }: IProps) {
   const [playing, setPlaying] = useState<boolean>(false);
   const [key, setKey] = useState<number>(0);
   const [time, setTime] = useState<number>(60);
-  const [presets, setPresets] = useState<number[]>([60, 30, 200]);
+  const [presets, setPresets] = useState<number[]>(initPresets);
   const [showEdit, setShowEdit] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (presets !== initPresets) {
+      AsyncStorage.setItem("@presets", JSON.stringify(presets));
+    }
+  }, [presets]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("@presets").then((presetsJson) => {
+      if (presetsJson) {
+        setPresets(JSON.parse(presetsJson));
+      }
+    });
+  }, []);
 
   function handleLeftPress() {
     setKey((prevKey) => prevKey + 1);

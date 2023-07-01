@@ -16,7 +16,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../supabase";
 import { TAuthStackParamList } from "../../stacks/AuthStack";
-import { initExercises } from "../../constants/init";
+import { exploreRoutines, initExercises, initPresets } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
@@ -80,7 +80,9 @@ function SignUp({ navigation }: TProps) {
       } else {
         navigation.navigate("Verification", { email });
 
-        AsyncStorage.setItem(`@exercises`, JSON.stringify(initExercises));
+        AsyncStorage.setItem("@exercises", JSON.stringify(initExercises));
+        AsyncStorage.setItem("@routines", JSON.stringify(exploreRoutines));
+        AsyncStorage.setItem("@presets", JSON.stringify(initPresets));
       }
     }
   }
