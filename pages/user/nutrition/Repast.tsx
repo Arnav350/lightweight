@@ -32,14 +32,14 @@ function Repast({ navigation, route: { params } }: TProps) {
     });
   }, [isFocused]);
 
-  function handleNavigatePress(page: "left" | "recipes" | "create") {
+  function handleNavigatePress(page: "left" | "recipes" | "create" | "search") {
     setCurrentMeals((prevCurrentMeals) => ({
       ...prevCurrentMeals,
       meals: prevCurrentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
     }));
 
     setHistories((prevHistories) =>
-      [...currentHistories, ...prevHistories.filter((food: IFood) => !currentHistories.includes(food))].splice(0, 10)
+      [...currentHistories, ...prevHistories.filter((food: IFood) => !currentHistories.includes(food))].splice(0, 50)
     );
 
     switch (page) {
@@ -52,6 +52,8 @@ function Repast({ navigation, route: { params } }: TProps) {
       case "create":
         navigation.navigate("Create", { i: params.i, save: false });
         break;
+      case "search":
+        navigation.navigate("Search", { i: params.i, save: null });
     }
   }
 
@@ -126,7 +128,11 @@ function Repast({ navigation, route: { params } }: TProps) {
               <Icon name="timer-outline" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>Quick Add</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} style={styles.optionsButton}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.optionsButton}
+              onPress={() => handleNavigatePress("search")}
+            >
               <Icon name="magnify" size={48} color={COLORS.primary} />
               <Text style={styles.optionsText}>Search Food</Text>
             </TouchableOpacity>
@@ -146,7 +152,7 @@ function Repast({ navigation, route: { params } }: TProps) {
         </View>
         <View style={styles.foodsContainer}>
           {histories.length !== 0 && <Text style={styles.subheader}>History</Text>}
-          {histories.map((history: IFood, i: number) => (
+          {histories.slice(0, 10).map((history: IFood, i: number) => (
             <SelectFood
               key={i}
               food={history}

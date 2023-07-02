@@ -12,7 +12,7 @@ import { COLORS } from "../../../constants/theme";
 type TProps = StackScreenProps<TNutritionStackParamList, "Create">;
 
 function Create({ navigation, route: { params } }: TProps) {
-  const { currentMeals, setCurrentMeals, recipes, setRecipes, histories, setHistories } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, recipes, setRecipes, setHistories } = useContext(NutritionContext);
 
   const [focusedInput, setFocusedInput] = useState<string>("none");
   const [currentFood, setCurrentFood] = useState<IFood>({
@@ -65,7 +65,7 @@ function Create({ navigation, route: { params } }: TProps) {
             ...prevHistories.filter(
               (currentFood: IFood) => currentFood.name !== tempFood.name && currentFood.calories !== tempFood.calories
             ),
-          ].splice(0, 10)
+          ].splice(0, 50)
         );
       }
     } else {

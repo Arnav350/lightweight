@@ -11,15 +11,14 @@ import { IFood, IMeal } from "./Nutrition";
 import SelectFood from "../../../components/nutrition/SelectFood";
 import { COLORS } from "../../../constants/theme";
 
-type TProps = StackScreenProps<TNutritionStackParamList, "Recipes">;
+type TProps = StackScreenProps<TNutritionStackParamList, "Search">;
 
-function Recipes({ navigation, route: { params } }: TProps) {
+function Search({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
-  const { currentMeals, setCurrentMeals, recipes, histories, setHistories } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, histories, setHistories } = useContext(NutritionContext);
 
-  const [recipeName, setRecipeName] = useState<string>("");
-
+  const [foodName, setFoodName] = useState<string>("");
   const [currentMeal, setCurrentMeal] = useState<IMeal>({ name: "", foods: [] });
   const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
 
@@ -49,51 +48,36 @@ function Recipes({ navigation, route: { params } }: TProps) {
         <TouchableOpacity activeOpacity={0.3} onPress={handlePress}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
-        <Text style={styles.header}>My Recipes</Text>
-        <TouchableOpacity
-          activeOpacity={0.3}
-          onPress={() => navigation.navigate("Create", { i: params.i, save: true })}
-        >
-          <Icon name="plus" size={32} color={COLORS.primary} />
-        </TouchableOpacity>
+        <Text style={styles.header}>Search Food</Text>
+        <Icon name="water" size={32} color={COLORS.primary} />
       </View>
-      <View style={styles.recipesContainer}>
+      <ScrollView style={styles.searchContainer}>
         <View style={styles.inputContainer}>
           <Icon name="magnify" size={24} color={COLORS.darkGray} />
           <TextInput
-            value={recipeName}
-            placeholder="Search recipe name"
+            value={foodName}
+            placeholder="Search food name"
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
+            returnKeyType="search"
             style={styles.input}
-            onChangeText={setRecipeName}
+            onChangeText={setFoodName}
           />
         </View>
-        <Text style={styles.text}>Recipes</Text>
-        <ScrollView>
-          {recipes
-            .filter((recipe: IFood) => recipe.name.toLowerCase().includes(recipeName.toLowerCase()))
-            .map((recipe: IFood, i: number) => (
-              <SelectFood
-                key={i}
-                food={recipe}
-                add={true}
-                setCurrentMeal={setCurrentMeal}
-                setCurrentHistories={setCurrentHistories}
-              />
-            ))}
-          <View style={styles.orContainer}>
-            <Text style={styles.or}>OR</Text>
-          </View>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.buttonContainer}
-            onPress={() => navigation.navigate("Create", { i: params.i, save: true })}
-          >
-            <Text style={styles.button}>Create a New Recipe</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
+        <Text style={styles.subtitle}>History</Text>
+        {histories
+          .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
+          .slice(0, 10)
+          .map((history, i) => (
+            <SelectFood
+              key={i}
+              food={history}
+              add={true}
+              setCurrentMeal={setCurrentMeal}
+              setCurrentHistories={setCurrentHistories}
+            />
+          ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -116,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "500",
   },
-  recipesContainer: {
+  searchContainer: {
     flex: 1,
     padding: 16,
     backgroundColor: COLORS.black,
@@ -135,37 +119,11 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
   },
-  text: {
+  subtitle: {
     marginVertical: 8,
     color: COLORS.white,
     fontSize: 16,
-  },
-  orContainer: {
-    marginBottom: 16,
-    width: 120,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.darkGray,
-    alignSelf: "center",
-  },
-  or: {
-    top: 10,
-    paddingHorizontal: 10,
-    backgroundColor: COLORS.black,
-    color: COLORS.gray,
-    alignSelf: "center",
-  },
-  buttonContainer: {
-    marginVertical: 8,
-    paddingVertical: 8,
-    backgroundColor: COLORS.primary,
-    borderRadius: 8,
-  },
-  button: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: "500",
-    textAlign: "center",
   },
 });
 
-export default Recipes;
+export default Search;

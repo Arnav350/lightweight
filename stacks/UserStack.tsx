@@ -12,6 +12,7 @@ import Nutrition from "../pages/user/nutrition/Nutrition";
 import Repast from "../pages/user/nutrition/Repast";
 import Create from "../pages/user/nutrition/Create";
 import Recipes from "../pages/user/nutrition/Recipes";
+import Search from "../pages/user/nutrition/Search";
 import Compete from "../pages/user/compete/Compete";
 import Connect from "../pages/user/connect/Connect";
 import Profile from "../pages/user/profile/Profile";
@@ -42,6 +43,7 @@ export type TNutritionStackParamList = {
   Repast: { i: number; save: boolean | null };
   Create: { i: number; save: boolean };
   Recipes: { i: number; save: boolean | null };
+  Search: { i: number; save: boolean | null };
 };
 
 const NStack = createStackNavigator<TNutritionStackParamList>();
@@ -54,6 +56,7 @@ function NutritionStack() {
         <NStack.Screen name="Repast" component={Repast} />
         <NStack.Screen name="Create" component={Create} />
         <NStack.Screen name="Recipes" component={Recipes} />
+        <NStack.Screen name="Search" component={Search} />
       </NStack.Navigator>
     </NutritionProvider>
   );
