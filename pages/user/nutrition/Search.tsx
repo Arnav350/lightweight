@@ -5,10 +5,12 @@ import { useIsFocused } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { EDAMAM_ID, EDAMAM_KEY } from "@env";
 import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
-import SelectFood from "../../../components/nutrition/SelectFood";
+import SearchResults from "../../../components/nutrition/SearchResults";
+import SearchSuggestions from "../../../components/nutrition/SearchSuggestions";
 import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList, "Search">;
@@ -16,11 +18,13 @@ type TProps = StackScreenProps<TNutritionStackParamList, "Search">;
 function Search({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
-  const { currentMeals, setCurrentMeals, histories, setHistories } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, setHistories } = useContext(NutritionContext);
 
   const [foodName, setFoodName] = useState<string>("");
   const [currentMeal, setCurrentMeal] = useState<IMeal>({ name: "", foods: [] });
   const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
+  const [suggestedFoods, setSuggestedFoods] = useState<string[]>([]);
+  const [resultFoods, setResultFoods] = useState<IFood[]>([]);
 
   useEffect(() => {
     setCurrentMeal({
@@ -28,6 +32,24 @@ function Search({ navigation, route: { params } }: TProps) {
       foods: currentMeals.meals[params.i].foods,
     });
   }, [isFocused]);
+
+  async function handleBlur() {
+    if (foodName) {
+      try {
+        setResultFoods([]);
+
+        //WHY ISNT IT ONLY 5 RESULTS
+        const data = await fetch(
+          `https://api.edamam.com/auto-complete?app_id=${EDAMAM_ID}&app_key=${EDAMAM_KEY}&q=${foodName}&limit=5`
+        );
+        const response = await data.json();
+
+        setSuggestedFoods(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   function handlePress() {
     setCurrentMeals((prevCurrentMeals) => ({
@@ -62,21 +84,24 @@ function Search({ navigation, route: { params } }: TProps) {
             returnKeyType="search"
             style={styles.input}
             onChangeText={setFoodName}
+            onBlur={handleBlur}
           />
         </View>
-        <Text style={styles.subtitle}>History</Text>
-        {histories
-          .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
-          .slice(0, 10)
-          .map((history, i) => (
-            <SelectFood
-              key={i}
-              food={history}
-              add={true}
-              setCurrentMeal={setCurrentMeal}
-              setCurrentHistories={setCurrentHistories}
-            />
-          ))}
+        {resultFoods.length ? (
+          <SearchResults
+            setCurrentMeal={setCurrentMeal}
+            setCurrentHistories={setCurrentHistories}
+            resultFoods={resultFoods}
+          />
+        ) : (
+          <SearchSuggestions
+            setCurrentMeal={setCurrentMeal}
+            setCurrentHistories={setCurrentHistories}
+            foodName={foodName}
+            suggestedFoods={suggestedFoods}
+            setResultFoods={setResultFoods}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -116,11 +141,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     padding: 8,
-    color: COLORS.white,
-    fontSize: 16,
-  },
-  subtitle: {
-    marginVertical: 8,
     color: COLORS.white,
     fontSize: 16,
   },
