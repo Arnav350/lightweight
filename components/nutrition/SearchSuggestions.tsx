@@ -1,77 +1,25 @@
-import { Dispatch, SetStateAction, useContext } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { EDAMAM_ID, EDAMAM_KEY } from "@env";
 import { NutritionContext } from "../../hooks/useNutrition";
-import { IFood, IMeal } from "../../pages/user/nutrition/Nutrition";
+import { IFood, IMeal, INutritionSettings } from "../../pages/user/nutrition/Nutrition";
 import SelectFood from "./SelectFood";
-import { labelsList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
+import FoodInfo from "./FoodInfo";
 
 interface IProps {
   setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
   setCurrentHistories: Dispatch<SetStateAction<IFood[]>>;
   foodName: string;
   suggestedFoods: string[];
-  setResultFoods: Dispatch<SetStateAction<IFood[]>>;
+  handleSearch: (searchText: string) => {};
 }
 
-function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, suggestedFoods, setResultFoods }: IProps) {
+function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, suggestedFoods, handleSearch }: IProps) {
   const { histories } = useContext(NutritionContext);
 
-  async function handleSearch(searchText: string) {
-    if (foodName) {
-      try {
-        const response = await fetch(
-          `https://api.edamam.com/api/food-database/v2/parser?session=0&app_id=${EDAMAM_ID}&app_key=${EDAMAM_KEY}&ingr=${searchText}&nutrition-type=cooking`
-        );
-
-        const { hints } = await response.json();
-
-        await Promise.all(
-          hints.map(async (hint) => {
-            const measure = hint.measures.find((measure) => !labelsList.includes(measure.label)) || hint.measures[1];
-
-            const res = await fetch(
-              `https://api.edamam.com/api/food-database/v2/nutrients?app_id=${EDAMAM_ID}&app_key=${EDAMAM_KEY}`,
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  ingredients: [
-                    {
-                      quantity: 1,
-                      measureURI: measure.uri,
-                      foodId: hint.food.foodId,
-                    },
-                  ],
-                }),
-                headers: {
-                  "Content-type": "application/json",
-                },
-              }
-            );
-            const data = await res.json();
-
-            setResultFoods((prevResultFoods) => [
-              ...prevResultFoods,
-              {
-                name: hint.food.label,
-                calories: data.calories,
-                protein: +data.totalNutrients.PROCNT.quantity.toFixed(2),
-                fat: +data.totalNutrients.FAT.quantity.toFixed(2),
-                carbs: +data.totalNutrients.CHOCDF.quantity.toFixed(2),
-                amount: 1,
-                amountType: measure.label,
-              },
-            ]);
-          })
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
+  const [settings, setSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
 
   return (
     <View>
@@ -101,12 +49,26 @@ function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, sugg
         .map((history, i) => (
           <SelectFood
             key={i}
+            i={i}
             food={history}
             add={true}
+            setSettings={setSettings}
             setCurrentMeal={setCurrentMeal}
             setCurrentHistories={setCurrentHistories}
           />
         ))}
+      <Modal animationType="fade" transparent visible={settings.showInfo}>
+        <FoodInfo
+          foods={histories
+            .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
+            .slice(0, 10)}
+          add={true}
+          settings={settings}
+          setSettings={setSettings}
+          setCurrentMeal={setCurrentMeal}
+          setCurrentHistories={setCurrentHistories}
+        />
+      </Modal>
     </View>
   );
 }

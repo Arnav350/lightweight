@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -7,8 +7,9 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
-import { IFood, IMeal } from "./Nutrition";
+import { IFood, IMeal, INutritionSettings } from "./Nutrition";
 import SelectFood from "../../../components/nutrition/SelectFood";
+import FoodInfo from "../../../components/nutrition/FoodInfo";
 import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList, "Recipes">;
@@ -22,6 +23,8 @@ function Recipes({ navigation, route: { params } }: TProps) {
 
   const [currentMeal, setCurrentMeal] = useState<IMeal>({ name: "", foods: [] });
   const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
+
+  const [settings, setSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
 
   useEffect(() => {
     setCurrentMeal({
@@ -76,8 +79,10 @@ function Recipes({ navigation, route: { params } }: TProps) {
             .map((recipe: IFood, i: number) => (
               <SelectFood
                 key={i}
+                i={i}
                 food={recipe}
                 add={true}
+                setSettings={setSettings}
                 setCurrentMeal={setCurrentMeal}
                 setCurrentHistories={setCurrentHistories}
               />
@@ -94,6 +99,16 @@ function Recipes({ navigation, route: { params } }: TProps) {
           </TouchableOpacity>
         </ScrollView>
       </View>
+      <Modal animationType="fade" transparent visible={settings.showInfo}>
+        <FoodInfo
+          foods={recipes.filter((recipe: IFood) => recipe.name.toLowerCase().includes(recipeName.toLowerCase()))}
+          add={true}
+          settings={settings}
+          setSettings={setSettings}
+          setCurrentMeal={setCurrentMeal}
+          setCurrentHistories={setCurrentHistories}
+        />
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -111,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingVertical: 8,
+    marginVertical: 8,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

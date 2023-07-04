@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -7,8 +7,9 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
-import { IFood, IMeal } from "./Nutrition";
+import { IFood, IMeal, INutritionSettings } from "./Nutrition";
 import SelectFood from "../../../components/nutrition/SelectFood";
+import FoodInfo from "../../../components/nutrition/FoodInfo";
 import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList, "Repast">;
@@ -22,8 +23,10 @@ function Repast({ navigation, route: { params } }: TProps) {
     name: "",
     foods: [],
   });
-
   const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
+
+  const [mealSettings, setMealSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
+  const [historySettings, setHistorySettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
 
   useEffect(() => {
     setCurrentMeal({
@@ -143,8 +146,10 @@ function Repast({ navigation, route: { params } }: TProps) {
           {currentMeal.foods.map((food: IFood, i: number) => (
             <SelectFood
               key={i}
+              i={i}
               food={food}
               add={false}
+              setSettings={setMealSettings}
               setCurrentMeal={setCurrentMeal}
               setCurrentHistories={setCurrentHistories}
             />
@@ -155,14 +160,36 @@ function Repast({ navigation, route: { params } }: TProps) {
           {histories.slice(0, 10).map((history: IFood, i: number) => (
             <SelectFood
               key={i}
+              i={i}
               food={history}
               add={true}
+              setSettings={setHistorySettings}
               setCurrentMeal={setCurrentMeal}
               setCurrentHistories={setCurrentHistories}
             />
           ))}
         </View>
       </ScrollView>
+      <Modal animationType="fade" transparent visible={mealSettings.showInfo}>
+        <FoodInfo
+          foods={currentMeal.foods}
+          add={false}
+          settings={mealSettings}
+          setSettings={setMealSettings}
+          setCurrentMeal={setCurrentMeal}
+          setCurrentHistories={setCurrentHistories}
+        />
+      </Modal>
+      <Modal animationType="fade" transparent visible={historySettings.showInfo}>
+        <FoodInfo
+          foods={histories.slice(0, 10)}
+          add={true}
+          settings={historySettings}
+          setSettings={setHistorySettings}
+          setCurrentMeal={setCurrentMeal}
+          setCurrentHistories={setCurrentHistories}
+        />
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -186,8 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   header: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingVertical: 8,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

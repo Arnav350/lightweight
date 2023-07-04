@@ -11,6 +11,7 @@ import { NutritionContext } from "../../../hooks/useNutrition";
 import { IFood, IMeal } from "./Nutrition";
 import SearchResults from "../../../components/nutrition/SearchResults";
 import SearchSuggestions from "../../../components/nutrition/SearchSuggestions";
+import { labelsList } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList, "Search">;
@@ -25,6 +26,7 @@ function Search({ navigation, route: { params } }: TProps) {
   const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
   const [suggestedFoods, setSuggestedFoods] = useState<string[]>([]);
   const [resultFoods, setResultFoods] = useState<IFood[]>([]);
+  const [moreResults, setMoreResults] = useState<string>("");
 
   useEffect(() => {
     setCurrentMeal({
@@ -36,6 +38,7 @@ function Search({ navigation, route: { params } }: TProps) {
   async function handleBlur() {
     setSuggestedFoods([]);
     setResultFoods([]);
+    setMoreResults("");
 
     if (foodName) {
       try {
@@ -52,7 +55,7 @@ function Search({ navigation, route: { params } }: TProps) {
     }
   }
 
-  function handlePress() {
+  function handleLeftPress() {
     setCurrentMeals((prevCurrentMeals) => ({
       ...prevCurrentMeals,
       meals: prevCurrentMeals.meals.map((meal: IMeal, i: number) => (i === params.i ? currentMeal : meal)),
@@ -65,10 +68,69 @@ function Search({ navigation, route: { params } }: TProps) {
     navigation.goBack();
   }
 
+  async function handleSearch(searchText: string) {
+    if (foodName) {
+      try {
+        const response = await fetch(
+          moreResults ||
+            `https://api.edamam.com/api/food-database/v2/parser?app_id=${EDAMAM_ID}&app_key=${EDAMAM_KEY}&ingr=${searchText}&nutrition-type=cooking`
+        );
+
+        const { _links, hints } = await response.json();
+
+        setMoreResults(_links?.next?.href || "");
+
+        await Promise.all(
+          hints.map(async (hint) => {
+            const measure = hint.measures.find((measure) => !labelsList.includes(measure.label)) || hint.measures[1];
+
+            const res = await fetch(
+              `https://api.edamam.com/api/food-database/v2/nutrients?app_id=${EDAMAM_ID}&app_key=${EDAMAM_KEY}`,
+              {
+                method: "POST",
+                body: JSON.stringify({
+                  ingredients: [
+                    {
+                      quantity: 1,
+                      measureURI: measure.uri,
+                      foodId: hint.food.foodId,
+                    },
+                  ],
+                }),
+                headers: {
+                  "Content-type": "application/json",
+                },
+              }
+            );
+            const {
+              calories,
+              totalNutrients: { PROCNT, FAT, CHOCDF },
+            } = await res.json();
+
+            setResultFoods((prevResultFoods) => [
+              ...prevResultFoods,
+              {
+                name: hint.food.label,
+                calories: calories,
+                protein: +PROCNT.quantity.toFixed(2),
+                fat: +FAT.quantity.toFixed(2),
+                carbs: +CHOCDF.quantity.toFixed(2),
+                amount: 1,
+                amountType: measure.label,
+              },
+            ]);
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3} onPress={handlePress}>
+        <TouchableOpacity activeOpacity={0.3} onPress={handleLeftPress}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Search Food</Text>
@@ -100,8 +162,13 @@ function Search({ navigation, route: { params } }: TProps) {
             setCurrentHistories={setCurrentHistories}
             foodName={foodName}
             suggestedFoods={suggestedFoods}
-            setResultFoods={setResultFoods}
+            handleSearch={handleSearch}
           />
+        )}
+        {moreResults && (
+          <TouchableOpacity activeOpacity={0.3} onPress={() => handleSearch("")}>
+            <Text style={styles.more}>Show more...</Text>
+          </TouchableOpacity>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -144,6 +211,13 @@ const styles = StyleSheet.create({
     padding: 8,
     color: COLORS.white,
     fontSize: 16,
+  },
+  more: {
+    marginVertical: 8,
+    fontSize: 16,
+    color: COLORS.white,
+    fontWeight: "500",
+    alignSelf: "center",
   },
 });
 

@@ -10,6 +10,8 @@ import MacroCircle from "../../../components/nutrition/MacroCircle";
 import NutritionMeal from "../../../components/nutrition/NutritionMeal";
 import { COLORS } from "../../../constants/theme";
 
+export type TNutritionProps = StackScreenProps<TNutritionStackParamList, "Nutrition">;
+
 export interface IFood {
   name: string;
   calories: number;
@@ -30,7 +32,10 @@ export interface IDay {
   meals: IMeal[];
 }
 
-export type TNutritionProps = StackScreenProps<TNutritionStackParamList, "Nutrition">;
+export interface INutritionSettings {
+  showInfo: boolean;
+  i: number;
+}
 
 const windowWidth = Dimensions.get("window").width;
 

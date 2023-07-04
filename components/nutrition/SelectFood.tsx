@@ -2,18 +2,20 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { IFood, IMeal } from "../../pages/user/nutrition/Nutrition";
+import { IFood, IMeal, INutritionSettings } from "../../pages/user/nutrition/Nutrition";
 
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  i: number;
   food: IFood;
   add: boolean;
+  setSettings: Dispatch<SetStateAction<INutritionSettings>>;
   setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
   setCurrentHistories: Dispatch<SetStateAction<IFood[]>>;
 }
 
-function SelectFood({ food, add, setCurrentMeal, setCurrentHistories }: IProps) {
+function SelectFood({ i, food, add, setSettings, setCurrentMeal, setCurrentHistories }: IProps) {
   const [pressed, setPressed] = useState<boolean>(false);
 
   function handlePress() {
@@ -42,7 +44,11 @@ function SelectFood({ food, add, setCurrentMeal, setCurrentHistories }: IProps) 
   }
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={styles.container}
+      onPress={() => setSettings((prevSettings) => ({ showInfo: true, i: i }))}
+    >
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>
           {food.name}
@@ -62,7 +68,7 @@ function SelectFood({ food, add, setCurrentMeal, setCurrentHistories }: IProps) 
           color={pressed ? COLORS.primary : COLORS.white}
         />
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
 

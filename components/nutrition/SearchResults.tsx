@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Modal, StyleSheet, Text, View } from "react-native";
 
-import { IFood, IMeal } from "../../pages/user/nutrition/Nutrition";
+import { IFood, IMeal, INutritionSettings } from "../../pages/user/nutrition/Nutrition";
 import SelectFood from "./SelectFood";
+import FoodInfo from "./FoodInfo";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -12,24 +14,38 @@ interface IProps {
 }
 
 function SearchResults({ setCurrentMeal, setCurrentHistories, resultFoods }: IProps) {
+  const [settings, setSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
+
   return (
     <View>
-      <Text style={styles.text}>Search Results</Text>
+      <Text style={styles.search}>Search Results</Text>
       {resultFoods.map((resultFood: any, i: number) => (
         <SelectFood
           key={i}
+          i={i}
           food={resultFood}
           add={true}
+          setSettings={setSettings}
           setCurrentMeal={setCurrentMeal}
           setCurrentHistories={setCurrentHistories}
         />
       ))}
+      <Modal animationType="fade" transparent visible={settings.showInfo}>
+        <FoodInfo
+          foods={resultFoods}
+          add={true}
+          settings={settings}
+          setSettings={setSettings}
+          setCurrentMeal={setCurrentMeal}
+          setCurrentHistories={setCurrentHistories}
+        />
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  text: {
+  search: {
     marginVertical: 8,
     color: COLORS.white,
     fontSize: 16,
