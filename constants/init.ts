@@ -309,3 +309,16 @@ export const exploreRoutines: IRoutine[] = [
   { name: "Home Upper", creator: "PumpPeak", exercises: [] },
   { name: "Home Lower", creator: "PumpPeak", exercises: [] },
 ];
+
+export const labelsList: string[] = [
+  "Gram",
+  "Pound",
+  "Kilogram",
+  "Fluid Ounce",
+  "Gallon",
+  "Pint",
+  "Quart",
+  "Millileter",
+  "Drop",
+  "Serving",
+];

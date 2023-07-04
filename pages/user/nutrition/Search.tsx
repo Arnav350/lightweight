@@ -34,10 +34,11 @@ function Search({ navigation, route: { params } }: TProps) {
   }, [isFocused]);
 
   async function handleBlur() {
+    setSuggestedFoods([]);
+    setResultFoods([]);
+
     if (foodName) {
       try {
-        setResultFoods([]);
-
         //WHY ISNT IT ONLY 5 RESULTS
         const data = await fetch(
           `https://api.edamam.com/auto-complete?app_id=${EDAMAM_ID}&app_key=${EDAMAM_KEY}&q=${foodName}&limit=5`
