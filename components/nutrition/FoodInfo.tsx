@@ -14,19 +14,50 @@ interface IProps {
   setCurrentHistories: Dispatch<SetStateAction<IFood[]>>;
 }
 
+interface IPercents {
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
 function FoodInfo({ foods, add, settings, setSettings, setCurrentMeal, setCurrentHistories }: IProps) {
   const food: IFood = foods[settings.i];
+
+  const percents: IPercents = {
+    protein: +((food.protein * 400) / food.calories).toFixed(),
+    carbs: +((food.carbs * 400) / food.calories).toFixed(),
+    fat: +((food.fat * 900) / food.calories).toFixed(),
+  };
 
   const [servings, setServings] = useState<number>(food.amount);
 
   function handlePress() {
+    const multiplier: number = servings || food.amount;
+
     if (add) {
       setCurrentMeal((prevCurrentMeal) => ({
         ...prevCurrentMeal,
-        foods: [...prevCurrentMeal.foods, food],
+        foods: [
+          ...prevCurrentMeal.foods,
+          {
+            ...food,
+            calories: food.calories * multiplier,
+            protein: food.protein * multiplier,
+            fat: food.fat * multiplier,
+            carbs: food.carbs * multiplier,
+            amount: multiplier,
+          },
+        ],
       }));
       setCurrentHistories((prevCurrentHistories) => [
-        food,
+        {
+          ...food,
+          calories: food.calories * multiplier,
+          protein: food.protein * multiplier,
+          fat: food.fat * multiplier,
+          carbs: food.carbs * multiplier,
+          amount: multiplier,
+        },
         ...prevCurrentHistories.filter(
           (currentFood: IFood) => currentFood.name !== food.name && currentFood.calories !== food.calories
         ),
@@ -75,22 +106,26 @@ function FoodInfo({ foods, add, settings, setSettings, setCurrentMeal, setCurren
           <View>
             <View style={styles.macrosContainer}>
               <View style={styles.macroContainer}>
-                <Text style={styles.percent}>{((food.protein * 400) / food.calories).toFixed()}%</Text>
+                <Text style={styles.percent}>{percents.protein}%</Text>
                 <Text style={styles.grams}>{food.protein}</Text>
                 <Text style={styles.subtitle}>Protein</Text>
               </View>
               <View style={styles.macroContainer}>
-                <Text style={styles.percent}>{((food.carbs * 400) / food.calories).toFixed()}%</Text>
+                <Text style={styles.percent}>{percents.carbs}%</Text>
                 <Text style={styles.grams}>{food.carbs}</Text>
                 <Text style={styles.subtitle}>Carbs</Text>
               </View>
               <View style={styles.macroContainer}>
-                <Text style={styles.percent}>{((food.fat * 900) / food.calories).toFixed()}%</Text>
+                <Text style={styles.percent}>{percents.fat}%</Text>
                 <Text style={styles.grams}>{food.fat}</Text>
                 <Text style={styles.subtitle}>Fat</Text>
               </View>
             </View>
-            <View></View>
+            <View style={styles.boxContainer}>
+              <View style={[styles.macro, { width: percents.protein * 2.5 }]} />
+              <View style={[styles.macro, { width: percents.carbs * 2.5 }]} />
+              <View style={[styles.macro, { width: percents.fat * 2.5 }]} />
+            </View>
           </View>
           <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handlePress}>
             <Text style={styles.button}>{add ? "Add" : "Remove"} Food</Text>
@@ -173,6 +208,19 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 20,
     fontWeight: "500",
+  },
+  boxContainer: {
+    flexDirection: "row",
+    paddingVertical: 4,
+    marginVertical: 8,
+    borderWidth: 2,
+    borderColor: COLORS.darkGray,
+    alignSelf: "center",
+  },
+  macro: {
+    marginHorizontal: 2,
+    height: 16,
+    backgroundColor: COLORS.primary,
   },
   buttonContainer: {
     padding: 8,
