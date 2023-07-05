@@ -16,6 +16,31 @@ import { COLORS } from "../../../constants/theme";
 
 type TProps = StackScreenProps<TNutritionStackParamList, "Search">;
 
+interface IMeasure {
+  label: string;
+  uri: string;
+  weight: number;
+}
+
+interface IHint {
+  food: {
+    category: string;
+    categoryLabel: string;
+    foodId: string;
+    image: string;
+    knownAs: string;
+    label: string;
+    nutrients: {
+      CHOCDF: number;
+      ENERC_KCAL: number;
+      FAT: number;
+      FIBTG: number | undefined;
+      PROCNT: number;
+    };
+  };
+  measures: IMeasure[];
+}
+
 function Search({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
@@ -81,8 +106,9 @@ function Search({ navigation, route: { params } }: TProps) {
         setMoreResults(_links?.next?.href || "");
 
         await Promise.all(
-          hints.map(async (hint) => {
-            const measure = hint.measures.find((measure) => !labelsList.includes(measure.label)) || hint.measures[1];
+          hints.map(async (hint: IHint) => {
+            const measure =
+              hint.measures.find((measure: IMeasure) => !labelsList.includes(measure.label)) || hint.measures[1];
 
             const res = await fetch(
               `https://api.edamam.com/api/food-database/v2/nutrients?app_id=${EDAMAM_ID}&app_key=${EDAMAM_KEY}`,
