@@ -46,7 +46,7 @@ function Gym(props: TGymProps) {
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3}>
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Progress")}>
           <Icon name="chart-line" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Workout</Text>
@@ -109,13 +109,12 @@ const styles = StyleSheet.create({
   },
   gymButtons: {
     marginTop: 16,
-    marginHorizontal: 12,
+    marginHorizontal: 16,
   },
   gymRoutine: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 4,
     padding: 16,
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
@@ -123,6 +122,7 @@ const styles = StyleSheet.create({
   gymRoutines: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 8,
     marginTop: 8,
   },
   gymSubtitles: {
@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   logContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    padding: 16,
+    gap: 8,
   },
 });
 

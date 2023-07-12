@@ -59,9 +59,7 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 4,
-  },
+  container: {},
   buttonContainer: {
     flexDirection: "row",
     padding: 8,
@@ -92,9 +90,9 @@ const styles = StyleSheet.create({
   },
   logStats: {
     flexDirection: "row",
+    gap: 16,
   },
   logStat: {
-    marginRight: 16,
     marginVertical: 8,
     color: COLORS.white,
     fontSize: 16,
