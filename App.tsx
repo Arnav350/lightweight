@@ -30,13 +30,13 @@ const Stack = createStackNavigator<TRootStackParamList>();
 function RootNavigator() {
   const currentUser = useContext(AuthContext);
 
-  if (currentUser === undefined) {
+  if (!currentUser === undefined) {
     return <Loading />;
   }
 
   return (
     <NavigationContainer>
-      {currentUser ? (
+      {!currentUser ? (
         <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="UserStack" component={UserStack} />
           <Stack.Screen name="WorkoutStack" component={WorkoutStack} />
