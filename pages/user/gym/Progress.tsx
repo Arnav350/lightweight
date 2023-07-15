@@ -1,5 +1,6 @@
-import React, { useContext, useMemo, useState } from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import { LineChart } from "react-native-chart-kit";
@@ -15,22 +16,25 @@ type TProps = StackScreenProps<TGymStackParamList, "Progress">;
 const windowDimensions = Dimensions.get("window");
 
 function Progress({ navigation }: TProps) {
-  const { workouts } = useContext(WorkoutContext);
+  const { exercises, workouts } = useContext(WorkoutContext);
 
-  const name: string = "Barbell Row";
+  const [input, setInput] = useState<string>("");
+  const [currentName, setCurrentName] = useState<string>("");
 
   const filteredWorkouts: IWorkout[] = useMemo(
     () =>
       workouts
-        .filter((workout: IWorkout) => workout.exercises.find((exercise) => exercise.name === name))
+        .filter((workout: IWorkout) => workout.exercises.find((exercise) => exercise.name === currentName))
         .slice()
         .reverse(),
-    [workouts]
+    [workouts, currentName]
   );
 
   const filteredExercises: IExercise[] = useMemo(
     () =>
-      filteredWorkouts.map((workout) => workout.exercises.filter((exercise: IExercise) => exercise.name === name)[0]),
+      filteredWorkouts.map(
+        (workout) => workout.exercises.filter((exercise: IExercise) => exercise.name === currentName)[0]
+      ),
     [filteredWorkouts]
   );
 
@@ -71,6 +75,10 @@ function Progress({ navigation }: TProps) {
 
   const [sortBy, setSortBy] = useState<number[]>(volume);
 
+  useEffect(() => {
+    setSortBy(volume);
+  }, [filteredWorkouts]);
+
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
@@ -83,51 +91,81 @@ function Progress({ navigation }: TProps) {
         </TouchableOpacity>
       </View>
       <View style={styles.progressContainer}>
-        <LineChart
-          data={{
-            labels: filteredWorkouts.map((workout) => `${workout.date.month} ${workout.date.day}`),
-            datasets: [
-              {
-                data: sortBy,
-              },
-            ],
-          }}
-          width={windowDimensions.width - 32}
-          height={windowDimensions.height / 3}
-          chartConfig={{
-            backgroundGradientFrom: COLORS.primary,
-            backgroundGradientTo: COLORS.primary,
-            decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: COLORS.primary,
-            },
-          }}
-          bezier
-          style={styles.chart}
+        <TextInput
+          value={input}
+          placeholder="Exercise name..."
+          placeholderTextColor={COLORS.darkGray}
+          keyboardAppearance="dark"
+          style={styles.input}
+          onChangeText={setInput}
         />
-        <View style={styles.sortsContainer}>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(volume)}>
-            <Text style={sortBy === volume ? [styles.sort, { color: COLORS.primary }] : styles.sort}>Volume</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(sets)}>
-            <Text style={sortBy === sets ? [styles.sort, { color: COLORS.primary }] : styles.sort}>Sets</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(reps)}>
-            <Text style={sortBy === reps ? [styles.sort, { color: COLORS.primary }] : styles.sort}>Reps</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(maxWeight)}>
-            <Text style={sortBy === maxWeight ? [styles.sort, { color: COLORS.primary }] : styles.sort}>
-              Max Weight
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(oneRM)}>
-            <Text style={sortBy === oneRM ? [styles.sort, { color: COLORS.primary }] : styles.sort}>One Rep Max</Text>
-          </TouchableOpacity>
-        </View>
+        <FlatList
+          data={exercises.filter((exercise: IExercise) => exercise.name.toLowerCase().includes(input.toLowerCase()))}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.nameContainer}
+              onPress={() => setCurrentName(item.name)}
+            >
+              <Text numberOfLines={1} style={styles.name}>
+                {item.name}
+              </Text>
+              <Icon name="chevron-right" size={24} color={COLORS.darkGray} />
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.name}
+          style={styles.namesContainer}
+        />
+        {sortBy.length !== 0 && (
+          <>
+            <LineChart
+              data={{
+                labels: filteredWorkouts.map((workout) => `${workout.date.month} ${workout.date.day}`),
+                datasets: [
+                  {
+                    data: sortBy,
+                  },
+                ],
+              }}
+              width={windowDimensions.width - 32}
+              height={windowDimensions.height / 3}
+              chartConfig={{
+                backgroundGradientFrom: COLORS.primary,
+                backgroundGradientTo: COLORS.primary,
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                propsForDots: {
+                  r: "6",
+                  strokeWidth: "2",
+                  stroke: COLORS.primary,
+                },
+              }}
+              style={styles.chart}
+            />
+            <View style={styles.sortsContainer}>
+              <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(volume)}>
+                <Text style={sortBy === volume ? [styles.sort, { color: COLORS.primary }] : styles.sort}>Volume</Text>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(sets)}>
+                <Text style={sortBy === sets ? [styles.sort, { color: COLORS.primary }] : styles.sort}>Sets</Text>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(reps)}>
+                <Text style={sortBy === reps ? [styles.sort, { color: COLORS.primary }] : styles.sort}>Reps</Text>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(maxWeight)}>
+                <Text style={sortBy === maxWeight ? [styles.sort, { color: COLORS.primary }] : styles.sort}>
+                  Max Weight
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.3} onPress={() => setSortBy(oneRM)}>
+                <Text style={sortBy === oneRM ? [styles.sort, { color: COLORS.primary }] : styles.sort}>
+                  One Rep Max
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -154,7 +192,37 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flex: 1,
+    padding: 16,
     backgroundColor: COLORS.black,
+  },
+  input: {
+    padding: 8,
+    backgroundColor: COLORS.blackOne,
+    borderTopRightRadius: 16,
+    borderTopLeftRadius: 16,
+    color: COLORS.white,
+    fontSize: 18,
+  },
+  namesContainer: {
+    position: "absolute",
+    top: 52,
+    left: 16,
+    width: "100%",
+    maxHeight: windowDimensions.height / 2,
+    backgroundColor: COLORS.blackOne,
+    borderBottomRightRadius: 16,
+    borderBottomLeftRadius: 16,
+  },
+  nameContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 8,
+    backgroundColor: COLORS.blackOne,
+  },
+  name: {
+    width: "90%",
+    color: COLORS.white,
+    fontSize: 16,
   },
   chart: {
     marginVertical: 8,
