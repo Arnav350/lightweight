@@ -182,7 +182,7 @@ function Nutrition(props: TNutritionProps) {
           </TouchableOpacity>
         </View>
         {currentMeals.meals.map((meal: IMeal, i: number) => (
-          <NutritionMeal key={i} i={i} meal={meal} navigate={props} />
+          <NutritionMeal key={meal.name} i={i} meal={meal} navigate={props} />
         ))}
       </ScrollView>
     </SafeAreaView>

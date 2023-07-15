@@ -213,7 +213,7 @@ function Workout(props: TWorkoutProps) {
       </View>
       <ScrollView style={styles.workoutContainer}>
         {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
-          <WorkoutExercise key={i} i={i} currentExercise={currentExercise} />
+          <WorkoutExercise key={currentExercise.name} i={i} currentExercise={currentExercise} />
         ))}
         <TouchableOpacity
           activeOpacity={0.5}
