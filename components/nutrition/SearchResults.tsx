@@ -10,6 +10,7 @@ import { COLORS } from "../../constants/theme";
 interface IProps {
   setCurrentMeal: Dispatch<SetStateAction<IMeal>>;
   setCurrentHistories: Dispatch<SetStateAction<IFood[]>>;
+  //SHOULD NOT BE ANY
   resultFoods: any[];
 }
 
@@ -19,6 +20,7 @@ function SearchResults({ setCurrentMeal, setCurrentHistories, resultFoods }: IPr
   return (
     <View>
       <Text style={styles.search}>Search Results</Text>
+      {/* SHOULD NOT BE ANY */}
       {resultFoods.map((resultFood: any, i: number) => (
         <SelectFood
           key={i}

@@ -8,7 +8,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import RoutineExercise from "../../../components/gym/RoutineExercise";
+import { ISet } from "../../workout/Workout";
+import RoutineSet from "../../../components/gym/RoutineSet";
 import { COLORS } from "../../../constants/theme";
 import { initCurrentWorkout } from "../../../constants/init";
 
@@ -65,7 +66,16 @@ function Routine({ navigation, route: { params } }: TProps) {
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
         {routines[params.i] &&
-          routines[params.i].exercises.map((exercise, i) => <RoutineExercise key={i} exercise={exercise} />)}
+          routines[params.i].exercises.map((exercise, i) => (
+            <View key={i} style={styles.exerciseContainer}>
+              <Text style={styles.exercise}>{exercise.name}</Text>
+              <View style={styles.setsContainer}>
+                {exercise.sets.map((set: ISet, j: number) => (
+                  <RoutineSet key={j} j={j} set={set} exercise={exercise} />
+                ))}
+              </View>
+            </View>
+          ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -115,6 +125,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     textAlign: "center",
+  },
+  exerciseContainer: {
+    marginVertical: 8,
+    padding: 8,
+    backgroundColor: COLORS.blackOne,
+    borderRadius: 8,
+  },
+  exercise: {
+    margin: 8,
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  setsContainer: {
+    padding: 8,
+    marginHorizontal: 8,
   },
 });
 
