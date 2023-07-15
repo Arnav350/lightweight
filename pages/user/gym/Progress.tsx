@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { Dimensions, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import { LineChart } from "react-native-chart-kit";
@@ -20,6 +19,7 @@ function Progress({ navigation }: TProps) {
 
   const [input, setInput] = useState<string>("");
   const [currentName, setCurrentName] = useState<string>("");
+  const [showDropdown, setShowDropdown] = useState<boolean>(true);
 
   const filteredWorkouts: IWorkout[] = useMemo(
     () =>
@@ -79,6 +79,12 @@ function Progress({ navigation }: TProps) {
     setSortBy(volume);
   }, [filteredWorkouts]);
 
+  function handlePress(exerciseName: string) {
+    setCurrentName(exerciseName);
+    setInput(exerciseName);
+    setShowDropdown(false);
+  }
+
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
@@ -91,32 +97,49 @@ function Progress({ navigation }: TProps) {
         </TouchableOpacity>
       </View>
       <View style={styles.progressContainer}>
-        <TextInput
-          value={input}
-          placeholder="Exercise name..."
-          placeholderTextColor={COLORS.darkGray}
-          keyboardAppearance="dark"
-          style={styles.input}
-          onChangeText={setInput}
-        />
-        <FlatList
-          data={exercises.filter((exercise: IExercise) => exercise.name.toLowerCase().includes(input.toLowerCase()))}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={styles.nameContainer}
-              onPress={() => setCurrentName(item.name)}
-            >
-              <Text numberOfLines={1} style={styles.name}>
-                {item.name}
-              </Text>
-              <Icon name="chevron-right" size={24} color={COLORS.darkGray} />
+        <View style={showDropdown ? styles.inputContainer : [styles.inputContainer, { borderRadius: 16 }]}>
+          <Icon name="magnify" size={24} color={COLORS.darkGray} />
+          <TextInput
+            value={input}
+            placeholder="Exercise name..."
+            placeholderTextColor={COLORS.darkGray}
+            keyboardAppearance="dark"
+            style={styles.input}
+            onChangeText={setInput}
+            onFocus={() => setShowDropdown(true)}
+          />
+          <View style={styles.rightContainer}>
+            {input && showDropdown && (
+              <TouchableOpacity activeOpacity={0.3} onPress={() => setInput("")}>
+                <Icon name="close-circle" size={24} color={COLORS.darkGray} />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity activeOpacity={0.3} onPress={() => setShowDropdown(!showDropdown)}>
+              <Icon name={showDropdown ? "chevron-up" : "chevron-down"} size={24} color={COLORS.white} />
             </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.name}
-          style={styles.namesContainer}
-        />
-        {sortBy.length !== 0 && (
+          </View>
+        </View>
+        {showDropdown && (
+          <FlatList
+            data={exercises.filter((exercise: IExercise) => exercise.name.toLowerCase().includes(input.toLowerCase()))}
+            renderItem={({ item }) => (
+              <TouchableOpacity activeOpacity={0.5} style={styles.nameContainer} onPress={() => handlePress(item.name)}>
+                <Text numberOfLines={1} style={styles.name}>
+                  {item.name}
+                </Text>
+                <Icon name="chevron-right" size={24} color={COLORS.darkGray} />
+              </TouchableOpacity>
+            )}
+            ListEmptyComponent={
+              <View style={styles.nameContainer}>
+                <Text style={styles.name}>Could not find "{input}"</Text>
+              </View>
+            }
+            keyExtractor={(item) => item.name}
+            style={styles.namesContainer}
+          />
+        )}
+        {sortBy.length > 2 ? (
           <>
             <LineChart
               data={{
@@ -165,6 +188,10 @@ function Progress({ navigation }: TProps) {
               </TouchableOpacity>
             </View>
           </>
+        ) : (
+          sortBy.length !== 0 && (
+            <Text style={styles.must}>"{currentName}" must be done at least twice to display charts</Text>
+          )
         )}
       </View>
     </SafeAreaView>
@@ -195,20 +222,34 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: COLORS.black,
   },
-  input: {
-    padding: 8,
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
+    paddingHorizontal: 8,
     backgroundColor: COLORS.blackOne,
     borderTopRightRadius: 16,
     borderTopLeftRadius: 16,
+  },
+  input: {
+    flex: 1,
+    padding: 12,
     color: COLORS.white,
     fontSize: 18,
   },
+  rightContainer: {
+    flexDirection: "row",
+    gap: 4,
+  },
   namesContainer: {
     position: "absolute",
-    top: 52,
+    zIndex: 1,
+    top: 60,
     left: 16,
+    paddingHorizontal: 8,
     width: "100%",
-    maxHeight: windowDimensions.height / 2,
+    maxHeight: Math.ceil(windowDimensions.height / 132) * 44,
     backgroundColor: COLORS.blackOne,
     borderBottomRightRadius: 16,
     borderBottomLeftRadius: 16,
@@ -216,11 +257,15 @@ const styles = StyleSheet.create({
   nameContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 8,
+    alignItems: "center",
     backgroundColor: COLORS.blackOne,
+    borderTopColor: COLORS.darkGray,
+    borderTopWidth: 1,
   },
   name: {
-    width: "90%",
+    marginVertical: 12,
+    marginHorizontal: 8,
+    maxWidth: "90%",
     color: COLORS.white,
     fontSize: 16,
   },
@@ -237,6 +282,14 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",
+    textAlign: "center",
+  },
+  must: {
+    marginTop: 8,
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: "500",
+    alignSelf: "center",
     textAlign: "center",
   },
 });
