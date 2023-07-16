@@ -8,7 +8,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { ISet } from "../../workout/Workout";
+import { IExercise, ISet } from "../../workout/Workout";
 import RoutineSet from "../../../components/gym/RoutineSet";
 import { COLORS } from "../../../constants/theme";
 import { initCurrentWorkout } from "../../../constants/init";
@@ -66,8 +66,8 @@ function Routine({ navigation, route: { params } }: TProps) {
           <Text style={styles.start}>Start Routine</Text>
         </TouchableOpacity>
         {routines[params.i] &&
-          routines[params.i].exercises.map((exercise, i) => (
-            <View key={i} style={styles.exerciseContainer}>
+          routines[params.i].exercises.map((exercise: IExercise) => (
+            <View key={exercise.name} style={styles.exerciseContainer}>
               <Text style={styles.exercise}>{exercise.name}</Text>
               <View style={styles.setsContainer}>
                 {exercise.sets.map((set: ISet, j: number) => (

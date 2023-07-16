@@ -35,43 +35,43 @@ function Select(props: TSelectProps) {
       <ScrollView style={styles.selectContainer}>
         <Text style={styles.subheading}>My Routines</Text>
         {routines.slice(17).map((routine: IRoutine, i: number) => (
-          <MyRoutine key={i} i={i + 17} routine={routine} navigate={props} />
+          <MyRoutine key={routine.name} i={i + 17} routine={routine} navigate={props} />
         ))}
         <Text style={styles.subheading}>Explore Routines</Text>
         <Text style={styles.routine}>Push Pull Legs</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          {["Push", "Pull", "Legs"].map((name, i) => (
-            <ExploreRoutine key={i} i={i} name={name} navigate={props} />
+          {routines.slice(0, 3).map((routine, i) => (
+            <ExploreRoutine key={routine.name} i={i} name={routine.name} navigate={props} />
           ))}
         </ScrollView>
         <Text style={styles.routine}>Arnold Split</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          {["Chest & Back", "Shoulders & Arms", "Legs"].map((name, i) => (
-            <ExploreRoutine key={i} i={i + 3} name={name} navigate={props} />
+          {routines.slice(3, 6).map((routine, i) => (
+            <ExploreRoutine key={routine.name} i={i + 3} name={routine.name} navigate={props} />
           ))}
         </ScrollView>
         <Text style={styles.routine}>Full Body Split</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          {["Full Body 1", "Full Body 2", "Full Body 3"].map((name, i) => (
-            <ExploreRoutine key={i} i={i + 6} name={name} navigate={props} />
+          {routines.slice(6, 9).map((routine, i) => (
+            <ExploreRoutine key={routine.name} i={i + 6} name={routine.name} navigate={props} />
           ))}
         </ScrollView>
         <Text style={styles.routine}>Upper Lower</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          {["Upper 1", "Lower 1", "Upper 2", "Lower 2"].map((name, i) => (
-            <ExploreRoutine key={i} i={i + 9} name={name} navigate={props} />
+          {routines.slice(9, 13).map((routine, i) => (
+            <ExploreRoutine key={routine.name} i={i + 9} name={routine.name} navigate={props} />
           ))}
         </ScrollView>
         <Text style={styles.routine}>Only Dumbbells</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          {["Dumbbell Upper", "Dumbbell Lower"].map((name, i) => (
-            <ExploreRoutine key={i} i={i + 13} name={name} navigate={props} />
+          {routines.slice(13, 15).map((routine, i) => (
+            <ExploreRoutine key={routine.name} i={i + 13} name={routine.name} navigate={props} />
           ))}
         </ScrollView>
         <Text style={styles.routine}>No Equipment</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
-          {["Home Upper", "Home Lower"].map((name, i) => (
-            <ExploreRoutine key={i} i={i + 15} name={name} navigate={props} />
+          {routines.slice(15, 17).map((routine, i) => (
+            <ExploreRoutine key={routine.name} i={i + 15} name={routine.name} navigate={props} />
           ))}
         </ScrollView>
         <Text style={styles.name}></Text>

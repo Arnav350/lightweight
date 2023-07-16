@@ -104,7 +104,7 @@ function Workout(props: TWorkoutProps) {
           }
         });
 
-      const extraElements = currentExercise.sets.filter((el, index) => !usedIndexes.includes(index));
+      const extraElements = currentExercise.sets.filter((_el, index) => !usedIndexes.includes(index));
       tempSets.push(...extraElements);
       tempSets.sort((a: ISet, b: ISet) => a.type.localeCompare(b.type));
 
@@ -128,7 +128,7 @@ function Workout(props: TWorkoutProps) {
 
     const tempWorkout: IWorkout = {
       ...currentWorkout,
-      time: Math.round((date.getTime() - currentWorkout.time) / 60000),
+      time: date.getTime() - currentWorkout.time,
       weight: currentWorkout.exercises.reduce(
         (total: number, exercise: IExercise) =>
           (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),

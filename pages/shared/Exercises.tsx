@@ -83,7 +83,7 @@ function Exercises(props: TProps) {
             )
             .map((exercise: IExercise, i: number) => (
               <AddExercise
-                key={i}
+                key={exercise.name}
                 i={params.i}
                 navigate={props}
                 exercise={exercise}

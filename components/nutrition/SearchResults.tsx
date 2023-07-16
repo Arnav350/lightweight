@@ -21,6 +21,7 @@ function SearchResults({ setCurrentMeal, setCurrentHistories, resultFoods }: IPr
     <View>
       <Text style={styles.search}>Search Results</Text>
       {/* SHOULD NOT BE ANY */}
+      {/* CHANGE THE KEY */}
       {resultFoods.map((resultFood: any, i: number) => (
         <SelectFood
           key={i}

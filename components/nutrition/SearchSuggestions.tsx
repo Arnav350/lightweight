@@ -32,7 +32,7 @@ function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, sugg
         </TouchableOpacity>
       )}
       {/* CHANGE THIS WHEN ITS ONLY 5 RESULTS */}
-      {suggestedFoods.slice(0, 5).map((suggestedFood, i) => (
+      {suggestedFoods.slice(0, 5).map((suggestedFood: string, i: number) => (
         <TouchableOpacity key={i} style={styles.allContainer} onPress={() => handleSearch(suggestedFood)}>
           <View style={styles.grayContainer}>
             <Icon name="magnify" size={24} color={COLORS.gray} />
@@ -46,7 +46,7 @@ function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, sugg
       {histories
         .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
         .slice(0, 10)
-        .map((history, i) => (
+        .map((history: IFood, i: number) => (
           <SelectFood
             key={i}
             i={i}

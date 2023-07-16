@@ -58,6 +58,7 @@ function Design(props: TDesignProps) {
   function handleSavePress() {
     const workoutName: string = currentWorkout.name.trim() || "Untitled Routine";
     //set creator to username
+
     if (routines.find((routine: IRoutine, i: number) => routine.name === workoutName && i !== params.i)) {
       let j = 1;
       while (routines.find((routine) => routine.name === `${workoutName} (${j})`) && j !== params.i) {
@@ -128,7 +129,7 @@ function Design(props: TDesignProps) {
         />
 
         {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
-          <DesignExercise key={i} i={i} exercise={exercise} />
+          <DesignExercise key={exercise.name} i={i} exercise={exercise} />
         ))}
         <TouchableOpacity
           activeOpacity={0.5}

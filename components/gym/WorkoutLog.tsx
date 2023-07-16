@@ -39,7 +39,7 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
           <Text style={styles.logTitle}>{workout.name}</Text>
           <View style={styles.logStats}>
             <Icon name="clock" style={styles.logStat}>
-              <Text>{workout.time}m</Text>
+              <Text>{Math.round(workout.time * 60000)}m</Text>
             </Icon>
             <Icon name="weight" style={styles.logStat}>
               <Text>{workout.weight} lb</Text>
@@ -47,7 +47,7 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
           </View>
           <View style={styles.logExercises}>
             {workout.exercises.map((exercise: IExercise, i: number) => (
-              <Text key={i} numberOfLines={1} style={styles.logExercise}>
+              <Text key={exercise.name} numberOfLines={1} style={styles.logExercise}>
                 {exercise.sets.length} x {exercise.name}
               </Text>
             ))}
