@@ -6,7 +6,9 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
-import MacroCircle from "../../../components/nutrition/MacroCircle";
+import NutritionMacros from "../../../components/nutrition/NutritionMacros";
+import NutritionWeight from "../../../components/nutrition/NutritionWeight";
+import NutritionSteps from "../../../components/nutrition/NutritionSteps";
 import NutritionMeal from "../../../components/nutrition/NutritionMeal";
 import { COLORS } from "../../../constants/theme";
 
@@ -45,7 +47,6 @@ function Nutrition(props: TNutritionProps) {
   const { currentMeals, setCurrentMeals } = useContext(NutritionContext);
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
-
   const [slide, setSlide] = useState<number>(0);
 
   function handlePress() {
@@ -92,71 +93,9 @@ function Nutrition(props: TNutritionProps) {
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={(event) => setSlide(event.nativeEvent.contentOffset.x / windowWidth)}
         >
-          <View style={styles.sectionContainer}>
-            <View style={styles.subheaderContainer}>
-              <Text style={styles.subheader}>Macros</Text>
-              <Icon name="plus" size={32} color={COLORS.white} />
-            </View>
-            <View style={styles.circlesContainer}>
-              <View>
-                <MacroCircle
-                  current={currentMeals.meals.reduce(
-                    (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
-                    0
-                  )}
-                  total={30000}
-                  unit="cal"
-                  label="Calories"
-                />
-                <MacroCircle
-                  current={currentMeals.meals.reduce(
-                    (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
-                    0
-                  )}
-                  total={80}
-                  unit="g"
-                  label="Fat"
-                />
-              </View>
-              <View>
-                <MacroCircle
-                  current={currentMeals.meals.reduce(
-                    (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
-                    0
-                  )}
-                  total={180}
-                  unit="g"
-                  label="Protein"
-                />
-
-                <MacroCircle
-                  current={currentMeals.meals.reduce(
-                    (total: number, meal: IMeal) =>
-                      (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
-                    0
-                  )}
-                  total={180}
-                  unit="g"
-                  label="Carbs"
-                />
-              </View>
-            </View>
-          </View>
-          <View style={styles.sectionContainer}>
-            <View style={styles.subheaderContainer}>
-              <Text style={styles.subheader}>Weight</Text>
-              <Icon name="plus" size={32} color={COLORS.white} />
-            </View>
-          </View>
-          <View style={styles.sectionContainer}>
-            <View style={styles.subheaderContainer}>
-              <Text style={styles.subheader}>Steps</Text>
-              <Icon name="plus" size={32} color={COLORS.white} />
-            </View>
-          </View>
+          <NutritionMacros />
+          <NutritionWeight />
+          <NutritionSteps />
         </ScrollView>
         <View style={styles.dotsContainer}>
           <Icon name="circle" size={14} color={slide === 0 ? COLORS.darkGray : COLORS.blackOne} />
@@ -217,6 +156,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackOne,
     borderRadius: 16,
   },
+  dotsContainer: {
+    flexDirection: "row",
+    alignSelf: "center",
+  },
   subheaderContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -228,15 +171,6 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",
-  },
-  circlesContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  dotsContainer: {
-    flexDirection: "row",
-    alignSelf: "center",
   },
   input: {
     margin: 8,

@@ -39,7 +39,7 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
           <Text style={styles.logTitle}>{workout.name}</Text>
           <View style={styles.logStats}>
             <Icon name="clock" style={styles.logStat}>
-              <Text>{Math.round(workout.time * 60000)}m</Text>
+              <Text>{Math.round(workout.time / 60000)}m</Text>
             </Icon>
             <Icon name="weight" style={styles.logStat}>
               <Text>{workout.weight} lb</Text>

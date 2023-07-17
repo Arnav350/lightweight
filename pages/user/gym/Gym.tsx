@@ -77,7 +77,7 @@ function Gym(props: TGymProps) {
         </View>
         <View style={styles.logContainer}>
           {workouts.map((workout: IWorkout, i: number) => (
-            <WorkoutLog key={workout.time} i={i} workout={workout} navigate={props} />
+            <WorkoutLog key={workout.time + JSON.stringify(workout.date)} i={i} workout={workout} navigate={props} />
           ))}
         </View>
       </ScrollView>
