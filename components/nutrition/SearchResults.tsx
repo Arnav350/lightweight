@@ -15,7 +15,7 @@ interface IProps {
 }
 
 function SearchResults({ setCurrentMeal, setCurrentHistories, resultFoods }: IProps) {
-  const [settings, setSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
+  const [settings, setSettings] = useState<INutritionSettings>({ show: false, i: 0 });
 
   return (
     <View>
@@ -33,7 +33,7 @@ function SearchResults({ setCurrentMeal, setCurrentHistories, resultFoods }: IPr
           setCurrentHistories={setCurrentHistories}
         />
       ))}
-      <Modal animationType="fade" transparent visible={settings.showInfo}>
+      <Modal animationType="fade" transparent visible={settings.show}>
         <FoodInfo
           foods={resultFoods}
           add={true}

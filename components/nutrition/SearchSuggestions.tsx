@@ -19,7 +19,7 @@ interface IProps {
 function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, suggestedFoods, handleSearch }: IProps) {
   const { histories } = useContext(NutritionContext);
 
-  const [settings, setSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
+  const [settings, setSettings] = useState<INutritionSettings>({ show: false, i: 0 });
 
   return (
     <View>
@@ -57,7 +57,7 @@ function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, sugg
             setCurrentHistories={setCurrentHistories}
           />
         ))}
-      <Modal animationType="fade" transparent visible={settings.showInfo}>
+      <Modal animationType="fade" transparent visible={settings.show}>
         <FoodInfo
           foods={histories
             .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dimensions, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS } from "../../constants/theme";
@@ -33,8 +33,6 @@ function NutritionWeight() {
     if (event.type === "set" && date) {
       setDate(date);
     }
-
-    // setWeights(weights.slice().sort((a: IMeasurement, b: IMeasurement) => a.date.getTime() - b.date.getTime()));
   }
 
   const findIndex = (arr: IMeasurement[], val: Date) => {
@@ -116,7 +114,7 @@ function NutritionWeight() {
             </TouchableOpacity>
           )}
           {(Platform.OS === "ios" || showPicker) && (
-            <DateTimePicker
+            <RNDateTimePicker
               value={date}
               maximumDate={new Date()}
               accentColor={COLORS.primary}
@@ -124,6 +122,9 @@ function NutritionWeight() {
               // positiveButton={{ textColor: COLORS.primary }}
               // negativeButton={{ textColor: COLORS.primary }}
               onChange={(event, date) => handleChange(event, date)}
+              style={{
+                width: 80,
+              }}
             />
           )}
           <TouchableOpacity
@@ -183,6 +184,7 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: 4,
     paddingHorizontal: 8,
+    minWidth: 48,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.white,
     color: COLORS.white,

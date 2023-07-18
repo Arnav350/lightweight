@@ -35,8 +35,14 @@ export interface IDay {
 }
 
 export interface INutritionSettings {
-  showInfo: boolean;
+  show: boolean;
   i: number;
+}
+
+export interface IReminder {
+  name: string;
+  time: Date;
+  days: number[];
 }
 
 const windowWidth = Dimensions.get("window").width;
@@ -82,8 +88,8 @@ function Nutrition(props: TNutritionProps) {
           <Icon name="chart-line" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Nutrition</Text>
-        <TouchableOpacity activeOpacity={0.3}>
-          <Icon name="plus" size={32} color={COLORS.primary} />
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Reminder")}>
+          <Icon name="bell-ring-outline" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.nutritionContainer}>

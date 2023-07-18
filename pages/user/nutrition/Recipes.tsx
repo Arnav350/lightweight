@@ -24,7 +24,7 @@ function Recipes({ navigation, route: { params } }: TProps) {
   const [currentMeal, setCurrentMeal] = useState<IMeal>({ name: "", foods: [] });
   const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
 
-  const [settings, setSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
+  const [settings, setSettings] = useState<INutritionSettings>({ show: false, i: 0 });
 
   useEffect(() => {
     setCurrentMeal({
@@ -99,7 +99,7 @@ function Recipes({ navigation, route: { params } }: TProps) {
           </TouchableOpacity>
         </ScrollView>
       </View>
-      <Modal animationType="fade" transparent visible={settings.showInfo}>
+      <Modal animationType="fade" transparent visible={settings.show}>
         <FoodInfo
           foods={recipes.filter((recipe: IFood) => recipe.name.toLowerCase().includes(recipeName.toLowerCase()))}
           add={true}

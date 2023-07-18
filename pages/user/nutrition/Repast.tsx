@@ -25,8 +25,8 @@ function Repast({ navigation, route: { params } }: TProps) {
   });
   const [currentHistories, setCurrentHistories] = useState<IFood[]>([]);
 
-  const [mealSettings, setMealSettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
-  const [historySettings, setHistorySettings] = useState<INutritionSettings>({ showInfo: false, i: 0 });
+  const [mealSettings, setMealSettings] = useState<INutritionSettings>({ show: false, i: 0 });
+  const [historySettings, setHistorySettings] = useState<INutritionSettings>({ show: false, i: 0 });
 
   useEffect(() => {
     setCurrentMeal({
@@ -170,7 +170,7 @@ function Repast({ navigation, route: { params } }: TProps) {
           ))}
         </View>
       </ScrollView>
-      <Modal animationType="fade" transparent visible={mealSettings.showInfo}>
+      <Modal animationType="fade" transparent visible={mealSettings.show}>
         <FoodInfo
           foods={currentMeal.foods}
           add={false}
@@ -180,7 +180,7 @@ function Repast({ navigation, route: { params } }: TProps) {
           setCurrentHistories={setCurrentHistories}
         />
       </Modal>
-      <Modal animationType="fade" transparent visible={historySettings.showInfo}>
+      <Modal animationType="fade" transparent visible={historySettings.show}>
         <FoodInfo
           foods={histories.slice(0, 10)}
           add={true}

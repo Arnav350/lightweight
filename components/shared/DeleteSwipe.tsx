@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Alert, Animated, StyleSheet, TouchableOpacity } from "react-native";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
+import { NutritionContext } from "../../hooks/useNutrition";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -11,9 +12,10 @@ interface IProps {
   j?: number;
 }
 
-//SHOULD BE ANY
+//SHOULDNT BE ANY
 function DeleteSwipe({ dragX, variable, i, j }: IProps) {
   const { setCurrentWorkout, setWorkouts } = useContext(WorkoutContext);
+  const { setReminders } = useContext(NutritionContext);
 
   const scale = dragX.interpolate({
     inputRange: [-100, 100],
@@ -36,6 +38,8 @@ function DeleteSwipe({ dragX, variable, i, j }: IProps) {
       case "workout":
         setWorkouts((prevWorkouts) => prevWorkouts.filter((_prevWorkout, k) => k !== i));
         break;
+      case "reminder":
+        setReminders((prevReminders) => prevReminders.filter((_prevReminder, k) => k !== i));
       default:
         break;
     }
@@ -61,6 +65,7 @@ function DeleteSwipe({ dragX, variable, i, j }: IProps) {
       style={[
         styles.deleteContainer,
         variable === "workout" && { borderRadius: 16 },
+        variable === "reminder" && { borderRadius: 8 },
         variable === "set" && { borderRadius: 4 },
       ]}
       onPress={handlePress}

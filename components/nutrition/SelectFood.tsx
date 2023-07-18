@@ -47,7 +47,7 @@ function SelectFood({ i, food, add, setSettings, setCurrentMeal, setCurrentHisto
     <TouchableOpacity
       activeOpacity={0.5}
       style={styles.container}
-      onPress={() => setSettings((prevSettings) => ({ showInfo: true, i: i }))}
+      onPress={() => setSettings((prevSettings) => ({ show: true, i: i }))}
     >
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>

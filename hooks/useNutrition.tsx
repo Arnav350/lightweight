@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IFood, IMeal, IDay } from "../pages/user/nutrition/Nutrition";
+import { IFood, IDay, IReminder } from "../pages/user/nutrition/Nutrition";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -16,6 +16,8 @@ interface INutritionContext {
   setRecipes: Dispatch<SetStateAction<IFood[]>>;
   histories: IFood[];
   setHistories: Dispatch<SetStateAction<IFood[]>>;
+  reminders: IReminder[];
+  setReminders: Dispatch<SetStateAction<IReminder[]>>;
 }
 
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
@@ -32,6 +34,7 @@ function NutritionProvider({ children }: IProviderChildren) {
   const [meals, setMeals] = useState<IDay[]>(init);
   const [recipes, setRecipes] = useState<IFood[]>(init);
   const [histories, setHistories] = useState<IFood[]>(init);
+  const [reminders, setReminders] = useState<IReminder[]>(init);
 
   useEffect(() => {
     if (currentMeals !== initCurrentMeals) {
@@ -58,7 +61,13 @@ function NutritionProvider({ children }: IProviderChildren) {
   }, [histories]);
 
   useEffect(() => {
-    AsyncStorage.multiGet(["@currentMeals", "@meals", "@recipes", "@histories"]).then((arrayJson) => {
+    if (reminders !== init) {
+      AsyncStorage.setItem("@reminders", JSON.stringify(reminders));
+    }
+  });
+
+  useEffect(() => {
+    AsyncStorage.multiGet(["@currentMeals", "@meals", "@recipes", "@histories", "@reminders"]).then((arrayJson) => {
       if (arrayJson[0][1]) {
         setCurrentMeals(JSON.parse(arrayJson[0][1]));
       }
@@ -71,12 +80,26 @@ function NutritionProvider({ children }: IProviderChildren) {
       if (arrayJson[3][1]) {
         setHistories(JSON.parse(arrayJson[3][1]));
       }
+      if (arrayJson[4][1]) {
+        setReminders(JSON.parse(arrayJson[4][1]));
+      }
     });
   }, []);
 
   return (
     <NutritionContext.Provider
-      value={{ currentMeals, setCurrentMeals, meals, setMeals, recipes, setRecipes, histories, setHistories }}
+      value={{
+        currentMeals,
+        setCurrentMeals,
+        meals,
+        setMeals,
+        recipes,
+        setRecipes,
+        histories,
+        setHistories,
+        reminders,
+        setReminders,
+      }}
     >
       {children}
     </NutritionContext.Provider>

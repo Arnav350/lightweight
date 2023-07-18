@@ -69,7 +69,7 @@ function FoodInfo({ foods, add, settings, setSettings, setCurrentMeal, setCurren
       }));
     }
 
-    setSettings((prevSettings) => ({ ...prevSettings, showInfo: false }));
+    setSettings((prevSettings) => ({ ...prevSettings, show: false }));
   }
 
   return (
@@ -78,7 +78,7 @@ function FoodInfo({ foods, add, settings, setSettings, setCurrentMeal, setCurren
         <View style={styles.headerContainer}>
           <TouchableOpacity
             activeOpacity={0.3}
-            onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showInfo: false }))}
+            onPress={() => setSettings((prevSettings) => ({ ...prevSettings, show: false }))}
           >
             <Icon name="close" size={32} color={COLORS.primary} />
           </TouchableOpacity>

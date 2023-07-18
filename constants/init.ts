@@ -322,3 +322,5 @@ export const labelsList: string[] = [
   "Drop",
   "Serving",
 ];
+
+export const daysList: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
