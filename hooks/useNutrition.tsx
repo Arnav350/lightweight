@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IFood, IDay, IReminder } from "../pages/user/nutrition/Nutrition";
+import { IFood, IDay, IReminder, IMeasurement } from "../pages/user/nutrition/Nutrition";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -18,6 +18,8 @@ interface INutritionContext {
   setHistories: Dispatch<SetStateAction<IFood[]>>;
   reminders: IReminder[];
   setReminders: Dispatch<SetStateAction<IReminder[]>>;
+  weights: IMeasurement[];
+  setWeights: Dispatch<SetStateAction<IMeasurement[]>>;
 }
 
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
@@ -35,6 +37,7 @@ function NutritionProvider({ children }: IProviderChildren) {
   const [recipes, setRecipes] = useState<IFood[]>(init);
   const [histories, setHistories] = useState<IFood[]>(init);
   const [reminders, setReminders] = useState<IReminder[]>(init);
+  const [weights, setWeights] = useState<IMeasurement[]>(init);
 
   useEffect(() => {
     if (currentMeals !== initCurrentMeals) {
@@ -64,26 +67,37 @@ function NutritionProvider({ children }: IProviderChildren) {
     if (reminders !== init) {
       AsyncStorage.setItem("@reminders", JSON.stringify(reminders));
     }
-  });
+  }, [reminders]);
 
   useEffect(() => {
-    AsyncStorage.multiGet(["@currentMeals", "@meals", "@recipes", "@histories", "@reminders"]).then((arrayJson) => {
-      if (arrayJson[0][1]) {
-        setCurrentMeals(JSON.parse(arrayJson[0][1]));
+    if (weights !== init) {
+      AsyncStorage.setItem("@weights", JSON.stringify(weights));
+    }
+  }, [weights]);
+
+  useEffect(() => {
+    AsyncStorage.multiGet(["@currentMeals", "@meals", "@recipes", "@histories", "@reminders", "@weights"]).then(
+      (arrayJson) => {
+        if (arrayJson[0][1]) {
+          setCurrentMeals(JSON.parse(arrayJson[0][1]));
+        }
+        if (arrayJson[1][1]) {
+          setMeals(JSON.parse(arrayJson[1][1]));
+        }
+        if (arrayJson[2][1]) {
+          setRecipes(JSON.parse(arrayJson[2][1]));
+        }
+        if (arrayJson[3][1]) {
+          setHistories(JSON.parse(arrayJson[3][1]));
+        }
+        if (arrayJson[4][1]) {
+          setReminders(JSON.parse(arrayJson[4][1]));
+        }
+        if (arrayJson[5][1]) {
+          setWeights(JSON.parse(arrayJson[5][1]));
+        }
       }
-      if (arrayJson[1][1]) {
-        setMeals(JSON.parse(arrayJson[1][1]));
-      }
-      if (arrayJson[2][1]) {
-        setRecipes(JSON.parse(arrayJson[2][1]));
-      }
-      if (arrayJson[3][1]) {
-        setHistories(JSON.parse(arrayJson[3][1]));
-      }
-      if (arrayJson[4][1]) {
-        setReminders(JSON.parse(arrayJson[4][1]));
-      }
-    });
+    );
   }, []);
 
   return (
@@ -99,6 +113,8 @@ function NutritionProvider({ children }: IProviderChildren) {
         setHistories,
         reminders,
         setReminders,
+        weights,
+        setWeights,
       }}
     >
       {children}

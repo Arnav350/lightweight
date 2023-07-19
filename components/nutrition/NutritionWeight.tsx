@@ -1,32 +1,26 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Dimensions, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { NutritionContext } from "../../hooks/useNutrition";
+import { IMeasurement, TNutritionProps } from "../../pages/user/nutrition/Nutrition";
 import { COLORS } from "../../constants/theme";
 
-interface IMeasurement {
-  data: number;
-  date: Date;
+interface IProps {
+  navigate: TNutritionProps;
 }
 
 const windowDimensions = Dimensions.get("window");
 
-function NutritionWeight() {
-  const date1 = new Date(2023, 5, 19);
-  const date2 = new Date(2023, 6, 1);
-  const date3 = new Date();
+function NutritionWeight({ navigate: { navigation } }: IProps) {
+  const { weights, setWeights } = useContext(NutritionContext);
 
   const [input, setInput] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(new Date());
   const [showPicker, setShowPicker] = useState<boolean>(false);
-  const [weights, setWeights] = useState<IMeasurement[]>([
-    { data: 140, date: date1 },
-    { data: 145, date: date2 },
-    { data: 152, date: date3 },
-  ]);
 
   function handleChange(event: DateTimePickerEvent, date: Date | undefined) {
     setShowPicker(false);
@@ -35,7 +29,8 @@ function NutritionWeight() {
     }
   }
 
-  const findIndex = (arr: IMeasurement[], val: Date) => {
+  //TWO VALUES SAME DAY IS BACKWARDS
+  function findIndex(arr: IMeasurement[], val: Date) {
     let low = 0,
       high = arr.length;
     while (low < high) {
@@ -47,13 +42,15 @@ function NutritionWeight() {
       }
     }
     return low;
-  };
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Weight</Text>
-        <Icon name="square-edit-outline" size={32} color={COLORS.white} />
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Weight")}>
+          <Icon name="square-edit-outline" size={32} color={COLORS.white} />
+        </TouchableOpacity>
       </View>
       <View style={styles.weightContainer}>
         <LineChart
@@ -67,7 +64,7 @@ function NutritionWeight() {
             ),
             datasets: [
               {
-                data: weights.map((weight) => weight.data),
+                data: weights.length !== 0 ? weights.map((weight) => weight.data) : [1, 3, 5],
               },
             ],
           }}
@@ -93,7 +90,7 @@ function NutritionWeight() {
           <Text style={styles.enter}>Enter Weight:</Text>
           <TextInput
             value={input}
-            placeholder={weights[weights.length - 1].data.toString()}
+            placeholder={weights.length > 0 ? weights[weights.length - 1].data.toString() : "0"}
             placeholderTextColor={COLORS.darkGray}
             keyboardType="numeric"
             keyboardAppearance="dark"

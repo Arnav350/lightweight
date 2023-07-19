@@ -45,6 +45,11 @@ export interface IReminder {
   days: number[];
 }
 
+export interface IMeasurement {
+  data: number;
+  date: Date;
+}
+
 const windowWidth = Dimensions.get("window").width;
 
 function Nutrition(props: TNutritionProps) {
@@ -100,7 +105,7 @@ function Nutrition(props: TNutritionProps) {
           onMomentumScrollEnd={(event) => setSlide(event.nativeEvent.contentOffset.x / windowWidth)}
         >
           <NutritionMacros />
-          <NutritionWeight />
+          <NutritionWeight navigate={props} />
           <NutritionSteps />
         </ScrollView>
         <View style={styles.dotsContainer}>
