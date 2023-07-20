@@ -37,12 +37,14 @@ function Macro({ navigation }: TMacroProps) {
           fat: Math.round((currentMacros.fat * currentMacros.calories) / 900),
           carbs: Math.round((currentMacros.carbs * currentMacros.calories) / 400),
         });
+        navigation.goBack();
       } else {
         setErr(true);
       }
     } else {
       if (currentMacros.protein * 4 + currentMacros.fat * 9 + currentMacros.carbs * 4 === currentMacros.calories) {
         setMacros(currentMacros);
+        navigation.goBack();
       } else {
         setErr(true);
       }
@@ -61,63 +63,112 @@ function Macro({ navigation }: TMacroProps) {
         </TouchableOpacity>
       </View>
       <View style={styles.macroContainer}>
-        {currentMacros.percent ? (
-          <Text style={styles.error}>Percents must add up to 100%</Text>
-        ) : (
-          <Text style={styles.error}>Macros must add up to {currentMacros.calories}</Text>
-        )}
-        <TextInput
-          value={currentMacros.calories ? currentMacros.calories.toString() : ""}
-          placeholder={`Calories... (${macros.calories}cal)`}
-          placeholderTextColor={COLORS.gray}
-          keyboardAppearance="dark"
-          keyboardType="number-pad"
-          style={focusedInput === "calories" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) =>
-            setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, calories: Number(text) }))
+        {err &&
+          (currentMacros.percent ? (
+            <Text style={styles.error}>Percents must add up to 100%</Text>
+          ) : (
+            <Text style={styles.error}>Macros must add up to {currentMacros.calories}</Text>
+          ))}
+        <View
+          style={
+            focusedInput === "calories"
+              ? { ...styles.fieldContainer, borderBottomColor: COLORS.primary }
+              : styles.fieldContainer
           }
-          onFocus={() => setFocusedInput("calories")}
-          onBlur={() => setFocusedInput("none")}
-        />
-        <TextInput
-          value={currentMacros.protein ? currentMacros.protein.toString() : ""}
-          placeholder={`Protein... (${macros.protein}g)`}
-          placeholderTextColor={COLORS.gray}
-          keyboardAppearance="dark"
-          keyboardType="number-pad"
-          style={focusedInput === "protein" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) =>
-            setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, protein: Number(text) }))
+        >
+          <Text style={styles.label}>Calories: </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={currentMacros.calories ? currentMacros.calories.toString() : ""}
+              placeholder={macros.calories.toString()}
+              placeholderTextColor={COLORS.gray}
+              keyboardAppearance="dark"
+              keyboardType="number-pad"
+              style={styles.input}
+              onChangeText={(text: string) =>
+                setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, calories: Number(text) }))
+              }
+              onFocus={() => setFocusedInput("calories")}
+              onBlur={() => setFocusedInput("none")}
+            />
+            <Text style={styles.suffix}>cal</Text>
+          </View>
+        </View>
+        <View
+          style={
+            focusedInput === "protein"
+              ? { ...styles.fieldContainer, borderBottomColor: COLORS.primary }
+              : styles.fieldContainer
           }
-          onFocus={() => setFocusedInput("protein")}
-          onBlur={() => setFocusedInput("none")}
-        />
-        <TextInput
-          value={currentMacros.fat ? currentMacros.fat.toString() : ""}
-          placeholder={`Fat... (${macros.fat}g)`}
-          placeholderTextColor={COLORS.gray}
-          keyboardAppearance="dark"
-          keyboardType="number-pad"
-          style={focusedInput === "fat" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) =>
-            setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, fat: Number(text) }))
+        >
+          <Text style={styles.label}>Protein: </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={currentMacros.protein ? currentMacros.protein.toString() : ""}
+              placeholder={macros.protein.toString()}
+              placeholderTextColor={COLORS.gray}
+              keyboardAppearance="dark"
+              keyboardType="number-pad"
+              style={styles.input}
+              onChangeText={(text: string) =>
+                setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, protein: Number(text) }))
+              }
+              onFocus={() => setFocusedInput("protein")}
+              onBlur={() => setFocusedInput("none")}
+            />
+            <Text style={styles.suffix}> {currentMacros.percent ? "%" : " g"}</Text>
+          </View>
+        </View>
+        <View
+          style={
+            focusedInput === "fat"
+              ? { ...styles.fieldContainer, borderBottomColor: COLORS.primary }
+              : styles.fieldContainer
           }
-          onFocus={() => setFocusedInput("fat")}
-          onBlur={() => setFocusedInput("none")}
-        />
-        <TextInput
-          value={currentMacros.carbs ? currentMacros.carbs.toString() : ""}
-          placeholder={`Carbs... (${macros.carbs}g)`}
-          placeholderTextColor={COLORS.gray}
-          keyboardAppearance="dark"
-          keyboardType="number-pad"
-          style={focusedInput === "carbs" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) =>
-            setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, carbs: Number(text) }))
+        >
+          <Text style={styles.label}>Fat: </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={currentMacros.fat ? currentMacros.fat.toString() : ""}
+              placeholder={macros.fat.toString()}
+              placeholderTextColor={COLORS.gray}
+              keyboardAppearance="dark"
+              keyboardType="number-pad"
+              style={styles.input}
+              onChangeText={(text: string) =>
+                setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, fat: Number(text) }))
+              }
+              onFocus={() => setFocusedInput("fat")}
+              onBlur={() => setFocusedInput("none")}
+            />
+            <Text style={styles.suffix}> {currentMacros.percent ? "%" : " g"}</Text>
+          </View>
+        </View>
+        <View
+          style={
+            focusedInput === "carbs"
+              ? { ...styles.fieldContainer, borderBottomColor: COLORS.primary }
+              : styles.fieldContainer
           }
-          onFocus={() => setFocusedInput("carbs")}
-          onBlur={() => setFocusedInput("none")}
-        />
+        >
+          <Text style={styles.label}>Carbs: </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={currentMacros.carbs ? currentMacros.carbs.toString() : ""}
+              placeholder={macros.carbs.toString()}
+              placeholderTextColor={COLORS.gray}
+              keyboardAppearance="dark"
+              keyboardType="number-pad"
+              style={styles.input}
+              onChangeText={(text: string) =>
+                setCurrentMacros((prevCurrentMacros) => ({ ...prevCurrentMacros, carbs: Number(text) }))
+              }
+              onFocus={() => setFocusedInput("carbs")}
+              onBlur={() => setFocusedInput("none")}
+            />
+            <Text style={styles.suffix}> {currentMacros.percent ? "%" : " g"}</Text>
+          </View>
+        </View>
         {currentMacros.percent ? (
           <Text style={styles.calculation}>
             {currentMacros.protein}% + {currentMacros.fat}% + {currentMacros.carbs}% ={" "}
@@ -199,12 +250,34 @@ const styles = StyleSheet.create({
   error: {
     color: "#f00",
   },
-  input: {
+  fieldContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 8,
-    padding: 8,
+    paddingHorizontal: 8,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.gray,
+  },
+  label: {
     color: COLORS.white,
+    fontSize: 18,
+  },
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  input: {
+    flex: 1,
+    padding: 8,
+    color: COLORS.white,
+    fontSize: 16,
+    textAlign: "right",
+  },
+  suffix: {
+    color: COLORS.gray,
     fontSize: 16,
   },
   calculation: {
