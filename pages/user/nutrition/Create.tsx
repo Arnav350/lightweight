@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.gray,
+    borderBottomColor: COLORS.darkGray,
     color: COLORS.white,
     fontSize: 16,
   },

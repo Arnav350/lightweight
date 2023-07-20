@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     paddingHorizontal: 8,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.gray,
+    borderBottomColor: COLORS.darkGray,
   },
   label: {
     color: COLORS.white,

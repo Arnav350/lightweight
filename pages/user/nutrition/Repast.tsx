@@ -50,7 +50,7 @@ function Repast({ navigation, route: { params } }: TProps) {
         navigation.goBack();
         break;
       case "recipes":
-        navigation.navigate("Recipes", { i: params.i, save: null });
+        navigation.navigate("Recipe", { i: params.i, save: null });
         break;
       case "create":
         navigation.navigate("Create", { i: params.i, save: false });
@@ -143,17 +143,21 @@ function Repast({ navigation, route: { params } }: TProps) {
         </View>
         <View style={styles.foodsContainer}>
           <Text style={styles.subheader}>Foods</Text>
-          {currentMeal.foods.map((food: IFood, i: number) => (
-            <SelectFood
-              key={i}
-              i={i}
-              food={food}
-              add={false}
-              setSettings={setMealSettings}
-              setCurrentMeal={setCurrentMeal}
-              setCurrentHistories={setCurrentHistories}
-            />
-          ))}
+          {currentMeal.foods.length ? (
+            currentMeal.foods.map((food: IFood, i: number) => (
+              <SelectFood
+                key={i}
+                i={i}
+                food={food}
+                add={false}
+                setSettings={setMealSettings}
+                setCurrentMeal={setCurrentMeal}
+                setCurrentHistories={setCurrentHistories}
+              />
+            ))
+          ) : (
+            <Text style={styles.add}>Add a food item by pressing one of the buttons above</Text>
+          )}
         </View>
         <View style={styles.foodsContainer}>
           {histories.length !== 0 && <Text style={styles.subheader}>History</Text>}
@@ -253,6 +257,13 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",
+  },
+  add: {
+    marginTop: 16,
+    color: COLORS.gray,
+    fontSize: 16,
+    fontWeight: "500",
+    textAlign: "center",
   },
 });
 

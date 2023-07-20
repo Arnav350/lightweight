@@ -12,9 +12,9 @@ import SelectFood from "../../../components/nutrition/SelectFood";
 import FoodInfo from "../../../components/nutrition/FoodInfo";
 import { COLORS } from "../../../constants/theme";
 
-type TProps = StackScreenProps<TNutritionStackParamList, "Recipes">;
+type TProps = StackScreenProps<TNutritionStackParamList, "Recipe">;
 
-function Recipes({ navigation, route: { params } }: TProps) {
+function Recipe({ navigation, route: { params } }: TProps) {
   const isFocused = useIsFocused();
 
   const { currentMeals, setCurrentMeals, recipes, histories, setHistories } = useContext(NutritionContext);
@@ -183,4 +183,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Recipes;
+export default Recipe;

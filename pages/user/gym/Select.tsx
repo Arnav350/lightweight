@@ -12,6 +12,7 @@ import { IRoutine } from "../../workout/Workout";
 import MyRoutine from "../../../components/gym/MyRoutine";
 import ExploreRoutine from "../../../components/gym/ExploreRoutine";
 import RoutineActions from "../../../components/gym/RoutineActions";
+import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
 export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Select">, TCompositeProps>;
@@ -19,7 +20,14 @@ export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamL
 function Select(props: TSelectProps) {
   const { navigation } = props;
 
-  const { routines, settings } = useContext(WorkoutContext);
+  const { setCurrentWorkout, routines, setRoutines, settings } = useContext(WorkoutContext);
+
+  function handlePress() {
+    setCurrentWorkout(initCurrentWorkout);
+    setTimeout(() => setRoutines((prevRoutines) => [...prevRoutines, { name: "", creator: "", exercises: [] }]), 500);
+
+    navigation.navigate("Design", { i: routines.length });
+  }
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -34,9 +42,17 @@ function Select(props: TSelectProps) {
       </View>
       <ScrollView style={styles.selectContainer}>
         <Text style={styles.subheading}>My Routines</Text>
-        {routines.slice(17).map((routine: IRoutine, i: number) => (
-          <MyRoutine key={routine.name} i={i + 17} routine={routine} navigate={props} />
-        ))}
+        {routines.length !== 17 ? (
+          routines
+            .slice(17)
+            .map((routine: IRoutine, i: number) => (
+              <MyRoutine key={routine.name} i={i + 17} routine={routine} navigate={props} />
+            ))
+        ) : (
+          <TouchableOpacity activeOpacity={0.5} style={styles.newContainer} onPress={handlePress}>
+            <Text style={styles.new}>Tap to create your own routine</Text>
+          </TouchableOpacity>
+        )}
         <Text style={styles.subheading}>Explore Routines</Text>
         <Text style={styles.routine}>Push Pull Legs</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.exploresContainer}>
@@ -74,7 +90,6 @@ function Select(props: TSelectProps) {
             <ExploreRoutine key={routine.name} i={i + 15} name={routine.name} navigate={props} />
           ))}
         </ScrollView>
-        <Text style={styles.name}></Text>
       </ScrollView>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
         <RoutineActions navigate={props} />
@@ -111,10 +126,19 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
   },
-  name: {
+  newContainer: {
+    justifyContent: "center",
+    padding: 8,
+    height: 80,
+    width: 160,
+    backgroundColor: COLORS.blackOne,
+    borderRadius: 8,
+  },
+  new: {
     color: COLORS.white,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
+    textAlign: "center",
   },
   routine: {
     marginTop: 8,

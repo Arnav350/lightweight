@@ -19,6 +19,10 @@ interface IProps {
 function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, suggestedFoods, handleSearch }: IProps) {
   const { histories } = useContext(NutritionContext);
 
+  const filteredHistories = histories
+    .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
+    .slice(0, 10);
+
   const [settings, setSettings] = useState<INutritionSettings>({ show: false, i: 0 });
 
   return (
@@ -40,28 +44,22 @@ function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, sugg
           <Text style={styles.all}>{suggestedFood}</Text>
         </TouchableOpacity>
       ))}
-      {histories.filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase())).length !== 0 && (
-        <Text style={styles.subtitle}>History</Text>
-      )}
-      {histories
-        .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
-        .slice(0, 10)
-        .map((history: IFood, i: number) => (
-          <SelectFood
-            key={i}
-            i={i}
-            food={history}
-            add={true}
-            setSettings={setSettings}
-            setCurrentMeal={setCurrentMeal}
-            setCurrentHistories={setCurrentHistories}
-          />
-        ))}
+      {filteredHistories.length !== 0 && <Text style={styles.subtitle}>History</Text>}
+      {!histories && <Text style={styles.no}>No previously eaten food items found</Text>}
+      {filteredHistories.map((history: IFood, i: number) => (
+        <SelectFood
+          key={i}
+          i={i}
+          food={history}
+          add={true}
+          setSettings={setSettings}
+          setCurrentMeal={setCurrentMeal}
+          setCurrentHistories={setCurrentHistories}
+        />
+      ))}
       <Modal animationType="fade" transparent visible={settings.show}>
         <FoodInfo
-          foods={histories
-            .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
-            .slice(0, 10)}
+          foods={filteredHistories}
           add={true}
           settings={settings}
           setSettings={setSettings}
@@ -99,6 +97,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     color: COLORS.white,
     fontSize: 16,
+  },
+  no: {
+    marginTop: 8,
+    color: COLORS.gray,
+    fontSize: 16,
+    fontWeight: "500",
+    textAlign: "center",
   },
 });
 

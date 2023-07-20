@@ -38,9 +38,16 @@ function Reminder({ navigation }: TReminderProps) {
           <Text style={styles.new}>Create New Reminder</Text>
         </TouchableOpacity>
         <View style={styles.listContainer}>
-          {reminders.map((reminder: IReminder, i: number) => (
-            <ReminderList key={reminder.name} i={i} reminder={reminder} setSettings={setSettings} />
-          ))}
+          {reminders.length ? (
+            reminders.map((reminder: IReminder, i: number) => (
+              <ReminderList key={reminder.name} i={i} reminder={reminder} setSettings={setSettings} />
+            ))
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.no}>No Saved Reminders</Text>
+              <Text style={styles.shown}>Reminders will be shown here</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
       <Modal animationType="fade" transparent visible={settings.show}>
@@ -87,6 +94,20 @@ const styles = StyleSheet.create({
   listContainer: {
     marginTop: 16,
     gap: 8,
+  },
+  emptyContainer: {
+    marginTop: 8,
+    gap: 8,
+    alignItems: "center",
+  },
+  no: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  shown: {
+    color: COLORS.gray,
+    fontSize: 16,
   },
 });
 

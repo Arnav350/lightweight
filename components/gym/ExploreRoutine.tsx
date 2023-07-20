@@ -18,10 +18,10 @@ function ExploreRoutine({ i, name, navigate: { navigation } }: IProps) {
       style={styles.container}
       onPress={() => navigation.navigate("Routine", { i: i })}
     >
-      <Text style={styles.name}>{name}</Text>
-      <View>
-        <Icon name="plus" size={24} color={COLORS.primary} />
-      </View>
+      <Text numberOfLines={2} style={styles.name}>
+        {name}
+      </Text>
+      <Icon name="plus" size={24} color={COLORS.primary} />
     </TouchableOpacity>
   );
 }
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
   },
   name: {
     flexShrink: 1,
-    flexWrap: "wrap",
     color: COLORS.white,
     fontSize: 18,
     fontWeight: "500",

@@ -127,10 +127,15 @@ function Design(props: TDesignProps) {
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
-
-        {currentWorkout.exercises.map((exercise: IExercise, i: number) => (
-          <DesignExercise key={exercise.name} i={i} exercise={exercise} />
-        ))}
+        {currentWorkout.exercises.length ? (
+          currentWorkout.exercises.map((exercise: IExercise, i: number) => (
+            <DesignExercise key={exercise.name} i={i} exercise={exercise} />
+          ))
+        ) : (
+          <Text style={currentWorkout.name.trim() ? [styles.start, { color: COLORS.gray }] : styles.start}>
+            Start creating your own routine by adding an exercise
+          </Text>
+        )}
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonContainer}
@@ -188,9 +193,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.gray,
+    borderBottomColor: COLORS.darkGray,
     color: COLORS.white,
     fontSize: 18,
+  },
+  start: {
+    marginVertical: 8,
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: "500",
+    textAlign: "center",
   },
   buttonContainer: {
     marginTop: 8,

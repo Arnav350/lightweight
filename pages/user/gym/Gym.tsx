@@ -81,6 +81,12 @@ function Gym(props: TGymProps) {
             </View>
           </View>
         }
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.no}>No Workouts Completed</Text>
+            <Text style={styles.shown}>Finished workouts will be shown here</Text>
+          </View>
+        }
         style={styles.gymContainer}
       />
     </SafeAreaView>
@@ -133,6 +139,20 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",
+  },
+  emptyContainer: {
+    marginTop: 16,
+    gap: 8,
+    alignItems: "center",
+  },
+  no: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  shown: {
+    color: COLORS.gray,
+    fontSize: 16,
   },
 });
 
