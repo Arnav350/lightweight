@@ -1,22 +1,28 @@
 import { useContext } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { NutritionContext } from "../../hooks/useNutrition";
-import { IMeal } from "../../pages/user/nutrition/Nutrition";
+import { IMeal, TNutritionProps } from "../../pages/user/nutrition/Nutrition";
 import MacroCircle from "./MacroCircle";
 import { COLORS } from "../../constants/theme";
 
+interface IProps {
+  navigate: TNutritionProps;
+}
+
 const windowWidth = Dimensions.get("window").width;
 
-function NutritionMacros() {
-  const { currentMeals } = useContext(NutritionContext);
+function NutritionMacros({ navigate: { navigation } }: IProps) {
+  const { currentMeals, macros } = useContext(NutritionContext);
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Macros</Text>
-        <Icon name="square-edit-outline" size={32} color={COLORS.white} />
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Macro")}>
+          <Icon name="dots-horizontal" size={32} color={COLORS.white} />
+        </TouchableOpacity>
       </View>
       <View style={styles.circlesContainer}>
         <View>
@@ -26,7 +32,7 @@ function NutritionMacros() {
                 (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
               0
             )}
-            total={30000}
+            total={macros.calories}
             unit="cal"
             label="Calories"
           />
@@ -36,7 +42,7 @@ function NutritionMacros() {
                 (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
               0
             )}
-            total={80}
+            total={macros.fat}
             unit="g"
             label="Fat"
           />
@@ -48,7 +54,7 @@ function NutritionMacros() {
                 (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
               0
             )}
-            total={180}
+            total={macros.protein}
             unit="g"
             label="Protein"
           />
@@ -59,7 +65,7 @@ function NutritionMacros() {
                 (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
               0
             )}
-            total={180}
+            total={macros.carbs}
             unit="g"
             label="Carbs"
           />

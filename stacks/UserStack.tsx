@@ -11,6 +11,7 @@ import Select from "../pages/user/gym/Select";
 import Routine from "../pages/user/gym/Routine";
 import Nutrition from "../pages/user/nutrition/Nutrition";
 import Reminder from "../pages/user/nutrition/Reminder";
+import Macro from "../pages/user/nutrition/Macro";
 import Weight from "../pages/user/nutrition/Weight";
 import Repast from "../pages/user/nutrition/Repast";
 import Create from "../pages/user/nutrition/Create";
@@ -46,6 +47,7 @@ function GymStack() {
 export type TNutritionStackParamList = {
   Nutrition: undefined;
   Reminder: undefined;
+  Macro: undefined;
   Weight: undefined;
   Repast: { i: number; save: boolean | null };
   Create: { i: number; save: boolean };
@@ -61,6 +63,7 @@ function NutritionStack() {
       <NStack.Navigator initialRouteName="Nutrition" screenOptions={{ headerShown: false }}>
         <NStack.Screen name="Nutrition" component={Nutrition} />
         <NStack.Screen name="Reminder" component={Reminder} />
+        <NStack.Screen name="Macro" component={Macro} />
         <NStack.Screen name="Weight" component={Weight} />
         <NStack.Screen name="Repast" component={Repast} />
         <NStack.Screen name="Create" component={Create} />

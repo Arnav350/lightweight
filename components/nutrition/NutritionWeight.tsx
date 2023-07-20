@@ -57,10 +57,9 @@ function NutritionWeight({ navigate: { navigation } }: IProps) {
           data={{
             labels: weights.map(
               (weight) =>
-                `${weight.date.toLocaleDateString("default", { month: "short" })} ${weight.date.toLocaleDateString(
-                  "default",
-                  { day: "2-digit" }
-                )}`
+                `${weight.date.toLocaleDateString("default", {
+                  month: "short",
+                })} ${weight.date.toLocaleDateString("default", { day: "2-digit" })}`
             ),
             datasets: [
               {

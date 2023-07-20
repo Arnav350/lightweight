@@ -30,7 +30,7 @@ export interface IMeal {
 }
 
 export interface IDay {
-  date: number;
+  date: Date;
   meals: IMeal[];
 }
 
@@ -45,6 +45,14 @@ export interface IReminder {
   days: number[];
 }
 
+export interface IMacros {
+  calories: number;
+  protein: number;
+  fat: number;
+  carbs: number;
+  percent: boolean;
+}
+
 export interface IMeasurement {
   data: number;
   date: Date;
@@ -55,7 +63,7 @@ const windowWidth = Dimensions.get("window").width;
 function Nutrition(props: TNutritionProps) {
   const { navigation } = props;
 
-  const { currentMeals, setCurrentMeals } = useContext(NutritionContext);
+  const { currentMeals, setCurrentMeals, setMeals } = useContext(NutritionContext);
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
   const [slide, setSlide] = useState<number>(0);
@@ -89,7 +97,8 @@ function Nutrition(props: TNutritionProps) {
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3}>
+        {/* TEMPORARY */}
+        <TouchableOpacity activeOpacity={0.3} onPress={() => setMeals([currentMeals])}>
           <Icon name="chart-line" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Nutrition</Text>
@@ -104,7 +113,7 @@ function Nutrition(props: TNutritionProps) {
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={(event) => setSlide(event.nativeEvent.contentOffset.x / windowWidth)}
         >
-          <NutritionMacros />
+          <NutritionMacros navigate={props} />
           <NutritionWeight navigate={props} />
           <NutritionSteps />
         </ScrollView>

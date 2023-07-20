@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LineChart } from "react-native-chart-kit";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -9,13 +9,14 @@ import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
 import { IMeasurement } from "./Nutrition";
 import { COLORS } from "../../../constants/theme";
+import WeightList from "../../../components/nutrition/WeightList";
 
 type TWeightProps = StackScreenProps<TNutritionStackParamList, "Weight">;
 
 const windowDimensions = Dimensions.get("window");
 
 function Weight({ navigation }: TWeightProps) {
-  const { weights, setWeights } = useContext(NutritionContext);
+  const { weights } = useContext(NutritionContext);
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -67,23 +68,12 @@ function Weight({ navigation }: TWeightProps) {
           <Text style={styles.add}>Add Weight</Text>
         </TouchableOpacity>
         <Text style={styles.subheader}>Entries</Text>
-        <View style={styles.weightsContainer}>
-          {weights.map((weight: IMeasurement, i: number) => (
-            <View key={i} style={styles.measurementContainer}>
-              <View>
-                <Text style={styles.data}>{weight.data} lbs</Text>
-                <Text style={styles.date}>{weight.date.toLocaleDateString()}</Text>
-              </View>
-              <TouchableOpacity
-                activeOpacity={0.3}
-                style={styles.trashContainer}
-                onPress={() => setWeights((prevWeights) => prevWeights.filter((_prevWeight, j: number) => j !== i))}
-              >
-                <Icon name="trash-can-outline" size={32} color={COLORS.white} />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
+
+        <FlatList
+          data={weights}
+          renderItem={({ item, index }) => <WeightList key={index} i={index} weight={item} />}
+          style={styles.entriesContainer}
+        />
       </View>
     </SafeAreaView>
   );
@@ -134,31 +124,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "500",
   },
-  weightsContainer: {
-    gap: 8,
-  },
-  measurementContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 16,
-    backgroundColor: COLORS.blackOne,
-    borderRadius: 8,
-  },
-  data: {
-    color: COLORS.white,
-    fontSize: 18,
-  },
-  date: {
-    color: COLORS.gray,
-    fontSize: 16,
-  },
-  trashContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 40,
-    width: 40,
-    backgroundColor: COLORS.primary,
-    borderRadius: 20,
+  entriesContainer: {
+    marginVertical: -4,
   },
 });
 

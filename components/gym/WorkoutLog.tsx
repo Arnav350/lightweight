@@ -16,6 +16,8 @@ interface IProps {
 }
 
 function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
+  const { date, name, time, weight, exercises } = workout;
+
   const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handlePress() {
@@ -28,24 +30,25 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
     <Swipeable
       overshootFriction={8}
       renderRightActions={(_progress, dragX) => <DeleteSwipe dragX={dragX} variable="workout" i={i} />}
+      containerStyle={styles.container}
     >
-      <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
+      <TouchableOpacity activeOpacity={0.5} style={styles.workoutContainer} onPress={handlePress}>
         <View style={styles.dateContainer}>
-          <Text style={styles.dateMonth}>{workout.date.month}</Text>
-          <Text style={styles.dateDay}>{workout.date.day}</Text>
+          <Text style={styles.month}>{date.month}</Text>
+          <Text style={styles.day}>{date.day}</Text>
         </View>
         <View style={styles.logContainer}>
-          <Text style={styles.logTitle}>{workout.name}</Text>
+          <Text style={styles.logTitle}>{name}</Text>
           <View style={styles.logStats}>
             <Icon name="clock" style={styles.logStat}>
-              <Text>{Math.round(workout.time / 60000)}m</Text>
+              <Text>{Math.round(time / 60000)}m</Text>
             </Icon>
             <Icon name="weight" style={styles.logStat}>
-              <Text>{workout.weight} lb</Text>
+              <Text>{weight} lb</Text>
             </Icon>
           </View>
           <View style={styles.logExercises}>
-            {workout.exercises.map((exercise: IExercise, i: number) => (
+            {exercises.map((exercise: IExercise, i: number) => (
               <Text key={exercise.name} numberOfLines={1} style={styles.logExercise}>
                 {exercise.sets.length} x {exercise.name}
               </Text>
@@ -59,6 +62,10 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
 
 const styles = StyleSheet.create({
   container: {
+    marginVertical: 4,
+    marginHorizontal: 16,
+  },
+  workoutContainer: {
     flexDirection: "row",
     padding: 8,
     backgroundColor: COLORS.blackOne,
@@ -68,11 +75,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 8,
   },
-  dateMonth: {
+  month: {
     color: COLORS.white,
     fontSize: 18,
   },
-  dateDay: {
+  day: {
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

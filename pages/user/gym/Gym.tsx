@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -54,33 +54,35 @@ function Gym(props: TGymProps) {
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.gymContainer}>
-        <View style={styles.gymButtons}>
-          <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={handleEmptyPress}>
-            <Icon name="plus" size={24} color={COLORS.primary} />
-            <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
-          </TouchableOpacity>
-          <View style={styles.gymRoutines}>
-            <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={handleNewPress}>
-              <Icon name="clipboard-plus-outline" size={24} color={COLORS.primary} />
-              <Text style={styles.gymSubtitles}>New Routine</Text>
+      <FlatList
+        data={workouts}
+        renderItem={({ item, index }) => (
+          <WorkoutLog key={item.time + JSON.stringify(item.date)} i={index} workout={item} navigate={props} />
+        )}
+        ListHeaderComponent={
+          <View style={styles.gymButtons}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={handleEmptyPress}>
+              <Icon name="plus" size={24} color={COLORS.primary} />
+              <Text style={styles.gymSubtitles}>Start Empty Workout</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={styles.gymRoutine}
-              onPress={() => navigation.navigate("Select")}
-            >
-              <Icon name="bookmark-outline" size={24} color={COLORS.primary} />
-              <Text style={styles.gymSubtitles}>Select Routine</Text>
-            </TouchableOpacity>
+            <View style={styles.gymRoutines}>
+              <TouchableOpacity activeOpacity={0.5} style={styles.gymRoutine} onPress={handleNewPress}>
+                <Icon name="clipboard-plus-outline" size={24} color={COLORS.primary} />
+                <Text style={styles.gymSubtitles}>New Routine</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={styles.gymRoutine}
+                onPress={() => navigation.navigate("Select")}
+              >
+                <Icon name="bookmark-outline" size={24} color={COLORS.primary} />
+                <Text style={styles.gymSubtitles}>Select Routine</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View style={styles.logContainer}>
-          {workouts.map((workout: IWorkout, i: number) => (
-            <WorkoutLog key={workout.time + JSON.stringify(workout.date)} i={i} workout={workout} navigate={props} />
-          ))}
-        </View>
-      </ScrollView>
+        }
+        style={styles.gymContainer}
+      />
     </SafeAreaView>
   );
 }
@@ -88,6 +90,7 @@ function Gym(props: TGymProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: -4,
     backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {
@@ -98,8 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingVertical: 8,
     fontSize: 24,
     fontWeight: "500",
     color: COLORS.white,
@@ -110,6 +112,7 @@ const styles = StyleSheet.create({
   gymButtons: {
     marginTop: 16,
     marginHorizontal: 16,
+    marginBottom: 12,
   },
   gymRoutine: {
     flex: 1,
@@ -130,10 +133,6 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     fontWeight: "500",
-  },
-  logContainer: {
-    padding: 16,
-    gap: 8,
   },
 });
 

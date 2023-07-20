@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     margin: 16,
     backgroundColor: COLORS.black,
     borderRadius: 16,
+    overflow: "hidden",
   },
   headerContainer: {
     flexDirection: "row",
@@ -95,12 +96,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 8,
     backgroundColor: COLORS.blackOne,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.darkGray,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.darkGray,
   },
   plusContainer: {
     marginHorizontal: 8,
-    backgroundColor: "#3a3",
+    backgroundColor: COLORS.primary,
     borderRadius: 24,
   },
   minutes: {

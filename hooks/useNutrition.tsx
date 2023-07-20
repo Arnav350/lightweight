@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IFood, IDay, IReminder, IMeasurement } from "../pages/user/nutrition/Nutrition";
+import { IFood, IDay, IReminder, IMeasurement, IMacros } from "../pages/user/nutrition/Nutrition";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -20,13 +20,23 @@ interface INutritionContext {
   setReminders: Dispatch<SetStateAction<IReminder[]>>;
   weights: IMeasurement[];
   setWeights: Dispatch<SetStateAction<IMeasurement[]>>;
+  macros: IMacros;
+  setMacros: Dispatch<SetStateAction<IMacros>>;
 }
 
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
 
 const initCurrentMeals: IDay = {
-  date: 0,
+  date: new Date(),
   meals: [],
+};
+
+const initMacros: IMacros = {
+  calories: 0,
+  protein: 0,
+  fat: 0,
+  carbs: 0,
+  percent: true,
 };
 
 const init: [] = [];
@@ -38,6 +48,7 @@ function NutritionProvider({ children }: IProviderChildren) {
   const [histories, setHistories] = useState<IFood[]>(init);
   const [reminders, setReminders] = useState<IReminder[]>(init);
   const [weights, setWeights] = useState<IMeasurement[]>(init);
+  const [macros, setMacros] = useState<IMacros>(initMacros);
 
   useEffect(() => {
     if (currentMeals !== initCurrentMeals) {
@@ -76,28 +87,51 @@ function NutritionProvider({ children }: IProviderChildren) {
   }, [weights]);
 
   useEffect(() => {
-    AsyncStorage.multiGet(["@currentMeals", "@meals", "@recipes", "@histories", "@reminders", "@weights"]).then(
-      (arrayJson) => {
-        if (arrayJson[0][1]) {
-          setCurrentMeals(JSON.parse(arrayJson[0][1]));
-        }
-        if (arrayJson[1][1]) {
-          setMeals(JSON.parse(arrayJson[1][1]));
-        }
-        if (arrayJson[2][1]) {
-          setRecipes(JSON.parse(arrayJson[2][1]));
-        }
-        if (arrayJson[3][1]) {
-          setHistories(JSON.parse(arrayJson[3][1]));
-        }
-        if (arrayJson[4][1]) {
-          setReminders(JSON.parse(arrayJson[4][1]));
-        }
-        if (arrayJson[5][1]) {
-          setWeights(JSON.parse(arrayJson[5][1]));
-        }
+    if (macros !== initMacros) {
+      AsyncStorage.setItem("@macros", JSON.stringify(macros));
+    }
+  }, [macros]);
+
+  useEffect(() => {
+    AsyncStorage.multiGet([
+      "@currentMeals",
+      "@meals",
+      "@recipes",
+      "@histories",
+      "@reminders",
+      "@weights",
+      "@macros",
+    ]).then((arrayJson) => {
+      if (arrayJson[0][1]) {
+        const tempCurrentMeals: IDay = JSON.parse(arrayJson[0][1]);
+        setCurrentMeals({ ...tempCurrentMeals, date: new Date(tempCurrentMeals.date) });
+        // setCurrentMeals(JSON.parse(arrayJson[0][1]));
       }
-    );
+      if (arrayJson[1][1]) {
+        const tempMeals: IDay[] = JSON.parse(arrayJson[1][1]);
+        setMeals(tempMeals.map((tempMeal) => ({ ...tempMeal, date: new Date(tempMeal.date) })));
+        // setMeals(JSON.parse(arrayJson[1][1]));
+      }
+      if (arrayJson[2][1]) {
+        setRecipes(JSON.parse(arrayJson[2][1]));
+      }
+      if (arrayJson[3][1]) {
+        setHistories(JSON.parse(arrayJson[3][1]));
+      }
+      if (arrayJson[4][1]) {
+        const tempReminders: IReminder[] = JSON.parse(arrayJson[4][1]);
+        setReminders(tempReminders.map((tempReminder) => ({ ...tempReminder, time: new Date(tempReminder.time) })));
+        // setReminders(JSON.parse(arrayJson[4][1]));
+      }
+      if (arrayJson[5][1]) {
+        const tempWeights: IMeasurement[] = JSON.parse(arrayJson[5][1]);
+        setWeights(tempWeights.map((tempWeight) => ({ ...tempWeight, date: new Date(tempWeight.date) })));
+        // setWeights(JSON.parse(arrayJson[5][1]));
+      }
+      if (arrayJson[6][1]) {
+        setMacros(JSON.parse(arrayJson[6][1]));
+      }
+    });
   }, []);
 
   return (
@@ -115,6 +149,8 @@ function NutritionProvider({ children }: IProviderChildren) {
         setReminders,
         weights,
         setWeights,
+        macros,
+        setMacros,
       }}
     >
       {children}
