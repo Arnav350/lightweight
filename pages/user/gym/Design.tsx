@@ -9,11 +9,11 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, IRoutine, IWorkoutSettings, IWorkout } from "../../workout/Workout";
+import { IExercise, IRoutine } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
 import ExerciseOptions from "../../../components/shared/ExerciseActions";
 import DesignExercise from "../../../components/gym/DesignExercise";
-import { initCurrentWorkout } from "../../../constants/init";
+import { initCurrentRoutine } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
 export type TDesignProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Design">, TCompositeProps>;
@@ -24,11 +24,11 @@ function Design(props: TDesignProps) {
     route: { params },
   } = props;
   const currentUser = useContext(AuthContext);
-  const { currentWorkout, setCurrentWorkout, routines, setRoutines, settings } = useContext(WorkoutContext);
+  const { currentRoutine, setCurrentRoutine, routines, setRoutines, settings } = useContext(WorkoutContext);
 
   const [focused, setFocused] = useState<boolean>(false);
 
-  const [originalWorkout] = useState<IWorkout>(currentWorkout);
+  const [originalRoutine] = useState<IRoutine>(currentRoutine);
 
   function back() {
     if (!routines[params.i].creator) {
@@ -37,12 +37,12 @@ function Design(props: TDesignProps) {
 
     navigation.goBack();
 
-    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
+    setTimeout(() => setCurrentRoutine({ ...initCurrentRoutine }), 250);
   }
 
   function handleLeftPress() {
-    if (currentWorkout !== originalWorkout) {
-      Alert.alert("Are you sure?", `Routine "${currentWorkout.name.trim() || "Untitled Routine"}" will not be saved`, [
+    if (currentRoutine !== originalRoutine) {
+      Alert.alert("Are you sure?", `Routine "${currentRoutine.name.trim() || "Untitled Routine"}" will not be saved`, [
         {
           text: "Back",
           onPress: back,
@@ -56,38 +56,38 @@ function Design(props: TDesignProps) {
   }
 
   function handleSavePress() {
-    const workoutName: string = currentWorkout.name.trim() || "Untitled Routine";
+    const routineName: string = currentRoutine.name.trim() || "Untitled Routine";
     //set creator to username
 
-    if (routines.find((routine: IRoutine, i: number) => routine.name === workoutName && i !== params.i)) {
+    if (routines.find((routine: IRoutine, i: number) => routine.name === routineName && i !== params.i)) {
       let j = 1;
-      while (routines.find((routine) => routine.name === `${workoutName} (${j})`) && j !== params.i) {
+      while (routines.find((routine) => routine.name === `${routineName} (${j})`) && j !== params.i) {
         j++;
       }
       setRoutines((prevRoutines) =>
         prevRoutines.map((routine: IRoutine, i: number) =>
           i === params.i
-            ? { name: `${workoutName} (${j})`, creator: "PumpPeak", exercises: currentWorkout.exercises }
+            ? { name: `${routineName} (${j})`, creator: "PumpPeak", exercises: currentRoutine.exercises }
             : routine
         )
       );
     } else {
       setRoutines((prevRoutines) =>
         prevRoutines.map((routine: IRoutine, i: number) =>
-          i === params.i ? { name: workoutName, creator: "PumpPeak", exercises: currentWorkout.exercises } : routine
+          i === params.i ? { name: routineName, creator: "PumpPeak", exercises: currentRoutine.exercises } : routine
         )
       );
     }
 
     navigation.goBack();
 
-    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
+    setTimeout(() => setCurrentRoutine({ ...initCurrentRoutine }), 250);
   }
 
   function handleDeletePress() {
     Alert.alert(
       "Delete Routine?",
-      `Are you sure you want to delete "${currentWorkout.name.trim() || "Untitled Routine"}"`,
+      `Are you sure you want to delete "${currentRoutine.name.trim() || "Untitled Routine"}"`,
       [
         {
           text: "Delete",
@@ -118,28 +118,28 @@ function Design(props: TDesignProps) {
       </View>
       <ScrollView style={styles.newContainer}>
         <TextInput
-          value={currentWorkout.name}
+          value={currentRoutine.name}
           placeholder="Routine Name"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={focused ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentWorkout({ ...currentWorkout, name: text })}
+          onChangeText={(text: string) => setCurrentRoutine({ ...currentRoutine, name: text })}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
-        {currentWorkout.exercises.length ? (
-          currentWorkout.exercises.map((exercise: IExercise, i: number) => (
+        {currentRoutine.exercises.length ? (
+          currentRoutine.exercises.map((exercise: IExercise, i: number) => (
             <DesignExercise key={exercise.name} i={i} exercise={exercise} />
           ))
         ) : (
-          <Text style={currentWorkout.name.trim() ? [styles.start, { color: COLORS.gray }] : styles.start}>
+          <Text style={currentRoutine.name.trim() ? [styles.start, { color: COLORS.gray }] : styles.start}>
             Start creating your own routine by adding an exercise
           </Text>
         )}
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonContainer}
-          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length })}
+          onPress={() => navigation.navigate("Exercises", { i: currentRoutine.exercises.length, workout: false })}
         >
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
@@ -150,10 +150,10 @@ function Design(props: TDesignProps) {
         )}
       </ScrollView>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <ExerciseOptions navigate={props} />
+        <ExerciseOptions workout={false} navigate={props} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showType}>
-        <SetType />
+        <SetType workout={false} />
       </Modal>
     </SafeAreaView>
   );

@@ -15,7 +15,7 @@ type TProps = StackScreenProps<TGymStackParamList, "Progress">;
 const windowDimensions = Dimensions.get("window");
 
 function Progress({ navigation }: TProps) {
-  const { exercises, workouts } = useContext(WorkoutContext);
+  const { workouts, exercises } = useContext(WorkoutContext);
 
   const [input, setInput] = useState<string>("");
   const [currentName, setCurrentName] = useState<string>("");

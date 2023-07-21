@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -8,36 +8,42 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IWorkout } from "../../workout/Workout";
 import WorkoutLog from "../../../components/gym/WorkoutLog";
+import ResumeWorkout from "../../../components/shared/ResumeWorkout";
 import { COLORS } from "../../../constants/theme";
-import { initCurrentWorkout } from "../../../constants/init";
+import { initCurrentRoutine } from "../../../constants/init";
 
 export type TGymProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
 
 function Gym(props: TGymProps) {
   const { navigation } = props;
-  const { setCurrentWorkout, workouts, routines, setRoutines } = useContext(WorkoutContext);
+  const { currentWorkout, setCurrentWorkout, setCurrentRoutine, workouts, routines, setRoutines } =
+    useContext(WorkoutContext);
 
   function handleEmptyPress() {
     const date: Date = new Date();
-    setCurrentWorkout({
-      date: {
-        month: date.toLocaleDateString("default", { month: "short" }),
-        day: date.toLocaleDateString("default", { day: "2-digit" }),
-        year: date.getFullYear(),
-      },
-      name: "Untitled Workout",
-      time: date.getTime(),
-      weight: 0,
-      exercises: [],
-    });
 
     navigation.navigate("WorkoutStack", { screen: "Workout" });
+
+    setTimeout(
+      () =>
+        setCurrentWorkout({
+          date: {
+            month: date.toLocaleDateString("default", { month: "short" }),
+            day: date.toLocaleDateString("default", { day: "2-digit" }),
+            year: date.getFullYear(),
+          },
+          name: "Untitled Workout",
+          time: date.getTime(),
+          weight: 0,
+          exercises: [],
+        }),
+      500
+    );
   }
 
   function handleNewPress() {
-    setCurrentWorkout(initCurrentWorkout);
+    setCurrentRoutine({ ...initCurrentRoutine });
     setRoutines((prevRoutines) => [...prevRoutines, { name: "", creator: "", exercises: [] }]);
 
     navigation.navigate("Design", { i: routines.length });
@@ -89,6 +95,7 @@ function Gym(props: TGymProps) {
         }
         style={styles.gymContainer}
       />
+      {currentWorkout.time !== 0 && <ResumeWorkout navigate={props} />}
     </SafeAreaView>
   );
 }

@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { IExercise, IWorkout, IRoutine, IWorkoutSettings } from "../pages/workout/Workout";
-import { initCurrentWorkout } from "../constants/init";
+import { initCurrentRoutine, initCurrentWorkout } from "../constants/init";
 
 interface IProviderChildren {
   children: ReactNode;
@@ -15,6 +15,8 @@ interface IWorkoutContext {
   setExercises: Dispatch<SetStateAction<IExercise[]>>;
   workouts: IWorkout[];
   setWorkouts: Dispatch<SetStateAction<IWorkout[]>>;
+  currentRoutine: IRoutine;
+  setCurrentRoutine: Dispatch<SetStateAction<IRoutine>>;
   routines: IRoutine[];
   setRoutines: Dispatch<SetStateAction<IRoutine[]>>;
   settings: IWorkoutSettings;
@@ -35,9 +37,10 @@ const initSettings: IWorkoutSettings = {
 
 function WorkoutProvider({ children }: IProviderChildren) {
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initCurrentWorkout);
-  const [exercises, setExercises] = useState<IExercise[]>(initArray);
   const [workouts, setWorkouts] = useState<IWorkout[]>(initArray);
+  const [currentRoutine, setCurrentRoutine] = useState<IRoutine>(initCurrentRoutine);
   const [routines, setRoutines] = useState<IRoutine[]>(initArray);
+  const [exercises, setExercises] = useState<IExercise[]>(initArray);
   const [settings, setSettings] = useState<IWorkoutSettings>(initSettings);
 
   useEffect(() => {
@@ -47,16 +50,16 @@ function WorkoutProvider({ children }: IProviderChildren) {
   }, [currentWorkout]);
 
   useEffect(() => {
-    if (exercises !== initArray) {
-      AsyncStorage.setItem("@exercises", JSON.stringify(exercises));
-    }
-  }, [exercises]);
-
-  useEffect(() => {
     if (workouts !== initArray) {
       AsyncStorage.setItem("@workouts", JSON.stringify(workouts));
     }
   }, [workouts]);
+
+  useEffect(() => {
+    if (currentRoutine !== initCurrentRoutine) {
+      AsyncStorage.setItem("@currentRoutine", JSON.stringify(currentRoutine));
+    }
+  }, [currentRoutine]);
 
   useEffect(() => {
     if (routines !== initArray) {
@@ -65,20 +68,31 @@ function WorkoutProvider({ children }: IProviderChildren) {
   }, [routines]);
 
   useEffect(() => {
-    AsyncStorage.multiGet(["@currentWorkout", "@exercises", "@workouts", "@routines"]).then((arrayJson) => {
-      if (arrayJson[0][1]) {
-        setCurrentWorkout(JSON.parse(arrayJson[0][1]));
+    if (exercises !== initArray) {
+      AsyncStorage.setItem("@exercises", JSON.stringify(exercises));
+    }
+  }, [exercises]);
+
+  useEffect(() => {
+    AsyncStorage.multiGet(["@currentWorkout", "@workouts", "@currentRoutine", "@routines", "@exercises"]).then(
+      (arrayJson) => {
+        if (arrayJson[0][1]) {
+          setCurrentWorkout(JSON.parse(arrayJson[0][1]));
+        }
+        if (arrayJson[1][1]) {
+          setWorkouts(JSON.parse(arrayJson[1][1]));
+        }
+        if (arrayJson[2][1]) {
+          setCurrentRoutine(JSON.parse(arrayJson[2][1]));
+        }
+        if (arrayJson[3][1]) {
+          setRoutines(JSON.parse(arrayJson[3][1]));
+        }
+        if (arrayJson[4][1]) {
+          setExercises(JSON.parse(arrayJson[4][1]));
+        }
       }
-      if (arrayJson[1][1]) {
-        setExercises(JSON.parse(arrayJson[1][1]));
-      }
-      if (arrayJson[2][1]) {
-        setWorkouts(JSON.parse(arrayJson[2][1]));
-      }
-      if (arrayJson[3][1]) {
-        setRoutines(JSON.parse(arrayJson[3][1]));
-      }
-    });
+    );
   }, []);
 
   return (
@@ -86,12 +100,14 @@ function WorkoutProvider({ children }: IProviderChildren) {
       value={{
         currentWorkout,
         setCurrentWorkout,
-        exercises,
-        setExercises,
         workouts,
         setWorkouts,
+        currentRoutine,
+        setCurrentRoutine,
         routines,
         setRoutines,
+        exercises,
+        setExercises,
         settings,
         setSettings,
       }}

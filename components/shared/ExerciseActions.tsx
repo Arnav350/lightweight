@@ -8,11 +8,12 @@ import ActionOptions from "./ActionOptions";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  workout: boolean;
   navigate: TWorkoutProps | TDesignProps;
 }
 
-function ExerciseActions({ navigate: { navigation } }: IProps) {
-  const { setCurrentWorkout, settings, setSettings } = useContext(WorkoutContext);
+function ExerciseActions({ workout, navigate: { navigation } }: IProps) {
+  const { setCurrentWorkout, setCurrentRoutine, settings, setSettings } = useContext(WorkoutContext);
 
   function handleReplacePress() {
     // FIX THIS
@@ -22,10 +23,17 @@ function ExerciseActions({ navigate: { navigation } }: IProps) {
   }
 
   function handleRemovePress() {
-    setCurrentWorkout((prevCurrentWorkout) => ({
-      ...prevCurrentWorkout,
-      exercises: prevCurrentWorkout.exercises.filter((_exercise, i) => i !== settings.i),
-    }));
+    if (workout) {
+      setCurrentWorkout((prevCurrentWorkout) => ({
+        ...prevCurrentWorkout,
+        exercises: prevCurrentWorkout.exercises.filter((_exercise, i) => i !== settings.i),
+      }));
+    } else {
+      setCurrentRoutine((prevCurrentRoutine) => ({
+        ...prevCurrentRoutine,
+        exercises: prevCurrentRoutine.exercises.filter((_exercise, i) => i !== settings.i),
+      }));
+    }
     setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }));
   }
 

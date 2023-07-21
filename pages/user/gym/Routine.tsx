@@ -11,16 +11,16 @@ import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IExercise, ISet } from "../../workout/Workout";
 import RoutineSet from "../../../components/gym/RoutineSet";
 import { COLORS } from "../../../constants/theme";
-import { initCurrentWorkout } from "../../../constants/init";
+import { initCurrentRoutine } from "../../../constants/init";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
 function Routine({ navigation, route: { params } }: TProps) {
-  const { setCurrentWorkout, routines } = useContext(WorkoutContext);
+  const { setCurrentWorkout, setCurrentRoutine, routines } = useContext(WorkoutContext);
 
   function handleEditPress() {
-    setCurrentWorkout({
-      ...initCurrentWorkout,
+    setCurrentRoutine({
+      ...initCurrentRoutine,
       name: routines[params.i].name,
       exercises: [...routines[params.i].exercises],
     });

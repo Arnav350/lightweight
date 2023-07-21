@@ -10,14 +10,15 @@ import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
+  workout: boolean;
   navigate: StackScreenProps<TRootStackParamList, "Exercises">;
   exercise: IExercise;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   setEditExercise: Dispatch<SetStateAction<IExercise | null>>;
 }
 
-function AddExercise({ i, navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
-  const { currentWorkout, setCurrentWorkout } = useContext(WorkoutContext);
+function AddExercise({ i, workout, navigate: { navigation }, exercise, setShowEdit, setEditExercise }: IProps) {
+  const { currentWorkout, setCurrentWorkout, currentRoutine, setCurrentRoutine } = useContext(WorkoutContext);
 
   function handleContainerPress() {
     setShowEdit(true);
@@ -25,16 +26,30 @@ function AddExercise({ i, navigate: { navigation }, exercise, setShowEdit, setEd
   }
 
   function handlePlusPress() {
-    if (i === currentWorkout.exercises.length) {
-      setCurrentWorkout((prevCurrentWorkout) => ({
-        ...prevCurrentWorkout,
-        exercises: [...prevCurrentWorkout.exercises, { ...exercise, sets: [exercise.sets[0]] }],
-      }));
+    if (workout) {
+      if (i === currentWorkout.exercises.length) {
+        setCurrentWorkout((prevCurrentWorkout) => ({
+          ...prevCurrentWorkout,
+          exercises: [...prevCurrentWorkout.exercises, { ...exercise, sets: [exercise.sets[0]] }],
+        }));
+      } else {
+        setCurrentWorkout((prevCurrentWorkout) => ({
+          ...prevCurrentWorkout,
+          exercises: prevCurrentWorkout.exercises.map((prevExercise, j) => (j === i ? exercise : prevExercise)),
+        }));
+      }
     } else {
-      setCurrentWorkout((prevCurrentWorkout) => ({
-        ...prevCurrentWorkout,
-        exercises: prevCurrentWorkout.exercises.map((prevExercise, j) => (j === i ? exercise : prevExercise)),
-      }));
+      if (i === currentRoutine.exercises.length) {
+        setCurrentRoutine((prevCurrentRoutine) => ({
+          ...prevCurrentRoutine,
+          exercises: [...prevCurrentRoutine.exercises, { ...exercise, sets: [exercise.sets[0]] }],
+        }));
+      } else {
+        setCurrentRoutine((prevCurrentRoutine) => ({
+          ...prevCurrentRoutine,
+          exercises: prevCurrentRoutine.exercises.map((prevExercise, j) => (j === i ? exercise : prevExercise)),
+        }));
+      }
     }
     navigation.goBack();
   }

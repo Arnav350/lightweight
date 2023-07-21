@@ -17,7 +17,7 @@ import { COLORS } from "./constants/theme";
 export type TRootStackParamList = {
   UserStack: NavigatorScreenParams<TTabParamsList>;
   WorkoutStack: NavigatorScreenParams<TWorkoutStackParamList>;
-  Exercises: { i: number };
+  Exercises: { i: number; workout: boolean };
 };
 
 export type TCompositeProps = CompositeScreenProps<

@@ -12,7 +12,7 @@ import { IRoutine } from "../../workout/Workout";
 import MyRoutine from "../../../components/gym/MyRoutine";
 import ExploreRoutine from "../../../components/gym/ExploreRoutine";
 import RoutineActions from "../../../components/gym/RoutineActions";
-import { initCurrentWorkout } from "../../../constants/init";
+import { initCurrentRoutine } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
 export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Select">, TCompositeProps>;
@@ -20,10 +20,10 @@ export type TSelectProps = CompositeScreenProps<StackScreenProps<TGymStackParamL
 function Select(props: TSelectProps) {
   const { navigation } = props;
 
-  const { setCurrentWorkout, routines, setRoutines, settings } = useContext(WorkoutContext);
+  const { setCurrentRoutine, routines, setRoutines, settings } = useContext(WorkoutContext);
 
   function handlePress() {
-    setCurrentWorkout(initCurrentWorkout);
+    setCurrentRoutine({ ...initCurrentRoutine });
     setTimeout(() => setRoutines((prevRoutines) => [...prevRoutines, { name: "", creator: "", exercises: [] }]), 500);
 
     navigation.navigate("Design", { i: routines.length });

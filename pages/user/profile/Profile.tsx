@@ -42,6 +42,24 @@ function Profile() {
       >
         <Text>Check Routines</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={async () =>
+          await AsyncStorage.getItem("@currentRoutine")
+            .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
+            .catch((error) => console.log(error))
+        }
+      >
+        <Text>Check CurrentRoutine</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={async () =>
+          await AsyncStorage.getItem("@currentWorkout")
+            .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
+            .catch((error) => console.log(error))
+        }
+      >
+        <Text>Check CurrentWorkout</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

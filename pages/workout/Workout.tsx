@@ -68,16 +68,13 @@ export interface IWorkoutSettings {
 function Workout(props: TWorkoutProps) {
   const { navigation } = props;
 
-  const { currentWorkout, setCurrentWorkout, exercises, setExercises, setWorkouts, settings, setSettings } =
+  const { currentWorkout, setCurrentWorkout, setWorkouts, exercises, setExercises, settings, setSettings } =
     useContext(WorkoutContext);
 
   // const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
   const [showTimer, setShowTimer] = useState<boolean>(false);
 
   function handleLeftPress() {
-    //temporary
-    setCurrentWorkout(initCurrentWorkout);
-
     navigation.navigate("UserStack", { screen: "GymStack", params: { screen: "Gym" } });
   }
 
@@ -120,7 +117,7 @@ function Workout(props: TWorkoutProps) {
       params: { screen: "Gym" },
     });
 
-    setTimeout(() => setCurrentWorkout(initCurrentWorkout), 250);
+    setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 250);
   }
 
   function handleFinishPress() {
@@ -218,7 +215,7 @@ function Workout(props: TWorkoutProps) {
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonContainer}
-          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length })}
+          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length, workout: true })}
         >
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
@@ -249,13 +246,13 @@ function Workout(props: TWorkoutProps) {
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <ExerciseActions navigate={props} />
+        <ExerciseActions workout={true} navigate={props} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showCalculator}>
         <WeightCalculator />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showType}>
-        <SetType />
+        <SetType workout={true} />
       </Modal>
     </SafeAreaView>
   );

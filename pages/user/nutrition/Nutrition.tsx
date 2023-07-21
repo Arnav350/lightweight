@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TCompositeProps } from "../../../App";
 import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
 import NutritionMacros from "../../../components/nutrition/NutritionMacros";
@@ -12,7 +14,10 @@ import NutritionSteps from "../../../components/nutrition/NutritionSteps";
 import NutritionMeal from "../../../components/nutrition/NutritionMeal";
 import { COLORS } from "../../../constants/theme";
 
-export type TNutritionProps = StackScreenProps<TNutritionStackParamList, "Nutrition">;
+export type TNutritionProps = CompositeScreenProps<
+  StackScreenProps<TNutritionStackParamList, "Nutrition">,
+  TCompositeProps
+>;
 
 export interface IFood {
   name: string;
