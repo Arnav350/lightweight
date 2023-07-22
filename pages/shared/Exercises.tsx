@@ -85,7 +85,6 @@ function Exercises(props: TProps) {
               <AddExercise
                 key={exercise.name}
                 i={params.i}
-                workout={params.workout}
                 navigate={props}
                 exercise={exercise}
                 setShowEdit={setShowEdit}
@@ -103,7 +102,7 @@ function Exercises(props: TProps) {
         </View>
       </ScrollView>
       <Modal animationType="fade" transparent={true} visible={showEdit}>
-        <EditExercise navigate={props} workout={params.workout} setShowEdit={setShowEdit} editExercise={editExercise} />
+        <EditExercise navigate={props} setShowEdit={setShowEdit} editExercise={editExercise} />
       </Modal>
       <Modal animationType="fade" transparent={true} visible={showNew}>
         <NewExercise setShowNew={setShowNew} />

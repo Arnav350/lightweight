@@ -7,17 +7,17 @@ import { StatusBar } from "react-native";
 
 import AuthStack from "./stacks/AuthStack";
 import UserStack, { TTabParamsList } from "./stacks/UserStack";
-import WorkoutStack, { TWorkoutStackParamList } from "./stacks/WorkoutStack";
 import AuthProvider, { AuthContext } from "./hooks/useAuth";
 import WorkoutProvider from "./hooks/useWorkout";
+import Workout from "./pages/workout/Workout";
 import Exercises from "./pages/shared/Exercises";
 import Loading from "./pages/auth/Loading";
 import { COLORS } from "./constants/theme";
 
 export type TRootStackParamList = {
   UserStack: NavigatorScreenParams<TTabParamsList>;
-  WorkoutStack: NavigatorScreenParams<TWorkoutStackParamList>;
-  Exercises: { i: number; workout: boolean };
+  Workout: undefined;
+  Exercises: { i: number };
 };
 
 export type TCompositeProps = CompositeScreenProps<
@@ -39,7 +39,7 @@ function RootNavigator() {
       {currentUser ? (
         <Stack.Navigator initialRouteName="UserStack" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="UserStack" component={UserStack} />
-          <Stack.Screen name="WorkoutStack" component={WorkoutStack} />
+          <Stack.Screen name="Workout" component={Workout} />
           <Stack.Screen name="Exercises" component={Exercises} />
         </Stack.Navigator>
       ) : (

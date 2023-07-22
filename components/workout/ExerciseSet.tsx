@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 
@@ -11,14 +11,12 @@ interface IProps {
   i: number;
   j: number;
   prevSet: ISet;
-  prevExercise: IExercise;
+  currentSet: ISet;
+  currentExercise: IExercise;
 }
 
-function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
+function ExerciseSet({ i, j, prevSet, currentSet, currentExercise }: IProps) {
   const { setCurrentWorkout, setSettings } = useContext(WorkoutContext);
-  const [weight, setWeight] = useState<string>("");
-  const [reps, setReps] = useState<string>("");
-  const [notes, setNotes] = useState<string>("");
 
   return (
     <Swipeable
@@ -32,20 +30,19 @@ function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
         >
           <Text style={styles.set}>
             {prevSet.type === "N"
-              ? prevExercise.sets.slice(0, j + 1).filter((set: ISet) => set.type === "N").length
+              ? currentExercise.sets.slice(0, j + 1).filter((set: ISet) => set.type === "N").length
               : prevSet.type}
           </Text>
         </TouchableOpacity>
         <TextInput
-          value={weight}
+          defaultValue={currentSet.weight.toString()}
           placeholder={prevSet.weight.toString() || "-"}
           placeholderTextColor={COLORS.darkGray}
           keyboardType="numeric"
           maxLength={5}
           keyboardAppearance="dark"
           style={styles.weight}
-          onChangeText={setWeight}
-          onBlur={() =>
+          onEndEditing={({ nativeEvent }) =>
             setCurrentWorkout((prevCurrentWorkout) => ({
               ...prevCurrentWorkout,
               exercises: [
@@ -55,7 +52,9 @@ function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
                         ...exercise,
                         sets: [
                           ...prevCurrentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
-                            l === j ? { ...set, weight: weight === "" ? ("" as const) : Number(weight) } : set
+                            l === j
+                              ? { ...set, weight: nativeEvent.text === "" ? ("" as const) : Number(nativeEvent.text) }
+                              : set
                           ),
                         ],
                       }
@@ -66,15 +65,14 @@ function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
           }
         />
         <TextInput
-          value={reps}
+          defaultValue={currentSet.reps.toString()}
           placeholder={prevSet.reps.toString() || "-"}
           placeholderTextColor={COLORS.darkGray}
           keyboardType="numeric"
           maxLength={4}
           keyboardAppearance="dark"
           style={styles.reps}
-          onChangeText={setReps}
-          onBlur={() =>
+          onEndEditing={({ nativeEvent }) =>
             setCurrentWorkout((prevCurrentWorkout) => ({
               ...prevCurrentWorkout,
               exercises: [
@@ -84,7 +82,9 @@ function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
                         ...exercise,
                         sets: [
                           ...prevCurrentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
-                            l === j ? { ...set, reps: reps === "" ? ("" as const) : Number(reps) } : set
+                            l === j
+                              ? { ...set, reps: nativeEvent.text === "" ? ("" as const) : Number(nativeEvent.text) }
+                              : set
                           ),
                         ],
                       }
@@ -95,14 +95,13 @@ function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
           }
         />
         <TextInput
-          value={notes}
+          defaultValue={currentSet.notes}
           placeholder={prevSet.notes || "-"}
           placeholderTextColor={COLORS.darkGray}
           numberOfLines={1}
           keyboardAppearance="dark"
           style={styles.notes}
-          onChangeText={setNotes}
-          onBlur={() =>
+          onEndEditing={({ nativeEvent }) =>
             setCurrentWorkout((prevCurrentWorkout) => ({
               ...prevCurrentWorkout,
               exercises: [
@@ -112,7 +111,7 @@ function ExerciseSet({ i, j, prevSet, prevExercise }: IProps) {
                         ...exercise,
                         sets: [
                           ...prevCurrentWorkout.exercises[k].sets.map((set: ISet, l: number) =>
-                            l === j ? { ...set, notes } : set
+                            l === j ? { ...set, notes: nativeEvent.text } : set
                           ),
                         ],
                       }

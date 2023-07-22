@@ -30,7 +30,7 @@ function MyRoutine({ i, routine, navigate: { navigation } }: IProps) {
       exercises: [...routines[i].exercises],
     });
 
-    navigation.navigate("WorkoutStack", { screen: "Workout" });
+    navigation.navigate("Workout");
   }
 
   return (

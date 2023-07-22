@@ -1,17 +1,35 @@
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { COLORS } from "../../constants/theme";
+import { WorkoutContext } from "../../hooks/useWorkout";
 import { TGymProps } from "../../pages/user/gym/Gym";
 import { TNutritionProps } from "../../pages/user/nutrition/Nutrition";
+import { initCurrentWorkout } from "../../constants/init";
+import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  navigate: TGymProps | TNutritionProps;
+  navigateGym?: TGymProps;
+  navigateNutrition?: TNutritionProps;
 }
 
-function ResumeWorkout(props: IProps) {
+function ResumeWorkout({ navigateGym, navigateNutrition }: IProps) {
+  const { setCurrentWorkout, resumeWorkout, setResumeWorkout } = useContext(WorkoutContext);
+
+  function handlePress() {
+    setCurrentWorkout(resumeWorkout);
+
+    if (navigateGym) {
+      navigateGym.navigation.navigate("Workout");
+    } else if (navigateNutrition) {
+      navigateNutrition.navigation.navigate("Workout");
+    }
+
+    setTimeout(() => setResumeWorkout({ ...initCurrentWorkout }), 500);
+  }
+
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={() => {}}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
       <View style={styles.resumeContainer}>
         <Icon name="play" size={24} color={COLORS.white} />
         <Text style={styles.resume}>Resume Workout</Text>
@@ -22,7 +40,6 @@ function ResumeWorkout(props: IProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 4,
     height: 48,
     backgroundColor: COLORS.black,
     borderBottomWidth: 1,

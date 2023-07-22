@@ -96,7 +96,14 @@ function WorkoutExercise({ i, currentExercise }: IProps) {
       </View>
       <View style={styles.setsContainer}>
         {prevExercise.sets.slice(0, currentExercise.sets.length).map((prevSet: ISet, j: number) => (
-          <ExerciseSet key={j} i={i} j={j} prevSet={prevSet} prevExercise={prevExercise} />
+          <ExerciseSet
+            key={j}
+            i={i}
+            j={j}
+            prevSet={prevSet}
+            currentSet={currentExercise.sets[j]}
+            currentExercise={currentExercise}
+          />
         ))}
       </View>
       <TouchableOpacity activeOpacity={0.5} style={styles.addContainer} onPress={handleAddPress}>

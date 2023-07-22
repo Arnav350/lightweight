@@ -12,12 +12,6 @@ export const initCurrentWorkout: IWorkout = {
   exercises: [],
 };
 
-export const initCurrentRoutine: IRoutine = {
-  name: "",
-  creator: "",
-  exercises: [],
-};
-
 export const equipmentsList: string[] = [
   "None",
   "Barbell",

@@ -10,17 +10,17 @@ import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import { IExercise, ISet } from "../../workout/Workout";
 import RoutineSet from "../../../components/gym/RoutineSet";
+import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
-import { initCurrentRoutine } from "../../../constants/init";
 
 type TProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Routine">, TCompositeProps>;
 
 function Routine({ navigation, route: { params } }: TProps) {
-  const { setCurrentWorkout, setCurrentRoutine, routines } = useContext(WorkoutContext);
+  const { setCurrentWorkout, routines } = useContext(WorkoutContext);
 
   function handleEditPress() {
-    setCurrentRoutine({
-      ...initCurrentRoutine,
+    setCurrentWorkout({
+      ...initCurrentWorkout,
       name: routines[params.i].name,
       exercises: [...routines[params.i].exercises],
     });
@@ -42,7 +42,7 @@ function Routine({ navigation, route: { params } }: TProps) {
       exercises: [...routines[params.i].exercises],
     });
 
-    navigation.navigate("WorkoutStack", { screen: "Workout" });
+    navigation.navigate("Workout");
   }
 
   return (

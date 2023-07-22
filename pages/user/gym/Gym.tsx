@@ -10,20 +10,20 @@ import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import WorkoutLog from "../../../components/gym/WorkoutLog";
 import ResumeWorkout from "../../../components/shared/ResumeWorkout";
+import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
-import { initCurrentRoutine } from "../../../constants/init";
 
 export type TGymProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Gym">, TCompositeProps>;
 
 function Gym(props: TGymProps) {
   const { navigation } = props;
-  const { currentWorkout, setCurrentWorkout, setCurrentRoutine, workouts, routines, setRoutines } =
+  const { currentWorkout, setCurrentWorkout, resumeWorkout, workouts, routines, setRoutines } =
     useContext(WorkoutContext);
 
   function handleEmptyPress() {
     const date: Date = new Date();
 
-    navigation.navigate("WorkoutStack", { screen: "Workout" });
+    navigation.navigate("Workout");
 
     setTimeout(
       () =>
@@ -43,7 +43,7 @@ function Gym(props: TGymProps) {
   }
 
   function handleNewPress() {
-    setCurrentRoutine({ ...initCurrentRoutine });
+    setCurrentWorkout({ ...initCurrentWorkout });
     setRoutines((prevRoutines) => [...prevRoutines, { name: "", creator: "", exercises: [] }]);
 
     navigation.navigate("Design", { i: routines.length });
@@ -95,7 +95,7 @@ function Gym(props: TGymProps) {
         }
         style={styles.gymContainer}
       />
-      {currentWorkout.time !== 0 && <ResumeWorkout navigate={props} />}
+      {resumeWorkout.time !== 0 && <ResumeWorkout navigateGym={props} />}
     </SafeAreaView>
   );
 }
@@ -103,7 +103,6 @@ function Gym(props: TGymProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: -4,
     backgroundColor: COLORS.blackTwo,
   },
   headerContainer: {

@@ -6,40 +6,24 @@ import { WorkoutContext } from "../../hooks/useWorkout";
 import { ISet, TType } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
-interface IProps {
-  workout: boolean;
-}
-
-function SetType({ workout }: IProps) {
-  const { currentWorkout, setCurrentWorkout, currentRoutine, setCurrentRoutine, settings, setSettings } =
-    useContext(WorkoutContext);
+function SetType() {
+  const { currentWorkout, setCurrentWorkout, settings, setSettings } = useContext(WorkoutContext);
 
   const [showMeanings, setShowMeanings] = useState<boolean>(false);
 
-  const setNumber: number = (workout ? currentWorkout : currentRoutine).exercises[settings.i].sets
+  const setNumber: number = currentWorkout.exercises[settings.i].sets
     .slice(0, settings.j + 1)
     .filter((set: ISet) => set.type === "N").length;
 
   function handlePress(type: TType) {
-    if (workout) {
-      setCurrentWorkout((prevCurrentWorkout) => ({
-        ...prevCurrentWorkout,
-        exercises: prevCurrentWorkout.exercises.map((exercise, i) =>
-          i === settings.i
-            ? { ...exercise, sets: exercise.sets.map((set, j) => (j === settings.j ? { ...set, type } : set)) }
-            : exercise
-        ),
-      }));
-    } else {
-      setCurrentRoutine((prevCurrentRoutine) => ({
-        ...prevCurrentRoutine,
-        exercises: prevCurrentRoutine.exercises.map((exercise, i) =>
-          i === settings.i
-            ? { ...exercise, sets: exercise.sets.map((set, j) => (j === settings.j ? { ...set, type } : set)) }
-            : exercise
-        ),
-      }));
-    }
+    setCurrentWorkout((prevCurrentWorkout) => ({
+      ...prevCurrentWorkout,
+      exercises: prevCurrentWorkout.exercises.map((exercise, i) =>
+        i === settings.i
+          ? { ...exercise, sets: exercise.sets.map((set, j) => (j === settings.j ? { ...set, type } : set)) }
+          : exercise
+      ),
+    }));
 
     setSettings((prevSettings) => ({ ...prevSettings, showType: false }));
   }
@@ -59,9 +43,7 @@ function SetType({ workout }: IProps) {
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("N")}>
             <Text style={styles.type}>
-              {(workout ? currentWorkout : currentRoutine).exercises[settings.i].sets[settings.j].type === "N"
-                ? setNumber
-                : setNumber + 1}
+              {currentWorkout.exercises[settings.i].sets[settings.j].type === "N" ? setNumber : setNumber + 1}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.3} onPress={() => handlePress("D")}>

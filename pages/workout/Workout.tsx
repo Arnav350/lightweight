@@ -1,13 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Alert, Keyboard, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
-import { TWorkoutStackParamList } from "../../stacks/WorkoutStack";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import WorkoutExercise from "../../components/workout/WorkoutExercise";
 import WorkoutTimer from "../../components/workout/WorkoutTimer";
@@ -17,10 +15,7 @@ import WeightCalculator from "../../components/workout/WeightCalculator";
 import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
-export type TWorkoutProps = CompositeScreenProps<
-  StackScreenProps<TWorkoutStackParamList, "Workout">,
-  StackScreenProps<TRootStackParamList>
->;
+export type TWorkoutProps = StackScreenProps<TRootStackParamList, "Workout">;
 
 export type TType = "D" | "N" | "S" | "W";
 
@@ -68,14 +63,28 @@ export interface IWorkoutSettings {
 function Workout(props: TWorkoutProps) {
   const { navigation } = props;
 
-  const { currentWorkout, setCurrentWorkout, setWorkouts, exercises, setExercises, settings, setSettings } =
-    useContext(WorkoutContext);
+  const {
+    currentWorkout,
+    setCurrentWorkout,
+    setResumeWorkout,
+    setWorkouts,
+    exercises,
+    setExercises,
+    settings,
+    setSettings,
+  } = useContext(WorkoutContext);
 
   // const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
+  const currentExercises: IExercise[] = useMemo(() => currentWorkout.exercises, [currentWorkout.exercises.length]);
   const [showTimer, setShowTimer] = useState<boolean>(false);
 
   function handleLeftPress() {
     navigation.navigate("UserStack", { screen: "GymStack", params: { screen: "Gym" } });
+
+    if (currentWorkout.weight === 0) {
+      setResumeWorkout(currentWorkout);
+    }
+    setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
   }
 
   function finish(tempWorkout: IWorkout) {
@@ -117,7 +126,7 @@ function Workout(props: TWorkoutProps) {
       params: { screen: "Gym" },
     });
 
-    setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 250);
+    setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
   }
 
   function handleFinishPress() {
@@ -183,6 +192,15 @@ function Workout(props: TWorkoutProps) {
     }
   }
 
+  function handleCancelPress() {
+    navigation.navigate("UserStack", {
+      screen: "GymStack",
+      params: { screen: "Gym" },
+    });
+
+    setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -204,9 +222,11 @@ function Workout(props: TWorkoutProps) {
             onChangeText={(text) => setCurrentWorkout((prevCurrentWorkout) => ({ ...prevCurrentWorkout, name: text }))}
           />
         </View>
-        <TouchableOpacity activeOpacity={0.3} onPress={handleFinishPress}>
-          <Text style={styles.finish}>Finish</Text>
-        </TouchableOpacity>
+        {currentWorkout.weight === 0 && (
+          <TouchableOpacity activeOpacity={0.3} onPress={handleFinishPress}>
+            <Text style={styles.finish}>Finish</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView style={styles.workoutContainer}>
         {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
@@ -215,9 +235,12 @@ function Workout(props: TWorkoutProps) {
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonContainer}
-          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length, workout: true })}
+          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length })}
         >
           <Text style={styles.button}>Add Exercise</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleCancelPress}>
+          <Text style={styles.button}>Cancel Workout</Text>
         </TouchableOpacity>
       </ScrollView>
       {/* I DONT LIKE THAT ANIMATE ON IS NONE */}
@@ -246,13 +269,13 @@ function Workout(props: TWorkoutProps) {
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <ExerciseActions workout={true} navigate={props} />
+        <ExerciseActions navigate={props} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showCalculator}>
         <WeightCalculator />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showType}>
-        <SetType workout={true} />
+        <SetType />
       </Modal>
     </SafeAreaView>
   );
@@ -277,22 +300,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputContainer: {
-    paddingHorizontal: 20,
-    maxWidth: "80%",
+    flexShrink: 1,
+    marginHorizontal: 8,
+    paddingHorizontal: 8,
     backgroundColor: COLORS.black,
     borderRadius: 16,
   },
   header: {
     padding: 8,
-    backgroundColor: "transparent",
     borderRadius: 8,
     color: COLORS.white,
-    textAlign: "center",
     fontSize: 24,
     fontWeight: "500",
   },
   finish: {
-    margin: 8,
+    marginHorizontal: 4,
     color: COLORS.primary,
     fontSize: 18,
     fontWeight: "500",

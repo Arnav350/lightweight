@@ -7,11 +7,13 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../../App";
 import { TNutritionStackParamList } from "../../../stacks/UserStack";
+import { WorkoutContext } from "../../../hooks/useWorkout";
 import { NutritionContext } from "../../../hooks/useNutrition";
 import NutritionMacros from "../../../components/nutrition/NutritionMacros";
 import NutritionWeight from "../../../components/nutrition/NutritionWeight";
 import NutritionSteps from "../../../components/nutrition/NutritionSteps";
 import NutritionMeal from "../../../components/nutrition/NutritionMeal";
+import ResumeWorkout from "../../../components/shared/ResumeWorkout";
 import { COLORS } from "../../../constants/theme";
 
 export type TNutritionProps = CompositeScreenProps<
@@ -68,7 +70,9 @@ const windowWidth = Dimensions.get("window").width;
 function Nutrition(props: TNutritionProps) {
   const { navigation } = props;
 
+  const { resumeWorkout } = useContext(WorkoutContext);
   const { currentMeals, setCurrentMeals, setMeals } = useContext(NutritionContext);
+
   const [mealName, setMealName] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
   const [slide, setSlide] = useState<number>(0);
@@ -149,6 +153,7 @@ function Nutrition(props: TNutritionProps) {
           <NutritionMeal key={meal.name} i={i} meal={meal} navigate={props} />
         ))}
       </ScrollView>
+      {resumeWorkout.time !== 0 && <ResumeWorkout navigateNutrition={props} />}
     </SafeAreaView>
   );
 }

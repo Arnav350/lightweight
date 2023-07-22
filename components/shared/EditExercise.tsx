@@ -12,13 +12,12 @@ import { COLORS } from "../../constants/theme";
 
 interface IProps {
   navigate: StackScreenProps<TRootStackParamList, "Exercises">;
-  workout: boolean;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
   editExercise: IExercise | null;
 }
 
-function EditExercise({ navigate: { navigation }, workout, setShowEdit, editExercise }: IProps) {
-  const { setCurrentWorkout, setCurrentRoutine, setExercises } = useContext(WorkoutContext);
+function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: IProps) {
+  const { setCurrentWorkout, setExercises } = useContext(WorkoutContext);
 
   const [exerciseName, setExerciseName] = useState<string>(editExercise?.name || "");
   const [currentEquipment, setCurrentEquipment] = useState<string>(editExercise?.equipment || "Any Equipment");
@@ -37,17 +36,11 @@ function EditExercise({ navigate: { navigation }, workout, setShowEdit, editExer
 
   function handleAddPress() {
     if (editExercise) {
-      if (workout) {
-        setCurrentWorkout((prevCurrentWorkout) => ({
-          ...prevCurrentWorkout,
-          exercises: [...prevCurrentWorkout.exercises, { ...editExercise, sets: [editExercise.sets[0]] }],
-        }));
-      } else {
-        setCurrentRoutine((prevCurrentRoutine) => ({
-          ...prevCurrentRoutine,
-          exercises: [...prevCurrentRoutine.exercises, { ...editExercise, sets: [editExercise.sets[0]] }],
-        }));
-      }
+      setCurrentWorkout((prevCurrentWorkout) => ({
+        ...prevCurrentWorkout,
+        exercises: [...prevCurrentWorkout.exercises, { ...editExercise, sets: [editExercise.sets[0]] }],
+      }));
+
       setShowEdit(false);
       navigation.goBack();
     }

@@ -23,7 +23,7 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
   function handlePress() {
     setCurrentWorkout(workout);
 
-    navigation.navigate("WorkoutStack", { screen: "Workout" });
+    navigation.navigate("Workout");
   }
 
   return (

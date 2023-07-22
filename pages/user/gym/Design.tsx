@@ -9,11 +9,11 @@ import { TCompositeProps } from "../../../App";
 import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, IRoutine } from "../../workout/Workout";
+import { IExercise, IRoutine, IWorkout } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
 import ExerciseOptions from "../../../components/shared/ExerciseActions";
 import DesignExercise from "../../../components/gym/DesignExercise";
-import { initCurrentRoutine } from "../../../constants/init";
+import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
 
 export type TDesignProps = CompositeScreenProps<StackScreenProps<TGymStackParamList, "Design">, TCompositeProps>;
@@ -24,11 +24,11 @@ function Design(props: TDesignProps) {
     route: { params },
   } = props;
   const currentUser = useContext(AuthContext);
-  const { currentRoutine, setCurrentRoutine, routines, setRoutines, settings } = useContext(WorkoutContext);
+  const { currentWorkout, setCurrentWorkout, routines, setRoutines, settings } = useContext(WorkoutContext);
 
   const [focused, setFocused] = useState<boolean>(false);
 
-  const [originalRoutine] = useState<IRoutine>(currentRoutine);
+  const originalWorkout: IWorkout = currentWorkout;
 
   function back() {
     if (!routines[params.i].creator) {
@@ -37,12 +37,12 @@ function Design(props: TDesignProps) {
 
     navigation.goBack();
 
-    setTimeout(() => setCurrentRoutine({ ...initCurrentRoutine }), 250);
+    setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
   }
 
   function handleLeftPress() {
-    if (currentRoutine !== originalRoutine) {
-      Alert.alert("Are you sure?", `Routine "${currentRoutine.name.trim() || "Untitled Routine"}" will not be saved`, [
+    if (currentWorkout !== originalWorkout) {
+      Alert.alert("Are you sure?", `Routine "${currentWorkout.name.trim() || "Untitled Routine"}" will not be saved`, [
         {
           text: "Back",
           onPress: back,
@@ -56,7 +56,7 @@ function Design(props: TDesignProps) {
   }
 
   function handleSavePress() {
-    const routineName: string = currentRoutine.name.trim() || "Untitled Routine";
+    const routineName: string = currentWorkout.name.trim() || "Untitled Routine";
     //set creator to username
 
     if (routines.find((routine: IRoutine, i: number) => routine.name === routineName && i !== params.i)) {
@@ -67,27 +67,27 @@ function Design(props: TDesignProps) {
       setRoutines((prevRoutines) =>
         prevRoutines.map((routine: IRoutine, i: number) =>
           i === params.i
-            ? { name: `${routineName} (${j})`, creator: "PumpPeak", exercises: currentRoutine.exercises }
+            ? { name: `${routineName} (${j})`, creator: "PumpPeak", exercises: currentWorkout.exercises }
             : routine
         )
       );
     } else {
       setRoutines((prevRoutines) =>
         prevRoutines.map((routine: IRoutine, i: number) =>
-          i === params.i ? { name: routineName, creator: "PumpPeak", exercises: currentRoutine.exercises } : routine
+          i === params.i ? { name: routineName, creator: "PumpPeak", exercises: currentWorkout.exercises } : routine
         )
       );
     }
 
     navigation.goBack();
 
-    setTimeout(() => setCurrentRoutine({ ...initCurrentRoutine }), 250);
+    setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
   }
 
   function handleDeletePress() {
     Alert.alert(
       "Delete Routine?",
-      `Are you sure you want to delete "${currentRoutine.name.trim() || "Untitled Routine"}"`,
+      `Are you sure you want to delete "${currentWorkout.name.trim() || "Untitled Routine"}"`,
       [
         {
           text: "Delete",
@@ -118,28 +118,28 @@ function Design(props: TDesignProps) {
       </View>
       <ScrollView style={styles.newContainer}>
         <TextInput
-          value={currentRoutine.name}
+          value={currentWorkout.name}
           placeholder="Routine Name"
           placeholderTextColor={COLORS.gray}
           keyboardAppearance="dark"
           style={focused ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
-          onChangeText={(text: string) => setCurrentRoutine({ ...currentRoutine, name: text })}
+          onChangeText={(text: string) => setCurrentWorkout({ ...currentWorkout, name: text })}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
-        {currentRoutine.exercises.length ? (
-          currentRoutine.exercises.map((exercise: IExercise, i: number) => (
+        {currentWorkout.exercises.length ? (
+          currentWorkout.exercises.map((exercise: IExercise, i: number) => (
             <DesignExercise key={exercise.name} i={i} exercise={exercise} />
           ))
         ) : (
-          <Text style={currentRoutine.name.trim() ? [styles.start, { color: COLORS.gray }] : styles.start}>
+          <Text style={currentWorkout.name.trim() ? [styles.start, { color: COLORS.gray }] : styles.start}>
             Start creating your own routine by adding an exercise
           </Text>
         )}
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonContainer}
-          onPress={() => navigation.navigate("Exercises", { i: currentRoutine.exercises.length, workout: false })}
+          onPress={() => navigation.navigate("Exercises", { i: currentWorkout.exercises.length })}
         >
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
@@ -150,10 +150,10 @@ function Design(props: TDesignProps) {
         )}
       </ScrollView>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <ExerciseOptions workout={false} navigate={props} />
+        <ExerciseOptions navigate={props} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showType}>
-        <SetType workout={false} />
+        <SetType />
       </Modal>
     </SafeAreaView>
   );

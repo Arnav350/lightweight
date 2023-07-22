@@ -13,13 +13,13 @@ interface IProps {
 }
 
 function DesignExercise({ i, exercise }: IProps) {
-  const { setCurrentRoutine } = useContext(WorkoutContext);
+  const { setCurrentWorkout } = useContext(WorkoutContext);
 
   function handleAddPress() {
-    setCurrentRoutine((prevCurrentRoutine) => ({
-      ...prevCurrentRoutine,
+    setCurrentWorkout((prevCurrentWorkout) => ({
+      ...prevCurrentWorkout,
       exercises: [
-        ...prevCurrentRoutine.exercises.map((currentExercise: IExercise) =>
+        ...prevCurrentWorkout.exercises.map((currentExercise: IExercise) =>
           currentExercise.name === exercise.name
             ? {
                 ...currentExercise,
