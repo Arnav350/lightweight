@@ -88,35 +88,50 @@ function Workout(props: TWorkoutProps) {
   }
 
   function finish(tempWorkout: IWorkout) {
-    setWorkouts((prevWorkouts) => [tempWorkout, ...prevWorkouts]);
+    const date = new Date();
+
+    setWorkouts((prevWorkouts) => [
+      {
+        ...tempWorkout,
+        time: date.getTime() - tempWorkout.time,
+        weight: tempWorkout.exercises.reduce(
+          (total: number, exercise: IExercise) =>
+            (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
+          0
+        ),
+      },
+      ...prevWorkouts,
+    ]);
 
     tempWorkout.exercises.forEach((currentExercise) => {
       const tempSets: ISet[] = [];
       const usedIndexes: number[] = [];
-      const exercise: IExercise | undefined = exercises.find((exercise) => exercise.name === currentExercise.name);
+      const exercise: IExercise = exercises.find((exercise) => exercise.name === currentExercise.name) || exercises[0];
 
-      exercise &&
-        exercise.sets.forEach((element) => {
-          const matchingElements = currentExercise.sets.filter(
-            (el, index) => !usedIndexes.includes(index) && el.type === element.type
-          );
+      exercise.sets.forEach((set: ISet) => {
+        const matchingElements = currentExercise.sets.filter(
+          (el, index) => !usedIndexes.includes(index) && el.type === set.type
+        );
 
-          if (matchingElements.length > 0) {
-            const [matchedElement] = matchingElements;
-            tempSets.push(matchedElement);
-            usedIndexes.push(currentExercise.sets.indexOf(matchedElement));
-          } else {
-            tempSets.push(element);
-          }
-        });
+        if (matchingElements.length > 0) {
+          // const [matchedElement] = matchingElements;
+          tempSets.push(matchingElements[0]);
+          usedIndexes.push(currentExercise.sets.indexOf(matchingElements[0]));
+        } else {
+          tempSets.push(set);
+        }
+      });
 
+      const mapedSets: ISet[] = tempSets
+        .sort((a: ISet, b: ISet) => a.type.localeCompare(b.type))
+        .map((set: ISet, i: number) => (set.weight === "" && set.reps === "" ? exercise.sets[i] : set));
       const extraElements = currentExercise.sets.filter((_el, index) => !usedIndexes.includes(index));
-      tempSets.push(...extraElements);
-      tempSets.sort((a: ISet, b: ISet) => a.type.localeCompare(b.type));
+      mapedSets.push(...extraElements);
+      mapedSets.sort((a: ISet, b: ISet) => a.type.localeCompare(b.type));
 
       setExercises((prevExercises) =>
         prevExercises.map((exercise) =>
-          exercise.name === currentExercise.name ? { ...exercise, sets: tempSets } : exercise
+          exercise.name === currentExercise.name ? { ...exercise, sets: mapedSets } : exercise
         )
       );
     });
@@ -130,57 +145,50 @@ function Workout(props: TWorkoutProps) {
   }
 
   function handleFinishPress() {
-    const date = new Date();
-
-    const tempWorkout: IWorkout = {
-      ...currentWorkout,
-      time: date.getTime() - currentWorkout.time,
-      weight: currentWorkout.exercises.reduce(
-        (total: number, exercise: IExercise) =>
-          (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
-        0
-      ),
-    };
-
-    if (tempWorkout.exercises.find((exercise) => exercise.sets.find((set) => set.weight === "" || set.reps === ""))) {
+    if (
+      currentWorkout.exercises.find((exercise) => exercise.sets.find((set) => set.weight === "" || set.reps === ""))
+    ) {
       Alert.alert("Finish Workout?", "Some weight or reps are missing. Should we autofill them?", [
         {
           text: "Yes, Please Autofill",
           onPress: () => {
             //IDK IF THIS WORKS
-            tempWorkout.exercises.map((tempExercise: IExercise) => {
-              const sortedSets: ISet[] = [];
-              const usedIndexes: number[] = [];
-              const sets: ISet[] = tempExercise.sets;
-              const prevExercise: IExercise =
-                exercises.find((exercise: IExercise) => exercise.name === tempExercise.name) || tempExercise;
+            finish({
+              ...currentWorkout,
+              exercises: currentWorkout.exercises.map((tempExercise: IExercise) => {
+                const sortedSets: ISet[] = [];
+                const usedIndexes: number[] = [];
+                const sets: ISet[] = tempExercise.sets;
+                const prevExercise: IExercise =
+                  exercises.find((exercise: IExercise) => exercise.name === tempExercise.name) || tempExercise;
 
-              sets.forEach((set: ISet) => {
-                const index: number = prevExercise.sets.findIndex(
-                  (prevSet: ISet, i: number) => !usedIndexes.includes(i) && prevSet.type === set.type
-                );
-                if (index !== -1) {
-                  sortedSets.push(prevExercise.sets[index]);
-                  usedIndexes.push(index);
-                } else {
-                  sortedSets.push({ type: set.type, weight: "", reps: "", notes: "" });
-                }
-              });
+                sets.forEach((set: ISet) => {
+                  const index: number = prevExercise.sets.findIndex(
+                    (prevSet: ISet, i: number) => !usedIndexes.includes(i) && prevSet.type === set.type
+                  );
+                  if (index !== -1) {
+                    sortedSets.push(prevExercise.sets[index]);
+                    usedIndexes.push(index);
+                  } else {
+                    sortedSets.push({ type: set.type, weight: "", reps: "", notes: "" });
+                  }
+                });
 
-              return tempExercise.sets.map((set: ISet, i: number) => {
                 return {
-                  ...set,
-                  weight: set.weight === "" ? sortedSets[i].weight : set.weight,
-                  reps: set.reps === "" ? sortedSets[i].reps : set.reps,
+                  ...tempExercise,
+                  sets: tempExercise.sets.map((set: ISet, i: number) => ({
+                    ...set,
+                    weight: set.weight === "" ? sortedSets[i].weight : set.weight,
+                    reps: set.reps === "" ? sortedSets[i].reps : set.reps,
+                  })),
                 };
-              });
+              }),
             });
-            finish(tempWorkout);
           },
         },
         {
           text: "No Thanks",
-          onPress: () => finish(tempWorkout),
+          onPress: () => finish(currentWorkout),
         },
         {
           text: "Cancel",
@@ -188,7 +196,7 @@ function Workout(props: TWorkoutProps) {
         },
       ]);
     } else {
-      finish(tempWorkout);
+      finish(currentWorkout);
     }
   }
 

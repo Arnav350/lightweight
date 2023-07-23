@@ -28,7 +28,10 @@ function AddExercise({ i, navigate: { navigation }, exercise, setShowEdit, setEd
     if (i === currentWorkout.exercises.length) {
       setCurrentWorkout((prevCurrentWorkout) => ({
         ...prevCurrentWorkout,
-        exercises: [...prevCurrentWorkout.exercises, { ...exercise, sets: [exercise.sets[0]] }],
+        exercises: [
+          ...prevCurrentWorkout.exercises,
+          { ...exercise, sets: [{ type: "N", weight: "", reps: "", notes: "" }] },
+        ],
       }));
     } else {
       setCurrentWorkout((prevCurrentWorkout) => ({

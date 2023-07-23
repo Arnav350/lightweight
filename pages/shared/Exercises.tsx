@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -92,12 +92,12 @@ function Exercises(props: TProps) {
               />
             ))}
           {params.i === currentWorkout.exercises.length && (
-            <Fragment>
+            <>
               <Text style={styles.dont}>Don't see the exercise you want?</Text>
               <TouchableOpacity activeOpacity={0.5} style={styles.newContainer} onPress={() => setShowNew(true)}>
                 <Text style={styles.new}>Create New Exercise</Text>
               </TouchableOpacity>
-            </Fragment>
+            </>
           )}
         </View>
       </ScrollView>
