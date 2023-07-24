@@ -20,7 +20,7 @@ function RoutineSet({ i, j, set: { type }, exercise: { sets } }: IProps) {
       {i !== undefined && j !== undefined ? (
         <TouchableOpacity
           activeOpacity={0.3}
-          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, show: true, i: i, j: j }))}
+          onPress={() => setSettings((prevSettings) => ({ ...prevSettings, showType: true, i: i, j: j }))}
         >
           <Text style={styles.text}>
             {type === "N" ? sets.slice(0, j + 1).filter((set: ISet) => set.type === "N").length : type}

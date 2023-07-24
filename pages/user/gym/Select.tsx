@@ -36,7 +36,7 @@ function Select(props: TSelectProps) {
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>Select Routine</Text>
-        <TouchableOpacity activeOpacity={0.3}>
+        <TouchableOpacity activeOpacity={0.3} onPress={handlePress}>
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>

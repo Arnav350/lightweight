@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   mealsContainer: {
-    gap: 8,
+    marginVertical: -4,
   },
 });
 

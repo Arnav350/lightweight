@@ -27,21 +27,29 @@ function NutritionMacros({ navigate: { navigation } }: IProps) {
       <View style={styles.circlesContainer}>
         <View>
           <MacroCircle
-            current={currentMeals.meals.reduce(
-              (total: number, meal: IMeal) =>
-                (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
-              0
-            )}
+            current={
+              +currentMeals.meals
+                .reduce(
+                  (total: number, meal: IMeal) =>
+                    (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
+                  0
+                )
+                .toFixed()
+            }
             total={macros.calories}
             unit="cal"
             label="Calories"
           />
           <MacroCircle
-            current={currentMeals.meals.reduce(
-              (total: number, meal: IMeal) =>
-                (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
-              0
-            )}
+            current={
+              +currentMeals.meals
+                .reduce(
+                  (total: number, meal: IMeal) =>
+                    (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
+                  0
+                )
+                .toFixed()
+            }
             total={macros.fat}
             unit="g"
             label="Fat"
@@ -49,22 +57,30 @@ function NutritionMacros({ navigate: { navigation } }: IProps) {
         </View>
         <View>
           <MacroCircle
-            current={currentMeals.meals.reduce(
-              (total: number, meal: IMeal) =>
-                (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
-              0
-            )}
+            current={
+              +currentMeals.meals
+                .reduce(
+                  (total: number, meal: IMeal) =>
+                    (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
+                  0
+                )
+                .toFixed()
+            }
             total={macros.protein}
             unit="g"
             label="Protein"
           />
 
           <MacroCircle
-            current={currentMeals.meals.reduce(
-              (total: number, meal: IMeal) =>
-                (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
-              0
-            )}
+            current={
+              +currentMeals.meals
+                .reduce(
+                  (total: number, meal: IMeal) =>
+                    (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
+                  0
+                )
+                .toFixed()
+            }
             total={macros.carbs}
             unit="g"
             label="Carbs"

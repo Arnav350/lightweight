@@ -31,6 +31,7 @@ function MacroMeal({ day: { date, meals } }: IProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    marginVertical: 4,
     padding: 8,
     backgroundColor: COLORS.blackOne,
     borderRadius: 16,

@@ -139,7 +139,7 @@ function Progress({ navigation }: TProps) {
             style={styles.namesContainer}
           />
         )}
-        {sortBy.length > 2 ? (
+        {sortBy.length > 1 ? (
           <>
             <LineChart
               data={{
@@ -189,9 +189,7 @@ function Progress({ navigation }: TProps) {
             </View>
           </>
         ) : (
-          sortBy.length !== 0 && (
-            <Text style={styles.must}>"{currentName}" must be done at least twice to display charts</Text>
-          )
+          <Text style={styles.must}>"{currentName}" must be done at least twice to display charts</Text>
         )}
       </View>
     </SafeAreaView>

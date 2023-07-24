@@ -3,7 +3,6 @@ import { NavigatorScreenParams } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/Ionicons";
 
-import NutritionProvider from "../hooks/useNutrition";
 import Gym from "../pages/user/gym/Gym";
 import Progress from "../pages/user/gym/Progress";
 import Design from "../pages/user/gym/Design";
@@ -59,18 +58,16 @@ const NStack = createStackNavigator<TNutritionStackParamList>();
 
 function NutritionStack() {
   return (
-    <NutritionProvider>
-      <NStack.Navigator initialRouteName="Nutrition" screenOptions={{ headerShown: false }}>
-        <NStack.Screen name="Nutrition" component={Nutrition} />
-        <NStack.Screen name="Reminder" component={Reminder} />
-        <NStack.Screen name="Macro" component={Macro} />
-        <NStack.Screen name="Weight" component={Weight} />
-        <NStack.Screen name="Repast" component={Repast} />
-        <NStack.Screen name="Create" component={Create} />
-        <NStack.Screen name="Recipe" component={Recipe} />
-        <NStack.Screen name="Search" component={Search} />
-      </NStack.Navigator>
-    </NutritionProvider>
+    <NStack.Navigator initialRouteName="Nutrition" screenOptions={{ headerShown: false }}>
+      <NStack.Screen name="Nutrition" component={Nutrition} />
+      <NStack.Screen name="Reminder" component={Reminder} />
+      <NStack.Screen name="Macro" component={Macro} />
+      <NStack.Screen name="Weight" component={Weight} />
+      <NStack.Screen name="Repast" component={Repast} />
+      <NStack.Screen name="Create" component={Create} />
+      <NStack.Screen name="Recipe" component={Recipe} />
+      <NStack.Screen name="Search" component={Search} />
+    </NStack.Navigator>
   );
 }
 

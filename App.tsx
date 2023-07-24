@@ -9,6 +9,7 @@ import AuthStack from "./stacks/AuthStack";
 import UserStack, { TTabParamsList } from "./stacks/UserStack";
 import AuthProvider, { AuthContext } from "./hooks/useAuth";
 import WorkoutProvider from "./hooks/useWorkout";
+import NutritionProvider from "./hooks/useNutrition";
 import Workout from "./pages/workout/Workout";
 import Exercises from "./pages/shared/Exercises";
 import Loading from "./pages/auth/Loading";
@@ -53,10 +54,12 @@ function App() {
   return (
     <AuthProvider>
       <WorkoutProvider>
-        <SafeAreaProvider>
-          <RootNavigator />
-          <StatusBar backgroundColor={COLORS.blackTwo} />
-        </SafeAreaProvider>
+        <NutritionProvider>
+          <SafeAreaProvider>
+            <RootNavigator />
+            <StatusBar backgroundColor={COLORS.blackTwo} />
+          </SafeAreaProvider>
+        </NutritionProvider>
       </WorkoutProvider>
     </AuthProvider>
   );

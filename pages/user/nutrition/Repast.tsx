@@ -156,7 +156,9 @@ function Repast({ navigation, route: { params } }: TProps) {
               />
             ))
           ) : (
-            <Text style={styles.add}>Add a food item by pressing one of the buttons above</Text>
+            <Text style={styles.add}>
+              Add a food item by pressing one of the buttons above {histories.length !== 0 && "or below"}
+            </Text>
           )}
         </View>
         <View style={styles.foodsContainer}>

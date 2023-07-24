@@ -27,7 +27,7 @@ interface INutritionContext {
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
 
 const initCurrentMeals: IDay = {
-  date: new Date(),
+  date: new Date(new Date().setHours(0, 0, 0, 0)),
   meals: [],
 };
 
@@ -51,8 +51,14 @@ function NutritionProvider({ children }: IProviderChildren) {
   const [macros, setMacros] = useState<IMacros>(initMacros);
 
   useEffect(() => {
+    console.log(currentMeals);
     if (currentMeals !== initCurrentMeals) {
       AsyncStorage.setItem("@currentMeals", JSON.stringify(currentMeals));
+
+      if (currentMeals.date.getTime() !== initCurrentMeals.date.getTime()) {
+        setMeals((prevMeals) => [currentMeals, ...prevMeals]);
+        setCurrentMeals({ ...initCurrentMeals });
+      }
     }
   }, [currentMeals]);
 

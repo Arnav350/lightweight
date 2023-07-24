@@ -44,12 +44,12 @@ function Profile() {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={async () =>
-          await AsyncStorage.getItem("@currentRoutine")
+          await AsyncStorage.getItem("@resumeWorkout")
             .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
             .catch((error) => console.log(error))
         }
       >
-        <Text>Check CurrentRoutine</Text>
+        <Text>Check ResumeWorkout</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={async () =>

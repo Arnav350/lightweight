@@ -14,7 +14,7 @@ interface IProps {
 }
 
 function ResumeWorkout({ navigateGym, navigateNutrition }: IProps) {
-  const { setCurrentWorkout, resumeWorkout, setResumeWorkout } = useContext(WorkoutContext);
+  const { setCurrentWorkout, resumeWorkout } = useContext(WorkoutContext);
 
   function handlePress() {
     setCurrentWorkout(resumeWorkout);
@@ -24,8 +24,6 @@ function ResumeWorkout({ navigateGym, navigateNutrition }: IProps) {
     } else if (navigateNutrition) {
       navigateNutrition.navigation.navigate("Workout");
     }
-
-    setTimeout(() => setResumeWorkout({ ...initCurrentWorkout }), 500);
   }
 
   return (

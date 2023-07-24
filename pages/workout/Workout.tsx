@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Alert, Keyboard, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -79,11 +79,14 @@ function Workout(props: TWorkoutProps) {
   function handleLeftPress() {
     navigation.navigate("UserStack", { screen: "GymStack", params: { screen: "Gym" } });
 
-    if (currentWorkout.weight === 0) {
-      setResumeWorkout(currentWorkout);
-    }
     setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
   }
+
+  useEffect(() => {
+    if (currentWorkout.weight === 0 && currentWorkout.time !== 0) {
+      setResumeWorkout(currentWorkout);
+    }
+  }, [currentWorkout]);
 
   function finish(tempWorkout: IWorkout) {
     const date = new Date();
@@ -139,6 +142,7 @@ function Workout(props: TWorkoutProps) {
       params: { screen: "Gym" },
     });
 
+    setResumeWorkout({ ...initCurrentWorkout });
     setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
   }
 
@@ -198,12 +202,13 @@ function Workout(props: TWorkoutProps) {
     }
   }
 
-  function handleCancelPress() {
+  function handleDiscardPress() {
     navigation.navigate("UserStack", {
       screen: "GymStack",
       params: { screen: "Gym" },
     });
 
+    setResumeWorkout({ ...initCurrentWorkout });
     setTimeout(() => setCurrentWorkout({ ...initCurrentWorkout }), 500);
   }
 
@@ -252,7 +257,7 @@ function Workout(props: TWorkoutProps) {
         >
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleCancelPress}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleDiscardPress}>
           <Text style={styles.button}>Discard Workout</Text>
         </TouchableOpacity>
       </ScrollView>

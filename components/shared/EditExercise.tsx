@@ -1,11 +1,12 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dispatch, SetStateAction, useContext, useMemo, useState } from "react";
+import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
+import { LineChart } from "react-native-chart-kit";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise } from "../../pages/workout/Workout";
+import { IExercise, ISet, IWorkout } from "../../pages/workout/Workout";
 import ExerciseDropdown from "./ExerciseDropdown";
 import { equipmentsList, musclesList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
@@ -16,8 +17,41 @@ interface IProps {
   editExercise: IExercise | null;
 }
 
+const windowDimensions = Dimensions.get("window");
+
 function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: IProps) {
-  const { setCurrentWorkout, setExercises } = useContext(WorkoutContext);
+  const { setCurrentWorkout, workouts, setExercises } = useContext(WorkoutContext);
+
+  const filteredWorkouts: IWorkout[] = useMemo(
+    () =>
+      workouts
+        .filter((workout: IWorkout) => workout.exercises.find((exercise) => exercise.name === editExercise?.name))
+        .slice()
+        .reverse(),
+    [workouts]
+  );
+
+  const filteredExercises: IExercise[] = useMemo(
+    () =>
+      filteredWorkouts.map(
+        (workout) => workout.exercises.filter((exercise: IExercise) => exercise.name === editExercise?.name)[0]
+      ),
+    [filteredWorkouts]
+  );
+
+  const maxWeight: number[] = useMemo(
+    () =>
+      filteredExercises.map((exercise: IExercise) => Math.max(...exercise.sets.map((set: ISet) => Number(set.weight)))),
+    [filteredExercises]
+  );
+
+  const oneRM: number[] = useMemo(
+    () =>
+      filteredExercises.map((exercise: IExercise) =>
+        Math.max(...exercise.sets.map((set: ISet) => Number(set.weight) * (1 + Number(set.reps) / 30)))
+      ),
+    [filteredExercises]
+  );
 
   const [exerciseName, setExerciseName] = useState<string>(editExercise?.name || "");
   const [currentEquipment, setCurrentEquipment] = useState<string>(editExercise?.equipment || "Any Equipment");
@@ -64,9 +98,33 @@ function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: I
             <Text style={styles.save}>Save</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ height: 192, width: 256, backgroundColor: COLORS.gray, alignSelf: "center" }}>
-          <Text>Graph</Text>
-        </View>
+        <LineChart
+          data={{
+            labels:
+              oneRM.length > 1 ? filteredWorkouts.map((workout) => `${workout.date.month} ${workout.date.day}`) : [],
+            datasets: [
+              {
+                data: oneRM.length > 1 ? oneRM : [0, 0.001, 0.001, 0.001, 0.002],
+              },
+            ],
+            legend: [oneRM.length > 1 ? "One Rep Max" : "Perform exercise twice for chart"],
+          }}
+          width={windowDimensions.width / 1.5}
+          height={windowDimensions.height / 4}
+          chartConfig={{
+            backgroundGradientFrom: COLORS.primary,
+            backgroundGradientTo: COLORS.primary,
+            decimalPlaces: 0,
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: COLORS.primary,
+            },
+          }}
+          style={styles.chart}
+        />
         <View style={styles.dropdownsContainer}>
           <View style={styles.dropdownContainer}>
             <Text style={styles.subheader}>Equipment:</Text>
@@ -99,7 +157,7 @@ const styles = StyleSheet.create({
   },
   editContainer: {
     margin: 16,
-    padding: 12,
+    padding: 8,
     backgroundColor: COLORS.black,
     borderRadius: 16,
   },
@@ -107,7 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 12,
+    padding: 8,
   },
   header: {
     marginHorizontal: 24,
@@ -119,6 +177,10 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: 20,
     fontWeight: "500",
+  },
+  chart: {
+    padding: 8,
+    alignSelf: "center",
   },
   dropdownsContainer: {
     zIndex: 1,
