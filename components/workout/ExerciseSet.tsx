@@ -29,9 +29,9 @@ function ExerciseSet({ i, j, prevSet, currentSet, currentExercise }: IProps) {
           onPress={() => setSettings((prevSetting) => ({ ...prevSetting, showType: true, i: i, j: j }))}
         >
           <Text style={styles.set}>
-            {prevSet.type === "N"
+            {currentSet.type === "N"
               ? currentExercise.sets.slice(0, j + 1).filter((set: ISet) => set.type === "N").length
-              : prevSet.type}
+              : currentSet.type}
           </Text>
         </TouchableOpacity>
         <TextInput

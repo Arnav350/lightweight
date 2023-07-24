@@ -74,8 +74,6 @@ function Workout(props: TWorkoutProps) {
     setSettings,
   } = useContext(WorkoutContext);
 
-  // const [currentExercises, setCurrentExercises] = useState<IExercise[]>(currentWorkout.exercises);
-  const currentExercises: IExercise[] = useMemo(() => currentWorkout.exercises, [currentWorkout.exercises.length]);
   const [showTimer, setShowTimer] = useState<boolean>(false);
 
   function handleLeftPress() {
@@ -237,9 +235,16 @@ function Workout(props: TWorkoutProps) {
         )}
       </View>
       <ScrollView style={styles.workoutContainer}>
-        {currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
-          <WorkoutExercise key={currentExercise.name} i={i} currentExercise={currentExercise} />
-        ))}
+        {currentWorkout.exercises.length ? (
+          currentWorkout.exercises.map((currentExercise: IExercise, i: number) => (
+            <WorkoutExercise key={currentExercise.name} i={i} currentExercise={currentExercise} />
+          ))
+        ) : (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.get}>Get Started</Text>
+            <Text style={styles.add}>Add an exercise to start your workout</Text>
+          </View>
+        )}
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonContainer}
@@ -248,7 +253,7 @@ function Workout(props: TWorkoutProps) {
           <Text style={styles.button}>Add Exercise</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.5} style={styles.buttonContainer} onPress={handleCancelPress}>
-          <Text style={styles.button}>Cancel Workout</Text>
+          <Text style={styles.button}>Discard Workout</Text>
         </TouchableOpacity>
       </ScrollView>
       {/* I DONT LIKE THAT ANIMATE ON IS NONE */}
@@ -330,6 +335,20 @@ const styles = StyleSheet.create({
   workoutContainer: {
     padding: 12,
     backgroundColor: COLORS.black,
+  },
+  emptyContainer: {
+    marginVertical: 32,
+    gap: 8,
+    alignItems: "center",
+  },
+  get: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  add: {
+    color: COLORS.gray,
+    fontSize: 16,
   },
   buttonContainer: {
     marginVertical: 8,
