@@ -3,7 +3,6 @@ import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { NutritionContext } from "../../hooks/useNutrition";
-import { IFood, IMeal, INutritionSettings } from "../../pages/user/nutrition/Nutrition";
 import SelectFood from "./SelectFood";
 import { COLORS } from "../../constants/theme";
 import FoodInfo from "./FoodInfo";

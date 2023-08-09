@@ -1,7 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IExercise, IWorkout, IRoutine, IWorkoutSettings } from "../pages/workout/Workout";
 import { initCurrentWorkout } from "../constants/init";
 
 interface IProviderChildren {
@@ -34,6 +33,16 @@ const initSettings: IWorkoutSettings = {
   i: 0,
   j: 0,
 };
+
+//check if component is rerendered everytime context is changed or just the variables defined
+
+// const obj = { a: 1, b: 2, c: 3 };
+//
+// const { b, ...rest } = obj;
+//
+// console.log(rest);
+
+// output: { a: 1, c: 3 }
 
 function WorkoutProvider({ children }: IProviderChildren) {
   const [currentWorkout, setCurrentWorkout] = useState<IWorkout>(initCurrentWorkout);

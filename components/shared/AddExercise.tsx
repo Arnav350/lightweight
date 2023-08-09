@@ -5,7 +5,6 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

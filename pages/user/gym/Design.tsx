@@ -6,12 +6,10 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../../App";
-import { TGymStackParamList } from "../../../stacks/UserStack";
 import { AuthContext } from "../../../hooks/useAuth";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, IRoutine, IWorkout } from "../../workout/Workout";
 import SetType from "../../../components/shared/SetType";
-import ExerciseOptions from "../../../components/shared/ExerciseActions";
+import ExerciseActions from "../../../components/shared/ExerciseActions";
 import DesignExercise from "../../../components/gym/DesignExercise";
 import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
@@ -150,7 +148,7 @@ function Design(props: TDesignProps) {
         )}
       </ScrollView>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <ExerciseOptions navigate={props} />
+        <ExerciseActions navigateDesign={props} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showType}>
         <SetType />
@@ -172,8 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    margin: 8,
     fontSize: 24,
     fontWeight: "500",
     color: COLORS.white,

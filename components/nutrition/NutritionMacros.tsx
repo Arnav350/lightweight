@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-nati
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { NutritionContext } from "../../hooks/useNutrition";
-import { IMeal, TNutritionProps } from "../../pages/user/nutrition/Nutrition";
+import { TNutritionProps } from "../../pages/user/nutrition/Nutrition";
 import MacroCircle from "./MacroCircle";
 import { COLORS } from "../../constants/theme";
 

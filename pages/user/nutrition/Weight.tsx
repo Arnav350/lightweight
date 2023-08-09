@@ -5,9 +5,7 @@ import { LineChart } from "react-native-chart-kit";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
-import { IMeasurement } from "./Nutrition";
 import { COLORS } from "../../../constants/theme";
 import WeightList from "../../../components/nutrition/WeightList";
 
@@ -92,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingVertical: 8,
+    margin: 8,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

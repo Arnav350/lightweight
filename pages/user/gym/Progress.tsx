@@ -5,10 +5,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { LineChart } from "react-native-chart-kit";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import { COLORS } from "../../../constants/theme";
-import { IExercise, ISet, IWorkout } from "../../workout/Workout";
 
 type TProps = StackScreenProps<TGymStackParamList, "Progress">;
 
@@ -209,8 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    margin: 8,
     fontSize: 24,
     fontWeight: "500",
     color: COLORS.white,

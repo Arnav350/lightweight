@@ -3,7 +3,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise, ISet } from "../../pages/workout/Workout";
 import RoutineSet from "./RoutineSet";
 import { COLORS } from "../../constants/theme";
 

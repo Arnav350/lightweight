@@ -2,8 +2,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { IFood, IMeal, INutritionSettings } from "../../pages/user/nutrition/Nutrition";
-
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

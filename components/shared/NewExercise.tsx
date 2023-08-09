@@ -3,7 +3,6 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-nativ
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise } from "../../pages/workout/Workout";
 import ExerciseDropdown from "./ExerciseDropdown";
 import { equipmentsList, musclesList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";

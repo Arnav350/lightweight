@@ -6,7 +6,6 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../../App";
-import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import WorkoutLog from "../../../components/gym/WorkoutLog";
 import ResumeWorkout from "../../../components/shared/ResumeWorkout";
@@ -17,8 +16,7 @@ export type TGymProps = CompositeScreenProps<StackScreenProps<TGymStackParamList
 
 function Gym(props: TGymProps) {
   const { navigation } = props;
-  const { currentWorkout, setCurrentWorkout, resumeWorkout, workouts, routines, setRoutines } =
-    useContext(WorkoutContext);
+  const { setCurrentWorkout, resumeWorkout, workouts, routines, setRoutines } = useContext(WorkoutContext);
 
   function handleEmptyPress() {
     const date: Date = new Date();
@@ -113,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingVertical: 8,
+    margin: 8,
     fontSize: 24,
     fontWeight: "500",
     color: COLORS.white,

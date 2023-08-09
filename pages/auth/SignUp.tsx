@@ -21,13 +21,6 @@ import { COLORS } from "../../constants/theme";
 
 type TProps = StackScreenProps<TAuthStackParamList>;
 
-interface IErrors {
-  username: string;
-  email: string;
-  password: string;
-  confirm: string;
-}
-
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}$/;

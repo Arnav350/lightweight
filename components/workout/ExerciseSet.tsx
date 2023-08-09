@@ -3,7 +3,6 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-nativ
 import { Swipeable } from "react-native-gesture-handler";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { ISet, IExercise } from "../../pages/workout/Workout";
 import DeleteSwipe from "../shared/DeleteSwipe";
 import { COLORS } from "../../constants/theme";
 

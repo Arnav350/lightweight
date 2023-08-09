@@ -4,9 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
-import { INutritionSettings, IReminder } from "./Nutrition";
 import ReminderList from "../../../components/nutrition/ReminderList";
 import EditReminder from "../../../components/nutrition/EditReminder";
 import { COLORS } from "../../../constants/theme";
@@ -70,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingVertical: 8,
+    margin: 8,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

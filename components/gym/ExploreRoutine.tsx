@@ -2,13 +2,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TGymStackParamList } from "../../stacks/UserStack";
+import { TSelectProps } from "../../pages/user/gym/Select";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   i: number;
   name: string;
-  navigate: StackScreenProps<TGymStackParamList, "Select">;
+  navigate: TSelectProps;
 }
 
 function ExploreRoutine({ i, name, navigate: { navigation } }: IProps) {

@@ -17,49 +17,6 @@ import { COLORS } from "../../constants/theme";
 
 export type TWorkoutProps = StackScreenProps<TRootStackParamList, "Workout">;
 
-export type TType = "D" | "N" | "S" | "W";
-
-export interface ISet {
-  type: TType;
-  weight: number | "";
-  reps: number | "";
-  notes: string;
-}
-
-export interface IExercise {
-  name: string;
-  equipment: string;
-  muscle: string;
-  notes: string;
-  sets: ISet[];
-}
-
-export interface IWorkout {
-  date: {
-    month: string;
-    day: string;
-    year: number;
-  };
-  name: string;
-  time: number;
-  weight: number;
-  exercises: IExercise[];
-}
-
-export interface IRoutine {
-  name: string;
-  creator: string;
-  exercises: IExercise[];
-}
-
-export interface IWorkoutSettings {
-  showType: boolean;
-  showOptions: boolean;
-  showCalculator: boolean;
-  i: number;
-  j: number;
-}
-
 function Workout(props: TWorkoutProps) {
   const { navigation } = props;
 
@@ -287,7 +244,7 @@ function Workout(props: TWorkoutProps) {
         <WorkoutTimer setShowTimer={setShowTimer} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showOptions}>
-        <ExerciseActions navigate={props} />
+        <ExerciseActions navigateWorkout={props} />
       </Modal>
       <Modal animationType="fade" transparent visible={settings.showCalculator}>
         <WeightCalculator />

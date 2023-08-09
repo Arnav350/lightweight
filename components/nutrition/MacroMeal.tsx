@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { IDay, IMeal } from "../../pages/user/nutrition/Nutrition";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

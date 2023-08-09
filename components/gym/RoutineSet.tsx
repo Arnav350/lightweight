@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise, ISet } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

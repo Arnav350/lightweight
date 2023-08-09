@@ -1,8 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { IFood, IDay, IReminder, IMeasurement, IMacros } from "../pages/user/nutrition/Nutrition";
-
 interface IProviderChildren {
   children: ReactNode;
 }
@@ -51,7 +49,6 @@ function NutritionProvider({ children }: IProviderChildren) {
   const [macros, setMacros] = useState<IMacros>(initMacros);
 
   useEffect(() => {
-    console.log(currentMeals);
     if (currentMeals !== initCurrentMeals) {
       AsyncStorage.setItem("@currentMeals", JSON.stringify(currentMeals));
 

@@ -3,7 +3,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { NutritionContext } from "../../hooks/useNutrition";
-import { IMeasurement } from "../../pages/user/nutrition/Nutrition";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

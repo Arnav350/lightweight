@@ -5,9 +5,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
-import { IFood, IMeal, INutritionSettings } from "./Nutrition";
 import SelectFood from "../../../components/nutrition/SelectFood";
 import FoodInfo from "../../../components/nutrition/FoodInfo";
 import { COLORS } from "../../../constants/theme";
@@ -126,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    marginVertical: 8,
+    margin: 8,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

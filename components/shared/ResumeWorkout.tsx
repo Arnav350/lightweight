@@ -5,7 +5,6 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { TGymProps } from "../../pages/user/gym/Gym";
 import { TNutritionProps } from "../../pages/user/nutrition/Nutrition";
-import { initCurrentWorkout } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

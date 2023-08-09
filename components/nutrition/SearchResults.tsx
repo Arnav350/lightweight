@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
 
-import { IFood, IMeal, INutritionSettings } from "../../pages/user/nutrition/Nutrition";
 import SelectFood from "./SelectFood";
 import FoodInfo from "./FoodInfo";
 import { COLORS } from "../../constants/theme";

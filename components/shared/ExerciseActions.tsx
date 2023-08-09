@@ -8,15 +8,20 @@ import ActionOptions from "./ActionOptions";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
-  navigate: TWorkoutProps | TDesignProps;
+  navigateWorkout?: TWorkoutProps;
+  navigateDesign?: TDesignProps;
 }
 
-function ExerciseActions({ navigate: { navigation } }: IProps) {
+function ExerciseActions({ navigateWorkout, navigateDesign }: IProps) {
   const { setCurrentWorkout, settings, setSettings } = useContext(WorkoutContext);
 
   function handleReplacePress() {
     // FIX THIS
-    // navigation.navigate("Exercises", { i: settings.i });
+    if (navigateWorkout) {
+      navigateWorkout.navigation.navigate("Exercises", { i: settings.i });
+    } else if (navigateDesign) {
+      navigateDesign.navigation.navigate("Exercises", { i: settings.i });
+    }
 
     setSettings((prevSettings) => ({ ...prevSettings, showOptions: false }));
   }

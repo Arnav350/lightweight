@@ -6,9 +6,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { EDAMAM_ID, EDAMAM_KEY } from "@env";
-import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { NutritionContext } from "../../../hooks/useNutrition";
-import { IFood, IMeal } from "./Nutrition";
 import SearchResults from "../../../components/nutrition/SearchResults";
 import SearchSuggestions from "../../../components/nutrition/SearchSuggestions";
 import { labelsList } from "../../../constants/init";
@@ -214,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingVertical: 8,
+    margin: 8,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

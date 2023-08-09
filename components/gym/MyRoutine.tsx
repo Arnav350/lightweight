@@ -4,7 +4,6 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { TSelectProps } from "../../pages/user/gym/Select";
-import { IExercise, IRoutine } from "../../pages/workout/Workout";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

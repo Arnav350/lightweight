@@ -1,6 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { IFood, IMeal } from "../../pages/user/nutrition/Nutrition";
 import { TNutritionProps } from "../../pages/user/nutrition/Nutrition";
 import { COLORS } from "../../constants/theme";
 

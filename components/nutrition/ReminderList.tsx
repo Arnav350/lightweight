@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 
-import { INutritionSettings, IReminder } from "../../pages/user/nutrition/Nutrition";
 import DeleteSwipe from "../shared/DeleteSwipe";
 import { daysList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";

@@ -5,7 +5,7 @@ import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/d
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { NutritionContext } from "../../hooks/useNutrition";
-import { IMeasurement, TNutritionProps } from "../../pages/user/nutrition/Nutrition";
+import { TNutritionProps } from "../../pages/user/nutrition/Nutrition";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {

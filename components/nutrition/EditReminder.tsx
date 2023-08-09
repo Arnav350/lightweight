@@ -4,7 +4,6 @@ import RNDateTimePicker, { DateTimePickerEvent } from "@react-native-community/d
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { NutritionContext } from "../../hooks/useNutrition";
-import { INutritionSettings, IReminder } from "../../pages/user/nutrition/Nutrition";
 import { daysList } from "../../constants/init";
 import { COLORS } from "../../constants/theme";
 

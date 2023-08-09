@@ -6,7 +6,6 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../../App";
-import { TNutritionStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
 import { NutritionContext } from "../../../hooks/useNutrition";
 import NutritionMacros from "../../../components/nutrition/NutritionMacros";
@@ -20,50 +19,6 @@ export type TNutritionProps = CompositeScreenProps<
   StackScreenProps<TNutritionStackParamList, "Nutrition">,
   TCompositeProps
 >;
-
-export interface IFood {
-  name: string;
-  calories: number;
-  protein: number;
-  fat: number;
-  carbs: number;
-  amount: number;
-  amountType: string;
-}
-
-export interface IMeal {
-  name: string;
-  foods: IFood[];
-}
-
-export interface IDay {
-  date: Date;
-  meals: IMeal[];
-}
-
-export interface INutritionSettings {
-  show: boolean;
-  i: number;
-}
-
-export interface IReminder {
-  name: string;
-  time: Date;
-  days: number[];
-}
-
-export interface IMacros {
-  calories: number;
-  protein: number;
-  fat: number;
-  carbs: number;
-  percent: boolean;
-}
-
-export interface IMeasurement {
-  data: number;
-  date: Date;
-}
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -171,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingVertical: 8,
+    margin: 8,
     color: COLORS.white,
     fontSize: 24,
     fontWeight: "500",

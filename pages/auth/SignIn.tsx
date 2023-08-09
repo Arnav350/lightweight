@@ -30,7 +30,7 @@ function SignUp({ navigation }: TProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   async function handlePress() {
-    if (!(!email || !password)) {
+    if (email && password) {
       const { error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,

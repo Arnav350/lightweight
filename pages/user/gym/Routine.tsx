@@ -6,9 +6,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TCompositeProps } from "../../../App";
-import { TGymStackParamList } from "../../../stacks/UserStack";
 import { WorkoutContext } from "../../../hooks/useWorkout";
-import { IExercise, ISet } from "../../workout/Workout";
 import RoutineSet from "../../../components/gym/RoutineSet";
 import { initCurrentWorkout } from "../../../constants/init";
 import { COLORS } from "../../../constants/theme";
@@ -93,8 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blackTwo,
   },
   header: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    margin: 8,
     fontSize: 24,
     fontWeight: "500",
     color: COLORS.white,

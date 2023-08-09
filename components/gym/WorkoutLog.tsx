@@ -4,7 +4,6 @@ import { Swipeable } from "react-native-gesture-handler";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise, IWorkout } from "../../pages/workout/Workout";
 import { TGymProps } from "../../pages/user/gym/Gym";
 import DeleteSwipe from "../shared/DeleteSwipe";
 import { COLORS } from "../../constants/theme";
