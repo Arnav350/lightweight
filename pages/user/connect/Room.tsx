@@ -1,20 +1,52 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { supabase } from "../../../supabase";
+import RoomInfo from "../../../components/connect/RoomInfo";
 import { COLORS } from "../../../constants/theme";
 
 type TRoomProps = StackScreenProps<TConnectStackParamList, "Room">;
 
 function Room({ navigation, route: { params } }: TRoomProps) {
+  const [room, setRoom] = useState<IRoom | null>(null);
+  const [roomImage, setRoomImage] = useState<string>(params.image);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function getRoom() {
+      const { data, error } = await supabase
+        .from("rooms")
+        .select("*")
+        .match({ id: params.id })
+        .returns<IRoom[]>()
+        .limit(1)
+        .single();
+
+      if (error) {
+        alert(error.message);
+      } else {
+        setRoom(data);
+      }
+    }
+
+    getRoom();
+  }, []);
+
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
-        <Text style={styles.header}>{params.id}</Text>
+        <TouchableOpacity activeOpacity={0.5} style={styles.titleContainer} onPress={() => setShowInfo(true)}>
+          <Image source={roomImage ? { uri: roomImage } : require("../../../assets/logo.png")} style={styles.image} />
+          <Text numberOfLines={1} style={styles.header}>
+            {room?.name || params.name}
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.3}>
           <Icon name="taco" size={32} color={COLORS.primary} />
         </TouchableOpacity>
@@ -35,6 +67,9 @@ function Room({ navigation, route: { params } }: TRoomProps) {
         <Icon name="microphone-outline" size={32} color={COLORS.primary} />
         <Icon name="image-outline" size={32} color={COLORS.primary} />
       </View>
+      <Modal animationType="slide" transparent visible={showInfo}>
+        <RoomInfo setShowInfo={setShowInfo} />
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -51,9 +86,19 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: COLORS.blackTwo,
   },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  image: {
+    height: 48,
+    width: 48,
+    borderRadius: 24,
+  },
   header: {
     margin: 8,
-    fontSize: 24,
+    maxWidth: "75%",
+    fontSize: 20,
     fontWeight: "500",
     color: COLORS.white,
   },

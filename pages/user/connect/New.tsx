@@ -43,17 +43,35 @@ function New({ navigation }: TNewProps) {
   }, []);
 
   async function handlePress() {
+    const username = await supabase
+      .from("profiles")
+      .select("username")
+      .match({ id: currentUser?.id })
+      .returns<{ username: string }[]>()
+      .limit(1)
+      .single();
+
+    if (username.error) {
+      alert(username.error.message);
+      return;
+    }
+
+    const name =
+      selectedProfiles.length > 1
+        ? `${username.data.username}, ${selectedProfiles.map((selectedProfile) => selectedProfile.name).join(", ")}`
+        : `${username.data.username} & ${selectedProfiles[0].name}`;
+
     const { data, error } = await supabase
-      .rpc("create_roo", {
-        name: "testing",
-        participant_ids: ["7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee", "f875f9ca-6fa8-42c0-a8a9-5f67497b49e5"],
+      .rpc("create_room", {
+        name,
+        participant_ids: selectedProfiles.map((selectedProfile) => selectedProfile.id),
       })
       .returns<IRoom>();
 
     if (error) {
       alert(error.message);
     } else {
-      console.log(data);
+      navigation.navigate("Room", { id: data.id, name: data.name, image: "" });
     }
   }
 
@@ -64,7 +82,12 @@ function New({ navigation }: TNewProps) {
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.header}>New Chat</Text>
-        <TouchableOpacity activeOpacity={0.3} onPress={handlePress}>
+        <TouchableOpacity
+          activeOpacity={0.3}
+          disabled={selectedProfiles.length === 0}
+          style={selectedProfiles.length === 0 && { opacity: 0.6 }}
+          onPress={handlePress}
+        >
           <Icon name="check" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
@@ -84,7 +107,12 @@ function New({ navigation }: TNewProps) {
           renderItem={({ item }) => <ConnectProfile profile={item} setSelectedProfiles={setSelectedProfiles} />}
           style={styles.profilesContainer}
         />
-        <TouchableOpacity activeOpacity={0.5} style={styles.createContainer} onPress={handlePress}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          disabled={selectedProfiles.length === 0}
+          style={selectedProfiles.length === 0 ? [styles.createContainer, { opacity: 0.6 }] : styles.createContainer}
+          onPress={handlePress}
+        >
           <Text style={styles.create}>Create Chat</Text>
         </TouchableOpacity>
       </View>

@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { supabase } from "../../supabase";
 import { TConnectProps } from "../../pages/user/connect/Connect";
 import { COLORS } from "../../constants/theme";
 
@@ -8,22 +10,46 @@ interface IProps {
   navigate: TConnectProps;
 }
 
-function ConnectRoom({ room, navigate: { navigation } }: IProps) {
+function ConnectRoom({ room: { id, name, image, last_message, last_date }, navigate: { navigation } }: IProps) {
+  const [roomImage, setRoomImage] = useState<string>("");
+
+  useEffect(() => {
+    if (image) {
+      async function getPicture() {
+        const { data, error } = await supabase.storage.from("rooms").download(id);
+
+        if (error) {
+          alert(error.message);
+        } else {
+          const fileReaderInstance = new FileReader();
+          fileReaderInstance.readAsDataURL(data);
+          fileReaderInstance.onload = () => {
+            const base64data = fileReaderInstance.result;
+            if (typeof base64data === "string") {
+              setRoomImage(base64data);
+            }
+          };
+        }
+      }
+
+      getPicture();
+    }
+  });
+
   return (
     <TouchableOpacity
       activeOpacity={0.5}
       style={styles.container}
-      onPress={() => navigation.navigate("Room", { id: room.id })}
+      onPress={() => navigation.navigate("Room", { id: id, name: name, image: roomImage })}
     >
-      {/* FIX IMAGE */}
-      <Image source={room.image ? { uri: room.image } : require("../../assets/apple.png")} style={styles.image} />
+      <Image source={image ? { uri: roomImage } : require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <View style={styles.infoContainer}>
-          <Text style={styles.name}>{room.name || "room participants"}</Text>
-          <Text style={styles.date}>{}</Text>
+          <Text style={styles.name}>{name || "room participants"}</Text>
+          <Text style={styles.date}>{last_date}</Text>
         </View>
         <Text numberOfLines={2} style={styles.message}>
-          {room.last_message}
+          {last_message}
         </Text>
       </View>
     </TouchableOpacity>

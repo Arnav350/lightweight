@@ -22,7 +22,7 @@ type TNutritionStackParamList = {
 type TConnectStackParamList = {
   Connect: undefined;
   New: undefined;
-  Room: { id: string };
+  Room: { id: string; name: string | null; image: string };
 };
 
 //auth
@@ -143,7 +143,7 @@ interface IFollower {
 
 interface IRoom {
   id: string;
-  name: string | null;
+  name: string;
   image: boolean;
   last_message: string;
   last_date: string;
@@ -158,7 +158,7 @@ interface IRoomParticipant {
 interface IMessage {
   id: string;
   created_at: string;
-  content: string | null;
+  content: string;
   media: boolean;
   profile_id: string;
   room_id: string;

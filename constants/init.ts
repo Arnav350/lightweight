@@ -1,5 +1,3 @@
-import { IExercise, IRoutine, IWorkout } from "../pages/workout/Workout";
-
 export const initCurrentWorkout: IWorkout = {
   date: {
     month: "",

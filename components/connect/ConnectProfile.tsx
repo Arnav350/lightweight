@@ -14,7 +14,7 @@ function ConnectProfile({ profile, setSelectedProfiles }: IProps) {
   const { id, name, username, picture } = profile;
 
   const [selected, setSelected] = useState<boolean>(false);
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string>("");
 
   useEffect(() => {
     if (picture) {
@@ -55,7 +55,7 @@ function ConnectProfile({ profile, setSelectedProfiles }: IProps) {
     <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
       <View style={styles.profileContainer}>
         {/* FIX IMAGE */}
-        <Image source={picture ? { uri: profilePicture } : require("../../assets/apple.png")} style={styles.image} />
+        <Image source={picture ? { uri: profilePicture } : require("../../assets/logo.png")} style={styles.image} />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.username}>{username}</Text>
