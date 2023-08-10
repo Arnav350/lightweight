@@ -10,7 +10,12 @@ interface IProps {
 
 function ConnectRoom({ room, navigate: { navigation } }: IProps) {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("Room", { id: room.id })}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={styles.container}
+      onPress={() => navigation.navigate("Room", { id: room.id })}
+    >
+      {/* FIX IMAGE */}
       <Image source={room.image ? { uri: room.image } : require("../../assets/apple.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <View style={styles.infoContainer}>
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
     margin: 8,
     height: 64,
     width: 64,
-    borderRadius: 50,
+    borderRadius: 32,
   },
   textContainer: {
     padding: 8,

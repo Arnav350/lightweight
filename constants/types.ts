@@ -129,8 +129,9 @@ interface IMeasurement {
 
 interface IProfile {
   id: string;
+  name: string;
   username: string;
-  picture: string;
+  picture: boolean;
 }
 
 interface IFollower {
@@ -143,7 +144,7 @@ interface IFollower {
 interface IRoom {
   id: string;
   name: string | null;
-  image: string | null;
+  image: boolean;
   last_message: string;
   last_date: string;
 }
@@ -158,7 +159,7 @@ interface IMessage {
   id: string;
   created_at: string;
   content: string | null;
-  media: string | null;
+  media: boolean;
   profile_id: string;
   room_id: string;
 }
