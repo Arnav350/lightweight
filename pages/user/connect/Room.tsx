@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../../supabase";
+import { AuthContext } from "../../../hooks/useAuth";
 import RoomInfo from "../../../components/connect/RoomInfo";
 import { COLORS } from "../../../constants/theme";
 
 type TRoomProps = StackScreenProps<TConnectStackParamList, "Room">;
 
 function Room({ navigation, route: { params } }: TRoomProps) {
+  const currentUser = useContext(AuthContext);
+
   const [room, setRoom] = useState<IRoom | null>(null);
+  const [roomParticipants, setRoomParticipants] = useState<IProfile[]>([]);
   const [roomImage, setRoomImage] = useState<string>(params.image);
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
@@ -32,7 +36,22 @@ function Room({ navigation, route: { params } }: TRoomProps) {
       }
     }
 
+    async function getRoomParticipants() {
+      const { data, error } = await supabase
+        .from("room_participants")
+        .select("profile: profiles")
+        .match({ room_id: params.id })
+        .returns<{ profile: IProfile }[]>();
+
+      if (error) {
+        alert(error.message);
+      } else {
+        setRoomParticipants(data.filter((datum) => datum.profile.id !== currentUser?.id).map((datum) => datum.profile));
+      }
+    }
+
     getRoom();
+    getRoomParticipants();
   }, []);
 
   return (
@@ -68,7 +87,13 @@ function Room({ navigation, route: { params } }: TRoomProps) {
         <Icon name="image-outline" size={32} color={COLORS.primary} />
       </View>
       <Modal animationType="slide" transparent visible={showInfo}>
-        <RoomInfo setShowInfo={setShowInfo} />
+        <RoomInfo
+          room={room}
+          setRoom={setRoom}
+          roomParticipants={roomParticipants}
+          roomImage={roomImage}
+          setShowInfo={setShowInfo}
+        />
       </Modal>
     </SafeAreaView>
   );

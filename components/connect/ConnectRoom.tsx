@@ -40,12 +40,12 @@ function ConnectRoom({ room: { id, name, image, last_message, last_date }, navig
     <TouchableOpacity
       activeOpacity={0.5}
       style={styles.container}
-      onPress={() => navigation.navigate("Room", { id: id, name: name, image: roomImage })}
+      onPress={() => navigation.navigate("Room", { id, name, image: roomImage })}
     >
       <Image source={image ? { uri: roomImage } : require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <View style={styles.infoContainer}>
-          <Text style={styles.name}>{name || "room participants"}</Text>
+          <Text style={styles.name}>{name}</Text>
           <Text style={styles.date}>{last_date}</Text>
         </View>
         <Text numberOfLines={2} style={styles.message}>
