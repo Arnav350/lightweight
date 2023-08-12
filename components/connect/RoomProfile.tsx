@@ -1,19 +1,19 @@
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../supabase";
+import { TRoomProps } from "../../pages/user/connect/Room";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
+  navigate: TRoomProps;
   profile: IProfile;
-  setSelectedProfiles: Dispatch<SetStateAction<IProfile[]>>;
+  setShowInfo: Dispatch<SetStateAction<boolean>>;
 }
 
-function NewProfile({ profile, setSelectedProfiles }: IProps) {
+function RoomProfile({ navigate: { navigation }, profile, setShowInfo }: IProps) {
   const { id, name, username, picture } = profile;
 
-  const [selected, setSelected] = useState<boolean>(false);
   const [profilePicture, setProfilePicture] = useState<string>("");
 
   useEffect(() => {
@@ -40,15 +40,8 @@ function NewProfile({ profile, setSelectedProfiles }: IProps) {
   });
 
   function handlePress() {
-    if (selected) {
-      setSelectedProfiles((prevSelectedProfiles) =>
-        prevSelectedProfiles.filter((selectedProfile) => selectedProfile.id !== id)
-      );
-    } else {
-      setSelectedProfiles((prevSelectedProfiles) => [...prevSelectedProfiles, profile]);
-    }
-
-    setSelected(!selected);
+    setShowInfo(false);
+    navigation.navigate("Profile");
   }
 
   return (
@@ -60,7 +53,9 @@ function NewProfile({ profile, setSelectedProfiles }: IProps) {
           <Text style={styles.username}>{username}</Text>
         </View>
       </View>
-      <Icon name={selected ? "circle" : "circle-outline"} size={28} color={COLORS.primary} />
+      <TouchableOpacity style={styles.followContainer}>
+        <Text style={styles.follow}>Follow</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
@@ -95,6 +90,16 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     fontSize: 14,
   },
+  followContainer: {
+    padding: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 8,
+  },
+  follow: {
+    color: COLORS.white,
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
 
-export default NewProfile;
+export default RoomProfile;

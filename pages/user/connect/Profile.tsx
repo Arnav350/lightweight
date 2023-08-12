@@ -5,18 +5,16 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { COLORS } from "../../../constants/theme";
 
-export type TParticipantsProps = StackScreenProps<TConnectStackParamList, "Participants">;
+type TProfileProps = StackScreenProps<TConnectStackParamList, "Profile">;
 
-function Participants(props: TParticipantsProps) {
-  const { navigation } = props;
-
+function Profile({ navigation }: TProfileProps) {
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={32} color={COLORS.primary} />
         </TouchableOpacity>
-        <Text style={styles.header}>Members</Text>
+        <Text style={styles.header}>Header</Text>
         <TouchableOpacity activeOpacity={0.3}>
           <Icon name="taco" size={32} color={COLORS.primary} />
         </TouchableOpacity>
@@ -39,10 +37,11 @@ const styles = StyleSheet.create({
   },
   header: {
     margin: 8,
-    fontSize: 24,
+    maxWidth: "75%",
+    fontSize: 20,
     fontWeight: "500",
     color: COLORS.white,
   },
 });
 
-export default Participants;
+export default Profile;

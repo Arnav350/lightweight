@@ -96,6 +96,7 @@ function Room(props: TRoomProps) {
           room={room}
           setRoom={setRoom}
           roomParticipants={roomParticipants}
+          setRoomParticipants={setRoomParticipants}
           roomImage={roomImage}
           setShowInfo={setShowInfo}
         />

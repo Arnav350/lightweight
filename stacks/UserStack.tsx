@@ -7,7 +7,7 @@ import { GymStack } from "./GymStack";
 import { NutritionStack } from "./NutritionStack";
 import { ConnectStack } from "./ConnectStack";
 import Compete from "../pages/user/compete/Compete";
-import Profile from "../pages/user/profile/Profile";
+import Account from "../pages/user/account/Account";
 import { COLORS } from "../constants/theme";
 
 export type TTabParamsList = {
@@ -15,7 +15,7 @@ export type TTabParamsList = {
   NutritionStack: NavigatorScreenParams<TNutritionStackParamList>;
   Compete: undefined;
   ConnectStack: NavigatorScreenParams<TConnectStackParamList>;
-  Profile: undefined;
+  Account: undefined;
 };
 
 const Tab = createBottomTabNavigator<TTabParamsList>();
@@ -50,7 +50,7 @@ function UserStack() {
             iconName = focused ? "trophy" : "trophy-outline";
           } else if (routeName === "ConnectStack") {
             iconName = focused ? "chatbox" : "chatbox-outline";
-          } else if (routeName === "Profile") {
+          } else if (routeName === "Account") {
             iconName = focused ? "person-circle" : "person-circle-outline";
           }
           return <Icon name={iconName} size={size} color={color} />;
@@ -63,7 +63,7 @@ function UserStack() {
       <Tab.Screen name="NutritionStack" component={NutritionStack} options={{ headerShown: false }} />
       <Tab.Screen name="Compete" component={Compete} options={{ headerShown: false }} />
       <Tab.Screen name="ConnectStack" component={ConnectStack} options={{ headerShown: false }} />
-      <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      <Tab.Screen name="Account" component={Account} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }

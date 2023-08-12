@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRoomProps } from "../../pages/user/connect/Room";
+import RoomDropdown from "./RoomDropdown";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
@@ -10,11 +11,12 @@ interface IProps {
   room: IRoom | null;
   setRoom: Dispatch<SetStateAction<IRoom | null>>;
   roomParticipants: IProfile[];
+  setRoomParticipants: Dispatch<SetStateAction<IProfile[]>>;
   roomImage: string;
   setShowInfo: Dispatch<SetStateAction<boolean>>;
 }
 
-function RoomInfo({ navigate: { navigation }, room, setRoom, roomParticipants, roomImage, setShowInfo }: IProps) {
+function RoomInfo({ navigate, room, setRoom, roomParticipants, setRoomParticipants, roomImage, setShowInfo }: IProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.3} onPress={() => setShowInfo(false)}>
@@ -26,18 +28,14 @@ function RoomInfo({ navigate: { navigation }, room, setRoom, roomParticipants, r
       </Text>
       <Text>Edit Chat</Text>
       {roomParticipants.length !== 1 && (
-        <TouchableOpacity activeOpacity={0.5} style={styles.profilesContainer}>
-          <View style={styles.participantsContainer}>
-            <Icon name="account-group" size={40} color={COLORS.white} />
-            <View>
-              <Text style={styles.length}>{roomParticipants.length} People</Text>
-              <Text numberOfLines={1} style={styles.participants}>
-                {roomParticipants.map((roomParticipant) => roomParticipant.name).join(", ")}
-              </Text>
-            </View>
-          </View>
-          <Icon name="chevron-right" size={32} color={COLORS.white} />
-        </TouchableOpacity>
+        <View style={styles.dropdownContainer}>
+          <RoomDropdown
+            navigate={navigate}
+            roomParticipants={roomParticipants}
+            setRoomParticipants={setRoomParticipants}
+            setShowInfo={setShowInfo}
+          />
+        </View>
       )}
     </View>
   );
@@ -84,6 +82,10 @@ const styles = StyleSheet.create({
   participants: {
     color: COLORS.gray,
     fontSize: 16,
+  },
+  dropdownContainer: {
+    flex: 1,
+    // height: 400,
   },
 });
 

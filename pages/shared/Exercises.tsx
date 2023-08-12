@@ -6,7 +6,6 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { TRootStackParamList } from "../../App";
 import { WorkoutContext } from "../../hooks/useWorkout";
-import { IExercise } from "../workout/Workout";
 import ExerciseDropdown from "../../components/shared/ExerciseDropdown";
 import AddExercise from "../../components/shared/AddExercise";
 import EditExercise from "../../components/shared/EditExercise";

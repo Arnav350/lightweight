@@ -55,9 +55,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   list: {
+    //use percent instead of 200
     position: "absolute",
     width: "100%",
-    height: 200,
+    maxHeight: 200,
     backgroundColor: COLORS.blackOne,
     borderRadius: 8,
   },

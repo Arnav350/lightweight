@@ -22,18 +22,9 @@ type TNutritionStackParamList = {
 type TConnectStackParamList = {
   Connect: undefined;
   New: undefined;
-  Room: { id: string; name: string | null; image: string };
-  Participants: undefined;
+  Room: { id: string; name: string; image: string };
+  Profile: undefined;
 };
-
-//auth
-
-interface IErrors {
-  username: string;
-  email: string;
-  password: string;
-  confirm: string;
-}
 
 //workout
 

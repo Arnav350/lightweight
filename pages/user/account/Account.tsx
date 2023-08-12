@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { supabase } from "../../../supabase";
 import { exploreRoutines, initExercises, initPresets } from "../../../constants/init";
 
-function Profile() {
+function Account() {
   function handlePress() {
     AsyncStorage.setItem("@exercises", JSON.stringify(initExercises));
     AsyncStorage.setItem("@presets", JSON.stringify(initPresets));
@@ -66,4 +66,4 @@ function Profile() {
 
 const styles = StyleSheet.create({});
 
-export default Profile;
+export default Account;
