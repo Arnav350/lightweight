@@ -23,6 +23,7 @@ type TConnectStackParamList = {
   Connect: undefined;
   New: undefined;
   Room: { id: string; name: string | null; image: string };
+  Participants: undefined;
 };
 
 //auth

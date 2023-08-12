@@ -3,14 +3,16 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../supabase";
+import { TRoomProps } from "../../pages/user/connect/Room";
 import { COLORS } from "../../constants/theme";
 
 interface IProps {
   profile: IProfile;
-  setSelectedProfiles: Dispatch<SetStateAction<IProfile[]>>;
+  setSelectedProfiles?: Dispatch<SetStateAction<IProfile[]>>;
+  navigateRoom?: TRoomProps;
 }
 
-function ConnectProfile({ profile, setSelectedProfiles }: IProps) {
+function NewProfile({ profile, setSelectedProfiles }: IProps) {
   const { id, name, username, picture } = profile;
 
   const [selected, setSelected] = useState<boolean>(false);
@@ -40,28 +42,36 @@ function ConnectProfile({ profile, setSelectedProfiles }: IProps) {
   });
 
   function handlePress() {
-    if (selected) {
-      setSelectedProfiles((prevSelectedProfiles) =>
-        prevSelectedProfiles.filter((selectedProfile) => selectedProfile.id !== id)
-      );
-    } else {
-      setSelectedProfiles((prevSelectedProfiles) => [...prevSelectedProfiles, profile]);
-    }
+    if (setSelectedProfiles) {
+      if (selected) {
+        setSelectedProfiles((prevSelectedProfiles) =>
+          prevSelectedProfiles.filter((selectedProfile) => selectedProfile.id !== id)
+        );
+      } else {
+        setSelectedProfiles((prevSelectedProfiles) => [...prevSelectedProfiles, profile]);
+      }
 
-    setSelected(!selected);
+      setSelected(!selected);
+    } else if (true) {
+    }
   }
 
   return (
     <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
       <View style={styles.profileContainer}>
-        {/* FIX IMAGE */}
         <Image source={picture ? { uri: profilePicture } : require("../../assets/logo.png")} style={styles.image} />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.username}>{username}</Text>
         </View>
       </View>
-      <Icon name={selected ? "circle" : "circle-outline"} size={28} color={COLORS.primary} />
+      {setSelectedProfiles ? (
+        <Icon name={selected ? "circle" : "circle-outline"} size={28} color={COLORS.primary} />
+      ) : (
+        <TouchableOpacity style={styles.followContainer} activeOpacity={0.5}>
+          <Text style={styles.follow}>Follow</Text>
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 }
@@ -96,6 +106,16 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     fontSize: 14,
   },
+  followContainer: {
+    padding: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 8,
+  },
+  follow: {
+    color: COLORS.white,
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
 
-export default ConnectProfile;
+export default NewProfile;

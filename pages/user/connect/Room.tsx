@@ -9,9 +9,13 @@ import { AuthContext } from "../../../hooks/useAuth";
 import RoomInfo from "../../../components/connect/RoomInfo";
 import { COLORS } from "../../../constants/theme";
 
-type TRoomProps = StackScreenProps<TConnectStackParamList, "Room">;
+export type TRoomProps = StackScreenProps<TConnectStackParamList, "Room">;
 
-function Room({ navigation, route: { params } }: TRoomProps) {
+function Room(props: TRoomProps) {
+  const {
+    navigation,
+    route: { params },
+  } = props;
   const currentUser = useContext(AuthContext);
 
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -39,7 +43,7 @@ function Room({ navigation, route: { params } }: TRoomProps) {
     async function getRoomParticipants() {
       const { data, error } = await supabase
         .from("room_participants")
-        .select("profile: profiles")
+        .select("profile: profiles(id, name, username, picture)")
         .match({ room_id: params.id })
         .returns<{ profile: IProfile }[]>();
 
@@ -88,6 +92,7 @@ function Room({ navigation, route: { params } }: TRoomProps) {
       </View>
       <Modal animationType="slide" transparent visible={showInfo}>
         <RoomInfo
+          navigate={props}
           room={room}
           setRoom={setRoom}
           roomParticipants={roomParticipants}

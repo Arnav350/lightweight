@@ -6,7 +6,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../../supabase";
 import { AuthContext } from "../../../hooks/useAuth";
-import ConnectProfile from "../../../components/connect/ConnectProfile";
+import NewProfile from "../../../components/connect/NewProfile";
 import { COLORS } from "../../../constants/theme";
 
 type TNewProps = StackScreenProps<TConnectStackParamList, "New">;
@@ -104,7 +104,7 @@ function New({ navigation }: TNewProps) {
         <FlatList
           data={profiles}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <ConnectProfile profile={item} setSelectedProfiles={setSelectedProfiles} />}
+          renderItem={({ item }) => <NewProfile profile={item} setSelectedProfiles={setSelectedProfiles} />}
           style={styles.profilesContainer}
         />
         <TouchableOpacity
