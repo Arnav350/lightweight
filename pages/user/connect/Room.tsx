@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../../supabase";
 import { AuthContext } from "../../../hooks/useAuth";
+import RoomMessage from "../../../components/connect/RoomMessage";
 import RoomInfo from "../../../components/connect/RoomInfo";
 import { COLORS } from "../../../constants/theme";
 
@@ -21,6 +22,7 @@ function Room(props: TRoomProps) {
   const [room, setRoom] = useState<IRoom | null>(null);
   const [roomParticipants, setRoomParticipants] = useState<IProfile[]>([]);
   const [roomImage, setRoomImage] = useState<string>(params.image);
+  const [messages, setMessages] = useState<IMessage[]>([]);
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
   useEffect(() => {
@@ -54,8 +56,24 @@ function Room(props: TRoomProps) {
       }
     }
 
+    async function getMessages() {
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        .match({ room_id: params.id })
+        .order("created_at", { ascending: false })
+        .returns<IMessage[]>();
+
+      if (error) {
+        alert(error.message);
+      } else {
+        setMessages(data);
+      }
+    }
+
     getRoom();
     getRoomParticipants();
+    getMessages();
   }, []);
 
   return (
@@ -74,12 +92,19 @@ function Room(props: TRoomProps) {
           <Icon name="taco" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-      <View style={styles.roomContainer}></View>
+      <FlatList
+        data={messages}
+        renderItem={({ item }) => <RoomMessage message={item} />}
+        keyExtractor={(item) => item.id}
+        inverted
+        style={styles.roomContainer}
+      />
       <View style={styles.inputContainer}>
         <Icon name="camera-outline" size={32} color={COLORS.primary} />
         <TextInput
           placeholder="Message..."
           placeholderTextColor={COLORS.gray}
+          keyboardAppearance="dark"
           maxLength={2000}
           returnKeyType="send"
           blurOnSubmit
@@ -120,6 +145,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
+    flexShrink: 1,
   },
   image: {
     height: 48,
@@ -127,6 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   header: {
+    //maybe dont use %
     margin: 8,
     maxWidth: "75%",
     fontSize: 20,
@@ -134,7 +161,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   roomContainer: {
-    flex: 1,
+    padding: 8,
     backgroundColor: COLORS.black,
   },
   inputContainer: {

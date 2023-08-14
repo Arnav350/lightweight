@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { supabase } from "../../supabase";
@@ -11,6 +11,25 @@ interface IProps {
 }
 
 function ConnectRoom({ room: { id, name, image, last_message, last_date }, navigate: { navigation } }: IProps) {
+  const date: string = useMemo(() => {
+    const roomDate = new Date(last_date);
+    const todayDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+    if (todayDate.getTime() - roomDate.getTime() < 6.048e8) {
+      if (todayDate.getTime() - roomDate.getTime() < 8.64e7) {
+        if (todayDate.getTime() <= roomDate.getTime()) {
+          return roomDate.toLocaleTimeString("default", { hour: "numeric", minute: "numeric" });
+        } else {
+          return "Yesterday";
+        }
+      } else {
+        return roomDate.toLocaleDateString("default", { weekday: "long" }).split(",")[0];
+      }
+    } else {
+      return roomDate.toLocaleDateString();
+    }
+  }, [last_date]);
+
   const [roomImage, setRoomImage] = useState<string>("");
 
   useEffect(() => {
@@ -42,11 +61,11 @@ function ConnectRoom({ room: { id, name, image, last_message, last_date }, navig
       style={styles.container}
       onPress={() => navigation.navigate("Room", { id, name, image: roomImage })}
     >
-      <Image source={image ? { uri: roomImage } : require("../../assets/logo.png")} style={styles.image} />
+      <Image source={roomImage ? { uri: roomImage } : require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.name}>{name}</Text>
-          <Text style={styles.date}>{last_date}</Text>
+          <Text style={styles.date}>{date}</Text>
         </View>
         <Text numberOfLines={2} style={styles.message}>
           {last_message}

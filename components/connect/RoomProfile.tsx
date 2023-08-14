@@ -47,7 +47,10 @@ function RoomProfile({ navigate: { navigation }, profile, setShowInfo }: IProps)
   return (
     <TouchableOpacity activeOpacity={0.5} style={styles.container} onPress={handlePress}>
       <View style={styles.profileContainer}>
-        <Image source={picture ? { uri: profilePicture } : require("../../assets/logo.png")} style={styles.image} />
+        <Image
+          source={profilePicture ? { uri: profilePicture } : require("../../assets/logo.png")}
+          style={styles.image}
+        />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.username}>{username}</Text>

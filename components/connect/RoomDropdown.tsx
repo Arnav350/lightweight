@@ -20,14 +20,17 @@ function RoomDropdown({ navigate, roomParticipants, setRoomParticipants, setShow
   return (
     <View style={styles.container}>
       {openDropdown ? (
-        <TouchableOpacity activeOpacity={0.5} style={styles.inputContainer} onPress={() => setOpenDropdown(false)}>
-          <TextInput
-            value={participant}
-            placeholder="Enter user..."
-            placeholderTextColor={COLORS.gray}
-            style={styles.input}
-            onChangeText={setParticipant}
-          />
+        <TouchableOpacity activeOpacity={0.5} style={styles.searchContainer} onPress={() => setOpenDropdown(false)}>
+          <View style={styles.inputContainer}>
+            <Icon name="magnify" size={24} color={COLORS.gray} />
+            <TextInput
+              value={participant}
+              placeholder="Enter user..."
+              placeholderTextColor={COLORS.gray}
+              style={styles.input}
+              onChangeText={setParticipant}
+            />
+          </View>
           <Icon name="chevron-up" size={32} color={COLORS.white} />
         </TouchableOpacity>
       ) : (
@@ -64,19 +67,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  inputContainer: {
+  searchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingRight: 16,
     backgroundColor: COLORS.blackOne,
+    paddingHorizontal: 16,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
+  },
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 12,
   },
   input: {
     flex: 1,
     paddingVertical: 24,
-    paddingHorizontal: 16,
-    color: COLORS.white,
+    paddingHorizontal: 4,
     fontSize: 16,
   },
   profilesContainer: {
