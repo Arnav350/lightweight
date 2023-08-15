@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FlatList, Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -76,6 +76,16 @@ function Room(props: TRoomProps) {
     getMessages();
   }, []);
 
+  async function handleSend(text: string) {
+    if (text.trim().length !== 0) {
+      const { error } = await supabase.from("messages").insert({ content: text, room_id: params.id });
+
+      if (error) {
+        alert(error.message);
+      }
+    }
+  }
+
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
@@ -110,7 +120,7 @@ function Room(props: TRoomProps) {
           blurOnSubmit
           multiline
           style={styles.input}
-          onSubmitEditing={({ nativeEvent: { text } }) => console.log(text)}
+          onSubmitEditing={({ nativeEvent: { text } }) => handleSend(text)}
         />
         <Icon name="microphone-outline" size={32} color={COLORS.primary} />
         <Icon name="image-outline" size={32} color={COLORS.primary} />
