@@ -9,6 +9,7 @@ import { AuthContext } from "../../../hooks/useAuth";
 import RoomMessage from "../../../components/connect/RoomMessage";
 import RoomInfo from "../../../components/connect/RoomInfo";
 import { COLORS } from "../../../constants/theme";
+import RoomInput from "../../../components/connect/RoomInput";
 
 export type TRoomProps = StackScreenProps<TConnectStackParamList, "Room">;
 
@@ -30,7 +31,7 @@ function Room(props: TRoomProps) {
       const { data, error } = await supabase
         .from("rooms")
         .select("*")
-        .match({ id: params.id })
+        .match({ id: params.roomId })
         .returns<IRoom[]>()
         .limit(1)
         .single();
@@ -46,7 +47,7 @@ function Room(props: TRoomProps) {
       const { data, error } = await supabase
         .from("room_participants")
         .select("profile: profiles(id, name, username, picture)")
-        .match({ room_id: params.id })
+        .match({ room_id: params.roomId })
         .returns<{ profile: IProfile }[]>();
 
       if (error) {
@@ -60,7 +61,7 @@ function Room(props: TRoomProps) {
       const { data, error } = await supabase
         .from("messages")
         .select("*")
-        .match({ room_id: params.id })
+        .match({ room_id: params.roomId })
         .order("created_at", { ascending: false })
         .returns<IMessage[]>();
 
@@ -76,15 +77,29 @@ function Room(props: TRoomProps) {
     getMessages();
   }, []);
 
-  async function handleSend(text: string) {
-    if (text.trim().length !== 0) {
-      const { error } = await supabase.from("messages").insert({ content: text, room_id: params.id });
+  useEffect(() => {
+    const sub = supabase
+      .channel("messages")
+      .on<IMessage>(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages", filter: `room_id=eq.${params.roomId}` },
+        (payload) => {
+          if (payload.eventType === "INSERT") {
+            setMessages((prevMessages) => [payload.new, ...prevMessages]);
+          } else if (payload.eventType === "DELETE") {
+            setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== payload.old.id));
+          } else if (payload.eventType === "UPDATE") {
+            //UPDATE
+            // setMessages((prevMessages) => prevMessages.map((prevMessage) => prevMessage.id === ))
+          }
+        }
+      )
+      .subscribe();
 
-      if (error) {
-        alert(error.message);
-      }
-    }
-  }
+    return () => {
+      supabase.removeChannel(sub);
+    };
+  }, []);
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -109,22 +124,7 @@ function Room(props: TRoomProps) {
         inverted
         style={styles.roomContainer}
       />
-      <View style={styles.inputContainer}>
-        <Icon name="camera-outline" size={32} color={COLORS.primary} />
-        <TextInput
-          placeholder="Message..."
-          placeholderTextColor={COLORS.gray}
-          keyboardAppearance="dark"
-          maxLength={2000}
-          returnKeyType="send"
-          blurOnSubmit
-          multiline
-          style={styles.input}
-          onSubmitEditing={({ nativeEvent: { text } }) => handleSend(text)}
-        />
-        <Icon name="microphone-outline" size={32} color={COLORS.primary} />
-        <Icon name="image-outline" size={32} color={COLORS.primary} />
-      </View>
+      <RoomInput roomId={params.roomId} />
       <Modal animationType="slide" transparent visible={showInfo}>
         <RoomInfo
           navigate={props}

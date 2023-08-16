@@ -59,7 +59,7 @@ function ConnectRoom({ room: { id, name, image, last_message, last_date }, navig
     <TouchableOpacity
       activeOpacity={0.5}
       style={styles.container}
-      onPress={() => navigation.navigate("Room", { id, name, image: roomImage })}
+      onPress={() => navigation.navigate("Room", { roomId: id, name, image: roomImage })}
     >
       <Image source={roomImage ? { uri: roomImage } : require("../../assets/logo.png")} style={styles.image} />
       <View style={styles.textContainer}>

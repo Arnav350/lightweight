@@ -71,7 +71,7 @@ function New({ navigation }: TNewProps) {
     if (error) {
       alert(error.message);
     } else {
-      navigation.navigate("Room", { id: data.id, name: data.name, image: "" });
+      navigation.navigate("Room", { roomId: data.id, name: data.name, image: "" });
     }
   }
 
