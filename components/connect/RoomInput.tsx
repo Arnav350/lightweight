@@ -70,10 +70,10 @@ function RoomInput({ roomId }: IProps) {
 
       if (error) {
         alert(error.message);
-      } else {
-        textInput.current?.clear();
       }
     }
+
+    textInput.current?.clear();
 
     medias.forEach(async ({ asset }) => {
       const ext = asset.uri.split(".").pop();
@@ -95,6 +95,15 @@ function RoomInput({ roomId }: IProps) {
     });
 
     setMedias([]);
+
+    const { error } = await supabase
+      .from("rooms")
+      .update({ last_message: medias.length !== 0 ? `Attachment (${medias.length})` : text })
+      .match({ id: roomId });
+
+    if (error) {
+      alert(error.message);
+    }
   }
 
   return (
