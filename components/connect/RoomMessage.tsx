@@ -6,9 +6,10 @@ import { COLORS } from "../../constants/theme";
 
 interface IProps {
   message: IMessage;
+  lastMessage: IMessage;
 }
 
-function RoomMessage({ message: { id, created_at, content, media, profile_id, room_id } }: IProps) {
+function RoomMessage({ message: { id, created_at, content, media, profile_id, room_id }, lastMessage }: IProps) {
   const date: string = useMemo(() => {
     const roomDate = new Date(created_at);
     const todayDate = new Date(new Date().setHours(0, 0, 0, 0));
@@ -28,29 +29,53 @@ function RoomMessage({ message: { id, created_at, content, media, profile_id, ro
     }
   }, [created_at]);
 
+  const spacing: number = useMemo(() => {
+    const roomDate = new Date(created_at);
+    const lastDate = new Date(lastMessage.created_at);
+
+    if (roomDate.toLocaleDateString() === lastDate.toLocaleDateString()) {
+      if (roomDate.getTime() - lastDate.getTime() < 60000) {
+        return 1;
+      } else {
+        return 8;
+      }
+    } else {
+      return 0;
+    }
+  }, [lastMessage.created_at]);
+
   const currentUser = useContext(AuthContext);
 
   //shouldnt be any
   const [currentMedia, setCurrentMedia] = useState<any>("");
 
   return (
-    <View
-      style={
-        currentUser?.id === profile_id
-          ? [styles.container, { alignSelf: "flex-end", backgroundColor: COLORS.primary }]
-          : styles.container
-      }
-    >
-      <Text style={styles.content}>
-        {content}
-        <Text style={styles.space}>{date}</Text>
-      </Text>
-      <Text style={styles.date}>{date}</Text>
+    <View style={{ marginTop: spacing }}>
+      {!spacing && <Text style={styles.spacer}>{date}</Text>}
+      <View
+        style={
+          currentUser?.id === profile_id
+            ? [styles.container, { alignSelf: "flex-end", backgroundColor: COLORS.primary }]
+            : styles.container
+        }
+      >
+        <Text style={styles.content}>
+          {content}
+          <Text style={styles.space}>{date}</Text>
+        </Text>
+        <Text style={styles.date}>{date}</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  spacer: {
+    marginVertical: 16,
+    color: COLORS.gray,
+    fontWeight: "500",
+    textAlign: "center",
+  },
   container: {
     alignSelf: "flex-start",
     padding: 8,

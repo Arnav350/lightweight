@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -17,6 +17,8 @@ interface IProps {
 }
 
 function RoomInput({ roomId }: IProps) {
+  const textInput = useRef<TextInput>(null);
+
   const [permission, setPermission] = useState<boolean>(false);
   //shouldnt be any
   const [medias, setMedias] = useState<any[]>([]);
@@ -63,11 +65,13 @@ function RoomInput({ roomId }: IProps) {
   }
 
   async function handleSend(text: string) {
-    if (text.trim().length !== 0) {
+    if (text.length !== 0) {
       const { error } = await supabase.from("messages").insert({ content: text, room_id: roomId });
 
       if (error) {
         alert(error.message);
+      } else {
+        textInput.current?.clear();
       }
     }
 
@@ -106,6 +110,7 @@ function RoomInput({ roomId }: IProps) {
         multiline
         style={styles.input}
         onSubmitEditing={({ nativeEvent: { text } }) => handleSend(text)}
+        ref={textInput}
       />
       <Icon name="microphone-outline" size={32} color={COLORS.primary} />
       <Icon name="image-outline" size={32} color={COLORS.primary} />

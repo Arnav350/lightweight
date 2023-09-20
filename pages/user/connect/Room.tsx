@@ -87,7 +87,7 @@ function Room(props: TRoomProps) {
           if (payload.eventType === "INSERT") {
             setMessages((prevMessages) => [payload.new, ...prevMessages]);
           } else if (payload.eventType === "DELETE") {
-            setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== payload.old.id));
+            // setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== payload.old.id));
           } else if (payload.eventType === "UPDATE") {
             //UPDATE
             // setMessages((prevMessages) => prevMessages.map((prevMessage) => prevMessage.id === ))
@@ -119,7 +119,7 @@ function Room(props: TRoomProps) {
       </View>
       <FlatList
         data={messages}
-        renderItem={({ item }) => <RoomMessage message={item} />}
+        renderItem={({ item, index }) => <RoomMessage message={item} lastMessage={messages[index + 1] || item} />}
         keyExtractor={(item) => item.id}
         inverted
         style={styles.roomContainer}
