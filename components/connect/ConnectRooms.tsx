@@ -5,31 +5,36 @@ import { supabase } from "../../supabase";
 import { TConnectProps } from "../../pages/user/connect/Connect";
 import ConnectRoom from "./ConnectRoom";
 import { COLORS } from "../../constants/theme";
+import { useIsFocused } from "@react-navigation/native";
 
 interface IProps {
   navigate: TConnectProps;
 }
 
 function ConnectRooms({ navigate }: IProps) {
+  const isFocused = useIsFocused();
+
   const [rooms, setRooms] = useState<IRoom[]>([]);
 
   useEffect(() => {
-    async function getRooms() {
-      const { error, data } = await supabase
-        .from("rooms")
-        .select("*")
-        .order("last_date", { ascending: false })
-        .returns<IRoom[]>();
+    if (isFocused) {
+      async function getRooms() {
+        const { error, data } = await supabase
+          .from("rooms")
+          .select("*")
+          .order("last_date", { ascending: false })
+          .returns<IRoom[]>();
 
-      if (error) {
-        alert(error.message);
-      } else {
-        setRooms(data);
+        if (error) {
+          alert(error.message);
+        } else {
+          setRooms(data);
+        }
       }
-    }
 
-    getRooms();
-  }, []);
+      getRooms();
+    }
+  }, [isFocused]);
 
   return (
     <FlatList
