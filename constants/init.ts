@@ -1,9 +1,5 @@
 export const initCurrentWorkout: IWorkout = {
-  date: {
-    month: "",
-    day: "",
-    year: 0,
-  },
+  date: new Date(),
   name: "",
   time: 0,
   weight: 0,

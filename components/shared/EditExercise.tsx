@@ -100,7 +100,14 @@ function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: I
         <LineChart
           data={{
             labels:
-              oneRM.length > 1 ? filteredWorkouts.map((workout) => `${workout.date.month} ${workout.date.day}`) : [],
+              oneRM.length > 1
+                ? filteredWorkouts.map(
+                    ({ date }) =>
+                      `${date.toLocaleDateString("default", { month: "short" })} ${date.toLocaleDateString("default", {
+                        day: "2-digit",
+                      })}`
+                  )
+                : [],
             datasets: [
               {
                 data: oneRM.length > 1 ? oneRM : [0, 0.001, 0.001, 0.001, 0.002],

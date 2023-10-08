@@ -29,11 +29,7 @@ function Routine({ navigation, route: { params } }: TProps) {
   function handleStartPress() {
     const date = new Date();
     setCurrentWorkout({
-      date: {
-        month: date.toLocaleDateString("default", { month: "short" }),
-        day: date.toLocaleDateString("default", { day: "2-digit" }),
-        year: date.getFullYear(),
-      },
+      date,
       name: routines[params.i].name,
       time: date.getTime(),
       weight: 0,

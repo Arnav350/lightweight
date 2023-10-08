@@ -141,7 +141,12 @@ function Progress({ navigation }: TProps) {
           <>
             <LineChart
               data={{
-                labels: filteredWorkouts.map((workout) => `${workout.date.month} ${workout.date.day}`),
+                labels: filteredWorkouts.map(
+                  ({ date }) =>
+                    `${date.toLocaleDateString("default", { month: "short" })} ${date.toLocaleDateString("default", {
+                      day: "2-digit",
+                    })}`
+                ),
                 datasets: [
                   {
                     data: sortBy,

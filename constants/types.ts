@@ -46,11 +46,7 @@ interface IExercise {
 }
 
 interface IWorkout {
-  date: {
-    month: string;
-    day: string;
-    year: number;
-  };
+  date: Date;
   name: string;
   time: number;
   weight: number;

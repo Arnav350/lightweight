@@ -26,11 +26,7 @@ function Gym(props: TGymProps) {
     setTimeout(
       () =>
         setCurrentWorkout({
-          date: {
-            month: date.toLocaleDateString("default", { month: "short" }),
-            day: date.toLocaleDateString("default", { day: "2-digit" }),
-            year: date.getFullYear(),
-          },
+          date,
           name: "Untitled Workout",
           time: date.getTime(),
           weight: 0,
