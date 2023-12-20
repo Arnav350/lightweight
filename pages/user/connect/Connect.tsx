@@ -17,7 +17,7 @@ function Connect(props: TConnectProps) {
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3}>
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Story")}>
           <Icon name="plus" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <View style={styles.inputContainer}>

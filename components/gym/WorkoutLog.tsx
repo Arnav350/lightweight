@@ -16,6 +16,7 @@ interface IProps {
 
 function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
   const { date, name, time, weight, exercises } = workout;
+  const currentDate = new Date(date);
 
   const { setCurrentWorkout } = useContext(WorkoutContext);
 
@@ -33,8 +34,8 @@ function WorkoutLog({ i, workout, navigate: { navigation } }: IProps) {
     >
       <TouchableOpacity activeOpacity={0.5} style={styles.workoutContainer} onPress={handlePress}>
         <View style={styles.dateContainer}>
-          <Text style={styles.month}>{date.toLocaleDateString("default", { month: "short" })}</Text>
-          <Text style={styles.day}>{date.toLocaleDateString("default", { day: "2-digit" })}</Text>
+          <Text style={styles.month}>{currentDate.toLocaleDateString("default", { month: "short" })}</Text>
+          <Text style={styles.day}>{currentDate.toLocaleDateString("default", { day: "2-digit" })}</Text>
         </View>
         <View style={styles.logContainer}>
           <Text style={styles.logTitle}>{name}</Text>
