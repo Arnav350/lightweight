@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -14,19 +15,24 @@ export type TConnectProps = CompositeScreenProps<StackScreenProps<TConnectStackP
 function Connect(props: TConnectProps) {
   const { navigation } = props;
 
+  const [input, setInput] = useState<string>("");
+
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Story")}>
-          <Icon name="plus" size={32} color={COLORS.primary} />
+        <TouchableOpacity activeOpacity={0.3}>
+          <Icon name="account-plus-outline" size={32} color={COLORS.primary} />
         </TouchableOpacity>
         <View style={styles.inputContainer}>
           <Icon name="magnify" size={32} color={COLORS.darkGray} />
           <TextInput
-            placeholder="Search user..."
+            value={input}
+            placeholder="Search..."
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
+            returnKeyType="search"
             style={styles.search}
+            onChangeText={setInput}
           />
         </View>
         <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("New")}>
@@ -34,8 +40,8 @@ function Connect(props: TConnectProps) {
         </TouchableOpacity>
       </View>
       <View style={styles.connectContainer}>
-        {/* <ConnectStories /> */}
-        <ConnectRooms navigate={props} />
+        {/* <ConnectStories navigate={props} /> */}
+        <ConnectRooms navigate={props} input={input} />
       </View>
     </SafeAreaView>
   );
@@ -61,6 +67,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   search: {
+    flex: 1,
     fontSize: 16,
     color: COLORS.white,
   },

@@ -9,9 +9,10 @@ import { useIsFocused } from "@react-navigation/native";
 
 interface IProps {
   navigate: TConnectProps;
+  input: string;
 }
 
-function ConnectRooms({ navigate }: IProps) {
+function ConnectRooms({ navigate, input }: IProps) {
   const isFocused = useIsFocused();
 
   const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -38,7 +39,7 @@ function ConnectRooms({ navigate }: IProps) {
 
   return (
     <FlatList
-      data={rooms}
+      data={rooms.filter((room) => room.name.includes(input))}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => <ConnectRoom room={item} navigate={navigate} />}
       style={styles.container}

@@ -2,12 +2,17 @@ import { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TConnectProps } from "../../pages/user/connect/Connect";
 import { COLORS } from "../../constants/theme";
 
-function ConnectStories() {
+interface IProps {
+  navigate: TConnectProps;
+}
+
+function ConnectStories({ navigate: { navigation } }: IProps) {
   return (
     <ScrollView style={styles.storiesContainer} horizontal>
-      <TouchableOpacity style={styles.story}>
+      <TouchableOpacity style={styles.story} onPress={() => navigation.navigate("Story")}>
         <View>
           <Icon name="plus" size={48} color={COLORS.darkGray} />
         </View>

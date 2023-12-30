@@ -17,7 +17,7 @@ const { width } = Dimensions.get("window");
 function Story(props: TProps) {
   const { navigation } = props;
 
-  const cameraRef = useRef<Camera | null>(null);
+  // const cameraRef = useRef<Camera | null>(null);
 
   //shouldnt be any
   const [medias, setMedias] = useState<any[]>([]);
@@ -55,59 +55,55 @@ function Story(props: TProps) {
     // if (status !== "granted") {
     //   console.error("Permission to access media library denied");
     // }
-
     // let result = await ImagePicker.launchCameraAsync({
     //   allowsEditing: true,
     // });
-
     // if (!result.canceled) {
     //   console.log(result);
     // }
-
-    const { status } = await Camera.getCameraPermissionsAsync();
-
-    if (cameraRef.current) {
-      const result = await cameraRef.current.takePictureAsync();
-      console.log("Photo taken at", result.uri);
-    }
+    // const { status } = await Camera.getCameraPermissionsAsync();
+    // if (cameraRef.current) {
+    //   const result = await cameraRef.current.takePictureAsync();
+    //   console.log("Photo taken at", result.uri);
+    // }
   }
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
-      <Camera ref={cameraRef}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
-            <Icon name="close" size={32} color={COLORS.primary} />
-          </TouchableOpacity>
-          <Text style={styles.header}>Add to Story</Text>
-          <TouchableOpacity activeOpacity={0.3}>
-            <Icon name="check" size={32} color={COLORS.primary} onPress={() => {}} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.optionsRow}>
-          <TouchableOpacity activeOpacity={0.5} style={styles.optionsButton} onPress={recordMedia}>
-            <Icon name="camera-outline" size={40} color={COLORS.primary} />
-            <Text style={styles.optionsText}>Camera</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5} style={styles.optionsButton} onPress={pickMedia}>
-            <Icon name="image-multiple-outline" size={40} color={COLORS.primary} />
-            <Text style={styles.optionsText}>Photos</Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={medias}
-          renderItem={({ item, index }) => <StoryMedia key={index} i={index} media={item} setMedias={setMedias} />}
-          numColumns={3}
-          ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyTitle}>Choose a picture/video</Text>
-              <Text style={styles.emptyMessage}>Select your photos or take a new one</Text>
-            </View>
-          }
-          columnWrapperStyle={styles.storyColumn}
-          style={styles.storyContainer}
-        />
-      </Camera>
+      {/* <Camera ref={cameraRef}> */}
+      <View style={styles.headerContainer}>
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.goBack()}>
+          <Icon name="close" size={32} color={COLORS.primary} />
+        </TouchableOpacity>
+        <Text style={styles.header}>Add to Story</Text>
+        <TouchableOpacity activeOpacity={0.3}>
+          <Icon name="check" size={32} color={COLORS.primary} onPress={() => {}} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.optionsRow}>
+        <TouchableOpacity activeOpacity={0.5} style={styles.optionsButton} onPress={recordMedia}>
+          <Icon name="camera-outline" size={40} color={COLORS.primary} />
+          <Text style={styles.optionsText}>Camera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5} style={styles.optionsButton} onPress={pickMedia}>
+          <Icon name="image-multiple-outline" size={40} color={COLORS.primary} />
+          <Text style={styles.optionsText}>Photos</Text>
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        data={medias}
+        renderItem={({ item, index }) => <StoryMedia key={index} i={index} media={item} setMedias={setMedias} />}
+        numColumns={3}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyTitle}>Choose a picture/video</Text>
+            <Text style={styles.emptyMessage}>Select your photos or take a new one</Text>
+          </View>
+        }
+        columnWrapperStyle={styles.storyColumn}
+        style={styles.storyContainer}
+      />
+      {/* </Camera> */}
     </SafeAreaView>
   );
 }
