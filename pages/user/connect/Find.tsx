@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -10,6 +10,7 @@ type TFindProps = StackScreenProps<TConnectStackParamList, "Find">;
 
 function Find({ navigation }: TFindProps) {
   const [input, setInput] = useState<string>("");
+  const [users, setUsers] = useState([]);
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -33,6 +34,15 @@ function Find({ navigation }: TFindProps) {
           <Icon name="cat" size={32} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
+      <FlatList
+        data={users}
+        renderItem={({ item, index }) => (
+          <View key={index}>
+            <Text>HELLo</Text>
+          </View>
+        )}
+        style={styles.findContainer}
+      />
     </SafeAreaView>
   );
 }
@@ -60,6 +70,10 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: COLORS.white,
+  },
+  findContainer: {
+    flex: 1,
+    backgroundColor: COLORS.black,
   },
 });
 

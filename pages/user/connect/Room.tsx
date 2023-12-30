@@ -46,7 +46,7 @@ function Room(props: TRoomProps) {
     async function getRoomParticipants() {
       const { data, error } = await supabase
         .from("room_participants")
-        .select("profile: profiles(id, name, username, picture)")
+        .select("profile: profiles(*)")
         .match({ room_id: params.roomId })
         .returns<{ profile: IProfile }[]>();
 
