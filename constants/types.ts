@@ -21,8 +21,9 @@ type TNutritionStackParamList = {
 
 type TConnectStackParamList = {
   Connect: undefined;
-  Story: undefined;
+  Find: undefined;
   New: undefined;
+  Story: undefined;
   Room: { roomId: string; name: string; image: string };
   Profile: undefined;
 };
