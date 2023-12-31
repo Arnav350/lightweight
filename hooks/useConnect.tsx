@@ -38,31 +38,50 @@ function ConnectProvider({ children }: IProviderChildren) {
   }, [followees]);
 
   useEffect(() => {
-    AsyncStorage.multiGet(["@followers", "@followees"]).then((arrayJson) => {
-      if (arrayJson[0][1]) {
-        setFollowers(JSON.parse(arrayJson[0][1]));
-      }
-      if (arrayJson[1][1]) {
-        setFollowees(JSON.parse(arrayJson[1][1]));
-      }
-    });
+    if (currentUser) {
+      AsyncStorage.multiGet(["@followers", "@followees"]).then((arrayJson) => {
+        if (arrayJson[0][1]) {
+          setFollowers(JSON.parse(arrayJson[0][1]));
+        }
+        if (arrayJson[1][1]) {
+          setFollowees(JSON.parse(arrayJson[1][1]));
+        }
+      });
 
-    async function getData() {
-      const { data, error } = await supabase
-        .from("followers")
-        .select("profile: profiles!follower_id(*)")
-        .match({ followee_id: currentUser?.id })
-        .returns<{ profile: IProfile }[]>();
-
-      if (error) {
-        alert(error.message);
-      } else {
-        // setFollowers(data)
+      //should work with no internet
+      async function getFollowees() {
+        const { data, error } = await supabase
+          .from("followers")
+          .select("profile: profiles!followee_id(*), priority")
+          .match({ follower_id: currentUser?.id })
+          .order("priority")
+          .returns<IFollower[]>();
+        if (error) {
+          alert(error.message);
+        } else {
+          setFollowees(data);
+        }
       }
+
+      async function getFollowers() {
+        const { data, error } = await supabase
+          .from("followers")
+          .select("profile: profiles!follower_id(*), priority")
+          .match({ followee_id: currentUser?.id })
+          .order("priority")
+          .returns<IFollower[]>();
+
+        if (error) {
+          alert(error.message);
+        } else {
+          setFollowers(data);
+        }
+      }
+
+      getFollowees();
+      getFollowers();
     }
-
-    getData();
-  }, []);
+  }, [currentUser]);
 
   return (
     <ConnectContext.Provider value={{ followers, setFollowers, followees, setFollowees }}>

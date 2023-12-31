@@ -125,10 +125,13 @@ interface IProfile {
 }
 
 interface IFollower {
-  follower_id: string;
-  followee_id: string;
-  created_at: string;
   priority: number;
+  profile: {
+    id: string;
+    name: string;
+    username: string;
+    picture: boolean;
+  };
 }
 
 interface IRoom {

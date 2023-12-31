@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { ConnectContext } from "../../../hooks/useConnect";
 import { COLORS } from "../../../constants/theme";
 
 type TFindProps = StackScreenProps<TConnectStackParamList, "Find">;
 
 function Find({ navigation }: TFindProps) {
   const [input, setInput] = useState<string>("");
-  const [users, setUsers] = useState([]);
+  const { followees, followers } = useContext(ConnectContext);
+  const followeeIds = useMemo(() => followees.map((followee) => followee.profile.id), [followees]);
+  const nonMutuals = useMemo(
+    () => [...followers, ...followers.filter((follower) => !followeeIds.includes(follower.profile.id))],
+    [followees, followers]
+  );
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -35,10 +41,10 @@ function Find({ navigation }: TFindProps) {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={users}
+        data={nonMutuals}
         renderItem={({ item, index }) => (
           <View key={index}>
-            <Text>HELLo</Text>
+            <Text style={{ color: COLORS.primary }}>HELLo</Text>
           </View>
         )}
         style={styles.findContainer}
