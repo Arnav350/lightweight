@@ -6,41 +6,38 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { supabase } from "../../../supabase";
 import { AuthContext } from "../../../hooks/useAuth";
+import { ConnectContext } from "../../../hooks/useConnect";
 import NewProfile from "../../../components/connect/NewProfile";
 import { COLORS } from "../../../constants/theme";
 
 type TNewProps = StackScreenProps<TConnectStackParamList, "New">;
 
-interface IProfilePriority {
-  priority: number;
-  profile: IProfile;
-}
-
 function New({ navigation }: TNewProps) {
   const currentUser = useContext(AuthContext);
+  const { followers } = useContext(ConnectContext);
 
   const [input, setInput] = useState<string>("");
-  const [profiles, setProfiles] = useState<IProfile[]>([]);
+  // const [profiles, setProfiles] = useState<IProfile[]>([]);
   const [selectedProfiles, setSelectedProfiles] = useState<IProfile[]>([]);
 
-  useEffect(() => {
-    async function getSuggestedUsers() {
-      const { data, error } = await supabase
-        .from("followers")
-        .select("priority, profile: profiles!follower_id(id, username, name, picture)")
-        .match({ followee_id: currentUser?.id })
-        .order("priority", { ascending: false })
-        .returns<IProfilePriority[]>();
+  // useEffect(() => {
+  //   async function getSuggestedUsers() {
+  //     const { data, error } = await supabase
+  //       .from("followers")
+  //       .select("priority, profile: profiles!follower_id(*)")
+  //       .match({ followee_id: currentUser?.id })
+  //       .order("priority", { ascending: false })
+  //       .returns<IFollower[]>();
 
-      if (error) {
-        alert(error.message);
-      } else {
-        setProfiles(data.map((profilePriority) => profilePriority.profile));
-      }
-    }
+  //     if (error) {
+  //       alert(error.message);
+  //     } else {
+  //       setProfiles(data.map((profilePriority) => profilePriority.profile));
+  //     }
+  //   }
 
-    getSuggestedUsers();
-  }, []);
+  //   getSuggestedUsers();
+  // }, []);
 
   async function handlePress() {
     const username = await supabase
@@ -102,7 +99,8 @@ function New({ navigation }: TNewProps) {
         />
         <Text style={styles.subheader}>Suggested:</Text>
         <FlatList
-          data={profiles}
+          // data={profiles}
+          data={followers.map((follower) => follower.profile)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <NewProfile profile={item} setSelectedProfiles={setSelectedProfiles} />}
           style={styles.profilesContainer}

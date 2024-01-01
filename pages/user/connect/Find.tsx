@@ -5,18 +5,19 @@ import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { ConnectContext } from "../../../hooks/useConnect";
+import FollowRow from "../../../components/shared/FollowRow";
 import { COLORS } from "../../../constants/theme";
 
 type TFindProps = StackScreenProps<TConnectStackParamList, "Find">;
 
 function Find({ navigation }: TFindProps) {
   const [input, setInput] = useState<string>("");
-  const { followees, followers } = useContext(ConnectContext);
-  const followeeIds = useMemo(() => followees.map((followee) => followee.profile.id), [followees]);
-  const nonMutuals = useMemo(
-    () => [...followers, ...followers.filter((follower) => !followeeIds.includes(follower.profile.id))],
-    [followees, followers]
-  );
+  const { followees, followers, connecteds } = useContext(ConnectContext);
+  // const followeeIds = useMemo(() => followees.map((followee) => followee.profile.id), [followees]);
+  // const nonMutuals = useMemo(
+  //   () => [...followers, ...followers.filter((follower) => !followeeIds.includes(follower.profile.id))],
+  //   [followees, followers]
+  // );
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -41,12 +42,8 @@ function Find({ navigation }: TFindProps) {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={nonMutuals}
-        renderItem={({ item, index }) => (
-          <View key={index}>
-            <Text style={{ color: COLORS.primary }}>HELLo</Text>
-          </View>
-        )}
+        data={connecteds}
+        renderItem={({ item, index }) => <FollowRow key={index} profile={item.profile} />}
         style={styles.findContainer}
       />
     </SafeAreaView>
