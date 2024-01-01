@@ -13,11 +13,6 @@ type TFindProps = StackScreenProps<TConnectStackParamList, "Find">;
 function Find({ navigation }: TFindProps) {
   const [input, setInput] = useState<string>("");
   const { followees, followers, connecteds } = useContext(ConnectContext);
-  // const followeeIds = useMemo(() => followees.map((followee) => followee.profile.id), [followees]);
-  // const nonMutuals = useMemo(
-  //   () => [...followers, ...followers.filter((follower) => !followeeIds.includes(follower.profile.id))],
-  //   [followees, followers]
-  // );
 
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
@@ -43,7 +38,7 @@ function Find({ navigation }: TFindProps) {
       </View>
       <FlatList
         data={connecteds}
-        renderItem={({ item, index }) => <FollowRow key={index} profile={item.profile} />}
+        renderItem={({ item, index }) => <FollowRow key={index} follower={item.follower} profile={item.profile} />}
         style={styles.findContainer}
       />
     </SafeAreaView>

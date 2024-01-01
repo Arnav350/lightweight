@@ -109,10 +109,8 @@ function ConnectProvider({ children }: IProviderChildren) {
               const tempPriority =
                 tempFollowers.find((tempFollower) => tempFollower.profile.id === datum.profile.id) || datum;
               tempMutuals.push({ ...datum, follower: mutual, priority: tempPriority.priority });
-              console.log("a");
             } else {
               tempconnecteds.push({ ...datum, follower: mutual });
-              console.log("b");
             }
 
             return { ...datum, follower: mutual };
@@ -121,12 +119,6 @@ function ConnectProvider({ children }: IProviderChildren) {
           setFollowees(tempFollowees);
           setMutuals(tempMutuals);
           setConnecteds(tempconnecteds);
-
-          console.log("---");
-          console.log(tempFollowers);
-          console.log(tempFollowees);
-          console.log(tempMutuals);
-          console.log(tempconnecteds);
         }
       }
 
