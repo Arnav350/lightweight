@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-
-import { COLORS } from "../../../constants/theme";
-import ConnectRooms from "../../../components/connect/ConnectRooms";
-import ConnectStories from "../../../components/connect/ConnectStories";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+
 import { TCompositeProps } from "../../../App";
+import { supabase } from "../../../supabase";
+import { AuthContext } from "../../../hooks/useAuth";
+import ConnectRooms from "../../../components/connect/ConnectRooms";
+import ConnectStories from "../../../components/connect/ConnectStories";
+import { COLORS } from "../../../constants/theme";
 
 export type TConnectProps = CompositeScreenProps<StackScreenProps<TConnectStackParamList, "Connect">, TCompositeProps>;
 
 function Connect(props: TConnectProps) {
   const { navigation } = props;
 
+  const currentUser = useContext(AuthContext);
   const [input, setInput] = useState<string>("");
 
   return (

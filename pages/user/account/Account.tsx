@@ -21,7 +21,8 @@ function Button(props: IProps) {
 }
 
 function Account() {
-  const { followees, setFollowees, mutuals, setMutuals, connecteds, setConnecteds } = useContext(ConnectContext);
+  const { followers, followees, setFollowees, mutuals, setMutuals, connecteds, setConnecteds } =
+    useContext(ConnectContext);
 
   function handlePress() {
     AsyncStorage.setItem("@exercises", JSON.stringify(initExercises));
@@ -118,6 +119,13 @@ function Account() {
     }
   }
 
+  function handleFollowPress() {
+    console.log(followers);
+    console.log(followees);
+    console.log(mutuals);
+    console.log(connecteds);
+  }
+
   return (
     <SafeAreaView edges={["top", "right", "left"]}>
       <Button text="Sign Out" function={() => {}} />
@@ -156,6 +164,7 @@ function Account() {
         }
       />
       <Button text="Un/Follow Brian" function={handleMePress} />
+      <Button text="Check Follow" function={handleFollowPress} />
     </SafeAreaView>
   );
 }

@@ -14,7 +14,8 @@ interface IProps {
 function FollowRow({ follower, profile }: IProps) {
   const { id, name, username, picture } = profile;
   const currentUser = useContext(AuthContext);
-  const { followees, setFollowees, mutuals, setMutuals, connecteds, setConnecteds } = useContext(ConnectContext);
+  const { followers, setFollowers, followees, setFollowees, mutuals, setMutuals, connecteds, setConnecteds } =
+    useContext(ConnectContext);
 
   const [profilePicture, setProfilePicture] = useState<string>("");
 
@@ -46,7 +47,7 @@ function FollowRow({ follower, profile }: IProps) {
       const { error } = await supabase
         .from("followers")
         .delete()
-        .match({ followee_id: currentUser?.id, follower_id: id });
+        .match({ followee_id: id, follower_id: currentUser?.id });
 
       if (error) {
         alert(error.message);
@@ -54,7 +55,17 @@ function FollowRow({ follower, profile }: IProps) {
         setFollowees((prevFollowees) => prevFollowees.filter((prevFollowee) => prevFollowee.profile.id !== id));
 
         if (mutuals.find((mutual) => mutual.profile.id === id)) {
+          setFollowers((prevFollowers) =>
+            prevFollowers.map((prevFollower) =>
+              prevFollower.profile.id === id ? { ...prevFollower, follower: false } : prevFollower
+            )
+          );
           setMutuals((prevMutuals) => prevMutuals.filter((prevMutual) => prevMutual.profile.id !== id));
+          setConnecteds((prevConnecteds) =>
+            prevConnecteds.map((prevConnected) =>
+              prevConnected.profile.id === id ? { ...prevConnected, follower: false } : prevConnected
+            )
+          );
         } else {
           setConnecteds((prevConnecteds) =>
             prevConnecteds.filter((prevConnecteds) => prevConnecteds.profile.id !== id)
@@ -67,6 +78,7 @@ function FollowRow({ follower, profile }: IProps) {
         while (index < array.length && array[index].priority >= 300) {
           index++;
         }
+        console.log(index);
         return index;
       }
 
@@ -78,19 +90,24 @@ function FollowRow({ follower, profile }: IProps) {
         alert(error.message);
       } else {
         const followeesIndex = findIndex(followees);
+        setFollowees((prevFollowees) =>
+          prevFollowees.splice(followeesIndex, 0, { follower: true, priority: 300, profile })
+        );
 
-        if (connecteds.find((connected) => connected.profile.id === id)) {
-          setFollowees((prevFollowees) =>
-            prevFollowees.splice(followeesIndex, 0, { follower: true, priority: 300, profile })
+        if (followers.find((follower) => follower.profile.id === id)) {
+          setFollowers((prevFollowers) =>
+            prevFollowers.map((prevFollower) =>
+              prevFollower.profile.id === id ? { ...prevFollower, follower: true } : prevFollower
+            )
           );
-
           const mutualsIndex = findIndex(mutuals);
           setMutuals((prevMutuals) => prevMutuals.splice(mutualsIndex, 0, { follower: true, priority: 300, profile }));
-        } else {
-          setFollowees((prevFollowees) =>
-            prevFollowees.splice(followeesIndex, 0, { follower: false, priority: 300, profile })
+          setConnecteds((prevConnecteds) =>
+            prevConnecteds.map((prevConnected) =>
+              prevConnected.profile.id === id ? { ...prevConnected, follower: true } : prevConnected
+            )
           );
-
+        } else {
           const connectedsIndex = findIndex(connecteds);
           setConnecteds((prevConnecteds) =>
             prevConnecteds.splice(connectedsIndex, 0, { follower: true, priority: 300, profile })

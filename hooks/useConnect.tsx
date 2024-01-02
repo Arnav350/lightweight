@@ -99,7 +99,7 @@ function ConnectProvider({ children }: IProviderChildren) {
           alert(followeesData.error.message);
         } else {
           const tempMutuals: IFollower[] = [];
-          const tempconnecteds: IFollower[] = tempFollowers;
+          const tempConnecteds: IFollower[] = tempFollowers;
           const followerIds: string[] = tempFollowers.map((tempFollower) => tempFollower.profile.id);
 
           const tempFollowees: IFollower[] = followeesData.data.map((datum) => {
@@ -110,7 +110,7 @@ function ConnectProvider({ children }: IProviderChildren) {
                 tempFollowers.find((tempFollower) => tempFollower.profile.id === datum.profile.id) || datum;
               tempMutuals.push({ ...datum, follower: mutual, priority: tempPriority.priority });
             } else {
-              tempconnecteds.push({ ...datum, follower: mutual });
+              tempConnecteds.push({ ...datum, follower: mutual });
             }
 
             return { ...datum, follower: mutual };
@@ -118,7 +118,7 @@ function ConnectProvider({ children }: IProviderChildren) {
 
           setFollowees(tempFollowees);
           setMutuals(tempMutuals);
-          setConnecteds(tempconnecteds);
+          setConnecteds(tempConnecteds);
         }
       }
 
