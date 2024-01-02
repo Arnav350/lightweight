@@ -318,3 +318,24 @@ export const labelsList: string[] = [
 ];
 
 export const daysList: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+export const initSettings: IWorkoutSettings = {
+  showOptions: false,
+  showType: false,
+  showCalculator: false,
+  i: 0,
+  j: 0,
+};
+
+export const initCurrentMeals: IDay = {
+  date: new Date(new Date().setHours(0, 0, 0, 0)),
+  meals: [],
+};
+
+export const initMacros: IMacros = {
+  calories: 0,
+  protein: 0,
+  fat: 0,
+  carbs: 0,
+  percent: true,
+};

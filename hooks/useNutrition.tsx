@@ -1,6 +1,8 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { initCurrentMeals, initMacros } from "../constants/init";
+
 interface IProviderChildren {
   children: ReactNode;
 }
@@ -23,19 +25,6 @@ interface INutritionContext {
 }
 
 export const NutritionContext = createContext<INutritionContext>({} as INutritionContext);
-
-const initCurrentMeals: IDay = {
-  date: new Date(new Date().setHours(0, 0, 0, 0)),
-  meals: [],
-};
-
-const initMacros: IMacros = {
-  calories: 0,
-  protein: 0,
-  fat: 0,
-  carbs: 0,
-  percent: true,
-};
 
 const init: [] = [];
 

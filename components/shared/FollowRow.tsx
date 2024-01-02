@@ -51,13 +51,13 @@ function FollowRow({ follower, profile }: IProps) {
       if (error) {
         alert(error.message);
       } else {
-        setFollowees((prevFollowees) => prevFollowees.filter((prevFollowee) => prevFollowee.profile.id === id));
+        setFollowees((prevFollowees) => prevFollowees.filter((prevFollowee) => prevFollowee.profile.id !== id));
 
-        if (mutuals.find((mutual) => mutual.profile.id)) {
-          setMutuals((prevMutuals) => prevMutuals.filter((prevMutual) => prevMutual.profile.id === id));
+        if (mutuals.find((mutual) => mutual.profile.id === id)) {
+          setMutuals((prevMutuals) => prevMutuals.filter((prevMutual) => prevMutual.profile.id !== id));
         } else {
           setConnecteds((prevConnecteds) =>
-            prevConnecteds.filter((prevConnecteds) => prevConnecteds.profile.id === id)
+            prevConnecteds.filter((prevConnecteds) => prevConnecteds.profile.id !== id)
           );
         }
       }
@@ -70,7 +70,7 @@ function FollowRow({ follower, profile }: IProps) {
         return index;
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("followers")
         .insert({ followee_id: id, follower_id: currentUser?.id, priority: 300 });
 
