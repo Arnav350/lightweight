@@ -78,7 +78,6 @@ function FollowRow({ follower, profile }: IProps) {
         while (index < array.length && array[index].priority >= 300) {
           index++;
         }
-        console.log(index);
         return index;
       }
 

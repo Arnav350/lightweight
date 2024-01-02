@@ -120,8 +120,9 @@ function Account() {
   }
 
   function handleFollowPress() {
-    console.log(followers);
+    console.log("-------");
     console.log(followees);
+    console.log(followers);
     console.log(mutuals);
     console.log(connecteds);
   }

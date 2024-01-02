@@ -72,57 +72,52 @@ function ConnectProvider({ children }: IProviderChildren) {
         }
       });
 
-      //should work with no internet
-      async function getFollowers() {
-        let tempFollowers: IFollower[] = [];
-        const followersData = await supabase
-          .from("followers")
-          .select("profile: profiles!follower_id(*), priority")
-          .match({ followee_id: currentUser?.id })
-          .order("priority", { ascending: false })
-          .returns<{ priority: number; profile: IProfile }[]>();
-
-        if (followersData.error) {
-          alert(followersData.error.message);
-        } else {
-          tempFollowers = followersData.data.map((datum) => ({ ...datum, follower: true }));
-          setFollowers(tempFollowers);
-        }
-
+      async function getConnecteds() {
+        let tempFollowees: IFollower[] = [];
         const followeesData = await supabase
           .from("followers")
           .select("profile: profiles!followee_id(*), priority")
           .match({ follower_id: currentUser?.id })
           .order("priority", { ascending: false })
           .returns<{ priority: number; profile: IProfile }[]>();
+
         if (followeesData.error) {
           alert(followeesData.error.message);
         } else {
-          const tempMutuals: IFollower[] = [];
-          const tempConnecteds: IFollower[] = tempFollowers;
-          const followerIds: string[] = tempFollowers.map((tempFollower) => tempFollower.profile.id);
+          tempFollowees = followeesData.data.map((followeeData) => ({ ...followeeData, follower: true }));
 
-          const tempFollowees: IFollower[] = followeesData.data.map((datum) => {
-            const mutual: boolean = followerIds.includes(datum.profile.id);
+          const followersData = await supabase
+            .from("followers")
+            .select("profile: profiles!follower_id(*), priority")
+            .match({ followee_id: currentUser?.id })
+            .order("priority", { ascending: false })
+            .returns<{ priority: number; profile: IProfile }[]>();
 
-            if (mutual) {
-              const tempPriority =
-                tempFollowers.find((tempFollower) => tempFollower.profile.id === datum.profile.id) || datum;
-              tempMutuals.push({ ...datum, follower: mutual, priority: tempPriority.priority });
-            } else {
-              tempConnecteds.push({ ...datum, follower: mutual });
-            }
+          if (followersData.error) {
+            alert(followersData.error.message);
+          } else {
+            const tempMutuals: IFollower[] = [];
+            const tempConnecteds: IFollower[] = [...tempFollowees];
 
-            return { ...datum, follower: mutual };
-          });
+            const tempFollowers: IFollower[] = followersData.data.map((followerData) => {
+              if (tempFollowees.find((tempFollowee) => (tempFollowee.profile.id = followerData.profile.id))) {
+                tempMutuals.push({ ...followerData, follower: true });
+                return { ...followerData, follower: true };
+              } else {
+                tempConnecteds.push({ ...followerData, follower: false });
+                return { ...followerData, follower: false };
+              }
+            });
 
-          setFollowees(tempFollowees);
-          setMutuals(tempMutuals);
-          setConnecteds(tempConnecteds);
+            setFollowees(tempFollowees);
+            setFollowers(tempFollowers);
+            setMutuals(tempMutuals);
+            setConnecteds(tempConnecteds);
+          }
         }
       }
 
-      getFollowers();
+      getConnecteds();
     }
   }, [currentUser]);
 
