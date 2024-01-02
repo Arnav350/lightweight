@@ -11,9 +11,10 @@ interface IProps {
   profile: IProfile;
 }
 
-function FollowRow({ follower, profile: { id, name, username, picture } }: IProps) {
+function FollowRow({ follower, profile }: IProps) {
+  const { id, name, username, picture } = profile;
   const currentUser = useContext(AuthContext);
-  const { setFollowers, setMutuals, setConnecteds } = useContext(ConnectContext);
+  const { followees, setFollowees, mutuals, setMutuals, connecteds, setConnecteds } = useContext(ConnectContext);
 
   const [profilePicture, setProfilePicture] = useState<string>("");
 
@@ -42,7 +43,7 @@ function FollowRow({ follower, profile: { id, name, username, picture } }: IProp
 
   async function handleFollowPress() {
     if (follower) {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("followers")
         .delete()
         .match({ followee_id: currentUser?.id, follower_id: id });
@@ -50,9 +51,52 @@ function FollowRow({ follower, profile: { id, name, username, picture } }: IProp
       if (error) {
         alert(error.message);
       } else {
-        //CHANGE FOLLOWERS MUTUALS AND CONNECTEDS IN CONNECTCONTEXT
+        setFollowees((prevFollowees) => prevFollowees.filter((prevFollowee) => prevFollowee.profile.id === id));
+
+        if (mutuals.find((mutual) => mutual.profile.id)) {
+          setMutuals((prevMutuals) => prevMutuals.filter((prevMutual) => prevMutual.profile.id === id));
+        } else {
+          setConnecteds((prevConnecteds) =>
+            prevConnecteds.filter((prevConnecteds) => prevConnecteds.profile.id === id)
+          );
+        }
       }
     } else {
+      function findIndex(array: IFollower[]) {
+        let index: number = 0;
+        while (index < array.length && array[index].priority >= 300) {
+          index++;
+        }
+        return index;
+      }
+
+      const { data, error } = await supabase
+        .from("followers")
+        .insert({ followee_id: id, follower_id: currentUser?.id, priority: 300 });
+
+      if (error) {
+        alert(error.message);
+      } else {
+        const followeesIndex = findIndex(followees);
+
+        if (connecteds.find((connected) => connected.profile.id === id)) {
+          setFollowees((prevFollowees) =>
+            prevFollowees.splice(followeesIndex, 0, { follower: true, priority: 300, profile })
+          );
+
+          const mutualsIndex = findIndex(mutuals);
+          setMutuals((prevMutuals) => prevMutuals.splice(mutualsIndex, 0, { follower: true, priority: 300, profile }));
+        } else {
+          setFollowees((prevFollowees) =>
+            prevFollowees.splice(followeesIndex, 0, { follower: false, priority: 300, profile })
+          );
+
+          const connectedsIndex = findIndex(connecteds);
+          setConnecteds((prevConnecteds) =>
+            prevConnecteds.splice(connectedsIndex, 0, { follower: true, priority: 300, profile })
+          );
+        }
+      }
     }
   }
 
