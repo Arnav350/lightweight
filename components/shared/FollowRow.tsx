@@ -89,9 +89,11 @@ function FollowRow({ follower, profile }: IProps) {
         alert(error.message);
       } else {
         const followeesIndex = findIndex(followees);
-        setFollowees((prevFollowees) =>
-          prevFollowees.splice(followeesIndex, 0, { follower: true, priority: 300, profile })
-        );
+        setFollowees((prevFollowees) => [
+          ...prevFollowees.slice(0, followeesIndex),
+          { follower: true, priority: 300, profile },
+          ...prevFollowees.slice(followeesIndex),
+        ]);
 
         if (followers.find((follower) => follower.profile.id === id)) {
           setFollowers((prevFollowers) =>
@@ -100,7 +102,11 @@ function FollowRow({ follower, profile }: IProps) {
             )
           );
           const mutualsIndex = findIndex(mutuals);
-          setMutuals((prevMutuals) => prevMutuals.splice(mutualsIndex, 0, { follower: true, priority: 300, profile }));
+          setMutuals((prevMutuals) => [
+            ...prevMutuals.slice(0, mutualsIndex),
+            { follower: true, priority: 300, profile },
+            ...prevMutuals.slice(mutualsIndex),
+          ]);
           setConnecteds((prevConnecteds) =>
             prevConnecteds.map((prevConnected) =>
               prevConnected.profile.id === id ? { ...prevConnected, follower: true } : prevConnected
@@ -108,9 +114,11 @@ function FollowRow({ follower, profile }: IProps) {
           );
         } else {
           const connectedsIndex = findIndex(connecteds);
-          setConnecteds((prevConnecteds) =>
-            prevConnecteds.splice(connectedsIndex, 0, { follower: true, priority: 300, profile })
-          );
+          setConnecteds((prevConnecteds) => [
+            ...prevConnecteds.slice(0, connectedsIndex),
+            { follower: true, priority: 300, profile },
+            ...prevConnecteds.slice(connectedsIndex),
+          ]);
         }
       }
     }

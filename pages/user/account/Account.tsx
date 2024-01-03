@@ -99,21 +99,31 @@ function Account() {
         };
 
         if (connecteds.find((connected) => connected.profile.id === "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee")) {
-          setFollowees((prevFollowees) =>
-            prevFollowees.splice(followeesIndex, 0, { follower: true, priority: 300, profile })
-          );
+          setFollowees((prevFollowees) => [
+            ...prevFollowees.slice(0, followeesIndex),
+            { follower: true, priority: 300, profile },
+            ...prevFollowees.slice(followeesIndex),
+          ]);
 
           const mutualsIndex = findIndex(mutuals);
-          setMutuals((prevMutuals) => prevMutuals.splice(mutualsIndex, 0, { follower: true, priority: 300, profile }));
+          setMutuals((prevMutuals) => [
+            ...prevMutuals.slice(0, mutualsIndex),
+            { follower: true, priority: 300, profile },
+            ...prevMutuals.slice(mutualsIndex),
+          ]);
         } else {
-          setFollowees((prevFollowees) =>
-            prevFollowees.splice(followeesIndex, 0, { follower: false, priority: 300, profile })
-          );
+          setFollowees((prevFollowees) => [
+            ...prevFollowees.slice(0, followeesIndex),
+            { follower: false, priority: 300, profile },
+            ...prevFollowees.slice(followeesIndex),
+          ]);
 
           const connectedsIndex = findIndex(connecteds);
-          setConnecteds((prevConnecteds) =>
-            prevConnecteds.splice(connectedsIndex, 0, { follower: true, priority: 300, profile })
-          );
+          setConnecteds((prevConnecteds) => [
+            ...prevConnecteds.slice(0, connectedsIndex),
+            { follower: false, priority: 300, profile },
+            ...prevConnecteds.slice(connectedsIndex),
+          ]);
         }
       }
     }
