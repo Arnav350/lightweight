@@ -19,7 +19,7 @@ function SearchSuggestions({ setCurrentMeal, setCurrentHistories, foodName, sugg
   const { histories } = useContext(NutritionContext);
 
   const filteredHistories = histories
-    .filter((history) => history.name.toLowerCase().includes(foodName.toLowerCase()))
+    .filter(({ name }) => name.toLocaleLowerCase().includes(foodName.toLocaleLowerCase()))
     .slice(0, 10);
 
   const [settings, setSettings] = useState<INutritionSettings>({ show: false, i: 0 });

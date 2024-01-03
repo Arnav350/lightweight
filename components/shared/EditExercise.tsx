@@ -24,7 +24,7 @@ function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: I
   const filteredWorkouts: IWorkout[] = useMemo(
     () =>
       workouts
-        .filter((workout: IWorkout) => workout.exercises.find((exercise) => exercise.name === editExercise?.name))
+        .filter(({ exercises }: IWorkout) => exercises.find(({ name }) => name === editExercise?.name))
         .slice()
         .reverse(),
     [workouts]
@@ -33,21 +33,20 @@ function EditExercise({ navigate: { navigation }, setShowEdit, editExercise }: I
   const filteredExercises: IExercise[] = useMemo(
     () =>
       filteredWorkouts.map(
-        (workout) => workout.exercises.filter((exercise: IExercise) => exercise.name === editExercise?.name)[0]
+        ({ exercises }) => exercises.filter(({ name }: IExercise) => name === editExercise?.name)[0]
       ),
     [filteredWorkouts]
   );
 
   const maxWeight: number[] = useMemo(
-    () =>
-      filteredExercises.map((exercise: IExercise) => Math.max(...exercise.sets.map((set: ISet) => Number(set.weight)))),
+    () => filteredExercises.map(({ sets }: IExercise) => Math.max(...sets.map(({ weight }: ISet) => Number(weight)))),
     [filteredExercises]
   );
 
   const oneRM: number[] = useMemo(
     () =>
-      filteredExercises.map((exercise: IExercise) =>
-        Math.max(...exercise.sets.map((set: ISet) => Number(set.weight) * (1 + Number(set.reps) / 30)))
+      filteredExercises.map(({ sets }: IExercise) =>
+        Math.max(...sets.map((set: ISet) => Number(set.weight) * (1 + Number(set.reps) / 30)))
       ),
     [filteredExercises]
   );

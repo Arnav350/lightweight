@@ -30,8 +30,8 @@ function NutritionMacros({ navigate: { navigation } }: IProps) {
             current={
               +currentMeals.meals
                 .reduce(
-                  (total: number, meal: IMeal) =>
-                    (total += meal.foods.reduce((total: number, { calories }) => (total += calories), 0)),
+                  (total: number, { foods }: IMeal) =>
+                    (total += foods.reduce((total: number, { calories }) => (total += calories), 0)),
                   0
                 )
                 .toFixed()
@@ -44,8 +44,8 @@ function NutritionMacros({ navigate: { navigation } }: IProps) {
             current={
               +currentMeals.meals
                 .reduce(
-                  (total: number, meal: IMeal) =>
-                    (total += meal.foods.reduce((total: number, { fat }) => (total += fat), 0)),
+                  (total: number, { foods }: IMeal) =>
+                    (total += foods.reduce((total: number, { fat }) => (total += fat), 0)),
                   0
                 )
                 .toFixed()
@@ -60,8 +60,8 @@ function NutritionMacros({ navigate: { navigation } }: IProps) {
             current={
               +currentMeals.meals
                 .reduce(
-                  (total: number, meal: IMeal) =>
-                    (total += meal.foods.reduce((total: number, { protein }) => (total += protein), 0)),
+                  (total: number, { foods }: IMeal) =>
+                    (total += foods.reduce((total: number, { protein }) => (total += protein), 0)),
                   0
                 )
                 .toFixed()
@@ -75,8 +75,8 @@ function NutritionMacros({ navigate: { navigation } }: IProps) {
             current={
               +currentMeals.meals
                 .reduce(
-                  (total: number, meal: IMeal) =>
-                    (total += meal.foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
+                  (total: number, { foods }: IMeal) =>
+                    (total += foods.reduce((total: number, { carbs }) => (total += carbs), 0)),
                   0
                 )
                 .toFixed()

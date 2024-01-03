@@ -39,8 +39,8 @@ function ConnectRooms({ navigate, input }: IProps) {
 
   return (
     <FlatList
-      data={rooms.filter((room) => room.name.includes(input))}
-      keyExtractor={(item) => item.id}
+      data={rooms.filter(({ name }) => name.includes(input))}
+      keyExtractor={({ id }) => id}
       renderItem={({ item }) => <ConnectRoom room={item} navigate={navigate} />}
       style={styles.container}
     />

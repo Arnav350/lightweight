@@ -24,9 +24,7 @@ function SelectFood({ i, food, add, setSettings, setCurrentMeal, setCurrentHisto
       }));
       setCurrentHistories((prevCurrentHistories) => [
         food,
-        ...prevCurrentHistories.filter(
-          (currentFood: IFood) => currentFood.name !== food.name && currentFood.calories !== food.calories
-        ),
+        ...prevCurrentHistories.filter(({ name, calories }: IFood) => name !== food.name && calories !== food.calories),
       ]);
 
       setPressed(true);
@@ -36,7 +34,7 @@ function SelectFood({ i, food, add, setSettings, setCurrentMeal, setCurrentHisto
     } else {
       setCurrentMeal((prevCurrentMeal) => ({
         ...prevCurrentMeal,
-        foods: prevCurrentMeal.foods.filter((currentFood: IFood) => currentFood.name !== food.name),
+        foods: prevCurrentMeal.foods.filter(({ name }: IFood) => name !== food.name),
       }));
     }
   }
@@ -45,7 +43,8 @@ function SelectFood({ i, food, add, setSettings, setCurrentMeal, setCurrentHisto
     <TouchableOpacity
       activeOpacity={0.5}
       style={styles.container}
-      onPress={() => setSettings((prevSettings) => ({ show: true, i: i }))}
+      //not sure if its supposed to be ...prevSettings
+      onPress={() => setSettings((prevSettings) => ({ ...prevSettings, show: true, i: i }))}
     >
       <View style={styles.textContainer}>
         <Text numberOfLines={1} style={styles.name}>

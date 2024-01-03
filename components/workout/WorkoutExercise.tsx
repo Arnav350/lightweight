@@ -16,18 +16,17 @@ function WorkoutExercise({ i, currentExercise }: IProps) {
   const { setCurrentWorkout, exercises, setSettings } = useContext(WorkoutContext);
 
   const [prevExercise, setPrevExercise] = useState<IExercise>(
-    exercises.find((exercise) => exercise.name === currentExercise.name) || currentExercise
+    exercises.find(({ name }) => name === currentExercise.name) || currentExercise
   );
 
   useEffect(() => {
     const sortedSets: ISet[] = [];
     const usedIndexes: number[] = [];
     const sets: ISet[] = currentExercise.sets;
-    const prevSets: ISet[] =
-      exercises.find((exercise) => exercise.name === currentExercise.name)?.sets || currentExercise.sets;
+    const prevSets: ISet[] = exercises.find(({ name }) => name === currentExercise.name)?.sets || currentExercise.sets;
 
     sets.forEach((set) => {
-      const index = prevSets.findIndex((prevSet, i) => !usedIndexes.includes(i) && prevSet.type === set.type);
+      const index = prevSets.findIndex(({ type }, i) => !usedIndexes.includes(i) && type === set.type);
       if (index !== -1) {
         sortedSets.push(prevSets[index]);
         usedIndexes.push(index);

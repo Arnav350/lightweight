@@ -57,14 +57,12 @@ function FoodInfo({ foods, add, settings, setSettings, setCurrentMeal, setCurren
           carbs: food.carbs * multiplier,
           amount: multiplier,
         },
-        ...prevCurrentHistories.filter(
-          (currentFood: IFood) => currentFood.name !== food.name && currentFood.calories !== food.calories
-        ),
+        ...prevCurrentHistories.filter(({ name, calories }: IFood) => name !== food.name && calories !== food.calories),
       ]);
     } else {
       setCurrentMeal((prevCurrentMeal) => ({
         ...prevCurrentMeal,
-        foods: prevCurrentMeal.foods.filter((currentFood: IFood) => currentFood.name !== food.name),
+        foods: prevCurrentMeal.foods.filter(({ name }: IFood) => name !== food.name),
       }));
     }
 

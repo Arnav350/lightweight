@@ -12,7 +12,7 @@ function SetType() {
 
   const setNumber: number = currentWorkout.exercises[settings.i].sets
     .slice(0, settings.j + 1)
-    .filter((set: ISet) => set.type === "N").length;
+    .filter(({ type }: ISet) => type === "N").length;
 
   function handlePress(type: TType) {
     setCurrentWorkout((prevCurrentWorkout) => ({

@@ -23,7 +23,7 @@ function NewExercise({ setShowNew }: IProps) {
       exerciseName.trim() &&
       currentEquipment !== "Any Equipment" &&
       currentMuscle !== "Any Muscle" &&
-      !exercises.some((exercise: IExercise) => exercise.name.toLowerCase() === exerciseName.toLowerCase())
+      !exercises.some(({ name }: IExercise) => name.toLocaleLowerCase() === exerciseName.toLocaleLowerCase())
     ) {
       setExercises((prevExercises) => [
         ...prevExercises,

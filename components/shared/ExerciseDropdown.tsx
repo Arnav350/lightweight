@@ -25,8 +25,8 @@ function ExerciseDropdown({ data, current, setCurrent }: IProps) {
       {openDropdown && (
         <FlatList
           data={data}
-          renderItem={({ item }) => (
-            <TouchableOpacity activeOpacity={0.5} onPress={() => handlePress(item)}>
+          renderItem={({ item, index }) => (
+            <TouchableOpacity key={index} activeOpacity={0.5} onPress={() => handlePress(item)}>
               <Text style={styles.text}>{item}</Text>
             </TouchableOpacity>
           )}

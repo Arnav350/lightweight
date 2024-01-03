@@ -51,7 +51,7 @@ function RoomDropdown({ navigate, roomParticipants, setRoomParticipants, setShow
         <View>
           <FlatList
             data={roomParticipants.filter(({ name, username }) =>
-              [name, username].some((str) => str.toLowerCase().includes(participant.toLowerCase()))
+              [name, username].some((str) => str.toLocaleLowerCase().includes(participant.toLocaleLowerCase()))
             )}
             renderItem={({ item }) => <RoomProfile navigate={navigate} profile={item} setShowInfo={setShowInfo} />}
             keyExtractor={(item) => item.id}
