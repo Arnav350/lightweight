@@ -21,7 +21,7 @@ function Design(props: TDesignProps) {
     navigation,
     route: { params },
   } = props;
-  const currentUser = useContext(AuthContext);
+  const { currentProfile } = useContext(AuthContext);
   const { currentWorkout, setCurrentWorkout, routines, setRoutines, settings } = useContext(WorkoutContext);
 
   const [focused, setFocused] = useState<boolean>(false);
@@ -59,7 +59,7 @@ function Design(props: TDesignProps) {
 
     if (routines.find((routine: IRoutine, i: number) => routine.name === routineName && i !== params.i)) {
       let j = 1;
-      while (routines.find((routine) => routine.name === `${routineName} (${j})`) && j !== params.i) {
+      while (routines.find(({ name }) => name === `${routineName} (${j})`) && j !== params.i) {
         j++;
       }
       setRoutines((prevRoutines) =>

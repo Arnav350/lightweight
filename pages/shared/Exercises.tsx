@@ -76,7 +76,7 @@ function Exercises(props: TProps) {
           {exercises
             .filter(
               (exercise: IExercise) =>
-                exercise.name.toLowerCase().includes(exerciseName.toLowerCase()) &&
+                exercise.name.toLocaleLowerCase().includes(exerciseName.toLocaleLowerCase()) &&
                 (currentEquipment === exercise.equipment || currentEquipment === "Any Equipment") &&
                 (currentMuscle === exercise.muscle || currentMuscle === "Any Muscle")
             )

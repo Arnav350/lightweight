@@ -13,7 +13,7 @@ interface IProps {
 
 function FollowRow({ follower, profile }: IProps) {
   const { id, name, username, picture } = profile;
-  const currentUser = useContext(AuthContext);
+  const { currentProfile } = useContext(AuthContext);
   const { followers, setFollowers, followees, setFollowees, mutuals, setMutuals, connecteds, setConnecteds } =
     useContext(ConnectContext);
 
@@ -47,7 +47,7 @@ function FollowRow({ follower, profile }: IProps) {
       const { error } = await supabase
         .from("followers")
         .delete()
-        .match({ followee_id: id, follower_id: currentUser?.id });
+        .match({ followee_id: id, follower_id: currentProfile?.id });
 
       if (error) {
         alert(error.message);
@@ -83,7 +83,7 @@ function FollowRow({ follower, profile }: IProps) {
 
       const { error } = await supabase
         .from("followers")
-        .insert({ followee_id: id, follower_id: currentUser?.id, priority: 300 });
+        .insert({ followee_id: id, follower_id: currentProfile?.id, priority: 300 });
 
       if (error) {
         alert(error.message);

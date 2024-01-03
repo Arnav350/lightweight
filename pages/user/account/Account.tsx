@@ -1,185 +1,171 @@
-import { useContext } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { TCompositeProps } from "../../../App";
 import { supabase } from "../../../supabase";
-import { ConnectContext } from "../../../hooks/useConnect";
-import { exploreRoutines, initCurrentMeals, initExercises, initMacros, initPresets } from "../../../constants/init";
+import { AuthContext } from "../../../hooks/useAuth";
+import { COLORS } from "../../../constants/theme";
 
-interface IProps {
-  text: string;
-  function: () => void;
-}
+type TConnectProps = CompositeScreenProps<StackScreenProps<TAccountStackParamList, "Account">, TCompositeProps>;
 
-function Button(props: IProps) {
-  return (
-    <TouchableOpacity style={{ padding: 8 }} onPress={props.function}>
-      <Text>{props.text}</Text>
-    </TouchableOpacity>
-  );
-}
+function Account(props: TConnectProps) {
+  const { navigation } = props;
 
-function Account() {
-  const { followers, followees, setFollowees, mutuals, setMutuals, connecteds, setConnecteds } =
-    useContext(ConnectContext);
+  const { currentProfile } = useContext(AuthContext);
+  const [profilePicture, setProfilePicture] = useState<string>("");
 
-  function handlePress() {
-    AsyncStorage.setItem("@exercises", JSON.stringify(initExercises));
-    AsyncStorage.setItem("@presets", JSON.stringify(initPresets));
-    AsyncStorage.setItem("@routines", JSON.stringify(exploreRoutines));
-    AsyncStorage.setItem("@currentMeals", JSON.stringify(initCurrentMeals));
-    AsyncStorage.setItem("@macros", JSON.stringify(initMacros));
-    AsyncStorage.multiRemove([
-      "@currentWorkout",
-      "@workouts",
-      "@resumeWorkout",
-      "@meals",
-      "@recipes",
-      "@histories",
-      "@reminders",
-      "@weights",
-      "@followers",
-      "@followees",
-      "@mutuals",
-      "@connecteds",
-    ]);
-  }
+  useEffect(() => {
+    if (currentProfile?.picture) {
+      async function getPicture() {
+        if (currentProfile) {
+          const { data, error } = await supabase.storage.from("profiles").download(currentProfile.id);
 
-  async function handleMePress() {
-    if (followees.find((followee) => followee.profile.id === "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee")) {
-      const { error } = await supabase.from("followers").delete().match({
-        followee_id: "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee",
-        follower_id: "78fd29da-f994-467c-a2bc-b847bac14b00",
-      });
-
-      if (error) {
-        alert(error.message);
-      } else {
-        setFollowees((prevFollowees) =>
-          prevFollowees.filter((prevFollowee) => prevFollowee.profile.id !== "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee")
-        );
-
-        if (mutuals.find((mutual) => mutual.profile.id === "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee")) {
-          setMutuals((prevMutuals) =>
-            prevMutuals.filter((prevMutual) => prevMutual.profile.id !== "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee")
-          );
-        } else {
-          setConnecteds((prevConnecteds) =>
-            prevConnecteds.filter(
-              (prevConnecteds) => prevConnecteds.profile.id !== "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee"
-            )
-          );
+          if (error) {
+            alert(error.message);
+          } else {
+            const fileReaderInstance = new FileReader();
+            fileReaderInstance.readAsDataURL(data);
+            fileReaderInstance.onload = () => {
+              const base64data = fileReaderInstance.result;
+              if (typeof base64data === "string") {
+                setProfilePicture(base64data);
+              }
+            };
+          }
         }
       }
-    } else {
-      const { error } = await supabase.from("followers").insert({
-        followee_id: "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee",
-        follower_id: "78fd29da-f994-467c-a2bc-b847bac14b00",
-        priority: 300,
-      });
 
-      function findIndex(array: IFollower[]) {
-        let index: number = 0;
-        while (index < array.length && array[index].priority >= 300) {
-          index++;
-        }
-        return index;
-      }
-
-      if (error) {
-        alert(error.message);
-      } else {
-        const followeesIndex = findIndex(followees);
-        const profile: IProfile = {
-          id: "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee",
-          name: "brian",
-          username: "brian",
-          picture: true,
-        };
-
-        if (connecteds.find((connected) => connected.profile.id === "7ab1dcc7-5b14-4e82-b3bc-3d5b5b0dbaee")) {
-          setFollowees((prevFollowees) => [
-            ...prevFollowees.slice(0, followeesIndex),
-            { follower: true, priority: 300, profile },
-            ...prevFollowees.slice(followeesIndex),
-          ]);
-
-          const mutualsIndex = findIndex(mutuals);
-          setMutuals((prevMutuals) => [
-            ...prevMutuals.slice(0, mutualsIndex),
-            { follower: true, priority: 300, profile },
-            ...prevMutuals.slice(mutualsIndex),
-          ]);
-        } else {
-          setFollowees((prevFollowees) => [
-            ...prevFollowees.slice(0, followeesIndex),
-            { follower: false, priority: 300, profile },
-            ...prevFollowees.slice(followeesIndex),
-          ]);
-
-          const connectedsIndex = findIndex(connecteds);
-          setConnecteds((prevConnecteds) => [
-            ...prevConnecteds.slice(0, connectedsIndex),
-            { follower: false, priority: 300, profile },
-            ...prevConnecteds.slice(connectedsIndex),
-          ]);
-        }
-      }
+      getPicture();
     }
-  }
-
-  function handleFollowPress() {
-    console.log("-------");
-    console.log(followees);
-    console.log(followers);
-    console.log(mutuals);
-    console.log(connecteds);
-  }
+  });
 
   return (
-    <SafeAreaView edges={["top", "right", "left"]}>
-      <Button text="Sign Out" function={() => {}} />
-      <Button text="Remove Data" function={async () => await AsyncStorage.clear()} />
-      <Button text="Sent Init Data" function={handlePress} />
-      <Button
-        text="Check BarbellRow"
-        function={async () =>
-          await AsyncStorage.getItem("@exercises")
-            .then((j) => (j ? console.log(JSON.parse(j)[0].sets) : console.log(j)))
-            .catch((error) => console.log(error))
-        }
-      />
-      <Button
-        text="Check Routines"
-        function={async () =>
-          await AsyncStorage.getItem("@routines")
-            .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
-            .catch((error) => console.log(error))
-        }
-      />
-      <Button
-        text="Check ResumeWorkout"
-        function={async () =>
-          await AsyncStorage.getItem("@resumeWorkout")
-            .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
-            .catch((error) => console.log(error))
-        }
-      />
-      <Button
-        text="Check CurrentWorkout"
-        function={async () =>
-          await AsyncStorage.getItem("@currentWorkout")
-            .then((j) => (j ? console.log(JSON.parse(j)) : console.log(j)))
-            .catch((error) => console.log(error))
-        }
-      />
-      <Button text="Un/Follow Brian" function={handleMePress} />
-      <Button text="Check Follow" function={handleFollowPress} />
+    <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity activeOpacity={0.3}>
+          <Icon name="tree" size={32} color={COLORS.primary} />
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.3} style={styles.textContainer}>
+          <Icon name="chevron-down" size={32} color={COLORS.white} />
+          <Text style={styles.header}>{currentProfile?.username}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.3} onPress={() => navigation.navigate("Settings")}>
+          <Icon name="cog-outline" size={32} color={COLORS.primary} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.accountContainer}>
+        <View style={styles.userContainer}>
+          <View style={styles.profileContainer}>
+            <Image
+              source={profilePicture ? { uri: profilePicture } : require("../../../assets/logo.png")}
+              style={styles.picture}
+            />
+            <Text style={styles.name}>{currentProfile?.name}</Text>
+            <Text style={styles.bio}>Wow!</Text>
+          </View>
+          <View style={styles.followersContainer}>
+            <TouchableOpacity activeOpacity={0.3} style={styles.followerContainer}>
+              <Text style={styles.number}>100</Text>
+              <Text style={styles.follower}>Workouts</Text>
+            </TouchableOpacity>
+            <View style={styles.divider}></View>
+            <TouchableOpacity
+              activeOpacity={0.3}
+              style={styles.followerContainer}
+              onPress={() => navigation.navigate("Followers", { page: "Followers" })}
+            >
+              <Text style={styles.number}>1000</Text>
+              <Text style={styles.follower}>Followers</Text>
+            </TouchableOpacity>
+            <View style={styles.divider}></View>
+            <TouchableOpacity
+              activeOpacity={0.3}
+              style={styles.followerContainer}
+              onPress={() => navigation.navigate("Followers", { page: "Followings" })}
+            >
+              <Text style={styles.number}>1000</Text>
+              <Text style={styles.follower}>Following</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.blackTwo,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: COLORS.blackTwo,
+  },
+  textContainer: {
+    flexDirection: "row",
+    margin: 8,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "500",
+    color: COLORS.white,
+  },
+  accountContainer: {
+    flex: 1,
+    backgroundColor: COLORS.black,
+  },
+  userContainer: {
+    alignItems: "center",
+    padding: 16,
+  },
+  profileContainer: {
+    alignItems: "center",
+    padding: 16,
+  },
+  picture: {
+    marginBottom: 8,
+    height: 128,
+    width: 128,
+    borderRadius: 64,
+  },
+  name: {
+    marginVertical: 4,
+    color: COLORS.white,
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  bio: {
+    color: COLORS.white,
+  },
+  followersContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 16,
+  },
+  followerContainer: {
+    alignItems: "center",
+  },
+  number: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  follower: {
+    color: COLORS.gray,
+  },
+  divider: {
+    height: 24,
+    width: 1,
+    backgroundColor: COLORS.darkGray,
+  },
+});
 
 export default Account;

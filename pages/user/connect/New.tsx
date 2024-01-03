@@ -13,37 +13,17 @@ import { COLORS } from "../../../constants/theme";
 type TNewProps = StackScreenProps<TConnectStackParamList, "New">;
 
 function New({ navigation }: TNewProps) {
-  const currentUser = useContext(AuthContext);
+  const { currentProfile } = useContext(AuthContext);
   const { followers } = useContext(ConnectContext);
 
   const [input, setInput] = useState<string>("");
-  // const [profiles, setProfiles] = useState<IProfile[]>([]);
   const [selectedProfiles, setSelectedProfiles] = useState<IProfile[]>([]);
-
-  // useEffect(() => {
-  //   async function getSuggestedUsers() {
-  //     const { data, error } = await supabase
-  //       .from("followers")
-  //       .select("priority, profile: profiles!follower_id(*)")
-  //       .match({ followee_id: currentUser?.id })
-  //       .order("priority", { ascending: false })
-  //       .returns<IFollower[]>();
-
-  //     if (error) {
-  //       alert(error.message);
-  //     } else {
-  //       setProfiles(data.map((profilePriority) => profilePriority.profile));
-  //     }
-  //   }
-
-  //   getSuggestedUsers();
-  // }, []);
 
   async function handlePress() {
     const username = await supabase
       .from("profiles")
       .select("username")
-      .match({ id: currentUser?.id })
+      .match({ id: currentProfile?.id })
       .returns<{ username: string }[]>()
       .limit(1)
       .single();
@@ -99,7 +79,6 @@ function New({ navigation }: TNewProps) {
         />
         <Text style={styles.subheader}>Suggested:</Text>
         <FlatList
-          // data={profiles}
           data={followers.map((follower) => follower.profile)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <NewProfile profile={item} setSelectedProfiles={setSelectedProfiles} />}

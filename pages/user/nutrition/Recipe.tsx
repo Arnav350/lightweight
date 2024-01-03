@@ -73,7 +73,7 @@ function Recipe({ navigation, route: { params } }: TProps) {
         <Text style={styles.text}>Recipes</Text>
         <ScrollView>
           {recipes
-            .filter((recipe: IFood) => recipe.name.toLowerCase().includes(recipeName.toLowerCase()))
+            .filter((recipe: IFood) => recipe.name.toLocaleLowerCase().includes(recipeName.toLocaleLowerCase()))
             .map((recipe: IFood, i: number) => (
               <SelectFood
                 key={i}
@@ -99,7 +99,9 @@ function Recipe({ navigation, route: { params } }: TProps) {
       </View>
       <Modal animationType="fade" transparent visible={settings.show}>
         <FoodInfo
-          foods={recipes.filter((recipe: IFood) => recipe.name.toLowerCase().includes(recipeName.toLowerCase()))}
+          foods={recipes.filter((recipe: IFood) =>
+            recipe.name.toLocaleLowerCase().includes(recipeName.toLocaleLowerCase())
+          )}
           add={true}
           settings={settings}
           setSettings={setSettings}

@@ -28,6 +28,12 @@ type TConnectStackParamList = {
   Profile: undefined;
 };
 
+type TAccountStackParamList = {
+  Account: undefined;
+  Settings: undefined;
+  Followers: { page: "Followers" | "Followings" };
+};
+
 //workout
 
 type TType = "D" | "N" | "S" | "W";

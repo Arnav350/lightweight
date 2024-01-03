@@ -53,8 +53,8 @@ function Workout(props: TWorkoutProps) {
         ...tempWorkout,
         time: date.getTime() - tempWorkout.time,
         weight: tempWorkout.exercises.reduce(
-          (total: number, exercise: IExercise) =>
-            (total += exercise.sets.reduce((total: number, set: ISet) => (total += Number(set.weight)), 0)),
+          (total: number, { sets }: IExercise) =>
+            (total += sets.reduce((total: number, { weight }: ISet) => (total += Number(weight)), 0)),
           0
         ),
       },
@@ -64,11 +64,11 @@ function Workout(props: TWorkoutProps) {
     tempWorkout.exercises.forEach((currentExercise) => {
       const tempSets: ISet[] = [];
       const usedIndexes: number[] = [];
-      const exercise: IExercise = exercises.find((exercise) => exercise.name === currentExercise.name) || exercises[0];
+      const exercise: IExercise = exercises.find(({ name }) => name === currentExercise.name) || exercises[0];
 
       exercise.sets.forEach((set: ISet) => {
         const matchingElements = currentExercise.sets.filter(
-          (el, index) => !usedIndexes.includes(index) && el.type === set.type
+          ({ type }, index) => !usedIndexes.includes(index) && type === set.type
         );
 
         if (matchingElements.length > 0) {
@@ -88,8 +88,8 @@ function Workout(props: TWorkoutProps) {
       mapedSets.sort((a: ISet, b: ISet) => a.type.localeCompare(b.type));
 
       setExercises((prevExercises) =>
-        prevExercises.map((exercise) =>
-          exercise.name === currentExercise.name ? { ...exercise, sets: mapedSets } : exercise
+        prevExercises.map((prevExercise) =>
+          prevExercise.name === currentExercise.name ? { ...prevExercise, sets: mapedSets } : prevExercise
         )
       );
     });
@@ -119,11 +119,11 @@ function Workout(props: TWorkoutProps) {
                 const usedIndexes: number[] = [];
                 const sets: ISet[] = tempExercise.sets;
                 const prevExercise: IExercise =
-                  exercises.find((exercise: IExercise) => exercise.name === tempExercise.name) || tempExercise;
+                  exercises.find(({ name }: IExercise) => name === tempExercise.name) || tempExercise;
 
                 sets.forEach((set: ISet) => {
                   const index: number = prevExercise.sets.findIndex(
-                    (prevSet: ISet, i: number) => !usedIndexes.includes(i) && prevSet.type === set.type
+                    ({ type }: ISet, i: number) => !usedIndexes.includes(i) && type === set.type
                   );
                   if (index !== -1) {
                     sortedSets.push(prevExercise.sets[index]);

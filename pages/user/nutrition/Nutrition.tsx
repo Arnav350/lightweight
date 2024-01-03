@@ -75,7 +75,7 @@ function Nutrition(props: TNutritionProps) {
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={(event) => setSlide(event.nativeEvent.contentOffset.x / windowWidth)}
+          onScrollEndDrag={({ nativeEvent }) => setSlide((nativeEvent.targetContentOffset?.x || 0) / windowWidth)}
         >
           <NutritionMacros navigate={props} />
           <NutritionWeight navigate={props} />
@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.black,
   },
   sectionContainer: {
-    width: windowWidth - 32,
     margin: 16,
     padding: 8,
     backgroundColor: COLORS.blackOne,

@@ -22,51 +22,47 @@ function Progress({ navigation }: TProps) {
   const filteredWorkouts: IWorkout[] = useMemo(
     () =>
       workouts
-        .filter((workout: IWorkout) => workout.exercises.find((exercise) => exercise.name === currentName))
+        .filter((workout: IWorkout) => workout.exercises.find(({ name }: IExercise) => name === currentName))
         .slice()
         .reverse(),
     [workouts, currentName]
   );
 
   const filteredExercises: IExercise[] = useMemo(
-    () =>
-      filteredWorkouts.map(
-        (workout) => workout.exercises.filter((exercise: IExercise) => exercise.name === currentName)[0]
-      ),
+    () => filteredWorkouts.map((workout) => workout.exercises.filter(({ name }: IExercise) => name === currentName)[0]),
     [filteredWorkouts]
   );
 
   const volume: number[] = useMemo(
     () =>
-      filteredExercises.map((exercise: IExercise) =>
-        exercise.sets.reduce((total: number, set: ISet) => total + Number(set.weight) * Number(set.reps), 0)
+      filteredExercises.map(({ sets }: IExercise) =>
+        sets.reduce((total: number, set: ISet) => total + Number(set.weight) * Number(set.reps), 0)
       ),
     [filteredExercises]
   );
 
   const sets: number[] = useMemo(
-    () => filteredExercises.map((exercise: IExercise) => exercise.sets.length),
+    () => filteredExercises.map(({ sets }: IExercise) => sets.length),
     [filteredExercises]
   );
 
   const reps: number[] = useMemo(
     () =>
-      filteredExercises.map((exercise: IExercise) =>
-        exercise.sets.reduce((total: number, set: ISet) => total + Number(set.reps), 0)
+      filteredExercises.map(({ sets }: IExercise) =>
+        sets.reduce((total: number, set: ISet) => total + Number(set.reps), 0)
       ),
     [filteredExercises]
   );
 
   const maxWeight: number[] = useMemo(
-    () =>
-      filteredExercises.map((exercise: IExercise) => Math.max(...exercise.sets.map((set: ISet) => Number(set.weight)))),
+    () => filteredExercises.map(({ sets }: IExercise) => Math.max(...sets.map((set: ISet) => Number(set.weight)))),
     [filteredExercises]
   );
 
   const oneRM: number[] = useMemo(
     () =>
-      filteredExercises.map((exercise: IExercise) =>
-        Math.max(...exercise.sets.map((set: ISet) => Number(set.weight) * (1 + Number(set.reps) / 30)))
+      filteredExercises.map(({ sets }: IExercise) =>
+        Math.max(...sets.map((set: ISet) => Number(set.weight) * (1 + Number(set.reps) / 30)))
       ),
     [filteredExercises]
   );
@@ -119,7 +115,9 @@ function Progress({ navigation }: TProps) {
         </View>
         {showDropdown && (
           <FlatList
-            data={exercises.filter((exercise: IExercise) => exercise.name.toLowerCase().includes(input.toLowerCase()))}
+            data={exercises.filter((exercise: IExercise) =>
+              exercise.name.toLocaleLowerCase().includes(input.toLocaleLowerCase())
+            )}
             renderItem={({ item }) => (
               <TouchableOpacity activeOpacity={0.5} style={styles.nameContainer} onPress={() => handlePress(item.name)}>
                 <Text numberOfLines={1} style={styles.name}>

@@ -24,7 +24,7 @@ export const ConnectContext = createContext<IConnectContext>({} as IConnectConte
 const init: [] = [];
 
 function ConnectProvider({ children }: IProviderChildren) {
-  const currentUser = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   const [followers, setFollowers] = useState<IFollower[]>(init);
   const [followees, setFollowees] = useState<IFollower[]>(init);

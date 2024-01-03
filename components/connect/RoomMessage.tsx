@@ -44,7 +44,7 @@ function RoomMessage({ message: { id, created_at, content, media, profile_id, ro
     }
   }, [lastMessage.created_at]);
 
-  const currentUser = useContext(AuthContext);
+  const { currentProfile } = useContext(AuthContext);
 
   //shouldnt be any
   const [currentMedia, setCurrentMedia] = useState<any>("");
@@ -54,7 +54,7 @@ function RoomMessage({ message: { id, created_at, content, media, profile_id, ro
       {!spacing && <Text style={styles.spacer}>{date}</Text>}
       <View
         style={
-          currentUser?.id === profile_id
+          currentProfile?.id === profile_id
             ? [styles.container, { alignSelf: "flex-end", backgroundColor: COLORS.primary }]
             : styles.container
         }

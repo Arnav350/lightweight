@@ -18,7 +18,7 @@ function Room(props: TRoomProps) {
     navigation,
     route: { params },
   } = props;
-  const currentUser = useContext(AuthContext);
+  const { currentProfile } = useContext(AuthContext);
 
   const [room, setRoom] = useState<IRoom | null>(null);
   const [roomParticipants, setRoomParticipants] = useState<IProfile[]>([]);
@@ -53,7 +53,9 @@ function Room(props: TRoomProps) {
       if (error) {
         alert(error.message);
       } else {
-        setRoomParticipants(data.filter((datum) => datum.profile.id !== currentUser?.id).map((datum) => datum.profile));
+        setRoomParticipants(
+          data.filter(({ profile }) => profile.id !== currentProfile?.id).map(({ profile }) => profile)
+        );
       }
     }
 

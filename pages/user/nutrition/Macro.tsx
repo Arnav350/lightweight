@@ -11,7 +11,7 @@ import { COLORS } from "../../../constants/theme";
 type TMacroProps = StackScreenProps<TNutritionStackParamList, "Macro">;
 
 function Macro({ navigation }: TMacroProps) {
-  const { meals, setMeals, macros, setMacros } = useContext(NutritionContext);
+  const { meals, macros, setMacros } = useContext(NutritionContext);
 
   const [currentMacros, setCurrentMacros] = useState<IMacros>(
     macros.percent

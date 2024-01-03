@@ -12,8 +12,9 @@ type TFindProps = StackScreenProps<TConnectStackParamList, "Find">;
 
 function Find({ navigation }: TFindProps) {
   const [input, setInput] = useState<string>("");
-  const { followees, followers, connecteds } = useContext(ConnectContext);
+  const { connecteds } = useContext(ConnectContext);
 
+  //shouldnt be connecteds, you are looking for new users
   return (
     <SafeAreaView edges={["top", "right", "left"]} style={styles.container}>
       <View style={styles.headerContainer}>
@@ -24,7 +25,7 @@ function Find({ navigation }: TFindProps) {
           <Icon name="magnify" size={32} color={COLORS.darkGray} />
           <TextInput
             value={input}
-            placeholder="Search users..."
+            placeholder="Search users"
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
             returnKeyType="search"

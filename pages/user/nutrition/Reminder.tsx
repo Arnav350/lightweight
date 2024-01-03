@@ -12,7 +12,7 @@ import { COLORS } from "../../../constants/theme";
 type TReminderProps = StackScreenProps<TNutritionStackParamList, "Reminder">;
 
 function Reminder({ navigation }: TReminderProps) {
-  const { reminders, setReminders } = useContext(NutritionContext);
+  const { reminders } = useContext(NutritionContext);
 
   const [settings, setSettings] = useState<INutritionSettings>({ show: false, i: 0 });
 

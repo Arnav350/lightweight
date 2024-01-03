@@ -37,7 +37,7 @@ function Create({ navigation, route: { params } }: TProps) {
       if (params.save) {
         if (recipes.filter((recipe) => recipe.name === tempFood.name).length > 0) {
           let i = 1;
-          while (recipes.filter((recipe) => recipe.name === tempFood.name + ` (${i})`).length > 0) {
+          while (recipes.filter(({ name }) => name === tempFood.name + ` (${i})`).length > 0) {
             i++;
           }
           setRecipes((prevRecipes) => [{ ...tempFood, name: `${tempFood.name} (${i})` }, ...prevRecipes]);

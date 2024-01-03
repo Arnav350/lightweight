@@ -30,7 +30,7 @@ export type TCompositeProps = CompositeScreenProps<
 const Stack = createStackNavigator<TRootStackParamList>();
 
 function RootNavigator() {
-  const currentUser = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   if (currentUser === undefined) {
     return <Loading />;
