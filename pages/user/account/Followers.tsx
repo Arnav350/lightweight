@@ -20,20 +20,40 @@ function Followers(props: TFollowersProps) {
   } = props;
 
   const { currentProfile } = useContext(AuthContext);
-  const { followers, followees } = useContext(ConnectContext);
+  const { followers, followees, mutuals } = useContext(ConnectContext);
 
   const scrollRef = useRef<ScrollView>(null);
 
-  const [page, setPage] = useState<"Followers" | "Followings">(params.page);
+  const [page, setPage] = useState<"Followers" | "Followings" | "Mutuals">(params.page);
   const [input, setInput] = useState<string>("");
 
-  function handlePress(text: "Followers" | "Followings") {
+  function handlePress(text: "Followers" | "Followings" | "Mutuals") {
     setPage(text);
 
-    if (text === "Followers") {
-      scrollRef.current?.scrollTo({ x: 0 });
-    } else {
-      scrollRef.current?.scrollTo({ x: 390 });
+    switch (text) {
+      case "Followers":
+        scrollRef.current?.scrollTo({ x: 0 });
+        return;
+      case "Followings":
+        scrollRef.current?.scrollTo({ x: windowWidth });
+        return;
+      case "Mutuals":
+        scrollRef.current?.scrollTo({ x: 2 * windowWidth });
+        return;
+    }
+  }
+
+  function handleScroll(targetOffset: number) {
+    switch (targetOffset / windowWidth) {
+      case 0:
+        setPage("Followers");
+        return;
+      case 1:
+        setPage("Followings");
+        return;
+      case 2:
+        setPage("Mutuals");
+        return;
     }
   }
 
@@ -76,6 +96,15 @@ function Followers(props: TFollowersProps) {
               Followings
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.3}
+            style={
+              page === "Mutuals" ? { ...styles.titleContainer, borderBottomColor: COLORS.white } : styles.titleContainer
+            }
+            onPress={() => handlePress("Mutuals")}
+          >
+            <Text style={page === "Mutuals" ? { ...styles.title, color: COLORS.white } : styles.title}>Mutuals</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
           <Icon name="magnify" size={32} color={COLORS.darkGray} />
@@ -93,9 +122,7 @@ function Followers(props: TFollowersProps) {
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          onScrollEndDrag={({ nativeEvent }) =>
-            setPage((nativeEvent.targetContentOffset?.x || 0) < windowWidth / 2 ? "Followers" : "Followings")
-          }
+          onScrollEndDrag={({ nativeEvent }) => handleScroll(nativeEvent.targetContentOffset?.x || 0)}
         >
           <FollowersList
             list={followers.filter(
@@ -106,6 +133,13 @@ function Followers(props: TFollowersProps) {
           />
           <FollowersList
             list={followees.filter(
+              ({ profile }) =>
+                profile.name.toLocaleLowerCase().includes(input.toLocaleLowerCase()) ||
+                profile.username.toLocaleLowerCase().includes(input.toLocaleLowerCase())
+            )}
+          />
+          <FollowersList
+            list={mutuals.filter(
               ({ profile }) =>
                 profile.name.toLocaleLowerCase().includes(input.toLocaleLowerCase()) ||
                 profile.username.toLocaleLowerCase().includes(input.toLocaleLowerCase())
