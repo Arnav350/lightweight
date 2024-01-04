@@ -8,6 +8,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { supabase } from "../../../supabase";
 import { AuthContext } from "../../../hooks/useAuth";
+import AccountCalendar from "../../../components/account/AccountCalendar";
 import { COLORS } from "../../../constants/theme";
 
 type TConnectProps = CompositeScreenProps<StackScreenProps<TAccountStackParamList, "Account">, TCompositeProps>;
@@ -92,6 +93,9 @@ function Account(props: TConnectProps) {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={styles.workoutsContainer}>
+          <AccountCalendar />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -165,6 +169,9 @@ const styles = StyleSheet.create({
     height: 24,
     width: 1,
     backgroundColor: COLORS.darkGray,
+  },
+  workoutsContainer: {
+    // backgroundColor: COLORS.primary,
   },
 });
 
