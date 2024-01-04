@@ -8,38 +8,57 @@ import { COLORS } from "../../constants/theme";
 function AccountCalendar() {
   const { workouts } = useContext(WorkoutContext);
 
-  const currentDate = new Date();
-  const lastDate = new Date();
+  const currentDate: Date = new Date();
+  const currentDay: number = currentDate.getDay() === 6 ? -1 : currentDate.getDay();
+  const lastDate: Date = new Date();
   lastDate.setDate(currentDate.getDate() - 112);
+  const lastMilli = lastDate.getTime();
 
-  const recentWorkouts: IWorkout[] = [];
-  for (let i = 0; i < workouts.length; i++) {
-    if (workouts[i].date >= lastDate) {
-      recentWorkouts.push(workouts[i]);
+  const temp = new Date();
+  let randomDates: Date[] = Array(25).fill(temp);
+  randomDates = randomDates
+    .map((date) => new Date(temp.getTime() - Math.floor(Math.random() * 113) * 24 * 60 * 60 * 1000))
+    .sort((a, b) => a.getTime() - b.getTime())
+    .reverse();
+
+  // const workoutDays = new Set<number>([]);
+  // for (let i = 0; i < workouts.length; i++) {
+  //   if (workouts[i].date >= lastDate) {
+  //     workoutDays.add(Math.floor((lastMilli - workouts[i].date.setHours(0)) / 86400000));
+  //   } else {
+  //     break;
+  //   }
+  // }
+
+  const workoutDays = new Set<number>([]);
+  for (let i = 0; i < randomDates.length; i++) {
+    if (randomDates[i] >= lastDate) {
+      workoutDays.add(-Math.floor((lastMilli - randomDates[i].setHours(0)) / 86400000));
     } else {
       break;
     }
   }
-  const recentDates: number[] = recentWorkouts.map(({ date }) =>
-    Math.round((currentDate.setHours(0) - date.setHours(0)) / 86400000)
-  );
+
+  const t = Array.from(workoutDays);
+  console.log(t);
 
   return (
     <View style={{ flexDirection: "row" }}>
-      {/* {Array(16)
+      {Array(16)
         .fill(true)
-        .map(({ index }) => (
-          <View key={index}>
+        .map((__, i) => (
+          <View key={i}>
             {Array(7)
               .fill(true)
-              .map(({ index }) => (
+              .map((__, j) => (
                 <View
-                  key={index}
-                  style={{ height: 16, width: 16, backgroundColor: COLORS.primary, borderRadius: 4 }}
+                  key={j}
+                  style={styles.square}
+                  // style={i === 0 && j <= currentDay ? { ...styles.square, opacity: 0 } : styles.square}
                 ></View>
               ))}
           </View>
-        ))} */}
+        ))}
     </View>
   );
 }
@@ -53,9 +72,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   square: {
-    width: 8,
-    height: 8,
-    margin: 2,
+    width: 16,
+    height: 16,
+    borderRadius: 4,
+    backgroundColor: COLORS.primary,
   },
 });
 
