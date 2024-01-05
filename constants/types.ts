@@ -31,7 +31,7 @@ type TConnectStackParamList = {
 type TAccountStackParamList = {
   Account: undefined;
   Settings: undefined;
-  Personal: undefined;
+  Profile: undefined;
   Notifications: undefined;
   Blocked: undefined;
   Units: undefined;

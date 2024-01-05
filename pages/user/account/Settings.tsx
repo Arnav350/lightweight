@@ -24,7 +24,7 @@ function Settings(props: TSettingsProps) {
       </View>
       <ScrollView style={styles.settingsContainer}>
         <Text style={styles.title}>Account</Text>
-        <SettingsOption icon="account-outline" text="Personal" props={props} />
+        <SettingsOption icon="account-outline" text="Profile" props={props} />
         <SettingsOption icon="bell-outline" text="Notifications" props={props} />
         <SettingsOption icon="block-helper" text="Blocked" props={props} />
         <Text style={styles.title}>Preferences</Text>

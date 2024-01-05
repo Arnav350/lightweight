@@ -2,7 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Account from "../pages/user/account/Account";
 import Settings from "../pages/user/account/Settings";
-import Personal from "../pages/user/account/Personal";
+import Profile from "../pages/user/account/Profile";
 import Notifications from "../pages/user/account/Notifications";
 import Blocked from "../pages/user/account/Blocked";
 import Units from "../pages/user/account/Units";
@@ -19,7 +19,7 @@ export function AccountStack() {
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Followers" component={Followers} />
       <Stack.Screen name="Settings" component={Settings} />
-      <Stack.Screen name="Personal" component={Personal} />
+      <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Notifications" component={Notifications} />
       <Stack.Screen name="Blocked" component={Blocked} />
       <Stack.Screen name="Units" component={Units} />

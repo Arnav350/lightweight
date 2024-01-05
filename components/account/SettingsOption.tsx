@@ -6,7 +6,7 @@ import { COLORS } from "../../constants/theme";
 
 interface IProps {
   icon: keyof typeof Icon.glyphMap;
-  text: "Personal" | "Notifications" | "Blocked" | "Units" | "Theme" | "Permissions" | "About";
+  text: "Profile" | "Notifications" | "Blocked" | "Units" | "Theme" | "Permissions" | "About";
   props: TSettingsProps;
 }
 
