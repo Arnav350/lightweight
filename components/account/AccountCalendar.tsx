@@ -5,10 +5,11 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { WorkoutContext } from "../../hooks/useWorkout";
 import { COLORS } from "../../constants/theme";
 
+const days: number = 112;
+
 function AccountCalendar() {
   const { workouts } = useContext(WorkoutContext);
 
-  const days = 112;
   const currentDate: Date = new Date();
   const currentDay: number = currentDate.getDay();
   const lastDate: Date = new Date();
@@ -16,43 +17,23 @@ function AccountCalendar() {
   lastDate.setHours(0, 0, 0, 0);
   const lastMilli = lastDate.getTime();
 
-  // console.log(lastDate);
-
-  const temp = new Date();
-  let randomDates: Date[] = Array(60).fill(temp);
-  randomDates = randomDates
-    .map((date) => new Date(temp.getTime() - Math.floor(Math.random() * days) * 24 * 60 * 60 * 1000))
-    .sort((a, b) => a.getTime() - b.getTime());
-
-  // const workoutDays = new Set<number>([]);
-  // for (let i = 0; i < workouts.length; i++) {
-  //   if (workouts[i].date >= lastDate) {
-  //     workoutDays.add(Math.floor((lastMilli - workouts[i].date.setHours(0, 0, 0, 0)) / 86400000));
-  //   } else {
-  //     break;
-  //   }
-  // }
-
   const uniqueDays = new Set<number>([]);
-  for (let i = 0; i < randomDates.length; i++) {
-    if (randomDates[i] >= lastDate) {
-      uniqueDays.add(Math.floor((randomDates[i].getTime() - lastMilli) / 86400000));
+  for (let i = 0; i < workouts.length; i++) {
+    if (workouts[i].date >= lastDate) {
+      uniqueDays.add(Math.floor((workouts[i].date.getTime() - lastMilli) / 86400000));
     } else {
       break;
     }
   }
 
   const workoutDays = Array.from(uniqueDays);
-
   const booleanDays = Array(days + 7).fill(false);
 
-  let originalIndex = 0;
-
-  for (let i = 0; i < booleanDays.length; i++) {
-    if (i - currentDay === workoutDays[originalIndex]) {
+  for (let i = 0, j = 0; i < booleanDays.length; i++) {
+    if (i - currentDay === workoutDays[j]) {
       booleanDays[i] = true;
-      originalIndex++;
-      if (originalIndex === workoutDays.length) {
+      j++;
+      if (j === workoutDays.length) {
         break;
       }
     }
@@ -69,36 +50,82 @@ function AccountCalendar() {
   }
 
   return (
-    <View style={{ flexDirection: "row" }}>
-      {Array(days / 7 + 7)
-        .fill(true)
-        .map((__, i) => (
-          <View key={i}>
-            {booleanDays.slice(7 * i, 7 * (i + 1)).map((bol, j) => (
-              <View
-                key={j}
-                // style={styles.square}
-                style={getStyle(i, j, bol)}
-              ></View>
-            ))}
+    <View style={styles.container}>
+      <View>
+        <View style={styles.rowContainer}>
+          <Text style={styles.emptyContainer}>Wed</Text>
+          <View style={styles.monthsContainer}>
+            <Text style={{ ...styles.month, marginRight: -40 + Math.floor(currentDate.getDate() / 7) * 12 }}>Sep</Text>
+            <Text style={styles.month}>Oct</Text>
+            <Text style={styles.month}>Nov</Text>
+            <Text style={styles.month}>Dec</Text>
+            <Text style={styles.month}>Jan</Text>
           </View>
-        ))}
+        </View>
+        <View style={styles.rowContainer}>
+          <View style={styles.daysContainer}>
+            <Text style={styles.day}>Sun</Text>
+            <Text style={styles.day}>Mon</Text>
+            <Text style={styles.day}>Tue</Text>
+            <Text style={styles.day}>Wed</Text>
+            <Text style={styles.day}>Thu</Text>
+            <Text style={styles.day}>Fri</Text>
+            <Text style={styles.day}>Sat</Text>
+          </View>
+          <View style={styles.squaresContainer}>
+            {Array(days / 7 + 7)
+              .fill(true)
+              .map((__, i) => (
+                <View key={i}>
+                  {booleanDays.slice(7 * i, 7 * (i + 1)).map((bol, j) => (
+                    <View key={j} style={getStyle(i, j, bol)}></View>
+                  ))}
+                </View>
+              ))}
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
     alignItems: "center",
   },
-  row: {
+  rowContainer: {
+    flexDirection: "row",
+  },
+  emptyContainer: {
+    marginRight: 8,
+    fontSize: 13,
+    opacity: 0,
+  },
+  monthsContainer: {
+    flexDirection: "row",
+    gap: 48,
+  },
+  month: {
+    color: COLORS.white,
+    fontSize: 13,
+  },
+  daysContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 8,
+  },
+  day: {
+    color: COLORS.white,
+    fontSize: 13,
+  },
+  squaresContainer: {
     flexDirection: "row",
   },
   square: {
-    width: 16,
-    height: 16,
-    borderRadius: 4,
+    margin: 2,
+    width: 12,
+    height: 12,
+    borderRadius: 2,
     backgroundColor: COLORS.darkGray,
   },
 });

@@ -8,6 +8,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { TCompositeProps } from "../../../App";
 import { supabase } from "../../../supabase";
 import { AuthContext } from "../../../hooks/useAuth";
+import { WorkoutContext } from "../../../hooks/useWorkout";
+import { ConnectContext } from "../../../hooks/useConnect";
 import AccountCalendar from "../../../components/account/AccountCalendar";
 import { COLORS } from "../../../constants/theme";
 
@@ -17,6 +19,8 @@ function Account(props: TConnectProps) {
   const { navigation } = props;
 
   const { currentProfile } = useContext(AuthContext);
+  const { workouts } = useContext(WorkoutContext);
+  const { followers, followees } = useContext(ConnectContext);
   const [profilePicture, setProfilePicture] = useState<string>("");
 
   useEffect(() => {
@@ -69,8 +73,12 @@ function Account(props: TConnectProps) {
             <Text style={styles.bio}>Wow!</Text>
           </View>
           <View style={styles.followersContainer}>
-            <TouchableOpacity activeOpacity={0.3} style={styles.followerContainer}>
-              <Text style={styles.number}>100</Text>
+            <TouchableOpacity
+              activeOpacity={0.3}
+              style={styles.followerContainer}
+              onPress={() => navigation.navigate("GymStack", { screen: "Gym" })}
+            >
+              <Text style={styles.number}>{workouts.length}</Text>
               <Text style={styles.follower}>Workouts</Text>
             </TouchableOpacity>
             <View style={styles.divider}></View>
@@ -79,7 +87,7 @@ function Account(props: TConnectProps) {
               style={styles.followerContainer}
               onPress={() => navigation.navigate("Followers", { page: "Followers" })}
             >
-              <Text style={styles.number}>1000</Text>
+              <Text style={styles.number}>{followers.length}</Text>
               <Text style={styles.follower}>Followers</Text>
             </TouchableOpacity>
             <View style={styles.divider}></View>
@@ -88,14 +96,12 @@ function Account(props: TConnectProps) {
               style={styles.followerContainer}
               onPress={() => navigation.navigate("Followers", { page: "Followings" })}
             >
-              <Text style={styles.number}>1000</Text>
+              <Text style={styles.number}>{followees.length}</Text>
               <Text style={styles.follower}>Following</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.workoutsContainer}>
-          <AccountCalendar />
-        </View>
+        <AccountCalendar />
       </View>
     </SafeAreaView>
   );
@@ -169,9 +175,6 @@ const styles = StyleSheet.create({
     height: 24,
     width: 1,
     backgroundColor: COLORS.darkGray,
-  },
-  workoutsContainer: {
-    // backgroundColor: COLORS.primary,
   },
 });
 
