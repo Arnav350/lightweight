@@ -6,7 +6,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { COLORS } from "../../../constants/theme";
 import SettingsOption from "../../../components/account/SettingsOption";
 
-type TSettingsProps = StackScreenProps<TAccountStackParamList, "Settings">;
+export type TSettingsProps = StackScreenProps<TAccountStackParamList, "Settings">;
 
 function Settings(props: TSettingsProps) {
   const { navigation } = props;
@@ -24,15 +24,15 @@ function Settings(props: TSettingsProps) {
       </View>
       <ScrollView style={styles.settingsContainer}>
         <Text style={styles.title}>Account</Text>
-        <SettingsOption icon="account-outline" text="Personal" />
-        <SettingsOption icon="bell-outline" text="Notifications" />
-        <SettingsOption icon="block-helper" text="Blocked" />
+        <SettingsOption icon="account-outline" text="Personal" props={props} />
+        <SettingsOption icon="bell-outline" text="Notifications" props={props} />
+        <SettingsOption icon="block-helper" text="Blocked" props={props} />
         <Text style={styles.title}>Preferences</Text>
-        <SettingsOption icon="dumbbell" text="Units" />
-        <SettingsOption icon="image-outline" text="Theme" />
+        <SettingsOption icon="dumbbell" text="Units" props={props} />
+        <SettingsOption icon="image-outline" text="Theme" props={props} />
         <Text style={styles.title}>Support</Text>
-        <SettingsOption icon="cellphone" text="Permissions" />
-        <SettingsOption icon="information-outline" text="About" />
+        <SettingsOption icon="cellphone" text="Permissions" props={props} />
+        <SettingsOption icon="information-outline" text="About" props={props} />
       </ScrollView>
     </SafeAreaView>
   );
