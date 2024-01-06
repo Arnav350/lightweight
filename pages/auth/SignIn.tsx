@@ -65,13 +65,13 @@ function SignUp({ navigation }: TProps) {
             placeholder="Password"
             placeholderTextColor={COLORS.gray}
             keyboardAppearance="dark"
-            secureTextEntry={showPassword ? false : true}
+            secureTextEntry={!showPassword}
             style={focusedInput === "password" ? { ...styles.input, borderBottomColor: COLORS.primary } : styles.input}
             onChangeText={setPassword}
             onFocus={() => setFocusedInput("password")}
             onBlur={() => setFocusedInput("none")}
           />
-          <TouchableOpacity activeOpacity={0.5} style={styles.eyeButton} onPress={() => setShowPassword(!showPassword)}>
+          <TouchableOpacity activeOpacity={0.3} style={styles.eyeButton} onPress={() => setShowPassword(!showPassword)}>
             {showPassword ? (
               <Icon name="eye-off-outline" size={28} color={COLORS.gray} />
             ) : (
